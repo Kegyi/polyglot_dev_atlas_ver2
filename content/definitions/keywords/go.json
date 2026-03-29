@@ -1,0 +1,18 @@
+{
+  "language": "go",
+  "config": {
+    "base_url": "https://pkg.go.dev/search?q=",
+    "url_override_pattern": "https://go.dev/ref/spec#{name}"
+  },
+  "keywords": {
+    "concurrency": [
+      { "name": "go", "type": "hard", "added_in": "v1.0" },
+      { "name": "chan", "type": "hard", "added_in": "v1.0" },
+      { "name": "select", "type": "hard", "added_in": "v1.0" }
+    ],
+    "declarations": [
+      { "name": "func", "type": "hard", "added_in": "v1.0" },
+      { "name": "defer", "type": "hard", "added_in": "v1.0" }
+    ]
+  }
+}

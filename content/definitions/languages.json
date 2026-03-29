@@ -1,0 +1,104 @@
+{
+  "cpp": {
+    "name": "C++",
+    "id": "cpp",
+    "color": "#00599C",
+    "icon": "assets/icons/cpp.svg",
+    "extension": "cpp",
+    "prism_class": "language-cpp",
+    "tagline": "The performance powerhouse.",
+    "paradigm": ["imperative", "object-oriented", "generic"]
+  },
+  "rust": {
+    "name": "Rust",
+    "id": "rust",
+    "color": "#CE412B",
+    "icon": "assets/icons/rust.svg",
+    "extension": "rs",
+    "prism_class": "language-rust",
+    "tagline": "Empowering everyone to build reliable and efficient software.",
+    "paradigm": ["multi-paradigm", "functional", "imperative"]
+  },
+  "zig": {
+    "name": "Zig",
+    "id": "zig",
+    "color": "#F7A41D",
+    "icon": "assets/icons/zig.svg",
+    "extension": "zig",
+    "prism_class": "language-zig",
+    "tagline": "General-purpose programming language and toolchain for maintaining robust software.",
+    "paradigm": ["imperative", "systems"]
+  },
+  "go": {
+    "name": "Go",
+    "id": "go",
+    "color": "#00ADD8",
+    "icon": "assets/icons/go.svg",
+    "extension": "go",
+    "prism_class": "language-go",
+    "tagline": "Build simple, secure, and scalable systems.",
+    "paradigm": ["concurrent", "imperative"]
+  },
+  "python": {
+    "name": "Python",
+    "id": "python",
+    "color": "#3776AB",
+    "icon": "assets/icons/python.svg",
+    "extension": "py",
+    "prism_class": "language-python",
+    "tagline": "Clear, powerful, and easy to learn.",
+    "paradigm": ["multi-paradigm", "object-oriented", "functional"]
+  },
+  "typescript": {
+    "name": "TypeScript",
+    "id": "typescript",
+    "color": "#3178C6",
+    "icon": "assets/icons/typescript.svg",
+    "extension": "ts",
+    "prism_class": "language-typescript",
+    "tagline": "JavaScript with syntax for types.",
+    "paradigm": ["multi-paradigm", "functional", "object-oriented"]
+  },
+  "csharp": {
+    "name": "C#",
+    "id": "csharp",
+    "color": "#178600",
+    "icon": "assets/icons/csharp.svg",
+    "extension": "cs",
+    "prism_class": "language-csharp",
+    "tagline": "Modern, object-oriented, and type-safe.",
+    "paradigm": ["object-oriented", "structured"]
+  },
+  "java": {
+    "name": "Java",
+    "id": "java",
+    "color": "#007396",
+    "icon": "assets/icons/java.svg",
+    "extension": "java",
+    "prism_class": "language-java",
+    "tagline": "Write once, run anywhere.",
+    "paradigm": ["object-oriented", "class-based"]
+  },
+  "scala2": {
+    "name": "Scala 2",
+    "id": "scala2",
+    "color": "#DE3423",
+    "icon": "assets/icons/scala.svg",
+    "extension": "scala",
+    "prism_class": "language-scala",
+    "tagline": "The classic functional-object hybrid for the JVM.",
+    "paradigm": ["functional", "object-oriented"],
+    "group": "scala"
+  },
+  "scala3": {
+    "name": "Scala 3",
+    "id": "scala3",
+    "color": "#DE3423",
+    "icon": "assets/icons/scala3.svg",
+    "extension": "scala",
+    "prism_class": "language-scala",
+    "tagline": "Modern Scala: redesigned for clarity and safety.",
+    "paradigm": ["functional", "object-oriented", "strongly-typed"],
+    "group": "scala"
+  }
+}

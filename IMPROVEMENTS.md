@@ -15,7 +15,7 @@ This document summarizes the recommended improvements for the Polyglot Dev Atlas
 - **Fragment Aligner:** Implement a vertical alignment tool that uses semantic metadata to keep related code steps (e.g., "Variable Declaration") aligned across side-by-side columns.
 
 **Phase 3 — Automated Content Discovery & Integrity**
-- **Auto-Scanning:** Remove manual `data.json` entries. `build.py` should scan `content/pages/` to auto-generate the site navigation and category hierarchy.
+- **Auto-Scanning:** Remove manual `data.json` entries. `build.py` should scan `legacy_content/pages/` to auto-generate the site navigation and category hierarchy.
 - **Strict Validation:** Use `jsonschema` to validate every `.page.json`. Include a build-time check for **Broken Internal Links** and **Missing Snippet Files**.
 - **Breadcrumb Generation:** Automatically derive breadcrumbs and "Next/Previous" navigation based on the folder structure.
 

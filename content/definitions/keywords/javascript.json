@@ -1,0 +1,22 @@
+{
+  "language": "javascript",
+  "config": {
+    "base_url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#"
+  },
+  "keywords": {
+    "modern_decl": [
+      { "name": "let", "type": "hard", "added_in": "ES6" },
+      { "name": "const", "type": "hard", "added_in": "ES6" }
+    ],
+    "future_reserved": [
+      { "name": "package", "type": "reserved_unused", "added_in": "ES1" },
+      { "name": "private", "type": "reserved_unused", "added_in": "ES1" },
+      { 
+        "name": "enum", 
+        "type": "reserved_unused", 
+        "added_in": "ES1",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Reserved_Words" 
+      }
+    ]
+  }
+}

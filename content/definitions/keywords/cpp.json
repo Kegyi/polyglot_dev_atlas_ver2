@@ -1,0 +1,23 @@
+{
+  "language": "cpp",
+  "config": {
+    "base_url": "https://en.cppreference.com/w/cpp/keyword/",
+    "case_sensitive_urls": true
+  },
+  "keywords": {
+    "control_flow": [
+      { "name": "if", "type": "hard", "added_in": "C++98" },
+      { "name": "consteval", "type": "hard", "added_in": "C++20" }
+    ],
+    "storage": [
+      { 
+        "name": "auto", "type": "hard", "added_in": "C++98", 
+        "note": "Originally storage class; repurposed in C++11 for type inference." 
+      },
+      { "name": "register", "type": "hard", "added_in": "C++98", "deprecated_in": "C++11", "removed_in": "C++17" }
+    ],
+    "templates": [
+      { "name": "concept", "type": "soft", "added_in": "C++20" }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "language": "csharp",
+  "config": {
+    "base_url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/"
+  },
+  "keywords": {
+    "linq_queries": [
+      { "name": "from", "type": "soft", "added_in": "C# 3.0" },
+      { "name": "where", "type": "soft", "added_in": "C# 3.0" },
+      { "name": "select", "type": "soft", "added_in": "C# 3.0" }
+    ],
+    "properties": [
+      { "name": "get", "type": "soft", "added_in": "C# 1.0" },
+      { "name": "set", "type": "soft", "added_in": "C# 1.0" },
+      { "name": "value", "type": "soft", "added_in": "C# 1.0", "note": "Used in set accessors." }
+    ]
+  }
+}
