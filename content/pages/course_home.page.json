@@ -1,0 +1,108 @@
+{
+  "page": "course_home",
+  "title": "The Course",
+  "description": "Main hub for all course content: by-steps, by-levels, exercises, interview problems and design patterns.",
+  "groups": {
+    "groupTitle": { "title": "Section" },
+    "overview": { "title": "Overview" },
+    "by_steps": { "title": "By Steps (linear course)" },
+    "by_levels": { "title": "By Levels (beginner → advanced)" }
+  },
+  "contents": {
+    "overview": {
+      "title": "Course Overview",
+      "group": "overview",
+      "description": "How to use this course hub and suggested learning paths (by steps or by levels).",
+      "code": { "$ref": "/content/codes/json/common.json#/project_lifecycle" }
+    },
+
+    "by_steps_course": {
+      "title": "Course — By Steps",
+      "group": "by_steps",
+      "description": "A linear learning path organized as progressive steps. Complete each step before moving on.",
+      "subcontents": {
+        "step_01_setup": {
+          "title": "Step 1 — Setup & Tooling",
+          "description": "Project lifecycle, build and environment setup.",
+          "code": { "$ref": "/content/codes/json/common.json#/project_lifecycle" }
+        },
+        "step_02_control_flow": {
+          "title": "Step 2 — Control Flow",
+          "description": "Conditions, loops and recursion basics.",
+          "code": { "$ref": "/content/codes/json/common.json#/loops" }
+        },
+        "step_03_functions": {
+          "title": "Step 3 — Functions & Error Handling",
+          "description": "Defining functions and handling errors / exceptions.",
+          "code": { "$ref": "/content/codes/json/common.json#/functions_and_errors" }
+        },
+        "step_04_data_structures": {
+          "title": "Step 4 — Core Data Structures",
+          "description": "Arrays, collections, maps and sets.",
+          "code": { "$ref": "/content/codes/json/common.json#/arrays_and_collections" }
+        },
+        "step_05_oop": {
+          "title": "Step 5 — OOP & Abstraction",
+          "description": "Classes, interfaces and basic OO patterns.",
+          "code": { "$ref": "/content/codes/json/common.json#/classes_and_objects" }
+        },
+        "step_06_algorithms": {
+          "title": "Step 6 — Algorithms",
+          "description": "Sorting, searching, hashing and basic algorithm patterns.",
+          "code": { "$ref": "/content/codes/json/common.json#/sorting_and_searching" }
+        },
+        "step_07_io_and_serialization": {
+          "title": "Step 7 — I/O & Serialization",
+          "description": "File I/O and JSON / serialization examples.",
+          "code": { "$ref": "/content/codes/json/common.json#/file_io" }
+        },
+        "step_08_testing_deploy": {
+          "title": "Step 8 — Testing & Deployment",
+          "description": "Testing patterns and simple deployment notes (cheat sheet references).",
+          "insight": "Use small automated tests and CI-friendly build steps; iterate quickly.",
+          "code": { "$ref": "/content/codes/json/common.json#/project_lifecycle" }
+        }
+      }
+    },
+
+    "by_levels_course": {
+      "title": "Course — By Levels",
+      "group": "by_levels",
+      "description": "Grouped learning by difficulty. Each level exposes collapsible code examples in subContents.",
+      "subcontents": {
+        "level_1_basics": {
+          "title": "Level 1 — Basics",
+          "description": "Essential concepts for beginners.",
+          "subcontents": {
+            "command_line_args": { "title": "Command Line Args", "code": { "$ref": "/content/codes/json/common.json#/command_line_args" } },
+            "conditions": { "title": "Conditions", "code": { "$ref": "/content/codes/json/common.json#/conditions" } },
+            "loops": { "title": "Loops", "code": { "$ref": "/content/codes/json/common.json#/loops" } },
+            "strings": { "title": "Strings", "code": { "$ref": "/content/codes/json/common.json#/strings" } },
+            "arrays_and_collections": { "title": "Arrays & Collections", "code": { "$ref": "/content/codes/json/common.json#/arrays_and_collections" } }
+          }
+        },
+
+        "level_2_intermediate": {
+          "title": "Level 2 — Intermediate",
+          "description": "Data structures and modular design.",
+          "subcontents": {
+            "maps_and_sets": { "title": "Maps & Sets", "code": { "$ref": "/content/codes/json/common.json#/maps_and_sets" } },
+            "linked_lists": { "title": "Linked Lists", "code": { "$ref": "/content/codes/json/common.json#/linked_lists" } },
+            "stacks_and_queues": { "title": "Stacks & Queues", "code": { "$ref": "/content/codes/json/common.json#/stacks_and_queues" } },
+            "heaps_and_priority_queues": { "title": "Heaps & Priority Queues", "code": { "$ref": "/content/codes/json/common.json#/heaps_and_priority_queues" } }
+          }
+        },
+
+        "level_3_advanced": {
+          "title": "Level 3 — Advanced",
+          "description": "Algorithms, graphs, and system-level patterns.",
+          "subcontents": {
+            "trees_and_graphs": { "title": "Trees & Graphs", "code": { "$ref": "/content/codes/json/common.json#/trees_and_graphs" } },
+            "recursion": { "title": "Recursion", "code": { "$ref": "/content/codes/json/common.json#/recursion" } },
+            "hashing_and_checksums": { "title": "Hashing & Checksums", "code": { "$ref": "/content/codes/json/common.json#/hashing_and_checksums" } }
+          }
+        }
+      }
+    }
+  }
+}

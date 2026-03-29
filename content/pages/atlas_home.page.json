@@ -1,0 +1,195 @@
+{
+  "title": "Polyglot Dev Atlas home page",
+  "description": "Landing page for the Polyglot Dev Atlas, showcasing cross-language code patterns and insights.",
+  "groups": {
+    "overview": { "title": "Overview" }
+  },
+  "contents": {
+    "polyglot_dev_atlas": {
+      "group": "overview",
+      "title": "Polyglot Dev Atlas",
+      "description": "Overview and quick usage guide",
+      "text": "This atlas helps compare practical code patterns across C++, Python, Go, TypeScript, and Scala.\n\nQuick Usage Guide:\n1. Choose one or two languages from the LANGUAGES row.\n2. Click ATLAS VIEWS / LEARNING VIEWS (the colored row title) to switch the whole view set.\n3. Pick a view chip (for example Keywords, Workflow, Exercises, Interview).\n4. Use the item dropdown (Problem, Question, Task) to select an entry.\n5. Toggle Compare 2 to see side-by-side code.\n6. Use Swap to switch left/right compared languages.\n7. Use palette and theme controls to adjust style.\n8. In Exercises, click Show Solution to reveal code per-language panels.\n\nWhat Each View Set Contains: ATLAS VIEWS (Keywords, Workflow, Design Patterns, Principles) and LEARNING VIEWS (Lang. Basic, Course, Exercises, Problems, Interview).\n\nPractical Tips: Start with Keywords for quick syntax recall; use Problems or Interview for realistic patterns; use Exercises for guided practice; keep compare mode on when mapping concepts across languages."
+    },
+    "cross_language_advanced_patterns": {
+      "group": "overview",
+      "title": "Cross-language Advanced Patterns",
+      "description": "High-level mapping of advanced patterns across languages",
+      "text": "Legend: ✗ means no close built-in equivalent. 'Partial (approx)' means conceptually similar but semantics differ.",
+      "table": {
+        "headers": ["Pattern","C++","Go","Python","TypeScript","Scala"],
+        "rows":  [
+          ["Generics / templates","template<class T> T max2(T a,T b)","func Max2[T constraints.Ordered](a,b T) T","T = TypeVar('T'); def max2(a:T,b:T)->T","function max2<T>(a:T,b:T):T","def max2[T: Ordering](a:T,b:T):T"],
+          ["Closures / lambdas","[&](int x){ return x + bias; }","func(x int) int { return x + bias }","lambda x: x + bias","(x:number) => x + bias","x => x + bias"],
+          ["Iteration pipelines","ranges::copy_if(v, out, p); ranges::transform(out, out2, f)","slices.DeleteFunc(xs, pred) + for _,x := range xs","[f(x) for x in xs if p(x)]","xs.filter(p).map(f)","xs.filter(p).map(f)"],
+          ["Async / concurrency","std::async(std::launch::async, work)","go work(); select { case v := <-ch: ... }","await asyncio.gather(*tasks)","await Promise.all(tasks)","Future.traverse(xs)(work)"],
+          ["Error propagation","std::expected<T,E> or try { ... } catch (...) {}","v, err := fn(); if err != nil { ... }","try: ... except ValueError: ...","Partial (approx):Result<T,E> object with ok/value or ok/error branches","Either[E, A] or Try[A]"],
+          ["Access modifiers","public, protected, private","✗","Partial (approx):convention _name and __name mangling","public, protected, private","private, protected"],
+          ["Algebraic data types","std::variant<A,B> + std::visit","✗","Partial (approx):typing.Union[A,B]","Partial (approx):type Shape = Circle or Rect","sealed trait Shape + case class"],
+          ["Pattern matching","✗","✗","match value: case ...","Partial (approx):switch over discriminated union tags","value match { case ... => ... }"],
+          ["Type-level programming","templates and constexpr constraints","✗","✗","conditional and mapped types","implicits or givens plus type classes"],
+          ["Resource cleanup pattern","RAII and destructors","defer cleanup()","with resource as r:","Partial (approx):try { ... } finally { cleanup(); }","Using(resource) { r => ... }"],
+          ["Immutability-first collections","Partial (approx):const with persistent libraries optional","✗","Partial (approx):tuples, frozen dataclasses optional","Partial (approx):ReadonlyArray<T> and as const","immutable List, Vector, Map"]
+        ]
+      }
+    },
+    "practical_orientation": {
+      "group": "overview",
+      "title": "Practical Orientation",
+      "description": "Short operational notes and developer pointers",
+      "text": "For maintainers, see DEVELOPMENT.md for content contracts, validation, and build-check workflows. Use this page as orientation, then move into ATLAS VIEWS or LEARNING VIEWS for side-by-side code exploration."
+    },
+    "graphical_usage_guide": {
+      "group": "overview",
+      "title": "Graphical Usage Guide",
+      "description": "Visual guidance and interaction notes for the atlas UI",
+      "text": "The interactive guidance on this site is implemented using CSS and JS (no bundled animation files). Key UX points:\n\n- LANGUAGES row: toggles which language columns are shown.\n- ATLAS/LEARNING view selector: switches sets of views (Keywords, Workflow, Exercises, etc.).\n- Compare mode: enables side-by-side panels for two languages; use Swap to flip sides.\n- Show Solution: reveals per-language code panels in Exercises.\n\nFor maintainers: add CSS animations in the UI layer (e.g., keyframes for fades, transforms for swaps). Avoid embedding large media in content JSON; prefer CSS classes that the renderer maps to animations.",
+      "dataFile": "../data/usage_guide.json",
+      "renderer": "usageGuideRenderer"
+    },
+    "language_specific_features": {
+      "group": "overview",
+      "title": "Language-specific Features",
+      "description": "Concise highlights for each supported language to help orient users to idiomatic differences.",
+      "points": {
+        "cpp": [
+          "Access control nuances (`protected`, friend declarations, inheritance visibility)",
+          "RAII and deterministic destruction for resource safety",
+          "Move semantics (`T&&`, move constructors, perfect forwarding)",
+          "Allocator-aware containers and custom memory ownership models",
+          "Template metaprogramming and compile-time constraints"
+        ],
+        "python": [
+          "Decorators for wrapping and registering behavior",
+          "Descriptors (`__get__`, `__set__`, `__set_name__`) for attribute protocol hooks",
+          "Metaclasses for class creation customization",
+          "Data model dunder methods (`__iter__`, `__enter__`, `__call__`, etc.)",
+          "Runtime introspection and monkey patching patterns"
+        ],
+        "go": [
+          "Goroutines and scheduler-driven concurrency model",
+          "Channels with select-based coordination and cancellation",
+          "`defer` for scoped cleanup and post-return hooks",
+          "Implicit interface satisfaction and composition-first APIs",
+          "Error wrapping (`%w`) and idiomatic sentinel handling"
+        ],
+        "typescript": [
+          "Conditional and distributive types for type-level branching",
+          "Mapped types and key remapping over object structures",
+          "Template literal types for string-shape constraints",
+          "Declaration merging and module augmentation",
+          "Control-flow narrowing with custom type guards"
+        ],
+        "scala": [
+          "Implicits / givens and context parameters",
+          "Type classes for ad-hoc polymorphism",
+          "Higher-kinded types and variance design",
+          "Exhaustive pattern matching and extractors",
+          "Effect-style composition with monads and for-comprehensions"
+        ]
+      },
+      "profile": {
+        "cpp": {
+          "intro": "C++ gives you direct control over memory and object lifetime. That makes performance strong, but it also means ownership rules matter from day one.",
+          "mindsets": [
+            "Think in terms of object \"lifetime\": stack, heap, and who owns cleanup.",
+            "Prefer value semantics first, then add pointers when sharing or polymorphism is needed.",
+            "Use RAII wrappers so cleanup happens automatically."
+          ],
+          "snippets": [
+            {
+              "title": "RAII cleanup (automatic)",
+              "note": "When scope ends, destructors run. No manual close call needed.",
+              "code": "struct FileGuard {\n  ~FileGuard() { /* close file */ }\n};\n\nvoid readConfig() {\n  FileGuard guard;\n  // use file\n} // guard cleanup happens here"
+            },
+            {
+              "title": "Move semantics (transfer ownership)",
+              "note": "Use \"std\"::move to transfer expensive resources instead of copying.",
+              "code": "std::vector<int> build() {\n  \"std\"::vector<int> data{1,2,3};\n  return data; // moved (or elided)\n}\n\nstd::vector<int> numbers = build();"
+            }
+          ]
+        },
+        "python": {
+          "intro": "Python is optimized for readability and quick iteration. Many advanced patterns are runtime-based, so you can build power incrementally.",
+          "mindsets": [
+            "Start with clear functions and classes before advanced magic methods.",
+            "Use decorators for cross-cutting behavior like logging or timing.",
+            "Think in \"protocols\": if it behaves like the needed interface, it usually works."
+          ],
+          "snippets": [
+            {
+              "title": "Decorator for reusable behavior",
+              "note": "Wrap a function once, then reuse that behavior everywhere.",
+              "code": "def logged(fn):\n    def wrapper(*args, **kwargs):\n        print(\"calling\", fn.__name__)\n        return fn(*args, **kwargs)\n    return wrapper\n\n@logged\ndef add(a, b):\n    return a + b"
+            },
+            {
+              "title": "Context manager style cleanup",
+              "note": "Use with to guarantee cleanup even when errors happen.",
+              "code": "with open(\"notes.txt\", \"r\", encoding=\"utf-8\") as \"f\":\n    text = f.read()\n# file is closed automatically"
+            }
+          ]
+        },
+        "go": {
+          "intro": "Go keeps the language small and predictable. Concurrency and explicit error handling are core habits, not optional extras.",
+          "mindsets": [
+            "Return errors as values and handle them immediately.",
+            "Use goroutines for concurrent work and channels for coordination.",
+            "Use defer right after acquiring a resource."
+          ],
+          "snippets": [
+            {
+              "title": "Error-first flow",
+              "note": "Go favors explicit branches over exceptions.",
+              "code": "n, \"err\":= strconv.Atoi(input)\nif err != nil {\n    return fmt.Errorf(\"invalid \"number\": %w\", err)\n}\nfmt.Println(\"parsed\", n)"
+            },
+            {
+              "title": "Goroutine + channel",
+              "note": "Start work concurrently and receive the result through a channel.",
+              "code": "ch := make(chan string)\ngo func() {\n    ch <- \"done\"\n}()\nmsg := <-ch\nfmt.Println(msg)"
+            }
+          ]
+        },
+        "typescript": {
+          "intro": "TypeScript adds a strong static type layer on top of JavaScript. It is excellent for making APIs self-documenting and safer to refactor.",
+          "mindsets": [
+            "Use union types to model possible states clearly.",
+            "Narrow types with guards before using specific fields.",
+            "Let interfaces describe behavior, then implement with any matching shape."
+          ],
+          "snippets": [
+            {
+              "title": "Discriminated union",
+              "note": "Model variants and handle each one safely in switch.",
+              "code": "type Result =\n  | { \"ok\": true; \"value\": number }\n  | { \"ok\": false; \"error\": string }\n\nfunction show(r: Result) {\n  return r.ok ? `value=${r.value}` : `error=${r.error}`\n}"
+            },
+            {
+              "title": "Type guard narrowing",
+              "note": "A guard helps TypeScript infer the precise type.",
+              "code": "function isText(v: unknown): v is string {\n  return typeof v === \"string\"\n}\n\nconst \"value\": unknown = \"hello\"\nif (isText(value)) console.log(value.toUpperCase())"
+            }
+          ]
+        },
+        "scala": {
+          "intro": "Scala blends object-oriented and functional styles. You can start simple, then gradually adopt stronger abstractions like Options, Eithers, and type classes.",
+          "mindsets": [
+            "Prefer immutable collections and expression-style code.",
+            "Use Option instead of null for absent values.",
+            "Treat pattern matching as a primary control-flow tool."
+          ],
+          "snippets": [
+            {
+              "title": "Option instead of null",
+              "note": "Represent missing values explicitly and handle both cases.",
+              "code": "val \"maybeAge\": Option[Int] = Some(20)\nval label = maybeAge match\n  case Some(age) => s\"age=$age\"\n  case None => \"age=unknown\""
+            },
+            {
+              "title": "Collection pipeline",
+              "note": "Transform data with small composable steps.",
+              "code": "val nums = List(1, 2, 3, 4, 5)\nval result = nums\n  .filter(_ % 2 == 1)\n  .map(_ * 10)\n  .sum"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

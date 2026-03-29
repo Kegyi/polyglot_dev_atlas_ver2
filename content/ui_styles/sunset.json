@@ -1,0 +1,8 @@
+{
+  "id": "sunset",
+  "label": "Sunset",
+  "vars": {
+    "accent": "#fb923c",
+    "accent2": "#ef4444"
+  }
+}

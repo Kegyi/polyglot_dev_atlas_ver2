@@ -1,0 +1,48 @@
+{
+  "languages": {
+    "lang_to_hl": {
+      "cpp": "cpp",
+      "python": "python",
+      "go": "go",
+      "typescript": "typescript",
+      "scala2": "scala",
+      "scala3": "scala"
+    },
+    "labels": {},
+    "order": [
+      "cpp",
+      "python",
+      "go",
+      "typescript",
+      "scala2",
+      "scala3"
+    ]
+  },
+  "palette_options": {
+    "brand": true,
+    "technical": true,
+    "soft": true
+  },
+  "view_categories": {
+    "atlas": {
+      "label": "Atlas Views",
+      "views": [
+        "sheets",
+        "patterns",
+        "principles",
+        "workflow"
+      ]
+    },
+    "learning": {
+      "label": "Course Views",
+      "views": [
+        "exercises",
+        "basics",
+        "interview",
+        "problems"
+      ]
+    }
+  },
+  "view_config": null,
+  "state": null
+}
