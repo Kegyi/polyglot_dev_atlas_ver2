@@ -1,7 +1,11 @@
 import os
 import json
+import time
+import argparse
+import threading
 from dataclasses import dataclass, asdict
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
+from typing import Any
 
 @dataclass
 class Page:
@@ -16,7 +20,8 @@ class Page:
     sub_contents: List[Dict]
 
 def load_mock_data():
-    data_json_path = os.path.join(os.path.dirname(__file__), "content", "data", "data.json")
+    content_root = os.path.join(os.path.dirname(__file__), "content")
+    data_json_path = os.path.join(content_root, "data", "data.json")
     view_categories = {}
     languages = []
 
@@ -40,7 +45,7 @@ def load_mock_data():
         except Exception: pass
 
     pages = []
-    base_dir = os.path.join(os.path.dirname(__file__), "content", "pages")
+    base_dir = os.path.join(content_root, "pages")
     views_flat = [v for vals in view_categories.values() for v in vals]
     views_map = {v.lower(): v for v in views_flat}
 
@@ -49,9 +54,20 @@ def load_mock_data():
             if not fname.endswith('.page.json'): continue
             key = fname[:-len('.page.json')]
             match_view = views_map.get(key.lower())
-            with open(os.path.join(base_dir, fname), 'r', encoding='utf-8') as f:
-                try: obj = json.load(f)
-                except Exception: continue
+            page_path = os.path.join(base_dir, fname)
+            with open(page_path, 'r', encoding='utf-8') as f:
+                try:
+                    obj = json.load(f)
+                except Exception:
+                    continue
+
+            # Resolve $ref and external aliases in the loaded page JSON
+            try:
+                resolve_refs(obj, content_root)
+            except Exception:
+                pass
+
+            # (validation moved to top-level --lint handling)
 
             groups_map = {k: v.get('title', k) for k, v in obj.get('groups', {}).items()}
             for slug, item in obj.get('content', {}).items():
@@ -61,11 +77,39 @@ def load_mock_data():
                 if item.get('points'): sub_contents.append({"title": "Points", "text": "\n".join(item.get('points', []))})
                 if item.get('notes'): sub_contents.append({"title": "Notes", "text": "\n".join(item.get('notes', []))})
 
+                # Materialize code snippet file references if any
+                def _materialize_snippets(snips, page_dir):
+                    out = {}
+                    if not isinstance(snips, dict):
+                        return snips
+                    for k, v in snips.items():
+                        if isinstance(v, str):
+                            candidate = v
+                            # map alias or relative to page dir
+                            if candidate.startswith('@'):
+                                candidate_path = _map_alias_path(candidate, content_root)
+                            else:
+                                candidate_path = os.path.join(page_dir, candidate)
+                                if not os.path.isfile(candidate_path):
+                                    # fallback to content root
+                                    candidate_path = os.path.join(content_root, candidate)
+
+                            if os.path.isfile(candidate_path):
+                                try:
+                                    with open(candidate_path, 'r', encoding='utf-8') as cf:
+                                        out[k] = cf.read()
+                                        continue
+                                except Exception:
+                                    pass
+                        out[k] = v
+                    return out
+
+                page_dir = os.path.dirname(page_path)
                 pages.append({
                     "id": f"{key}_{slug}", "group": group_key, "group_title": groups_map.get(group_key, group_key),
                     "view": match_view or obj.get('page') or key, "title": item.get('title', ''),
                     "description": item.get('description', ''), "insight": insight,
-                    "code_snippets": item.get('code_snippets', {}) or item.get('code', {}),
+                    "code_snippets": _materialize_snippets(item.get('code_snippets', {}) or item.get('code', {}), page_dir),
                     "sub_contents": sub_contents
                 })
 
@@ -319,7 +363,202 @@ def assemble_page(data):
     """
 
 if __name__ == "__main__":
-    content = load_mock_data()
-    with open("index.html", "w", encoding="utf-8") as f:
-        f.write(assemble_page(content))
-    print("Build complete: index.html")
+    parser = argparse.ArgumentParser(description='Build the Polyglot Dev Atlas (index.html)')
+    parser.add_argument('--watch', '-w', action='store_true', help='Watch content/ and rebuild on changes')
+    parser.add_argument('--out', '-o', default='index.html', help='Output HTML filename')
+    parser.add_argument('--lint', action='store_true', help='Validate all page JSON files against the schema and exit non-zero on failures')
+    args = parser.parse_args()
+
+    content_root = os.path.join(os.path.dirname(__file__), 'content')
+
+    # If lint requested, run validation and exit with its status. If both lint and watch are provided,
+    # validation must pass to continue into watch mode.
+    if args.lint:
+        try:
+            from tools import validate_schema as _vs
+            rc = _vs.validate_all(content_root)
+            if rc != 0:
+                print(f'Lint failed: exit {rc}')
+                raise SystemExit(rc)
+        except SystemExit:
+            raise
+        except Exception as e:
+            print(f'Lint failed to run: {e}')
+            raise SystemExit(2)
+
+    def build_index() -> int:
+        try:
+            # If linting is enabled, validate before attempting to write output
+            if args.lint:
+                try:
+                    from tools import validate_schema as _vs
+                    rc = _vs.validate_all(content_root)
+                    if rc != 0:
+                        print(f'Validation failed: exit {rc}')
+                        return rc
+                except Exception as e:
+                    print(f'Validation runner failed: {e}')
+                    return 2
+
+            content = load_mock_data()
+            with open(args.out, 'w', encoding='utf-8') as f:
+                f.write(assemble_page(content))
+            print(f"Build complete: {args.out} at {time.strftime('%H:%M:%S')}")
+            return 0
+        except Exception as e:
+            print(f"Build failed: {e}")
+            return 1
+
+    if not args.watch:
+        rc = build_index()
+        raise SystemExit(rc)
+
+    # Watch mode
+    try:
+        from watchdog.observers import Observer
+        from watchdog.events import FileSystemEventHandler
+    except Exception:
+        print('Watch mode requires `watchdog`. Install with: pip install watchdog')
+        build_index()
+        raise SystemExit(2)
+
+    class DebounceHandler(FileSystemEventHandler):
+        def __init__(self, debounce_seconds=0.5):
+            super().__init__()
+            self._timer = None
+            self._lock = threading.Lock()
+            self.debounce_seconds = debounce_seconds
+
+        def _schedule(self):
+            with self._lock:
+                if self._timer:
+                    self._timer.cancel()
+                def _run_and_maybe_exit():
+                    rc = build_index()
+                    # If linting is enabled and validation failed, exit the process (CI-friendly)
+                    if args.lint and rc != 0:
+                        print(f'Validation failed during watch: exiting {rc}')
+                        os._exit(rc)
+
+                self._timer = threading.Timer(self.debounce_seconds, _run_and_maybe_exit)
+                self._timer.daemon = True
+                self._timer.start()
+
+        def on_any_event(self, event):
+            # ignore events for temporary files
+            if event.src_path.endswith('~') or event.is_directory:
+                return
+            print(f'Change detected: {event.src_path}')
+            self._schedule()
+
+    content_root = os.path.join(os.path.dirname(__file__), 'content')
+    paths_to_watch = [content_root, os.path.join(os.path.dirname(__file__), 'tools')]
+
+    observer = Observer()
+    handler = DebounceHandler(debounce_seconds=0.6)
+    for p in paths_to_watch:
+        if os.path.exists(p):
+            observer.schedule(handler, path=p, recursive=True)
+
+    print('Starting watch mode. Press Ctrl+C to stop.')
+    build_index()
+    observer.start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print('Stopping watch...')
+        observer.stop()
+    observer.join()
+
+
+def _map_alias_path(value: str, content_root: str) -> str:
+    # Support a few helpful aliases
+    if value.startswith('@snippets/'):
+        return os.path.join(content_root, 'snippets', value[len('@snippets/'):])
+    if value.startswith('@images/'):
+        return os.path.join(content_root, 'images', value[len('@images/'):])
+    if value.startswith('@core/'):
+        return os.path.join(content_root, 'core', value[len('@core/'):])
+    # default: treat as relative to content root
+    return os.path.join(content_root, value.lstrip('./'))
+
+
+def _resolve_ref_string(ref: str, content_root: str, cache: Dict[str, Any]):
+    # Handle fragment part after '#'
+    path_part, frag = (ref.split('#', 1) + [None])[:2]
+    # map aliases and relative paths
+    if path_part.startswith('@') or path_part.startswith('.') or not os.path.isabs(path_part):
+        file_path = _map_alias_path(path_part, content_root)
+    else:
+        file_path = path_part
+
+    if not os.path.isfile(file_path):
+        # Maybe the ref was just a fragment within the same file (not supported here)
+        return ref
+
+    if file_path in cache:
+        loaded = cache[file_path]
+    else:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as fh:
+                if file_path.endswith('.json'):
+                    loaded = json.load(fh)
+                else:
+                    loaded = fh.read()
+        except Exception:
+            return ref
+        cache[file_path] = loaded
+
+    if frag and isinstance(loaded, dict):
+        # Support simple JSON Pointer style: /a/b/c
+        parts = [p for p in frag.split('/') if p]
+        cur = loaded
+        for p in parts:
+            if isinstance(cur, dict) and p in cur:
+                cur = cur[p]
+            else:
+                return cur
+        return cur
+
+    return loaded
+
+
+def resolve_refs(node: Any, content_root: str, cache: Dict[str, Any] = None):
+    if cache is None:
+        cache = {}
+
+    if isinstance(node, dict):
+        if '$ref' in node and isinstance(node['$ref'], str):
+            resolved = _resolve_ref_string(node['$ref'], content_root, cache)
+            # If resolved is a dict, merge; otherwise replace
+            if isinstance(resolved, dict):
+                node.pop('$ref', None)
+                for k, v in resolved.items():
+                    node[k] = resolve_refs(v, content_root, cache)
+                return node
+            else:
+                return resolve_refs(resolved, content_root, cache)
+        # otherwise walk children
+        for k, v in list(node.items()):
+            node[k] = resolve_refs(v, content_root, cache)
+        return node
+
+    if isinstance(node, list):
+        for i, v in enumerate(node):
+            node[i] = resolve_refs(v, content_root, cache)
+        return node
+
+    if isinstance(node, str):
+        # support alias-based raw file injection
+        if node.startswith('@'):
+            p = _map_alias_path(node, content_root)
+            if os.path.isfile(p):
+                try:
+                    with open(p, 'r', encoding='utf-8') as fh:
+                        return fh.read()
+                except Exception:
+                    return node
+        return node
+
+    return node
