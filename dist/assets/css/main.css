@@ -1,0 +1,61 @@
+.lang-btn {
+    padding: 8px 16px;
+    background: #333;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Left Selection (Primary) */
+.lang-btn.active-l {
+    border-color: #3b82f6; /* Blue */
+    background: #1e3a8a;
+}
+
+/* Right Selection (Secondary) */
+.lang-btn.active-r {
+    border-color: #a855f7; /* Purple */
+    background: #581c87;
+}
+
+/* Both (should not happen with current logic, but for safety) */
+.lang-btn.active-l.active-r {
+    background: linear-gradient(90deg, #1e3a8a, #581c87);
+}
+
+:root {
+    /* Default Dark Theme (Atlas) */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent: #3b82f6; /* Blue */
+    --border: #333;
+}
+
+body.theme-light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --accent: #2563eb;
+    --border: #e5e7eb;
+}
+
+body.mode-course {
+    --accent: #10b981; /* Shift to Green for Course mode */
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    transition: background 0.3s, color 0.3s;
+}
+
+#app-shell {
+    display: grid;
+    grid-template-columns: 250px 1fr 200px; /* Sidebar | Content | TOC */
+    min-height: 100vh;
+}

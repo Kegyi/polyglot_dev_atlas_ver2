@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} | Dev Atlas</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/blocks.css">
+    <!-- Prism.js for syntax highlighting (CDN example) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+<body class="theme-dark">
+    <div id="app-shell">
+        <!-- Sidebar Navigation -->
+        <aside id="main-sidebar">
+            <div class="mode-controls">
+                <button onclick="toggleCourseMode()">Switch to Course</button>
+            </div>
+            {{ navigation_sidebar }}
+        </aside>
+
+        <!-- Main Workspace -->
+        <main id="workspace">
+            <header id="top-bar">
+                <div id="lang-picker-container">
+                    {{ language_picker }}
+                </div>
+                <button id="theme-toggle" onclick="ThemeManager.toggle()">☀️</button>
+            </header>
+
+            <article id="content-stage">
+                <h1>{{ title }}</h1>
+                {{ content }}
+            </article>
+        </main>
+
+        <!-- Right Topic Sidebar -->
+        <aside id="topic-sidebar-container">
+            {{ topic_sidebar }}
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/ui.js"></script>
+</body>
+</html>

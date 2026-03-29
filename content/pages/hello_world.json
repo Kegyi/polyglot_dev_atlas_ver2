@@ -1,0 +1,16 @@
+{
+  "title": "Hello World Comparison",
+  "blocks": [
+    {
+      "id": "hello-step",
+      "title": "Standard Output",
+      "type": "code_comparison",
+      "payload": {
+        "files": [
+          { "lang": "rust", "path": "snippets/rust/hello.rs" },
+          { "lang": "cpp", "path": "snippets/cpp/hello.cpp" }
+        ]
+      }
+    }
+  ]
+}

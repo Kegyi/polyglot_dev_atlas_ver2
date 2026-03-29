@@ -1,0 +1,98 @@
+/* Table Styling */
+.atlas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+.atlas-table th {
+    background: #252526;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #333;
+}
+
+.atlas-table td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    vertical-align: top;
+}
+
+/* Keyword Pills */
+.kw-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-family: 'Cascadia Code', monospace;
+    transition: transform 0.1s;
+}
+
+.kw-pill:hover { transform: scale(1.05); }
+
+/* Hard Keywords: Solid and Bold */
+.kw-hard {
+    background: #264f78;
+    color: #fff;
+    border: 1px solid #3b82f6;
+}
+
+/* Soft Keywords: Dashed and Italic */
+.kw-soft {
+    background: #3e3e3e;
+    color: #ce9178;
+    border: 1px dashed #ce9178;
+    font-style: italic;
+}
+
+/* Version Tags */
+.ver-tag {
+    font-size: 0.7em;
+    margin-left: 5px;
+    opacity: 0.6;
+    vertical-align: super;
+}
+
+/* Color coding by version (Examples) */
+.v-cpp98 { border-left: 3px solid #888; }
+.v-cpp11 { border-left: 3px solid #4ec9b0; }
+.v-cpp20 { border-left: 3px solid #c586c0; }
+
+.code-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column by default */
+    gap: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+}
+
+/* Activate side-by-side when body has the comparing class */
+body.is-comparing .code-comparison-grid {
+    grid-template-columns: 1fr 1fr;
+}
+
+.code-column {
+    display: none; /* Hidden by default, shown via state.js */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.code-column.active-l, .code-column.active-r {
+    display: block;
+}
+
+.code-header {
+    background: rgba(255,255,255,0.05);
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border);
+}
