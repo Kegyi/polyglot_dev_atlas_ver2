@@ -1,0 +1,37 @@
+[
+  {
+    "section": "Core Keywords",
+    "header": "Keyword | Description & Version | Header | Snippet",
+    "categories": [
+      {
+        "category": "Definitions",
+        "items": [
+          ["def", "Function definition :v:since Python 2:!v:", "Syntax", "def foo():\n    pass"],
+          ["class", "Class definition :v:since Python 2:!v:", "Syntax", "class C:\n    def __init__(self): pass"],
+          ["lambda", "Anonymous function :v:since early Python:!v:", "Syntax", "lambda x: x+1"]
+        ]
+      },
+      {
+        "category": "Async & Concurrency",
+        "items": [
+          ["async", "Coroutine syntax :v:since Python 3.5:!v:", "Syntax", "async def coro():\n    await something()"],
+          ["asyncio", "Async I/O library :v:since Python 3.4:!v:", "Header", "import asyncio\nasyncio.run(coro())"],
+          ["yield", "Generator yield :v:since early Python:!v:", "Snippet", "def g():\n    yield 1"]
+        ]
+      }
+    ]
+  },
+  {
+    "section": "Tools & Idioms",
+    "header": "Keyword | Description & Version | Header | Snippet",
+    "categories": [
+      {
+        "category": "Context",
+        "items": [
+          ["with", "Context manager usage :v:since Python 2.5:!v:", "Snippet", "with open('f') as fh:\n    data = fh.read()"],
+          ["self", "Instance reference in methods :v:since early Python:!v:", "Header", "def method(self):\n    return self.x"]
+        ]
+      }
+    ]
+  }
+]

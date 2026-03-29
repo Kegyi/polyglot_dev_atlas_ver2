@@ -1,0 +1,8 @@
+[
+  ["Keyword", "DemoLang", "Description"],
+  ["async", "async", "Asynchronous function / await semantics"],
+  ["map", "map", "Transform collection items"],
+  ["pub", "pub", "Public visibility for items"],
+  ["defer", "defer", "Run at function exit (deferred execution)"],
+  ["match", "match", "Pattern-matching construct"]
+]

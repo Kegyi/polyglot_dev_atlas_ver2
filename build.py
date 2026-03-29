@@ -21,6 +21,8 @@ class Page:
 
 def load_mock_data():
     content_root = os.path.join(os.path.dirname(__file__), "content")
+    # shared cache for resolved files to avoid re-reading/parsing
+    cache: Dict[str, Any] = {}
     data_json_path = os.path.join(content_root, "data", "data.json")
     view_categories = {}
     languages = []
@@ -105,11 +107,50 @@ def load_mock_data():
                     return out
 
                 page_dir = os.path.dirname(page_path)
+
+                # materialize blocks: resolve any @-prefixed data pointers into parsed JSON or raw text
+                def _materialize_blocks(blocks):
+                    out_blocks = []
+                    if not isinstance(blocks, list):
+                        return blocks
+                    for b in blocks:
+                        if isinstance(b, dict):
+                            d = b.get('data')
+                            if isinstance(d, str) and d.startswith('@'):
+                                try:
+                                    resolved = _resolve_ref_string(d, content_root, cache)
+                                    # if resolved is dict/list, use it directly; otherwise keep raw string
+                                    b['data'] = resolved
+                                except Exception:
+                                    # fallback: map a few common aliases locally
+                                    if d.startswith('@snippets/'):
+                                        p = os.path.join(content_root, 'snippets', d[len('@snippets/'):])
+                                    elif d.startswith('@images/'):
+                                        p = os.path.join(content_root, 'images', d[len('@images/'):])
+                                    elif d.startswith('@core/'):
+                                        p = os.path.join(content_root, 'core', d[len('@core/'):])
+                                    else:
+                                        p = os.path.join(content_root, d.lstrip('./'))
+                                    if os.path.isfile(p):
+                                        try:
+                                            with open(p, 'r', encoding='utf-8') as fh:
+                                                # attempt JSON parse, fallback to raw
+                                                try:
+                                                    b['data'] = json.load(fh)
+                                                except Exception:
+                                                    fh.seek(0)
+                                                    b['data'] = fh.read()
+                                        except Exception:
+                                            pass
+                        out_blocks.append(b)
+                    return out_blocks
+
                 pages.append({
                     "id": f"{key}_{slug}", "group": group_key, "group_title": groups_map.get(group_key, group_key),
                     "view": match_view or obj.get('page') or key, "title": item.get('title', ''),
                     "description": item.get('description', ''), "insight": insight,
                     "code_snippets": _materialize_snippets(item.get('code_snippets', {}) or item.get('code', {}), page_dir),
+                    "blocks": _materialize_blocks(item.get('blocks', [])),
                     "sub_contents": sub_contents
                 })
 
@@ -187,6 +228,238 @@ def generate_scripts():
             view: null, lastAtlasView: null, lastCourseView: null
         };
 
+        // Renderer Registry: map block types to renderer functions
+        const Renderers = {
+            sheet: (block) => {
+                const data = block.data || [];
+                // Improved language detection: prefer explicit `options.lang`, then id/title, then data heuristics
+                let blockLang = null;
+                try{
+                    // 1) explicit option
+                    if(block && block.options){
+                        const opt = block.options.lang || block.options.language || block.options.lang_code;
+                        if(opt){ const s = String(opt).toLowerCase(); if(s==='py') blockLang='python'; else if(s==='c++') blockLang='cpp'; else blockLang = s; }
+                    }
+
+                    // 2) infer from id/title if not explicit
+                    if(!blockLang && block && block.id){
+                        const m = String(block.id).match(/-([a-zA-Z0-9_+-]+)$/);
+                        if(m && m[1]){
+                            const suffix = m[1].toLowerCase();
+                            if(suffix === 'py' || suffix === 'python') blockLang = 'python';
+                            else if(suffix === 'cpp' || suffix === 'c++') blockLang = 'cpp';
+                            else blockLang = suffix;
+                        }
+                    }
+                    if(!blockLang && block && block.title){
+                        const t = String(block.title).toLowerCase();
+                        if(t.includes('python') || t.includes('py')) blockLang = 'python';
+                        else if(t.includes('c++') || t.includes('cpp')) blockLang = 'cpp';
+                        else if(t.includes('demo')) blockLang = 'demo';
+                    }
+
+                    // 3) heuristic from data: scan snippets/rows for language-specific tokens
+                    if(!blockLang){
+                        const detectFromText = (txt)=>{
+                            if(!txt) return null;
+                            const s = String(txt).toLowerCase();
+                            if(s.includes('std::') || s.includes('constexpr') || s.includes('#include') || s.includes('typename') || s.includes('std::thread')) return 'cpp';
+                            if(s.match(/\bdef\s+\w+\b/) || s.includes('async ') || s.includes('self') || s.includes('import ') || s.includes('yield')) return 'python';
+                            if(s.includes('pub ') || s.includes('defer') || s.includes('match')) return 'demo';
+                            return null;
+                        };
+
+                        const scanData = (d)=>{
+                            try{
+                                if(!d) return null;
+                                if(Array.isArray(d)){
+                                    // hierarchical sections
+                                    if(d.length && typeof d[0] === 'object'){
+                                        for(const sec of d){ if(sec && sec.categories){ for(const c of sec.categories){ if(c && Array.isArray(c.items)){ for(const row of c.items){ for(const cell of row){ const r = detectFromText(cell); if(r) return r; } } } } } }
+                                    }
+                                    // flat table rows
+                                    for(const row of d){ if(Array.isArray(row)){ for(const cell of row){ const r = detectFromText(cell); if(r) return r; } } else { const r = detectFromText(row); if(r) return r; } }
+                                } else if(typeof d === 'object'){
+                                    return detectFromText(JSON.stringify(d));
+                                } else {
+                                    return detectFromText(d);
+                                }
+                            }catch(e){ return null; }
+                            return null;
+                        };
+
+                        const maybe = scanData(data);
+                        if(maybe) blockLang = maybe;
+                    }
+                }catch(e){ blockLang = null; }
+
+                // If this block appears to be language-specific, only render it when that language is selected
+                if(blockLang && state.primary && blockLang !== String(state.primary).toLowerCase()){
+                    return '';
+                }
+                const tableId = 'sheet_' + (block.id || Math.random().toString(36).slice(2,8));
+
+                const parseVersion = (s) => {
+                    if(!s) return { text: '', version: null };
+                    const m = s.match(/:v:(.*?):!v:/);
+                    if(m){
+                        const text = s.replace(m[0], '').trim();
+                        return { text: text, version: m[1].trim() };
+                    }
+                    return { text: s, version: null };
+                };
+
+                const renderItemsTable = (items) => {
+                    if(!items || !items.length) return '';
+                    let html = '<div style="overflow:auto">';
+                    html += `<table style="width:100%; border-collapse:collapse">`;
+                    html += '<thead><tr>' + ['Keyword','Description','Header','Snippet'].map(h=>`<th style="text-align:left; padding:8px; border-bottom:1px solid rgba(0,0,0,0.08); color:var(--text)">${escapeHtml(h)}</th>`).join('') + '</tr></thead>';
+                    html += '<tbody>' + items.map(row => {
+                        const kw = escapeHtml(row[0]||'');
+                        const parsed = parseVersion(row[1]||'');
+                        let descHtml = escapeHtml(parsed.text||'');
+                        if(parsed.version) descHtml += ' <span style="color:var(--text-m); font-size:12px; margin-left:6px">(' + escapeHtml(parsed.version) + ')</span>';
+                        const header = escapeHtml(row[2]||'');
+                        const snippet = escapeHtml(row[3]||'');
+                        return '<tr>' + [`<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04);">${kw}</td>`, `<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04);">${descHtml}</td>`, `<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04);">${header}</td>`, `<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04); font-family:monospace; white-space:pre-wrap">${snippet}</td>`].join('') + '</tr>';
+                    }).join('') + '</tbody>';
+                    html += '</table></div>';
+                    return html;
+                };
+
+                // If data is sections (objects with `section`), render hierarchical view
+                if(Array.isArray(data) && data.length && typeof data[0] === 'object' && data[0].section){
+                    let out = '';
+                    data.forEach(sec => {
+                        out += `<h2 style="margin-top:24px; margin-bottom:8px">${escapeHtml(sec.section)}</h2>`;
+                        const cats = sec.categories || [];
+                        cats.forEach(cat => {
+                            out += `<div style="margin-bottom:12px"><h3 style="margin:8px 0">${escapeHtml(cat.category)}</h3>`;
+                            out += renderItemsTable(cat.items || []);
+                            out += '</div>';
+                        });
+                    });
+                    return `<div style="margin:16px 0">${out}</div>`;
+                }
+
+                // Comparison mode: if blocks are grouped with the same compareGroup and compare is active,
+                // find the matching primary/secondary blocks on the same page and render a side-by-side view.
+                try{
+                    if(block && block.options && block.options.compareGroup && state.compare && state.secondary){
+                        const page = data.pages.find(p => p.id === state.pageId);
+                        if(page){
+                            const siblings = (page.blocks || []).filter(bb => bb.type === 'sheet' && bb.options && bb.options.compareGroup === block.options.compareGroup);
+                            const keyFor = (bb) => (bb && bb.options && (bb.options.lang || bb.options.language || '')).toString().toLowerCase();
+                            let primaryBlock = siblings.find(bb => keyFor(bb) === String(state.primary).toLowerCase());
+                            let secondaryBlock = siblings.find(bb => keyFor(bb) === String(state.secondary).toLowerCase());
+                            if(!primaryBlock) primaryBlock = block;
+                            if(!secondaryBlock) secondaryBlock = siblings.find(bb => bb !== primaryBlock) || null;
+
+                            if(primaryBlock && secondaryBlock){
+                                const normalize = (d) => {
+                                    if(!d) return [];
+                                    if(Array.isArray(d)){
+                                        if(d.length && typeof d[0] === 'object' && d[0].section){
+                                            const out = [];
+                                            d.forEach(sec => { (sec.categories || []).forEach(cat => { (cat.items || []).forEach(row => { out.push(row); }); }); });
+                                            return out;
+                                        }
+                                        // if first row looks like a header (strings with 'keyword' or similar), drop it
+                                        if(d.length && Array.isArray(d[0])){
+                                            const head = d[0].map ? d[0] : d[0];
+                                            const firstRowText = head.join(' ').toLowerCase();
+                                            if(firstRowText.includes('keyword') || firstRowText.includes('description')){
+                                                return d.slice(1);
+                                            }
+                                        }
+                                        return d;
+                                    } else if(typeof d === 'string'){
+                                        return [[d,'','','']];
+                                    } else if(typeof d === 'object'){
+                                        return [[JSON.stringify(d),'','','']];
+                                    }
+                                    return [];
+                                };
+
+                                const rowsA = normalize(primaryBlock.data || []);
+                                const rowsB = normalize(secondaryBlock.data || []);
+                                const mapA = new Map(); rowsA.forEach(r => mapA.set(String(r[0]||'').trim(), r));
+                                const mapB = new Map(); rowsB.forEach(r => mapB.set(String(r[0]||'').trim(), r));
+                                const keys = Array.from(new Set([...mapA.keys(), ...mapB.keys()]));
+
+                                let html = '<div style="overflow:auto">';
+                                html += `<table style="width:100%; border-collapse:collapse">`;
+                                html += '<thead><tr>' + ['Keyword', String(state.primary||'Primary'), String(state.secondary||'Secondary')].map(h=>`<th style="text-align:left; padding:8px; border-bottom:1px solid rgba(0,0,0,0.08); color:var(--text)">${escapeHtml(h)}</th>`).join('') + '</tr></thead>';
+                                html += '<tbody>' + keys.map(k => {
+                                    const a = mapA.get(k) || ['','','',''];
+                                    const b = mapB.get(k) || ['','','',''];
+                                    const aMissing = !mapA.has(k);
+                                    const bMissing = !mapB.has(k);
+                                    const pa = parseVersion(a[1]||'');
+                                    const pb = parseVersion(b[1]||'');
+                                    const descA = (pa.text||'').toString().trim();
+                                    const descB = (pb.text||'').toString().trim();
+                                    const headerA = (a[2]||'').toString().trim();
+                                    const headerB = (b[2]||'').toString().trim();
+                                    const snippetA = (a[3]||'').toString().trim();
+                                    const snippetB = (b[3]||'').toString().trim();
+                                    const descDiff = (!aMissing && !bMissing) && descA !== descB;
+                                    const headerDiff = (!aMissing && !bMissing) && headerA !== headerB;
+                                    const snippetDiff = (!aMissing && !bMissing) && snippetA !== snippetB;
+                                    const makeStack = (row, missing, diffs) => {
+                                        if(missing) return `<div style="color:var(--text-m); font-style:italic">(missing)</div>`;
+                                        const p = parseVersion(row[1]||'');
+                                        let descHtml = escapeHtml(p.text||'');
+                                        if(p.version) descHtml += ' <span style="color:var(--text-m); font-size:12px; margin-left:6px">(' + escapeHtml(p.version) + ')</span>';
+                                        const header = escapeHtml(row[2]||'');
+                                        const snippet = escapeHtml(row[3]||'');
+                                        const descStyle = diffs && diffs.desc ? 'background:rgba(255,165,0,0.06); padding:6px; border-radius:6px' : '';
+                                        const headerStyle = diffs && diffs.header ? 'background:rgba(255,165,0,0.04); padding:4px; border-radius:4px' : '';
+                                        const snippetStyle = diffs && diffs.snip ? 'background:rgba(255,165,0,0.04); padding:6px; border-radius:6px' : '';
+                                        return `<div style="display:flex;flex-direction:column;gap:6px"><div style="font-weight:600; ${descStyle}">${descHtml}</div><div style="color:var(--text-m);font-size:12px; ${headerStyle}">${header}</div><div style="margin-top:6px; font-family:monospace; white-space:pre-wrap; ${snippetStyle}">${snippet}</div></div>`;
+                                    };
+                                    return '<tr>' + [`<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04); width:20%">${escapeHtml(k)}</td>`, `<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04); width:40%">${makeStack(a, aMissing, {desc: descDiff, header: headerDiff, snip: snippetDiff})}</td>`, `<td style="padding:8px; border-bottom:1px solid rgba(0,0,0,0.04); width:40%">${makeStack(b, bMissing, {desc: descDiff, header: headerDiff, snip: snippetDiff})}</td>`].join('') + '</tr>';
+                                }).join('') + '</tbody>';
+                                html += '</table></div>';
+                                return `<div style="margin:16px 0">${html}</div>`;
+                            }
+                        }
+                    }
+                }catch(e){ /* ignore comparison errors and fall back */ }
+
+                // fallback: assume simple rows array
+                const rows = Array.isArray(data) ? data : [];
+                const hasHeader = rows.length && Array.isArray(rows[0]);
+                if(hasHeader){
+                    // try to find language column
+                    const head = rows[0];
+                    const lang = (state.primary||'').toLowerCase();
+                    let langCol = -1;
+                    for(let i=0;i<head.length;i++){ try{ const h=String(head[i]).toLowerCase(); if(h===lang||h.includes(lang)){ langCol=i; break; } }catch(e){} }
+                    const condensed = [];
+                    const titleCol = head[0]||'';
+                    const langTitle = (langCol>0? head[langCol] : head[1]||'');
+                    condensed.push([titleCol, langTitle]);
+                    rows.slice(1).forEach(r => condensed.push([r[0]||'', (langCol> -1 && r[langCol]!==undefined)? r[langCol] : (r[1]||'')]));
+                    return `<div style="margin:16px 0">${renderItemsTable(condensed)}</div>`;
+                }
+
+                return `<div style="margin:16px 0">${renderItemsTable(rows)}</div>`;
+            }
+        };
+
+        function escapeHtml(s){ if(s==null) return ''; return String(s).replace(/[&"'<>]/g, function(c){ if(c==='&') return '&amp;'; if(c==='<') return '&lt;'; if(c==='>') return '&gt;'; if(c==='"') return '&quot;'; if(c==="'") return '&#39;'; return c; }); }
+        function transposeMatrix(m){ if(!m || !m.length) return m; const rows = Math.max(...m.map(r=>r.length)); const out = []; for(let c=0;c<rows;c++){ const row = []; for(let r=0;r<m.length;r++){ row.push(m[r][c]===undefined? '': m[r][c]); } out.push(row); } return out; }
+
+        function renderBlock(b){
+            try{
+                if(!b || !b.type) return '<pre style="color:var(--text-m)">Invalid block</pre>';
+                const fn = Renderers[b.type];
+                if(!fn) return `<pre style="color:var(--text-m)">No renderer for type: ${escapeHtml(b.type)}</pre>`;
+                return fn(b);
+            }catch(e){ return `<pre style="color:var(--text-m)">${escapeHtml(String(e))}</pre>`; }
+        }
+
         const qs = s => document.querySelector(s);
         
         let touchTimer;
@@ -258,6 +531,12 @@ def generate_scripts():
                     </div>`;
                 return;
             }
+            // If the page uses Blocks (new schema), render them via the Renderers registry
+            let blocksHtml = '';
+            if (p.blocks && Array.isArray(p.blocks)) {
+                blocksHtml = p.blocks.map(b => renderBlock(b)).join('\\n');
+            }
+
             qs('#main-content').innerHTML = `
                 <div class="content-wrap">
                     <h1 style="font-size:42px; margin:0; letter-spacing:-1px">${p.title}</h1>
@@ -266,10 +545,12 @@ def generate_scripts():
                         <div style="font-size:10px;font-weight:800;color:var(--text-m);text-transform:uppercase;margin-bottom:8px">Core Insight</div>
                         <div style="line-height:1.5">${p.insight}</div>
                     </div>
+                    ${ blocksHtml || `
                     <div class="code-grid ${state.compare?'split':''}">
                         <div class="code-box"><div class="code-label">${state.primary || 'No Language'}</div><pre><code>${state.primary ? (p.code_snippets[state.primary] || '// No snippet') : ''}</code></pre></div>
                         ${state.compare && state.secondary ? `<div class="code-box"><div class="code-label">${state.secondary}</div><pre><code>${p.code_snippets[state.secondary] || '// No snippet'}</code></pre></div>` : ''}
                     </div>
+                    ` }
                     ${p.sub_contents.map(s => `
                         <div style="border:1px solid var(--border); border-radius:12px; margin-top:16px; cursor:pointer" onclick="this.lastElementChild.classList.toggle('hidden')">
                             <div style="padding:16px; display:flex; justify-content:space-between; font-size:10px; font-weight:800; color:var(--text-m); text-transform:uppercase"><span>${s.title}</span><span>▼</span></div>
@@ -552,13 +833,19 @@ def resolve_refs(node: Any, content_root: str, cache: Dict[str, Any] = None):
     if isinstance(node, str):
         # support alias-based raw file injection
         if node.startswith('@'):
-            p = _map_alias_path(node, content_root)
-            if os.path.isfile(p):
-                try:
-                    with open(p, 'r', encoding='utf-8') as fh:
-                        return fh.read()
-                except Exception:
-                    return node
+            # Resolve alias paths using the same resolver so JSON files become parsed structures
+            try:
+                resolved = _resolve_ref_string(node, content_root, cache)
+                return resolve_refs(resolved, content_root, cache)
+            except Exception:
+                # fallback to raw file read
+                p = _map_alias_path(node, content_root)
+                if os.path.isfile(p):
+                    try:
+                        with open(p, 'r', encoding='utf-8') as fh:
+                            return fh.read()
+                    except Exception:
+                        return node
         return node
 
     return node

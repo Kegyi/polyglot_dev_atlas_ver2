@@ -1,0 +1,51 @@
+[
+  {
+    "section": "Core Keywords",
+    "header": "Keyword | Description & Version | Header | Snippet",
+    "categories": [
+      {
+        "category": "Declarations",
+        "items": [
+          ["auto", "Type deduction for variables :v:since C++11:!v:", "Declaration", "auto x = expression;"],
+          ["constexpr", "Compile-time constant evaluation :v:since C++11:!v:", "Declaration", "constexpr int f(){ return 42; }"],
+          ["const", "Immutable qualifier :v:since C++98:!v:", "Declaration", "const int x = 3;"]
+        ]
+      },
+      {
+        "category": "Visibility & Members",
+        "items": [
+          ["public", "Public visibility for members :v:since C++98:!v:", "Header", "class X { public: int v; };"],
+          ["private", "Private visibility :v:since C++98:!v:", "Header", "class X { private: int v; };"],
+          ["protected", "Protected visibility :v:since C++98:!v:", "Header", "class B { protected: int p; };"]
+        ]
+      },
+      {
+        "category": "Templates & Generics",
+        "items": [
+          ["template", "Generic templates :v:since C++98 (improved in C++11):!v:", "Header", "template<typename T> struct S{};"],
+          ["typename", "Dependent type placeholder :v:since C++98:!v:", "Header", "typename T::value_type"]
+        ]
+      }
+    ]
+  },
+  {
+    "section": "Memory & Concurrency",
+    "header": "Keyword | Description & Version | Header | Snippet",
+    "categories": [
+      {
+        "category": "Ownership & Moves",
+        "items": [
+          ["std::move", "Indicates movable rvalue :v:since C++11:!v:", "Snippet", "auto y = std::move(x);"],
+          ["std::unique_ptr", "Exclusive ownership smart pointer :v:since C++11:!v:", "Snippet", "std::unique_ptr<Foo> p = std::make_unique<Foo>();"]
+        ]
+      },
+      {
+        "category": "Concurrency",
+        "items": [
+          ["std::thread", "Thread API :v:since C++11:!v:", "Snippet", "std::thread t([]{}); t.join();"],
+          ["std::lock_guard", "RAII lock helper :v:since C++11:!v:", "Snippet", "std::lock_guard<std::mutex> g(m);"]
+        ]
+      }
+    ]
+  }
+]

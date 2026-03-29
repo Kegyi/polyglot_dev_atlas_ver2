@@ -3,19 +3,21 @@
     "lang_to_hl": {
       "cpp": "cpp",
       "python": "python",
+      "demo": "text",
       "go": "go",
       "typescript": "typescript",
       "scala2": "scala",
       "scala3": "scala"
     },
     "labels": {},
-    "order": [
+      "order": [
       "cpp",
       "python",
       "go",
       "typescript",
       "scala2",
-      "scala3"
+      "scala3",
+      "demo"
     ]
   },
   "palette_options": {
@@ -27,6 +29,7 @@
     "atlas": {
       "label": "Atlas Views",
       "views": [
+        "Demo",
         "sheets",
         "patterns",
         "principles",
