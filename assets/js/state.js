@@ -3,13 +3,16 @@ const AtlasState = {
     r: null,
 
     init() {
-        // Find the first language button available on the page to use as default
-        const firstBtn = document.querySelector('.lang-btn');
-        if (firstBtn) {
-            // Extract 'cpp' from 'btn-cpp'
-            const id = firstBtn.id.replace('btn-', '');
-            this.l = id;
+        // 1. Try to load from memory first
+        this.l = localStorage.getItem('atlas_primary');
+        this.r = localStorage.getItem('atlas_secondary');
+
+        // 2. Fallback: If no memory, pick the first button available
+        if (!this.l) {
+            const firstBtn = document.querySelector('.lang-btn');
+            if (firstBtn) this.l = firstBtn.id.replace('btn-', '');
         }
+        
         this.updateUI();
     },
 
@@ -17,11 +20,8 @@ const AtlasState = {
         if (side === 'l') {
             if (this.r === id) { this.swap(); return; }
             if (this.l === id) {
-                // Promotion: if clicking active primary, move secondary to primary
                 if (this.r) { this.l = this.r; this.r = null; }
-            } else {
-                this.l = id;
-            }
+            } else { this.l = id; }
         } else {
             if (this.l === id) { this.swap(); return; }
             this.r = (this.r === id) ? null : id;
@@ -37,10 +37,17 @@ const AtlasState = {
     },
 
     updateUI() {
-        // Update Slots
+        // Save to memory for the next page load
+        if (this.l) localStorage.setItem('atlas_primary', this.l);
+        else localStorage.removeItem('atlas_primary');
+        
+        if (this.r) localStorage.setItem('atlas_secondary', this.r);
+        else localStorage.removeItem('atlas_secondary');
+
+        // --- Visual Sync ---
         const sL = document.getElementById('slot-l');
         const sR = document.getElementById('slot-r');
-        if (sL) sL.innerText = this.l ? this.l.toUpperCase() : "Select Lang";
+        if (sL) sL.innerText = this.l ? this.l.toUpperCase() : "Primary";
         if (sR) {
             sR.innerText = this.r ? this.r.toUpperCase() : "";
             sR.style.display = this.r ? 'flex' : 'none';
@@ -51,7 +58,6 @@ const AtlasState = {
 
         document.body.classList.toggle('is-comparing', !!(this.l && this.r));
 
-        // Sync Button Highlights
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const id = btn.id.replace('btn-', '');
             btn.classList.remove('active-l', 'active-r');
@@ -59,22 +65,17 @@ const AtlasState = {
             if (id === this.r) btn.classList.add('active-r');
         });
 
-        // Sync Content Display
         document.querySelectorAll('.code-card, [data-lang]').forEach(el => {
             const lang = el.getAttribute('data-lang');
             const isVisible = (lang === this.l || lang === this.r);
-            
             el.classList.remove('visible', 'order-1', 'order-2');
-            
             if (lang === this.l) {
                 el.classList.add('visible', 'order-1');
                 el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex';
             } else if (lang === this.r) {
                 el.classList.add('visible', 'order-2');
                 el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex';
-            } else {
-                el.style.display = 'none';
-            }
+            } else { el.style.display = 'none'; }
         });
     }
 };

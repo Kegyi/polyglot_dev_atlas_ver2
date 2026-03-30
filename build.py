@@ -116,11 +116,11 @@ def process_page(path, langs, keywords, sidebar_pages, mode):
     body_class = "hide-toc" 
     
     if len(topics) > 1:
-        body_class = "" # Remove hide class to show the gutter
-        topic_sidebar_html = '<div class="sidebar-title">On this page</div>'
-        for t in topics:
-            # Anchors link to the block IDs
-            topic_sidebar_html += f'<div class="nav-item" onclick="location.href=\'#{t["id"]}\'">• {t["title"]}</div>'
+            body_class = "" 
+            topic_sidebar_html = '<div class="sidebar-title">On this page</div>'
+            for t in topics:
+                # Change from onclick to a standard <a> tag for native browser jumping
+                topic_sidebar_html += f'<a href="#{t["id"]}" class="nav-item">• {t["title"]}</a>'
 
     # 4. Handle "Page Intent" (Custom Assets)
     config = data.get("config", {})
