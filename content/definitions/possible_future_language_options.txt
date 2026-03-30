@@ -1,0 +1,41 @@
+
+  "rust": {
+    "name": "Rust",
+    "id": "rust",
+    "color": "#CE412B",
+    "icon": "assets/icons/rust.svg",
+    "extension": "rs",
+    "prism_class": "language-rust",
+    "tagline": "Empowering everyone to build reliable and efficient software.",
+    "paradigm": ["multi-paradigm", "functional", "imperative"]
+  },
+  "zig": {
+    "name": "Zig",
+    "id": "zig",
+    "color": "#F7A41D",
+    "icon": "assets/icons/zig.svg",
+    "extension": "zig",
+    "prism_class": "language-zig",
+    "tagline": "General-purpose programming language and toolchain for maintaining robust software.",
+    "paradigm": ["imperative", "systems"]
+  },
+  "csharp": {
+    "name": "C#",
+    "id": "csharp",
+    "color": "#178600",
+    "icon": "assets/icons/csharp.svg",
+    "extension": "cs",
+    "prism_class": "language-csharp",
+    "tagline": "Modern, object-oriented, and type-safe.",
+    "paradigm": ["object-oriented", "structured"]
+  },
+  "java": {
+    "name": "Java",
+    "id": "java",
+    "color": "#007396",
+    "icon": "assets/icons/java.svg",
+    "extension": "java",
+    "prism_class": "language-java",
+    "tagline": "Write once, run anywhere.",
+    "paradigm": ["object-oriented", "class-based"]
+  },

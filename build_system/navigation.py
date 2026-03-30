@@ -2,7 +2,7 @@ import json
 
 def assemble_language_picker(lang_defs):
     """Generates the horizontal bar of language buttons."""
-    html = '<div class="picker-scroll-container">'
+    html = '<div id="language-picker" class="picker-scroll-container">'
     for lang_id, meta in lang_defs.items():
         color = meta.get("color", "#333")
         html += (
