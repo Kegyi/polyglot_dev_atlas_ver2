@@ -1,47 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }} | Dev Atlas</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/blocks.css">
-    <!-- Prism.js for syntax highlighting (CDN example) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-</head>
 <body class="theme-dark">
-    <div id="app-shell">
-        <!-- Sidebar Navigation -->
-        <aside id="main-sidebar">
-            <div class="mode-controls">
-                <button onclick="toggleCourseMode()">Switch to Course</button>
+    <!-- 1. TOP HEADER: [MODE] | [SLOTS] | [STYLES] -->
+    <header id="atlas-header">
+        <div class="header-left">
+            <button class="mode-btn active" id="mode-atlas">ATLAS</button>
+            <button class="mode-btn" id="mode-course">COURSE</button>
+        </div>
+        
+        <div class="header-center">
+            <div class="slot" id="slot-l">Primary</div>
+            <button id="swap-btn">⇄</button>
+            <div class="slot" id="slot-r">Secondary</div>
+        </div>
+
+        <div class="header-right">
+            <div class="style-group">
+                <button class="style-btn" title="Compact">≡</button>
+                <button class="style-btn" title="Comfort">A</button>
             </div>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </header>
+
+    <!-- 2. LANG PICKER: Horizontal strip under header -->
+    <nav id="language-picker">
+        {{ language_picker }}
+    </nav>
+
+    <!-- 3. MAIN AREA: Sidebar | Content | TOC -->
+    <div id="main-container">
+        <aside id="nav-sidebar">
             {{ navigation_sidebar }}
         </aside>
 
-        <!-- Main Workspace -->
-        <main id="workspace">
-            <header id="top-bar">
-                <div id="lang-picker-container">
-                    {{ language_picker }}
-                </div>
-                <button id="theme-toggle" onclick="ThemeManager.toggle()">☀️</button>
-            </header>
-
-            <article id="content-stage">
+        <main id="content-stage">
+            <header class="page-header">
                 <h1>{{ title }}</h1>
+            </header>
+            <div class="page-blocks">
                 {{ content }}
-            </article>
+            </div>
         </main>
 
-        <!-- Right Topic Sidebar -->
-        <aside id="topic-sidebar-container">
+        <aside id="topic-sidebar">
             {{ topic_sidebar }}
         </aside>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="assets/js/state.js"></script>
-    <script src="assets/js/ui.js"></script>
 </body>
-</html>

@@ -1,98 +1,126 @@
-/* Table Styling */
+/* --- Keyword Comparison Table --- */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-header);
+}
+
 .atlas-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #1e1e1e;
-    color: #d4d4d4;
+    font-size: 0.9rem;
+}
+
+.atlas-table th, .atlas-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    min-width: 150px;
 }
 
 .atlas-table th {
-    background: #252526;
-    padding: 12px;
-    text-align: left;
-    border-bottom: 2px solid #333;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
 }
 
-.atlas-table td {
-    padding: 12px;
-    border-bottom: 1px solid #333;
-    vertical-align: top;
+.concept-label {
+    background: rgba(255, 255, 255, 0.02);
+    font-weight: bold;
+    color: var(--accent);
+    width: 180px;
+    position: sticky;
+    left: 0;
+    z-index: 10;
 }
 
-/* Keyword Pills */
+/* --- Keyword Pills --- */
 .kw-pill {
     display: inline-flex;
     align-items: center;
-    padding: 4px 8px;
-    margin: 2px;
+    padding: 3px 8px;
+    margin: 3px;
     border-radius: 4px;
     text-decoration: none;
-    font-size: 0.9em;
-    font-family: 'Cascadia Code', monospace;
-    transition: transform 0.1s;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    transition: all 0.2s ease;
 }
 
-.kw-pill:hover { transform: scale(1.05); }
-
-/* Hard Keywords: Solid and Bold */
 .kw-hard {
-    background: #264f78;
-    color: #fff;
-    border: 1px solid #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-/* Soft Keywords: Dashed and Italic */
 .kw-soft {
-    background: #3e3e3e;
-    color: #ce9178;
-    border: 1px dashed #ce9178;
+    background: rgba(168, 85, 247, 0.1);
+    color: #c084fc;
+    border: 1px dashed rgba(168, 85, 247, 0.4);
     font-style: italic;
 }
 
-/* Version Tags */
 .ver-tag {
-    font-size: 0.7em;
-    margin-left: 5px;
-    opacity: 0.6;
-    vertical-align: super;
+    font-size: 0.65rem;
+    margin-left: 6px;
+    opacity: 0.5;
+    font-weight: normal;
 }
 
-/* Color coding by version (Examples) */
-.v-cpp98 { border-left: 3px solid #888; }
-.v-cpp11 { border-left: 3px solid #4ec9b0; }
-.v-cpp20 { border-left: 3px solid #c586c0; }
-
+/* --- Code Comparison Grid --- */
 .code-comparison-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Single column by default */
-    gap: 1rem;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    padding: 1rem;
-    border: 1px solid var(--border);
+    grid-template-columns: 1fr; /* Default: Full width single view */
+    gap: 1.5rem;
+    margin-bottom: 3rem;
 }
 
-/* Activate side-by-side when body has the comparing class */
+/* Side-by-side mode triggered by JS */
 body.is-comparing .code-comparison-grid {
     grid-template-columns: 1fr 1fr;
 }
 
 .code-column {
-    display: none; /* Hidden by default, shown via state.js */
-    border-radius: 4px;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     overflow: hidden;
-}
-
-.code-column.active-l, .code-column.active-r {
-    display: block;
+    display: none; /* Controlled by syncUI */
 }
 
 .code-header {
-    background: rgba(255,255,255,0.05);
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    font-weight: bold;
+    background: #1a1a1a;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid var(--border);
+}
+
+.lang-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+}
+
+pre {
+    margin: 0 !important;
+    padding: 1rem !important;
+    font-size: 0.9rem !important;
+    background: transparent !important;
+}
+
+/* --- Markdown/Text Blocks --- */
+.markdown-block {
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    max-width: 800px;
 }

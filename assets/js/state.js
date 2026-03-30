@@ -29,10 +29,23 @@ const AtlasState = {
         const isComparing = (this.primary && this.secondary);
         const hasSelection = (this.primary || this.secondary);
 
-        // Toggle the 'is-comparing' class on body for CSS Grid
+        // 1. Body Class for Grid Layout
         document.body.classList.toggle('is-comparing', isComparing);
 
-        // Update button highlights
+        // 2. Header Slot Visuals
+        const slotL = document.getElementById('slot-l');
+        const slotR = document.getElementById('slot-r');
+
+        if (slotL) {
+            slotL.innerText = this.primary ? this.primary.toUpperCase() : "Primary Slot";
+            slotL.className = `slot ${this.primary ? 'active-l' : ''}`;
+        }
+        if (slotR) {
+            slotR.innerText = this.secondary ? this.secondary.toUpperCase() : "Secondary Slot";
+            slotR.className = `slot ${this.secondary ? 'active-r' : ''}`;
+        }
+
+        // 3. Language Picker Button Highlights
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const id = btn.dataset.lang;
             btn.classList.remove('active-l', 'active-r');
@@ -40,23 +53,31 @@ const AtlasState = {
             if (id === this.secondary) btn.classList.add('active-r');
         });
 
-        // Handle Column Visibility
-        document.querySelectorAll('[data-column-lang]').forEach(col => {
-            const lang = col.dataset.columnLang;
-            
-            // IF no selection: Show Everything (Initial Preview)
-            // IF selection: Show only the selected ones
+        // 4. Content Visibility (Tables & Code Blocks)
+        document.querySelectorAll('[data-column-lang]').forEach(el => {
+            const lang = el.dataset.columnLang;
+
+            // Logic: 
+            // - If nothing is selected: Show everything (Preview Mode)
+            // - If selection exists: Show only what is in Slot L or Slot R
             if (!hasSelection) {
-                col.style.display = 'block'; 
-                if (col.tagName === 'TD' || col.tagName === 'TH') col.style.display = 'table-cell';
+                el.style.display = (el.tagName === 'TD' || el.tagName === 'TH') ? 'table-cell' : 'block';
             } else {
                 const isVisible = (lang === this.primary || lang === this.secondary);
-                col.style.display = isVisible ? 'block' : 'none';
-                if ((col.tagName === 'TD' || col.tagName === 'TH') && isVisible) {
-                    col.style.display = 'table-cell';
+                
+                if (isVisible) {
+                    el.style.display = (el.tagName === 'TD' || el.tagName === 'TH') ? 'table-cell' : 'block';
+                } else {
+                    el.style.display = 'none';
                 }
             }
         });
+
+        // 5. Swap Button Visibility
+        const swapBtn = document.getElementById('swap-btn');
+        if (swapBtn) {
+            swapBtn.style.visibility = isComparing ? 'visible' : 'hidden';
+        }
     }
 };
 

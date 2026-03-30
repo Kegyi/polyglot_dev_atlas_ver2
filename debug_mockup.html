@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyglot Atlas | Definitive v9</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    
+    <style>
+        /* --- DUAL-AXIS THEME ENGINE --- */
+        :root { --sidebar-w: 260px; --toc-w: 220px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); --gutter: 24px; }
+        
+        body[data-palette="zinc"][data-theme="dark"]   { --bg-main: #09090b; --bg-panel: #18181b; --border: #27272a; --text: #fafafa; --text-dim: #71717a; --accent: #3f3f46; --ui-icon: #fafafa; }
+        body[data-palette="zinc"][data-theme="light"]  { --bg-main: #ffffff; --bg-panel: #f4f4f5; --border: #e4e4e7; --text: #09090b; --text-dim: #71717a; --accent: #d4d4d8; --ui-icon: #18181b; }
+        body[data-palette="ocean"][data-theme="dark"]  { --bg-main: #020617; --bg-panel: #0f172a; --border: #1e293b; --text: #f8fafc; --text-dim: #64748b; --accent: #38bdf8; --ui-icon: #38bdf8; }
+        body[data-palette="ocean"][data-theme="light"] { --bg-main: #f0f9ff; --bg-panel: #e0f2fe; --border: #bae6fd; --text: #0c4a6e; --text-dim: #0ea5e9; --accent: #0284c7; --ui-icon: #0284c7; }
+        body[data-palette="sunset"][data-theme="dark"] { --bg-main: #180505; --bg-panel: #2d0a0a; --border: #451010; --text: #fef2f2; --text-dim: #f87171; --accent: #ef4444; --ui-icon: #ef4444; }
+        body[data-palette="sunset"][data-theme="light"]{ --bg-main: #fff1f2; --bg-panel: #ffe4e6; --border: #fecdd3; --text: #4c0519; --text-dim: #fb7185; --accent: #e11d48; --ui-icon: #e11d48; }
+
+        :root { --slot-l: #3b82f6; --slot-r: #a855f7; }
+
+        * { box-sizing: border-box; transition: background var(--transition), border-color var(--transition), color 0.15s, width var(--transition); }
+        body { margin: 0; background-color: var(--bg-main); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* --- HEADER --- */
+        header#global-header { height: 60px; background: var(--bg-main); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
+        .header-left, .header-right { display: flex; align-items: center; gap: 15px; }
+        .btn-group { display: flex; background: var(--bg-panel); padding: 3px; border-radius: 8px; border: 1px solid var(--border); }
+        .btn-group button { background: transparent; border: none; color: var(--text-dim); padding: 6px 14px; font-size: 11px; font-weight: 800; cursor: pointer; border-radius: 6px; }
+        .btn-group button.active { background: var(--accent); color: white; }
+
+        .selection-slots { display: flex; align-items: center; gap: 12px; }
+        .slot { width: 130px; height: 34px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; }
+        .slot.active-l { border-color: var(--slot-l); color: var(--slot-l); background: rgba(59,130,246,0.1); }
+        .slot.active-r { border-color: var(--slot-r); color: var(--slot-r); background: rgba(168,85,247,0.1); }
+        #swap-btn { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-dim); cursor: pointer; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden; }
+        #swap-btn svg { width: 14px; fill: currentColor; }
+
+        .controls-pill { display: flex; align-items: center; gap: 15px; background: var(--bg-panel); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--border); }
+        #theme-toggle { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; border-left: 1px solid var(--border); padding-left: 12px; margin-left: 5px; }
+        #theme-toggle svg { width: 20px; height: 20px; fill: var(--ui-icon); transition: transform 0.3s; }
+        #theme-toggle:hover svg { transform: rotate(45deg); }
+
+        nav#lang-picker { height: 55px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 15px; gap: 10px; overflow-x: auto; }
+        .lang-btn { display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; color: var(--text); font-size: 12px; font-weight: 600; white-space: nowrap; }
+        .lang-btn.active-l { border-color: var(--slot-l); color: var(--slot-l); box-shadow: 0 0 10px rgba(59,130,246,0.2); }
+        .lang-btn.active-r { border-color: var(--slot-r); color: var(--slot-r); box-shadow: 0 0 10px rgba(168,85,247,0.2); }
+
+        #workspace { display: flex; flex: 1; overflow: hidden; }
+        aside { background: var(--bg-panel); overflow: hidden; position: relative; border-color: var(--border); display: flex; flex-direction: column; }
+        #nav-sidebar { width: var(--sidebar-w); border-right: 1px solid var(--border); }
+        #topic-sidebar { width: var(--toc-w); border-left: 1px solid var(--border); }
+        body.nav-collapsed #nav-sidebar { width: var(--gutter); }
+        body.toc-collapsed #topic-sidebar { width: var(--gutter); }
+        body.hide-toc #topic-sidebar { width: 0; border: none; }
+
+        .sidebar-content { padding: 24px; min-width: var(--sidebar-w); opacity: 1; transition: opacity 0.2s; background: var(--bg-panel); height: 100%; }
+        body.nav-collapsed #nav-sidebar .sidebar-content,
+        body.toc-collapsed #topic-sidebar .sidebar-content { opacity: 0; pointer-events: none; }
+
+        .sidebar-handle { position: absolute; top: 0; width: var(--gutter); height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-dim); z-index: 100; }
+        #handle-l { right: 0; } #handle-r { left: 0; }
+        .sidebar-handle svg { width: 12px; transition: 0.3s; fill: currentColor; }
+        body.nav-collapsed #handle-l svg { transform: rotate(180deg); }
+        body.toc-collapsed #handle-r svg { transform: rotate(180deg); }
+
+        main#content-stage { flex: 1; background: var(--bg-main); overflow-y: auto; padding: 40px; scroll-behavior: smooth; }
+        .sidebar-title { font-size: 10px; color: var(--text-dim); font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 0; }
+        .nav-item { color: var(--text); text-decoration: none; font-size: 13px; display: block; padding: 8px 12px; border-radius: 6px; margin-bottom: 2px; cursor: pointer; }
+        .nav-item:hover { background: var(--bg-main); }
+        .nav-item.active { background: var(--accent); color: white; }
+
+        /* --- BLOCKS --- */
+        .content-block { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 40px; overflow: hidden; background: var(--bg-panel); }
+        .block-header { padding: 15px 20px; background: rgba(0,0,0,0.1); border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; }
+        .block-body { padding: 20px; }
+        .block-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+        .block-footer { margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 13px; color: var(--text-main); display: flex; gap: 10px; }
+        .block-footer::before { content: "💡"; }
+
+        .kw-pill { display: inline-flex; align-items: center; padding: 3px 8px; margin: 3px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; font-weight: 600; border: 1px solid transparent; }
+        .kw-hard { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); color: #60a5fa; font-weight: 800; }
+        .kw-soft { background: transparent; border: 1px dashed rgba(168,85,247,0.5); color: #c084fc; font-style: italic; }
+        .ver-tag { font-size: 0.6rem; vertical-align: super; margin-left: 2px; opacity: 0.7; }
+        .v-legacy { color: #94a3b8; } .v-modern { color: #4ade80; } .v-latest { color: #c084fc; }
+
+        .code-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        body.is-comparing .code-grid { grid-template-columns: 1fr 1fr; }
+        .code-card { background: #000; border: 1px solid var(--border); border-radius: 8px; display: none; order: 5; }
+        .code-card.visible { display: flex; flex-direction: column; }
+        .code-card.order-1 { order: 1; } .code-card.order-2 { order: 2; }
+        .code-fn { font-size: 10px; font-weight: 800; color: var(--text-dim); padding: 8px 12px; background: #1a1a1a; border-bottom: 1px solid #27272a; }
+        pre { margin: 0; padding: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; }
+
+        .snippet-missing { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 150px; padding: 20px; color: var(--text-dim); border: 1px dashed var(--border); margin: 15px; border-radius: 8px; font-size: 13px; background: rgba(255,255,255,0.02); }
+        .difficulty-accent { width: 6px; height: 18px; border-radius: 3px; flex-shrink: 0; }
+        .beginner { background: #10b981; }
+
+        .group-badge { font-size: 11px; margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+        .group-beginner { background: #10b981; color: white; }
+        .group-intermediate { background: #f59e0b; color: white; }
+        .group-advanced { background: #ef4444; color: white; }
+
+        .group-section { margin-top: 8px; }
+        .group-title { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:900; color:var(--text-dim); text-transform:uppercase; padding:6px 8px; border-radius:8px; }
+        .group-accent { width:10px; height:10px; border-radius:4px; flex-shrink:0; }
+
+        .cond-note { display: none; padding: 12px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent); margin-top: 20px; font-size: 13px; border-radius: 4px; }
+        .cond-note.visible { display: block; }
+
+        .atlas-table tr { display: flex; width: 100%; }
+        .atlas-table th, .atlas-table td { flex: 1; display: none; padding: 12px; border-bottom: 1px solid var(--border); align-items: center; }
+        .atlas-table th:first-child, .atlas-table td:first-child { display: flex; flex: 0 0 150px; order: 0; color: var(--accent); font-weight: 800; }
+
+        .exercise-solution { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border); }
+        .btn-reveal { background: var(--bg-main); border: 1px solid var(--accent); color: var(--text); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-top: 10px; }
+        
+        .palette-picker { display: flex; gap: 8px; }
+        .palette-dot { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .dot-zinc { background: #71717a; } .dot-ocean { background: #0ea5e9; } .dot-sunset { background: #f43f5e; }
+        .palette-dot.active { border-color: var(--text); outline: 1px solid var(--text-dim); }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    </style>
+</head>
+<body data-palette="zinc" data-theme="dark">
+
+    <header id="global-header">
+        <div class="header-left">
+            <div class="btn-group">
+                <button id="btn-atlas" class="active" onclick="setMode('atlas')">ATLAS</button>
+                <button id="btn-course" onclick="setMode('course')">COURSE</button>
+            </div>
+        </div>
+
+        <div class="selection-slots">
+            <div id="slot-l" class="slot">Primary</div>
+            <button id="swap-btn" onclick="swap()"><svg viewBox="0 0 24 24"><path d="M18 4l2 2-2 2V5H8V3h10V1l2 2-2 2V4zM6 20l-2-2 2-2v1h10v2H6v2l-2-2 2-2v1z"/></svg></button>
+            <div id="slot-r" class="slot">Secondary</div>
+        </div>
+
+        <div class="header-right">
+            <div class="controls-pill">
+                <div class="palette-picker">
+                    <div class="palette-dot dot-zinc active" onclick="setPalette('zinc', this)"></div>
+                    <div class="palette-dot dot-ocean" onclick="setPalette('ocean', this)"></div>
+                    <div class="palette-dot dot-sunset" onclick="setPalette('sunset', this)"></div>
+                </div>
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c-4.41 0-8-3.59-8-8s3.59-8 8-8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav id="lang-picker"></nav>
+
+    <div id="workspace">
+        <aside id="nav-sidebar">
+            <div class="sidebar-handle" id="handle-l" onclick="document.body.classList.toggle('nav-collapsed')"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></div>
+            <div class="sidebar-content" id="nav-content"></div>
+        </aside>
+        <main id="content-stage"></main>
+        <aside id="topic-sidebar">
+            <div class="sidebar-handle" id="handle-r" onclick="document.body.classList.toggle('toc-collapsed')"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+            <div class="sidebar-content" id="topic-content"></div>
+        </aside>
+    </div>
+
+    <script>
+        const langs = [
+            {id: 'rust', name: 'Rust', icon: '🦀'}, {id: 'cpp', name: 'C++', icon: '⚙️'}, {id: 'go', name: 'Go', icon: '🐹'}
+        ];
+
+        const groups = {
+            beginner: { label: 'Beginner', cls: 'group-beginner' },
+            intermediate: { label: 'Intermediate', cls: 'group-intermediate' },
+            advanced: { label: 'Advanced', cls: 'group-advanced' },
+            core_design: { label: 'Core Design' },
+            syntax: { label: 'Syntax' }
+        };
+
+        const cpp_keywords = {
+            config: { base_url: "https://en.cppreference.com/w/cpp/keyword/" },
+            categories: {
+                control: [{ name: "if", type: "hard", ver: "98" }, { name: "consteval", type: "hard", ver: "20" }],
+                vars: [{ name: "auto", type: "hard", ver: "11" }, { name: "register", type: "hard", ver: "98", note: "Removed." }]
+            }
+        };
+        const rust_keywords = {
+            config: { base_url: "https://doc.rust-lang.org/std/keyword." },
+            categories: {
+                control: [{ name: "if", type: "hard", ver: "1.0" }, { name: "match", type: "hard", ver: "1.0" }],
+                vars: [{ name: "let", type: "hard", ver: "1.0" }, { name: "mut", type: "hard", ver: "1.0" }]
+            }
+        };
+
+        let state = { l: 'rust', r: 'cpp', mode: 'atlas', palette: 'zinc', theme: 'dark', page: 'home' };
+
+        function init() {
+            const nav = document.getElementById('lang-picker');
+            langs.forEach(l => {
+                const btn = document.createElement('button');
+                btn.className = 'lang-btn'; btn.id = `btn-${l.id}`;
+                btn.innerHTML = `${l.icon} ${l.name}`;
+                btn.onclick = () => select(l.id, 'l');
+                btn.oncontextmenu = (e) => { e.preventDefault(); select(l.id, 'r'); };
+                nav.appendChild(btn);
+            });
+            render();
+        }
+
+        function select(id, side) {
+            if (side === 'l') {
+                if (state.r === id) { swap(); return; }
+                if (state.l === id) { if (state.r) { state.l = state.r; state.r = null; } } 
+                else { state.l = id; }
+            } else {
+                if (state.l === id) { swap(); return; }
+                state.r = (state.r === id) ? null : id;
+            }
+            updateUI();
+        }
+
+        function swap() { if (state.r) { [state.l, state.r] = [state.r, state.l]; updateUI(); } }
+
+        function toggleSolution(btn) {
+            const sol = btn.nextElementSibling;
+            const isHidden = sol.style.display === 'none' || sol.style.display === '';
+            sol.style.display = isHidden ? 'block' : 'none';
+            btn.innerText = isHidden ? 'Hide Solution' : 'Show Solution';
+        }
+
+        function render() {
+            const nav = document.getElementById('nav-content');
+            const stage = document.getElementById('content-stage');
+            const topic = document.getElementById('topic-content');
+            
+            nav.innerHTML = state.mode === 'atlas' ? `
+                <div class="nav-item ${state.page === 'home'?'active':''}" onclick="state.page='home'; render();">🏠 Home</div>
+                <div class="sidebar-title">Reference</div>
+                <div class="nav-item ${state.page === 'keywords'?'active':''}" onclick="state.page='keywords'; render();">Keywords Atlas</div>
+                <div class="nav-item ${state.page === 'syntax'?'active':''}" onclick="state.page='syntax'; render();">Syntax Comparison</div>
+                <div class="nav-item ${state.page === 'principles'?'active':''}" onclick="state.page='principles'; render();">Principles</div>
+            ` : `
+                <div class="nav-item ${state.page === 'home'?'active':''}" onclick="state.page='home'; render();">📊 Dashboard</div>
+                <div class="sidebar-title">Tracks</div>
+                <div class="nav-item ${state.page === 'ex'?'active':''}" onclick="state.page='ex'; render();">Exercises</div>
+            `;
+
+            let topics = [];
+            if (state.page === 'home') {
+                stage.innerHTML = `<h1>${state.mode.toUpperCase()} Home</h1><p>Select a category to begin.</p>`;
+                document.body.classList.add('hide-toc');
+            } else if (state.page === 'keywords') {
+                document.body.classList.add('hide-toc');
+                stage.innerHTML = `<h1>Keywords Comparison</h1>
+                    <div class="content-block"><div class="block-body">
+                        <table class="atlas-table">
+                            <thead><tr><th>Category</th><th data-lang="rust">RUST</th><th data-lang="cpp">C++</th><th data-lang="go">GO</th></tr></thead>
+                            <tbody>
+                                <tr><td>Control</td><td data-lang="rust">${renderPills(rust_keywords.categories.control, rust_keywords.config)}</td><td data-lang="cpp">${renderPills(cpp_keywords.categories.control, cpp_keywords.config)}</td><td data-lang="go">—</td></tr>
+                                <tr><td>Variables</td><td data-lang="rust">${renderPills(rust_keywords.categories.vars, rust_keywords.config)}</td><td data-lang="cpp">${renderPills(cpp_keywords.categories.vars, cpp_keywords.config)}</td><td data-lang="go">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div></div>`;
+            } else if (state.page === 'syntax') {
+                document.body.classList.remove('hide-toc');
+                topics = [{"id": "vars", "title": "Variables", "group": "syntax"}];
+                stage.innerHTML = `<h1>Syntax Comparison</h1>
+                    <div class="content-block" id="vars">
+                        <div class="block-header">Variable Declaration</div>
+                        <div class="block-body">
+                            <div class="block-desc">Safety and intent are defined at the declaration level.</div>
+                            <div class="code-grid">
+                                <div class="code-card" data-lang="rust"><div class="code-fn">main.rs</div><pre>let x = 5;</pre></div>
+                                <div class="code-card" data-lang="cpp"><div class="code-fn">main.cpp</div><pre>const int x = 5;</pre></div>
+                                <div class="code-card" data-lang="go"><div class="snippet-missing">⚠️ Snippet not found for GO</div></div>
+                            </div>
+                            <div class="cond-note" data-req-pair="rust,cpp"><strong>Insight:</strong> Rust enforces safety via immutability.</div>
+                            <div class="block-footer">Modern development favors immutability by default.</div>
+                        </div>
+                    </div>`;
+            } else if (state.page === 'ex') {
+                document.body.classList.remove('hide-toc');
+                    topics = [{"id":"ex1", "title":"Mutable State", "group":"beginner"}];
+                stage.innerHTML = `<h1>Exercises</h1>
+                    <div class="content-block" id="ex1">
+                        <div class="block-header"><div style="display:flex; align-items:center; gap:10px;"><div class="difficulty-accent beginner"></div><span>Ex 1: Mutable State</span></div></div>
+                        <div class="block-body">
+                            <div class="block-desc">Task: Increment a counter from 0 to 1.</div>
+                            <button class="btn-reveal" onclick="toggleSolution(this)">Show Solution</button>
+                            <div class="exercise-solution">
+                                <div class="code-grid">
+                                    <div class="code-card" data-lang="rust"><div class="code-fn">solution.rs</div><pre>let mut x = 0; x += 1;</pre></div>
+                                    <div class="code-card" data-lang="cpp"><div class="code-fn">solution.cpp</div><pre>int x = 0; x++;</pre></div>
+                                    <div class="code-card" data-lang="go"><div class="code-fn">solution.go</div><pre>x := 0; x++</pre></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            } else if (state.page === 'principles') {
+                document.body.classList.remove('hide-toc');
+                topics = [{"id":"srp", "title":"Single Responsibility Principle (SRP)", "group":"core_design"}];
+                stage.innerHTML = `<h1>Single Responsibility Principle (SRP)</h1><p>The Single Responsibility Principle states that a module or class should have one, and only one, reason to change. Read more on <a class="wiki-link" href="https://en.wikipedia.org/wiki/Single-responsibility_principle" target="_blank">Wikipedia</a>.</p>`;
+            }
+            topic.innerHTML = buildTopicsHTML(topics, state.page === 'ex');
+            updateUI();
+        }
+
+        function renderPills(items, config) {
+            return items.map(i => {
+                let vClass = i.ver === "98" ? "v-legacy" : (i.ver === "20" ? "v-latest" : "v-modern");
+                return `<a href="${config.base_url}${i.name}" target="_blank" class="kw-pill kw-${i.type} ${vClass}">${i.name}<span class="ver-tag">${i.ver}</span></a>`;
+            }).join('');
+        }
+
+        function buildTopicsHTML(topics, showColor = false) {
+            if (!topics || topics.length === 0) return "";
+            // group topics by their group key
+            const grouped = {};
+            topics.forEach(t => {
+                const g = t.group || 'ungrouped';
+                if (!grouped[g]) grouped[g] = [];
+                grouped[g].push(t);
+            });
+
+            let out = '';
+            Object.keys(grouped).forEach(g => {
+                const items = grouped[g];
+                const headerLabel = groups[g] ? groups[g].label : (g === 'ungrouped' ? 'Topics' : g);
+                const headerCls = (showColor && groups[g]) ? groups[g].cls : '';
+                out += `<div class="group-section">`;
+                // if there's a color class, render the accent; otherwise render a hidden spacer to preserve alignment
+                if (headerCls) {
+                    out += `<div class="group-title"><span class="group-accent ${headerCls}"></span>${headerLabel}</div>`;
+                } else {
+                    out += `<div class="group-title">${headerLabel}</div>`;
+                }
+                out += items.map(i => `<div class="nav-item">${i.title}</div>`).join('');
+                out += `</div>`;
+            });
+            return out;
+        }
+
+        function reorderAtlasTable() {
+            const table = document.querySelector('.atlas-table');
+            if (!table) return;
+            const thead = table.querySelector('thead tr');
+            const tbodyRows = table.querySelectorAll('tbody tr');
+
+            // build desired header order: Category first, then selected languages (l then r), then remaining langs
+            const langOrder = [];
+            if (state.l) langOrder.push(state.l);
+            if (state.r && state.r !== state.l) langOrder.push(state.r);
+
+            // collect existing data-lang headers (excluding first 'Category' th)
+            const existingLangTh = Array.from(thead.querySelectorAll('th[data-lang]'));
+            const remaining = existingLangTh.map(th => th.getAttribute('data-lang')).filter(l => !langOrder.includes(l));
+            const finalOrder = ['__cat__'].concat(langOrder).concat(remaining);
+
+            // reorder header
+            const catTh = thead.querySelector('th:first-child');
+            const thByLang = {};
+            existingLangTh.forEach(th => thByLang[th.getAttribute('data-lang')] = th);
+            // clear and append in order
+            while (thead.firstChild) thead.removeChild(thead.firstChild);
+            finalOrder.forEach(key => {
+                if (key === '__cat__') thead.appendChild(catTh);
+                else if (thByLang[key]) thead.appendChild(thByLang[key]);
+            });
+
+            // reorder each body row similarly
+            tbodyRows.forEach(row => {
+                const cells = Array.from(row.children);
+                const catTd = cells[0];
+                const tdByLang = {};
+                cells.slice(1).forEach(td => {
+                    const lang = td.getAttribute('data-lang');
+                    if (lang) tdByLang[lang] = td;
+                });
+                while (row.firstChild) row.removeChild(row.firstChild);
+                finalOrder.forEach(key => {
+                    if (key === '__cat__') row.appendChild(catTd);
+                    else if (tdByLang[key]) row.appendChild(tdByLang[key]);
+                    else {
+                        const empty = document.createElement('td');
+                        empty.setAttribute('data-lang', key);
+                        empty.innerHTML = '—';
+                        row.appendChild(empty);
+                    }
+                });
+            });
+        }
+
+        function updateUI() {
+            document.getElementById('slot-l').innerText = state.l ? state.l.toUpperCase() : "-";
+            const sR = document.getElementById('slot-r');
+            sR.innerText = state.r ? state.r.toUpperCase() : "";
+            sR.style.display = state.r ? 'flex' : 'none';
+            document.getElementById('swap-btn').style.visibility = state.r ? 'visible' : 'hidden';
+            document.body.classList.toggle('is-comparing', !!(state.l && state.r));
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                const id = btn.id.replace('btn-', '');
+                btn.classList.remove('active-l', 'active-r');
+                btn.style.borderColor = 'var(--border)';
+                if (id === state.l) { btn.classList.add('active-l'); btn.style.borderColor = 'var(--slot-l)'; }
+                else if (id === state.r) { btn.classList.add('active-r'); btn.style.borderColor = 'var(--slot-r)'; }
+            });
+
+            document.querySelectorAll('.code-card, [data-lang]').forEach(el => {
+                const lang = el.getAttribute('data-lang');
+                const isVisible = (lang === state.l || lang === state.r);
+                el.classList.remove('visible', 'order-1', 'order-2');
+                if (lang === state.l) { el.classList.add('visible', 'order-1'); el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex'; }
+                else if (lang === state.r) { el.classList.add('visible', 'order-2'); el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex'; }
+                else { el.style.display = 'none'; }
+            });
+
+            document.querySelectorAll('.cond-note').forEach(note => {
+                const pair = note.getAttribute('data-req-pair');
+                note.classList.toggle('visible', pair && pair.split(',').every(r => [state.l, state.r].includes(r)));
+            });
+            // reorder atlas table columns to match selected languages
+            reorderAtlasTable();
+        }
+
+        function toggleTheme() { state.theme = state.theme === 'dark' ? 'light' : 'dark'; document.body.setAttribute('data-theme', state.theme); }
+        function setPalette(p, el) { state.palette = p; document.body.setAttribute('data-palette', p); document.querySelectorAll('.palette-dot').forEach(d => d.classList.remove('active')); el.classList.add('active'); }
+        function setMode(m) { state.mode = m; state.page = 'home'; document.getElementById('btn-atlas').classList.toggle('active', m === 'atlas'); document.getElementById('btn-course').classList.toggle('active', m === 'course'); render(); }
+
+        init();
+    </script>
+</body>
+</html>

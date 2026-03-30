@@ -1,34 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Hello World Comparison | Dev Atlas</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/blocks.css">
-    <!-- Prism.js for syntax highlighting (CDN example) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-</head>
 <body class="theme-dark">
-    <div id="app-shell">
-        <!-- Sidebar Navigation -->
-        <aside id="main-sidebar">
-            <div class="mode-controls">
-                <button onclick="toggleCourseMode()">Switch to Course</button>
+    <!-- 1. TOP HEADER: [MODE] | [SLOTS] | [STYLES] -->
+    <header id="atlas-header">
+        <div class="header-left">
+            <button class="mode-btn active" id="mode-atlas">ATLAS</button>
+            <button class="mode-btn" id="mode-course">COURSE</button>
+        </div>
+        
+        <div class="header-center">
+            <div class="slot" id="slot-l">Primary</div>
+            <button id="swap-btn">⇄</button>
+            <div class="slot" id="slot-r">Secondary</div>
+        </div>
+
+        <div class="header-right">
+            <div class="style-group">
+                <button class="style-btn" title="Compact">≡</button>
+                <button class="style-btn" title="Comfort">A</button>
             </div>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </header>
+
+    <!-- 2. LANG PICKER: Horizontal strip under header -->
+    <nav id="language-picker">
+        <div id="language-picker" class="picker-scroll-container"><button class="lang-btn" data-lang="cpp" style="--lang-color: #00599C"><img src="assets/icons/cpp.svg" alt="C++"> C++</button><button class="lang-btn" data-lang="go" style="--lang-color: #00ADD8"><img src="assets/icons/go.svg" alt="Go"> Go</button><button class="lang-btn" data-lang="python" style="--lang-color: #3776AB"><img src="assets/icons/python.svg" alt="Python"> Python</button><button class="lang-btn" data-lang="typescript" style="--lang-color: #3178C6"><img src="assets/icons/typescript.svg" alt="TypeScript"> TypeScript</button><button class="lang-btn" data-lang="scala2" style="--lang-color: #DE3423"><img src="assets/icons/scala.svg" alt="Scala 2"> Scala 2</button><button class="lang-btn" data-lang="scala3" style="--lang-color: #DE3423"><img src="assets/icons/scala3.svg" alt="Scala 3"> Scala 3</button></div>
+    </nav>
+
+    <!-- 3. MAIN AREA: Sidebar | Content | TOC -->
+    <div id="main-container">
+        <aside id="nav-sidebar">
             <div id="sidebar-atlas" class="sidebar-content active"><div class="sidebar-header">Atlas Categories</div><ul class="nav-list"><li><a href="hello_world.html">Hello World Comparison</a></li></ul></div><div id="sidebar-course" class="sidebar-content" style="display:none;"><div class="sidebar-header">Learning Path</div><ul class="nav-list"></ul></div>
         </aside>
 
-        <!-- Main Workspace -->
-        <main id="workspace">
-            <header id="top-bar">
-                <div id="lang-picker-container">
-                    <div id="language-picker" class="picker-scroll-container"><button class="lang-btn" data-lang="cpp" style="--lang-color: #00599C"><img src="assets/icons/cpp.svg" alt="C++"> C++</button><button class="lang-btn" data-lang="go" style="--lang-color: #00ADD8"><img src="assets/icons/go.svg" alt="Go"> Go</button><button class="lang-btn" data-lang="python" style="--lang-color: #3776AB"><img src="assets/icons/python.svg" alt="Python"> Python</button><button class="lang-btn" data-lang="typescript" style="--lang-color: #3178C6"><img src="assets/icons/typescript.svg" alt="TypeScript"> TypeScript</button><button class="lang-btn" data-lang="scala2" style="--lang-color: #DE3423"><img src="assets/icons/scala.svg" alt="Scala 2"> Scala 2</button><button class="lang-btn" data-lang="scala3" style="--lang-color: #DE3423"><img src="assets/icons/scala3.svg" alt="Scala 3"> Scala 3</button></div>
-                </div>
-                <button id="theme-toggle" onclick="ThemeManager.toggle()">☀️</button>
-            </header>
-
-            <article id="content-stage">
+        <main id="content-stage">
+            <header class="page-header">
                 <h1>Hello World Comparison</h1>
+            </header>
+            <div class="page-blocks">
                 <section id="hello-step" class="page-block"><div class="code-comparison-grid">
         <div class="code-column" data-column-lang="python">
             <div class="code-header">
@@ -51,18 +59,11 @@ int main() {
 </code></pre>
         </div>
         </div></section>
-            </article>
+            </div>
         </main>
 
-        <!-- Right Topic Sidebar -->
-        <aside id="topic-sidebar-container">
+        <aside id="topic-sidebar">
             <nav class="topic-sidebar"><div class="sidebar-header">On This Page</div><ul><li><a href="#hello-step" class="topic-link">Standard Output</a></li></ul></nav>
         </aside>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="assets/js/state.js"></script>
-    <script src="assets/js/ui.js"></script>
 </body>
-</html>
