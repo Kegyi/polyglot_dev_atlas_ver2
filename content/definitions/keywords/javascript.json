@@ -1,5 +1,5 @@
 {
-  "language": "javascript",
+  "id": "javascript",
   "config": {
     "base_url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#"
   },

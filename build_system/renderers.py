@@ -1,24 +1,23 @@
-def render_keyword_pill(name, version, type_class, url, note=""):
+import html
+
+def render_keyword_pill(item, config):
     """
-    Renders a single keyword 'chip' or 'pill'.
-    type_class: 'hard', 'soft', or 'reserved_unused'
+    Renders a single keyword link with a version tag.
+    item: { "name": "if", "type": "hard", "ver": "98" }
     """
-    # Clean version for CSS class (C++20 -> v-cpp20)
-    ver_css = f"v-{version.lower().replace('+', 'p').replace(' ', '')}"
+    name = item.get("name")
+    ver = item.get("ver")
+    kw_type = item.get("type", "hard")
+    note = item.get("note", "")
+    base_url = config.get("base_url", "")
     
-    title_attr = f'title="{note if note else f"Added in {version}"}"'
-    
+    # Determine version class
+    v_class = "v-legacy"
+    if ver in ["20", "23", "latest"]: v_class = "v-latest"
+    elif ver in ["11", "14", "17", "modern"]: v_class = "v-modern"
+
     return (
-        f'<a href="{url}" target="_blank" {title_attr} '
-        f'class="kw-pill kw-{type_class} {ver_css}">'
-        f'{name}<span class="ver-tag">{version}</span>'
+        f'<a href="{base_url}{name}" target="_blank" class="kw-pill kw-{kw_type} {v_class}" title="{note}">'
+        f'{name}<span class="ver-tag">{ver}</span>'
         f'</a>'
     )
-
-def render_table_row(label, cells):
-    """
-    Renders a standard table row.
-    cells: a list of HTML strings for each <td>
-    """
-    td_html = "".join([f"<td>{cell}</td>" for cell in cells])
-    return f"<tr><td><strong>{label}</strong></td>{td_html}</tr>"

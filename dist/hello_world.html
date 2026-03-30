@@ -1,69 +1,278 @@
-<body class="theme-dark">
-    <!-- 1. TOP HEADER: [MODE] | [SLOTS] | [STYLES] -->
-    <header id="atlas-header">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Comparison Page Title | Polyglot Dev Atlas</title>
+    
+    <!-- Core Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    
+    <!-- Core Styles (Order matters for variables) -->
+    <link rel="stylesheet" href="assets/css/themes.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/blocks.css">
+
+    <!-- PAGE INTENT ASSETS (Custom CSS/JS for specific pages) -->
+    
+</head>
+
+<body data-palette="zinc" data-theme="dark" class="">
+
+    <!-- 1. GLOBAL HEADER -->
+    <header id="global-header">
         <div class="header-left">
-            <button class="mode-btn active" id="mode-atlas">ATLAS</button>
-            <button class="mode-btn" id="mode-course">COURSE</button>
+            <div class="btn-group">
+                <button id="btn-atlas" class="active" onclick="location.href='index.html'">ATLAS</button>
+                <button id="btn-course" onclick="location.href='dashboard.html'">COURSE</button>
+            </div>
         </div>
-        
-        <div class="header-center">
-            <div class="slot" id="slot-l">Primary</div>
-            <button id="swap-btn">⇄</button>
-            <div class="slot" id="slot-r">Secondary</div>
+
+        <div class="selection-slots">
+            <div id="slot-l" class="slot">Primary</div>
+            <button id="swap-btn" onclick="AtlasState.swap()">
+                <svg viewBox="0 0 24 24"><path d="M18 4l2 2-2 2V5H8V3h10V1l2 2-2 2V4zM6 20l-2-2 2-2v1h10v2H6v2l-2-2 2-2v1z"/></svg>
+            </button>
+            <div id="slot-r" class="slot">Secondary</div>
         </div>
 
         <div class="header-right">
-            <div class="style-group">
-                <button class="style-btn" title="Compact">≡</button>
-                <button class="style-btn" title="Comfort">A</button>
+            <div class="controls-pill">
+                <div class="palette-picker">
+                    <div class="palette-dot dot-zinc" onclick="setPalette('zinc', this)"></div>
+                    <div class="palette-dot dot-ocean" onclick="setPalette('ocean', this)"></div>
+                    <div class="palette-dot dot-sunset" onclick="setPalette('sunset', this)"></div>
+                </div>
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c-4.41 0-8-3.59-8-8s3.59-8 8-8z"/></svg>
+                </button>
             </div>
-            <button id="theme-toggle">🌙</button>
         </div>
     </header>
 
-    <!-- 2. LANG PICKER: Horizontal strip under header -->
-    <nav id="language-picker">
-        <div id="language-picker" class="picker-scroll-container"><button class="lang-btn" data-lang="cpp" style="--lang-color: #00599C"><img src="assets/icons/cpp.svg" alt="C++"> C++</button><button class="lang-btn" data-lang="go" style="--lang-color: #00ADD8"><img src="assets/icons/go.svg" alt="Go"> Go</button><button class="lang-btn" data-lang="python" style="--lang-color: #3776AB"><img src="assets/icons/python.svg" alt="Python"> Python</button><button class="lang-btn" data-lang="typescript" style="--lang-color: #3178C6"><img src="assets/icons/typescript.svg" alt="TypeScript"> TypeScript</button><button class="lang-btn" data-lang="scala2" style="--lang-color: #DE3423"><img src="assets/icons/scala.svg" alt="Scala 2"> Scala 2</button><button class="lang-btn" data-lang="scala3" style="--lang-color: #DE3423"><img src="assets/icons/scala3.svg" alt="Scala 3"> Scala 3</button></div>
+    <!-- 2. LANGUAGE PICKER STRIP -->
+    <nav id="lang-picker">
+        <button class="lang-btn" id="btn-cpp" onclick="AtlasState.select('cpp', 'l')" oncontextmenu="AtlasState.select('cpp', 'r'); return false;"><img src="assets/icons/cpp.svg" alt="" style="width:16px; height:16px;"> C++</button><button class="lang-btn" id="btn-go" onclick="AtlasState.select('go', 'l')" oncontextmenu="AtlasState.select('go', 'r'); return false;"><img src="assets/icons/go.svg" alt="" style="width:16px; height:16px;"> Go</button><button class="lang-btn" id="btn-python" onclick="AtlasState.select('python', 'l')" oncontextmenu="AtlasState.select('python', 'r'); return false;"><img src="assets/icons/python.svg" alt="" style="width:16px; height:16px;"> Python</button><button class="lang-btn" id="btn-typescript" onclick="AtlasState.select('typescript', 'l')" oncontextmenu="AtlasState.select('typescript', 'r'); return false;"><img src="assets/icons/typescript.svg" alt="" style="width:16px; height:16px;"> TypeScript</button><button class="lang-btn" id="btn-scala2" onclick="AtlasState.select('scala2', 'l')" oncontextmenu="AtlasState.select('scala2', 'r'); return false;"><img src="assets/icons/scala.svg" alt="" style="width:16px; height:16px;"> Scala 2</button><button class="lang-btn" id="btn-scala3" onclick="AtlasState.select('scala3', 'l')" oncontextmenu="AtlasState.select('scala3', 'r'); return false;"><img src="assets/icons/scala3.svg" alt="" style="width:16px; height:16px;"> Scala 3</button>
     </nav>
 
-    <!-- 3. MAIN AREA: Sidebar | Content | TOC -->
-    <div id="main-container">
+    <!-- 3. MAIN WORKSPACE -->
+    <div id="workspace">
         <aside id="nav-sidebar">
-            <div id="sidebar-atlas" class="sidebar-content active"><div class="sidebar-header">Atlas Categories</div><ul class="nav-list"><li><a href="hello_world.html">Hello World Comparison</a></li></ul></div><div id="sidebar-course" class="sidebar-content" style="display:none;"><div class="sidebar-header">Learning Path</div><ul class="nav-list"></ul></div>
+            <div class="sidebar-handle" id="handle-l" onclick="document.body.classList.toggle('nav-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </div>
+            <div class="sidebar-content" id="nav-content">
+                <div class="nav-item active" onclick="location.href='index.html'">🏠 Home</div><div class="sidebar-title">Reference</div><div class="nav-item" onclick="location.href='hello_world.html'">Hello World Comparison Page Title</div>
+            </div>
         </aside>
 
         <main id="content-stage">
-            <header class="page-header">
-                <h1>Hello World Comparison</h1>
-            </header>
-            <div class="page-blocks">
-                <section id="hello-step" class="page-block"><div class="code-comparison-grid">
-        <div class="code-column" data-column-lang="python">
-            <div class="code-header">
-                <span class="lang-label">PYTHON</span>
-            </div>
-            <pre class="line-numbers"><code class="language-python">print(&quot;Hello, World!&quot;)
-</code></pre>
-        </div>
-        
-        <div class="code-column" data-column-lang="cpp">
-            <div class="code-header">
-                <span class="lang-label">CPP</span>
-            </div>
-            <pre class="line-numbers"><code class="language-cpp">#include &lt;iostream&gt;
+            <div class="page-content">
+                <div class="page-title">Hello World Comparison Page Title</div>
+<div class="content-block" id=""><div class="block-body"><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
 
 int main() {
     std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
     return 0;
 }
-</code></pre>
-        </div>
-        </div></section>
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, World!\n&quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+	fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code>print(&quot;Hello, World!&quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code>console.log(&quot;Hello, World!&quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code>object Main extends App {
+  println(&quot;Hello, World!&quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code>@main def hello(): Unit =
+  println(&quot;Hello, World!&quot;)
+</code></pre></div></div></div></div>
             </div>
         </main>
 
         <aside id="topic-sidebar">
-            <nav class="topic-sidebar"><div class="sidebar-header">On This Page</div><ul><li><a href="#hello-step" class="topic-link">Standard Output</a></li></ul></nav>
+            <div class="sidebar-handle" id="handle-r" onclick="document.body.classList.toggle('toc-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+            <div class="sidebar-content" id="topic-content">
+                <div class="sidebar-title">On this page</div><div class="nav-item" onclick="location.href='#hello-step'">• block of code comparison 1</div><div class="nav-item" onclick="location.href='#copy-hello-step1'">• copy block of code comparison 1</div><div class="nav-item" onclick="location.href='#copy-hello-step2'">• copy block of code comparison 2</div><div class="nav-item" onclick="location.href='#copy-hello-step3'">• copy block of code comparison 3</div><div class="nav-item" onclick="location.href='#copy-hello-step4'">• copy block of code comparison 4</div><div class="nav-item" onclick="location.href='#copy-hello-step5'">• copy block of code comparison 5</div><div class="nav-item" onclick="location.href='#copy-hello-step6'">• copy block of code comparison 6</div><div class="nav-item" onclick="location.href='#copy-hello-step7'">• copy block of code comparison 7</div><div class="nav-item" onclick="location.href='#copy-hello-step8'">• copy block of code comparison 8</div>
+            </div>
         </aside>
     </div>
+
+    <!-- Scripts: State must load before UI -->
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/ui.js"></script>
 </body>
+</html>

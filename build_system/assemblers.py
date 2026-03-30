@@ -1,115 +1,98 @@
-import json
 import os
-from .renderers import render_keyword_pill, render_table_row
-from .utils import load_snippet
+from pathlib import Path
+from .renderers import render_keyword_pill
+from .utils import load_snippet, find_extension
 
-# Global Cache to avoid repeated disk reads
-LANG_CACHE = {}
-KEYWORD_CACHE = {}
-
-def get_keyword_data(lang_id):
-    """Loads keyword JSON for a specific language."""
-    if lang_id not in KEYWORD_CACHE:
-        path = f"content/definitions/keywords/{lang_id}.json"
-        if os.path.exists(path):
-            with open(path, "r", encoding='utf-8') as f:
-                KEYWORD_CACHE[lang_id] = json.load(f)
-        else:
-            return None
-    return KEYWORD_CACHE.get(lang_id)
-
-def resolve_url(config, kw_item):
-    """Determines the URL for a keyword, using override or base_url."""
-    if "url" in kw_item:
-        return kw_item["url"]
-    base = config.get("base_url", "")
-    name = kw_item["name"]
-    return f"{base}{name}"
-
-def assemble_keyword_sheet(payload):
-    """
-    Assembler for the Keyword Comparison Table.
-    Expects payload: { "languages": [...], "categories": [...] }
-    """
-    target_langs = payload.get("languages", [])
+def assemble_keyword_sheet(payload, global_keywords):
+    """Builds the flex-based 'Keywords Atlas' table."""
+    langs = payload.get("languages", [])
     categories = payload.get("categories", [])
     
-    # 1. Build Headers
-    html = '<div class="table-wrapper">'
-    html += '<table class="atlas-table"><thead><tr>'
-    html += '<th class="concept-header">Concept</th>'
-    for lang in target_langs:
-        # data-column-lang is REQUIRED for JS filtering
-        html += f'<th data-column-lang="{lang}">{lang.upper()}</th>'
-    html += "</tr></thead><tbody>"
-
-    # 2. Build Rows
+    html = '<div class="content-block"><div class="block-body"><table class="atlas-table">'
+    # Header
+    html += '<thead><tr><th>Category</th>'
+    for lang in langs:
+        html += f'<th data-lang="{lang}">{lang.upper()}</th>'
+    html += '</tr></thead><tbody>'
+    
+    # Rows
     for cat in categories:
-        readable_cat = cat.replace("_", " ").title()
-        html += f'<tr><td class="concept-label"><strong>{readable_cat}</strong></td>'
-        
-        for lang in target_langs:
-            lang_data = get_keyword_data(lang)
-            cell_content = "—"
+        html += f'<tr><td>{cat.capitalize()}</td>'
+        for lang in langs:
+            lang_data = global_keywords.get(lang, {})
+            cat_items = lang_data.get("keywords", {}).get(cat, [])
+            config = lang_data.get("config", {})
             
-            if lang_data:
-                kw_list = lang_data.get("keywords", {}).get(cat, [])
-                config = lang_data.get("config", {})
-                
-                pills = [
-                    render_keyword_pill(
-                        item["name"], 
-                        item.get("added_in", "?"), 
-                        item.get("type", "hard"), 
-                        resolve_url(config, item),
-                        item.get("note", "")
-                    ) for item in kw_list
-                ]
-                if pills:
-                    cell_content = "".join(pills)
-            
-            # data-column-lang is REQUIRED here too
-            html += f'<td data-column-lang="{lang}">{cell_content}</td>'
+            pills = "".join([render_keyword_pill(i, config) for i in cat_items])
+            html += f'<td data-lang="{lang}">{pills if pills else "—"}</td>'
+        html += '</tr>'
         
-        html += "</tr>"
-
-    html += "</tbody></table></div>"
+    html += '</tbody></table></div></div>'
     return html
 
-def assemble_code_comparison(payload):
+def assemble_code_comparison(payload, langs, snippet_dir):
     """
-    Assembler for side-by-side code snippets.
-    Expects payload: { "files": [ {"lang": "id", "path": "..."} ] }
+    Renders side-by-side code snippets with conditional notes.
+    Replaces 'assemble_syntax_block' to match Registry.
     """
-    files = payload.get("files", [])
+    title = payload.get("title")
+    desc = payload.get("description", "")
+    footer = payload.get("footer", "")
+    notes = payload.get("notes", [])
+    filename = payload.get("filename")
+
+    html = f'<div class="content-block" id="{payload.get("id", "")}">'
+    if title:
+        html += f'<div class="block-header">{title}</div><div class="block-body">'
+    else:
+        html += f'<div class="block-body">'
     
-    # The container class 'code-comparison-grid' is used by CSS for the split-view
-    html = '<div class="code-comparison-grid">'
+    if desc: html += f'<div class="block-desc">{desc}</div>'
     
-    for item in files:
-        lang_id = item["lang"]
-        file_path = item["path"]
+    html += '<div class="code-grid">'
+    for lang in langs:
+        ext = find_extension(Path(snippet_dir) / lang, filename)
+        snippet_path = Path(snippet_dir) / lang / f"{filename}{ext}"
+
+        code = load_snippet(snippet_path)
         
-        # utils.load_snippet handles the file reading and HTML escaping
-        raw_code = load_snippet(file_path)
-        
-        # 'code-column' and 'data-column-lang' are REQUIRED for JS filtering
-        html += f'''
-        <div class="code-column" data-column-lang="{lang_id}">
-            <div class="code-header">
-                <span class="lang-label">{lang_id.upper()}</span>
-            </div>
-            <pre class="line-numbers"><code class="language-{lang_id}">{raw_code}</code></pre>
-        </div>
-        '''
-        
+        if code:
+            html += f'<div class="code-card" data-lang="{lang}">'
+            html += f'<div class="code-fn">{filename+ext if filename else "main."+ext}</div>'
+            html += f'<pre><code>{code}</code></pre></div>'
+        else:
+            html += f'<div class="code-card" data-lang="{lang}">'
+            html += f'<div class="snippet-missing">⚠️ Snippet not found for {lang.upper()}</div></div>'
     html += '</div>'
+
+    # Conditional Notes (Insights)
+    for n in notes:
+        # Supports req-pair and req-any logic
+        type_key = f'data-req-{n.get("type", "pair")}'
+        html += f'<div class="cond-note" {type_key}="{n["req"]}">{n["text"]}</div>'
+
+    if footer: 
+        html += f'<div class="block-footer">{footer}</div>'
+    
+    html += '</div></div>'
+    return html
+
+def assemble_exercise(payload, langs, snippet_dir):
+    """Renders Exercise blocks with hidden/revealable solutions."""
+    diff = payload.get("difficulty", "beginner")
+    html = f'<div class="content-block" id="{payload.get("id", "")}">'
+    html += f'<div class="block-header"><div style="display:flex; align-items:center; gap:10px;">'
+    html += f'<div class="difficulty-accent {diff}"></div><span>{payload.get("title")}</span></div></div>'
+    html += f'<div class="block-body"><div class="block-desc">{payload.get("task")}</div>'
+    html += f'<button class="btn-reveal" onclick="toggleSolution(this)">Show Solution</button>'
+    html += f'<div class="exercise-solution" style="display:none;">'
+    
+    # Solutions are rendered using the code comparison grid
+    html += assemble_code_comparison({"filename": payload.get("filename")}, langs, snippet_dir)
+    
+    html += '</div></div></div>'
     return html
 
 def assemble_markdown(payload):
-    """
-    Simple assembler for markdown/text blocks.
-    In the future, integrate a markdown-to-html library here.
-    """
-    text = payload.get("text", "")
-    return f'<div class="markdown-block">{text}</div>'
+    """For simple text/principle pages."""
+    return f'<div class="md-content">{payload.get("text", "")}</div>'

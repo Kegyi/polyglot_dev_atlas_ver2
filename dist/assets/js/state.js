@@ -1,102 +1,80 @@
 const AtlasState = {
-    primary: null,   // Left Slot
-    secondary: null, // Right Slot
+    l: null, 
+    r: null,
 
-    setPrimary(langId) {
-        if (this.secondary === langId) {
-            this.swap(); // Swap if selecting same lang for opposite slot
-        } else {
-            this.primary = (this.primary === langId) ? null : langId;
+    init() {
+        // Find the first language button available on the page to use as default
+        const firstBtn = document.querySelector('.lang-btn');
+        if (firstBtn) {
+            // Extract 'cpp' from 'btn-cpp'
+            const id = firstBtn.id.replace('btn-', '');
+            this.l = id;
         }
-        this.syncUI();
+        this.updateUI();
     },
 
-    setSecondary(langId) {
-        if (this.primary === langId) {
-            this.swap();
+    select(id, side) {
+        if (side === 'l') {
+            if (this.r === id) { this.swap(); return; }
+            if (this.l === id) {
+                // Promotion: if clicking active primary, move secondary to primary
+                if (this.r) { this.l = this.r; this.r = null; }
+            } else {
+                this.l = id;
+            }
         } else {
-            this.secondary = (this.secondary === langId) ? null : langId;
+            if (this.l === id) { this.swap(); return; }
+            this.r = (this.r === id) ? null : id;
         }
-        this.syncUI();
+        this.updateUI();
     },
 
     swap() {
-        [this.primary, this.secondary] = [this.secondary, this.primary];
-        this.syncUI();
+        if (this.r && this.l) {
+            [this.l, this.r] = [this.r, this.l];
+            this.updateUI();
+        }
     },
 
-    syncUI() {
-        const isComparing = (this.primary && this.secondary);
-        const hasSelection = (this.primary || this.secondary);
-
-        // 1. Body Class for Grid Layout
-        document.body.classList.toggle('is-comparing', isComparing);
-
-        // 2. Header Slot Visuals
-        const slotL = document.getElementById('slot-l');
-        const slotR = document.getElementById('slot-r');
-
-        if (slotL) {
-            slotL.innerText = this.primary ? this.primary.toUpperCase() : "Primary Slot";
-            slotL.className = `slot ${this.primary ? 'active-l' : ''}`;
-        }
-        if (slotR) {
-            slotR.innerText = this.secondary ? this.secondary.toUpperCase() : "Secondary Slot";
-            slotR.className = `slot ${this.secondary ? 'active-r' : ''}`;
+    updateUI() {
+        // Update Slots
+        const sL = document.getElementById('slot-l');
+        const sR = document.getElementById('slot-r');
+        if (sL) sL.innerText = this.l ? this.l.toUpperCase() : "Select Lang";
+        if (sR) {
+            sR.innerText = this.r ? this.r.toUpperCase() : "";
+            sR.style.display = this.r ? 'flex' : 'none';
         }
 
-        // 3. Language Picker Button Highlights
+        const swapBtn = document.getElementById('swap-btn');
+        if (swapBtn) swapBtn.style.visibility = (this.l && this.r) ? 'visible' : 'hidden';
+
+        document.body.classList.toggle('is-comparing', !!(this.l && this.r));
+
+        // Sync Button Highlights
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            const id = btn.dataset.lang;
+            const id = btn.id.replace('btn-', '');
             btn.classList.remove('active-l', 'active-r');
-            if (id === this.primary) btn.classList.add('active-l');
-            if (id === this.secondary) btn.classList.add('active-r');
+            if (id === this.l) btn.classList.add('active-l');
+            if (id === this.r) btn.classList.add('active-r');
         });
 
-        // 4. Content Visibility (Tables & Code Blocks)
-        document.querySelectorAll('[data-column-lang]').forEach(el => {
-            const lang = el.dataset.columnLang;
-
-            // Logic: 
-            // - If nothing is selected: Show everything (Preview Mode)
-            // - If selection exists: Show only what is in Slot L or Slot R
-            if (!hasSelection) {
-                el.style.display = (el.tagName === 'TD' || el.tagName === 'TH') ? 'table-cell' : 'block';
+        // Sync Content Display
+        document.querySelectorAll('.code-card, [data-lang]').forEach(el => {
+            const lang = el.getAttribute('data-lang');
+            const isVisible = (lang === this.l || lang === this.r);
+            
+            el.classList.remove('visible', 'order-1', 'order-2');
+            
+            if (lang === this.l) {
+                el.classList.add('visible', 'order-1');
+                el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex';
+            } else if (lang === this.r) {
+                el.classList.add('visible', 'order-2');
+                el.style.display = (el.tagName.startsWith('T')) ? 'flex' : 'flex';
             } else {
-                const isVisible = (lang === this.primary || lang === this.secondary);
-                
-                if (isVisible) {
-                    el.style.display = (el.tagName === 'TD' || el.tagName === 'TH') ? 'table-cell' : 'block';
-                } else {
-                    el.style.display = 'none';
-                }
+                el.style.display = 'none';
             }
         });
-
-        // 5. Swap Button Visibility
-        const swapBtn = document.getElementById('swap-btn');
-        if (swapBtn) {
-            swapBtn.style.visibility = isComparing ? 'visible' : 'hidden';
-        }
     }
 };
-
-// Initialize listeners
-document.addEventListener('DOMContentLoaded', () => {
-    const picker = document.getElementById('language-picker');
-    
-    // Handle Clicks
-    picker.addEventListener('click', (e) => {
-        const btn = e.target.closest('.lang-btn');
-        if (!btn) return;
-        AtlasState.setPrimary(btn.dataset.lang);
-    });
-
-    // Handle Right-Clicks
-    picker.addEventListener('contextmenu', (e) => {
-        const btn = e.target.closest('.lang-btn');
-        if (!btn) return;
-        e.preventDefault(); // Stop default context menu
-        AtlasState.setSecondary(btn.dataset.lang);
-    });
-});

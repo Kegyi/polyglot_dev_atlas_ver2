@@ -1,5 +1,5 @@
 {
-  "language": "cpp",
+  "id": "cpp",
   "config": {
     "base_url": "https://en.cppreference.com/w/cpp/keyword/",
     "case_sensitive_urls": true

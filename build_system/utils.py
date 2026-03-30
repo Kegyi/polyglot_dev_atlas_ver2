@@ -1,25 +1,34 @@
 import os
 import html
+from functools import lru_cache
+from pathlib import Path
 
+@lru_cache(maxsize=128)
 def load_snippet(snippet_path):
     """
-    Reads a source file and returns HTML-escaped text.
-    Tries a `content/` prefixed fallback if the given path doesn't exist.
-    Returns a warning message if the file is missing.
+    Reads a source file, escapes HTML, and caches the result.
+    Returns None if the file is missing to allow the assembler to show a fallback.
     """
-    # Direct path exists -> use it
-    if os.path.exists(snippet_path):
-        path_to_use = snippet_path
-    else:
-        # Try a common fallback where snippets live under `content/snippets/...`
-        fallback = os.path.join('content', snippet_path)
-        if os.path.exists(fallback):
-            path_to_use = fallback
-        else:
-            return f"<!-- Error: Snippet not found at {snippet_path} -->\n<pre>File Missing</pre>"
+    if not os.path.exists(snippet_path):
+        return None
 
-    with open(path_to_use, 'r', encoding='utf-8') as f:
-        code = f.read()
+    try:
+        with open(snippet_path, 'r', encoding='utf-8') as f:
+            code = f.read()
+        return html.escape(code)
+    except Exception as e:
+        print(f"Error reading {snippet_path}: {e}")
+        return None
+    
+def find_extension(directory, base_name):
+    directory = Path(directory)
 
-    # Escape < > & etc. so the browser doesn't treat them as HTML tags
-    return html.escape(code)
+    matches = list(directory.glob(f"{base_name}.*"))
+
+    if not matches:
+        return None  # file not found
+
+    if len(matches) > 1:
+        raise ValueError(f"Multiple matches found: {matches}")
+
+    return matches[0].suffix  # includes dot

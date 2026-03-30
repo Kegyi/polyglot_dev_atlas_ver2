@@ -1,5 +1,5 @@
 {
-  "language": "go",
+  "id": "go",
   "config": {
     "base_url": "https://pkg.go.dev/search?q=",
     "url_override_pattern": "https://go.dev/ref/spec#{name}"

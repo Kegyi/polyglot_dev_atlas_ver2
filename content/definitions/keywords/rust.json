@@ -1,0 +1,16 @@
+{
+  "id": "rust",
+  "config": {
+    "base_url": "https://doc.rust-lang.org/std/keyword."
+  },
+  "keywords": {
+    "control": [
+      { "name": "if", "type": "hard", "ver": "1.0" },
+      { "name": "match", "type": "hard", "ver": "1.0" }
+    ],
+    "storage": [
+      { "name": "let", "type": "hard", "ver": "1.0", "note": "Immutable by default." },
+      { "name": "mut", "type": "hard", "ver": "1.0", "note": "Mutable binding." }
+    ]
+  }
+}

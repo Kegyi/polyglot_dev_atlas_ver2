@@ -1,48 +1,89 @@
-<body class="theme-dark">
-    <!-- 1. TOP HEADER: [MODE] | [SLOTS] | [STYLES] -->
-    <header id="atlas-header">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Polyglot Dev Atlas</title>
+    
+    <!-- Core Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    
+    <!-- Core Styles (Order matters for variables) -->
+    <link rel="stylesheet" href="assets/css/themes.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/blocks.css">
+
+    <!-- PAGE INTENT ASSETS (Custom CSS/JS for specific pages) -->
+    {{ extra_assets }}
+</head>
+
+<body data-palette="zinc" data-theme="dark" class="{{ body_class_placeholders }}">
+
+    <!-- 1. GLOBAL HEADER -->
+    <header id="global-header">
         <div class="header-left">
-            <button class="mode-btn active" id="mode-atlas">ATLAS</button>
-            <button class="mode-btn" id="mode-course">COURSE</button>
+            <div class="btn-group">
+                <button id="btn-atlas" class="active" onclick="location.href='index.html'">ATLAS</button>
+                <button id="btn-course" onclick="location.href='dashboard.html'">COURSE</button>
+            </div>
         </div>
-        
-        <div class="header-center">
-            <div class="slot" id="slot-l">Primary</div>
-            <button id="swap-btn">⇄</button>
-            <div class="slot" id="slot-r">Secondary</div>
+
+        <div class="selection-slots">
+            <div id="slot-l" class="slot">Primary</div>
+            <button id="swap-btn" onclick="AtlasState.swap()">
+                <svg viewBox="0 0 24 24"><path d="M18 4l2 2-2 2V5H8V3h10V1l2 2-2 2V4zM6 20l-2-2 2-2v1h10v2H6v2l-2-2 2-2v1z"/></svg>
+            </button>
+            <div id="slot-r" class="slot">Secondary</div>
         </div>
 
         <div class="header-right">
-            <div class="style-group">
-                <button class="style-btn" title="Compact">≡</button>
-                <button class="style-btn" title="Comfort">A</button>
+            <div class="controls-pill">
+                <div class="palette-picker">
+                    <div class="palette-dot dot-zinc" onclick="setPalette('zinc', this)"></div>
+                    <div class="palette-dot dot-ocean" onclick="setPalette('ocean', this)"></div>
+                    <div class="palette-dot dot-sunset" onclick="setPalette('sunset', this)"></div>
+                </div>
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c-4.41 0-8-3.59-8-8s3.59-8 8-8z"/></svg>
+                </button>
             </div>
-            <button id="theme-toggle">🌙</button>
         </div>
     </header>
 
-    <!-- 2. LANG PICKER: Horizontal strip under header -->
-    <nav id="language-picker">
+    <!-- 2. LANGUAGE PICKER STRIP -->
+    <nav id="lang-picker">
         {{ language_picker }}
     </nav>
 
-    <!-- 3. MAIN AREA: Sidebar | Content | TOC -->
-    <div id="main-container">
+    <!-- 3. MAIN WORKSPACE -->
+    <div id="workspace">
         <aside id="nav-sidebar">
-            {{ navigation_sidebar }}
+            <div class="sidebar-handle" id="handle-l" onclick="document.body.classList.toggle('nav-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </div>
+            <div class="sidebar-content" id="nav-content">
+                {{ navigation_sidebar }}
+            </div>
         </aside>
 
         <main id="content-stage">
-            <header class="page-header">
-                <h1>{{ title }}</h1>
-            </header>
-            <div class="page-blocks">
+            <div class="page-content">
                 {{ content }}
             </div>
         </main>
 
         <aside id="topic-sidebar">
-            {{ topic_sidebar }}
+            <div class="sidebar-handle" id="handle-r" onclick="document.body.classList.toggle('toc-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+            <div class="sidebar-content" id="topic-content">
+                {{ topic_sidebar }}
+            </div>
         </aside>
     </div>
+
+    <!-- Scripts: State must load before UI -->
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/ui.js"></script>
 </body>
+</html>

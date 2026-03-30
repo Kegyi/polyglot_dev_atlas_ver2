@@ -1,47 +1,26 @@
-import json
-
 def assemble_language_picker(lang_defs):
-    """Generates the horizontal bar of language buttons."""
-    html = '<div id="language-picker" class="picker-scroll-container">'
+    html = ""
     for lang_id, meta in lang_defs.items():
-        color = meta.get("color", "#333")
+        # Correctly wrap the icon path in an <img> tag
+        icon_html = f'<img src="{meta.get("icon", "")}" alt="" style="width:16px; height:16px;">'
+        
         html += (
-            f'<button class="lang-btn" data-lang="{lang_id}" '
-            f'style="--lang-color: {color}">'
-            f'<img src="{meta["icon"]}" alt="{meta["name"]}"> {meta["name"]}'
+            f'<button class="lang-btn" id="btn-{lang_id}" '
+            f'onclick="AtlasState.select(\'{lang_id}\', \'l\')" '
+            f'oncontextmenu="AtlasState.select(\'{lang_id}\', \'r\'); return false;">'
+            f'{icon_html} {meta["name"]}'
             f'</button>'
         )
-    html += '</div>'
     return html
 
-def assemble_sidebar(atlas_pages, course_pages):
-    """
-    Generates a sidebar containing BOTH lists. 
-    JS will toggle visibility between them.
-    """
-    # Atlas List
-    html = '<div id="sidebar-atlas" class="sidebar-content active">'
-    html += '<div class="sidebar-header">Atlas Categories</div><ul class="nav-list">'
-    for page in atlas_pages:
-        html += f'<li><a href="{page["url"]}">{page["title"]}</a></li>'
-    html += '</ul></div>'
-
-    # Course List
-    html += '<div id="sidebar-course" class="sidebar-content" style="display:none;">'
-    html += '<div class="sidebar-header">Learning Path</div><ul class="nav-list">'
-    for page in course_pages:
-        html += f'<li><a href="{page["url"]}">{page["title"]}</a></li>'
-    html += '</ul></div>'
+def assemble_sidebar(pages, mode="atlas"):
+    # Always add Home at the top
+    icon = "🏠" if mode == "atlas" else "📊"
+    label = "Home" if mode == "atlas" else "Dashboard"
     
-    return html
-
-def assemble_topic_sidebar(topics):
-    """Generates the 'On This Page' navigation list."""
-    if not topics:
-        return ""
+    html = f'<div class="nav-item active" onclick="location.href=\'index.html\'">{icon} {label}</div>'
+    html += f'<div class="sidebar-title">{"Reference" if mode == "atlas" else "Tracks"}</div>'
     
-    html = '<nav class="topic-sidebar"><div class="sidebar-header">On This Page</div><ul>'
-    for topic in topics:
-        html += f'<li><a href="#{topic["id"]}" class="topic-link">{topic["title"]}</a></li>'
-    html += '</ul></nav>'
+    for p in pages:
+        html += f'<div class="nav-item" onclick="location.href=\'{p["url"]}\'">{p["title"]}</div>'
     return html
