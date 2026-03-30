@@ -1,0 +1,14 @@
+case class Node(val: Int, var left: Option[Node] = None, var right: Option[Node] = None)
+
+def inorder(root: Option[Node], res: scala.collection.mutable.Buffer[Int]): Unit = {
+  root.foreach { node =>
+    inorder(node.left, res)
+    res += node.val
+    inorder(node.right, res)
+  }
+}
+
+val root = Node(1, Some(Node(2, Some(Node(4)))), Some(Node(3)))
+val res = scala.collection.mutable.Buffer[Int]()
+inorder(Some(root), res)
+println(res)

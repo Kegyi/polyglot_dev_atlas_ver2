@@ -1,0 +1,19 @@
+import scala.concurrent.*
+import scala.concurrent.duration.*
+import scala.concurrent.ExecutionContext.Implicits.global
+
+case class Result(endpoint: String, ok: Boolean, payload: String)
+
+def fetch(endpoint: String): Future[Result] = Future {
+  if endpoint.contains("fail") then Result(endpoint, ok = false, "timeout")
+  else Result(endpoint, ok = true, s"{\"endpoint\":\"$endpoint\"}")
+}
+
+@main def main(): Unit =
+  val endpoints = List("users", "orders", "fail-metrics")
+  val results = Await.result(Future.sequence(endpoints.map(fetch)), 3.seconds)
+
+  val data = results.collect { case Result(_, true, payload) => payload }
+  val errors = results.collect { case Result(ep, false, payload) => s"$ep: $payload" }
+
+  println(s"data=${data.size}, errors=${errors.size}")

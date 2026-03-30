@@ -1,0 +1,10 @@
+val n = scala.io.StdIn.readInt()
+var a = 0L
+var b = 1L
+for (_ <- 0 until n) {
+  print(a + " ")
+  val temp = a + b
+  a = b
+  b = temp
+}
+println()

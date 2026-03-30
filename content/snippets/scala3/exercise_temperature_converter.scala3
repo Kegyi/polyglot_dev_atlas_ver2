@@ -1,0 +1,5 @@
+val celsius = 25.0
+val fahrenheit = (celsius * 9/5) + 32
+val kelvin = celsius + 273.15
+
+println(f"$celsius deg C = $fahrenheit%.2f deg F = $kelvin%.2f K")

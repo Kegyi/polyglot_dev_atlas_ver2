@@ -1,0 +1,6 @@
+(1 to 100).foreach { i =>
+  if i % 15 == 0 then println("FizzBuzz")
+  else if i % 3 == 0 then println("Fizz")
+  else if i % 5 == 0 then println("Buzz")
+  else println(i)
+}

@@ -1,0 +1,9 @@
+object Main extends App {
+  val text = "This is a test. This test is simple."
+  val words = "[A-Za-z]+".r.findAllIn(text.toLowerCase).toList
+  val counts = words.groupBy(identity).view.mapValues(_.size).toMap
+
+  counts.toList
+    .sortBy { case (w, c) => (-c, w) }
+    .foreach { case (w, c) => println(s"$w: $c") }
+}

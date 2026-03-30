@@ -26,9 +26,13 @@ const AtlasState = {
     },
 
     syncUI() {
-        console.log(`State: L=${this.primary}, R=${this.secondary}`);
-        
-        // 1. Update button highlights
+        const isComparing = (this.primary && this.secondary);
+        const hasSelection = (this.primary || this.secondary);
+
+        // Toggle the 'is-comparing' class on body for CSS Grid
+        document.body.classList.toggle('is-comparing', isComparing);
+
+        // Update button highlights
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const id = btn.dataset.lang;
             btn.classList.remove('active-l', 'active-r');
@@ -36,13 +40,22 @@ const AtlasState = {
             if (id === this.secondary) btn.classList.add('active-r');
         });
 
-        // 2. Toggle Table Columns
-        // Logic: Show column if it matches primary OR secondary.
-        // If secondary is null, only show primary.
+        // Handle Column Visibility
         document.querySelectorAll('[data-column-lang]').forEach(col => {
             const lang = col.dataset.columnLang;
-            const isVisible = (lang === this.primary || lang === this.secondary);
-            col.style.display = isVisible ? 'table-cell' : 'none';
+            
+            // IF no selection: Show Everything (Initial Preview)
+            // IF selection: Show only the selected ones
+            if (!hasSelection) {
+                col.style.display = 'block'; 
+                if (col.tagName === 'TD' || col.tagName === 'TH') col.style.display = 'table-cell';
+            } else {
+                const isVisible = (lang === this.primary || lang === this.secondary);
+                col.style.display = isVisible ? 'block' : 'none';
+                if ((col.tagName === 'TD' || col.tagName === 'TH') && isVisible) {
+                    col.style.display = 'table-cell';
+                }
+            }
         });
     }
 };

@@ -1,0 +1,4 @@
+val s = "A man, a plan, a canal: Panama"
+val cleaned = s.filter(_.isLetterOrDigit).toLowerCase
+val isPalin = cleaned == cleaned.reverse
+println(if (isPalin) "Palindrome" else "Not a palindrome")

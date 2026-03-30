@@ -1,0 +1,3 @@
+val arr = List(1, 2, 3, 4, 5)
+val reversed = arr.reverse
+println(reversed)

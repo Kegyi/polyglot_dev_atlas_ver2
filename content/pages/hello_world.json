@@ -7,8 +7,8 @@
       "type": "code_comparison",
       "payload": {
         "files": [
-          { "lang": "rust", "path": "snippets/rust/hello.rs" },
-          { "lang": "cpp", "path": "snippets/cpp/hello.cpp" }
+          { "lang": "python", "path": "snippets/python/exercise_hello_world.py" },
+          { "lang": "cpp", "path": "snippets/cpp/exercise_hello_world.cpp" }
         ]
       }
     }

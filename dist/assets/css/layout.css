@@ -1,0 +1,38 @@
+/* Base Page Block Layout */
+.page-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* The Table Grid System */
+.atlas-table {
+    display: grid;
+    /* Column 1: Concept Label (fixed width) */
+    /* Other Columns: 1fr each */
+    grid-template-columns: 150px repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* When the JS detects two languages are selected, it adds this class to the body */
+body.is-comparing .atlas-table {
+    /* Force 2 equal columns for the languages + 1 for label */
+    grid-template-columns: 150px 1fr 1fr;
+}
+
+/* Topic Sidebar Styling (Fixed to Right) */
+.topic-sidebar {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 200px;
+    border-left: 1px solid #333;
+    padding-left: 15px;
+}
+
+.topic-link.active {
+    color: #3b82f6; /* Highlight current scroll position */
+    border-left: 2px solid #3b82f6;
+    padding-left: 5px;
+}

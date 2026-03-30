@@ -1,0 +1,8 @@
+@main def main(): Unit =
+  val text = "This is a test. This test is simple."
+  val words = "[A-Za-z]+".r.findAllIn(text.toLowerCase).toList
+  val counts = words.groupBy(identity).view.mapValues(_.size).toMap
+
+  counts.toList
+    .sortBy((w, c) => (-c, w))
+    .foreach((w, c) => println(s"$w: $c"))
