@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Comparison Page Title | Polyglot Dev Atlas</title>
+    
+    <!-- Core Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    
+    <!-- Core Styles (Order matters for variables) -->
+    <link rel="stylesheet" href="../assets/css/themes.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/blocks.css">
+
+    <!-- PAGE INTENT ASSETS (Custom CSS/JS for specific pages) -->
+    
+
+    <!-- Highlight.js themes (switched by UI script) -->
+    <link rel="stylesheet" href="../assets/hljs/atom-one-dark.min.css" id="hljs-theme-dark">
+    <link rel="stylesheet" href="../assets/hljs/github.min.css" id="hljs-theme-light" disabled>
+</head>
+
+<body data-palette="zinc" data-theme="dark" class="">
+
+    <!-- 1. GLOBAL HEADER -->
+    <header id="global-header">
+        <div class="header-left">
+                <div class="btn-group">
+                <button id="btn-atlas" class="active" onclick="location.href='../atlas/atlas_home.html'">ATLAS</button>
+                <button id="btn-course" onclick="location.href='../course/course_dashboard.html'">COURSE</button>
+            </div>
+        </div>
+
+        <div class="selection-slots">
+            <div id="slot-l" class="slot">Primary</div>
+            <button id="swap-btn" onclick="AtlasState.swap()">
+                <svg viewBox="0 0 24 24"><path d="M18 4l2 2-2 2V5H8V3h10V1l2 2-2 2V4zM6 20l-2-2 2-2v1h10v2H6v2l-2-2 2-2v1z"/></svg>
+            </button>
+            <div id="slot-r" class="slot">Secondary</div>
+        </div>
+
+        <div class="header-right">
+            <div class="controls-pill">
+                <div class="palette-picker">
+                    <div class="palette-dot dot-zinc" onclick="setPalette('zinc', this)"></div>
+                    <div class="palette-dot dot-ocean" onclick="setPalette('ocean', this)"></div>
+                    <div class="palette-dot dot-sunset" onclick="setPalette('sunset', this)"></div>
+                </div>
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c-4.41 0-8-3.59-8-8s3.59-8 8-8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. LANGUAGE PICKER STRIP -->
+    <nav id="lang-picker">
+        <button class="lang-btn" id="btn-cpp" onclick="AtlasState.select('cpp', 'l')" oncontextmenu="AtlasState.select('cpp', 'r'); return false;"><img src="../assets/icons/cpp.svg" alt="" style="width:16px; height:16px;"> C++</button><button class="lang-btn" id="btn-go" onclick="AtlasState.select('go', 'l')" oncontextmenu="AtlasState.select('go', 'r'); return false;"><img src="../assets/icons/go.svg" alt="" style="width:16px; height:16px;"> Go</button><button class="lang-btn" id="btn-python" onclick="AtlasState.select('python', 'l')" oncontextmenu="AtlasState.select('python', 'r'); return false;"><img src="../assets/icons/python.svg" alt="" style="width:16px; height:16px;"> Python</button><button class="lang-btn" id="btn-typescript" onclick="AtlasState.select('typescript', 'l')" oncontextmenu="AtlasState.select('typescript', 'r'); return false;"><img src="../assets/icons/typescript.svg" alt="" style="width:16px; height:16px;"> TypeScript</button><button class="lang-btn" id="btn-scala2" onclick="AtlasState.select('scala2', 'l')" oncontextmenu="AtlasState.select('scala2', 'r'); return false;"><img src="../assets/icons/scala.svg" alt="" style="width:16px; height:16px;"> Scala 2</button><button class="lang-btn" id="btn-scala3" onclick="AtlasState.select('scala3', 'l')" oncontextmenu="AtlasState.select('scala3', 'r'); return false;"><img src="../assets/icons/scala3.svg" alt="" style="width:16px; height:16px;"> Scala 3</button>
+    </nav>
+
+    <!-- 3. MAIN WORKSPACE -->
+    <div id="workspace">
+        <aside id="nav-sidebar">
+            <div class="sidebar-handle" id="handle-l" onclick="document.body.classList.toggle('nav-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </div>
+            <div class="sidebar-content" id="nav-content">
+                <div class="nav-item active" onclick="location.href='../index.html'">🏠 Home</div><div class="sidebar-title">Reference</div><div class="nav-item" onclick="location.href='../atlas/atlas_home.html'">Atlas Home Page</div><div class="nav-item" onclick="location.href='../atlas/hello_world copy.html'">Copy of Comparison Page Title</div><div class="nav-item" onclick="location.href='../atlas/hello_world.html'">Hello World Comparison Page Title</div>
+            </div>
+        </aside>
+
+        <main id="content-stage">
+            <div class="page-content">
+                <div class="page-title">Hello World Comparison Page Title</div>
+<div class="content-block" id=""><div class="block-body"><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+<div class="content-block" id=""><div class="block-header">Copy of Comparison of Hello World</div><div class="block-body"><div class="block-desc">Compare how to print 'Hello, World!' in different programming languages.</div><div class="code-grid"><div class="code-card" data-lang="cpp"><div class="code-fn">exercise_hello_world.cpp</div><pre><code class="language-cpp">#include &amp;lt;iostream&amp;gt;
+
+int main() {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Hello, World!\n&amp;quot;;
+    return 0;
+}
+</code></pre></div><div class="code-card" data-lang="go"><div class="code-fn">exercise_hello_world.go</div><pre><code class="language-go">package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="python"><div class="code-fn">exercise_hello_world.py</div><pre><code class="language-python">print(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div><div class="code-card" data-lang="typescript"><div class="code-fn">exercise_hello_world.ts</div><pre><code class="language-typescript">console.log(&amp;quot;Hello, World!&amp;quot;);
+</code></pre></div><div class="code-card" data-lang="scala2"><div class="code-fn">exercise_hello_world.scala2</div><pre><code class="language-scala">object Main extends App {
+  println(&amp;quot;Hello, World!&amp;quot;)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><div class="code-fn">exercise_hello_world.scala3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println(&amp;quot;Hello, World!&amp;quot;)
+</code></pre></div></div></div></div>
+            </div>
+        </main>
+
+        <aside id="topic-sidebar">
+            <div class="sidebar-handle" id="handle-r" onclick="document.body.classList.toggle('toc-collapsed')">
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </div>
+            <div class="sidebar-content" id="topic-content">
+                <div class="sidebar-title">On this page</div><a href="#hello-step" class="nav-item">• block of code comparison 1</a><a href="#copy-hello-step1" class="nav-item">• copy block of code comparison 1</a><a href="#copy-hello-step2" class="nav-item">• copy block of code comparison 2</a><a href="#copy-hello-step3" class="nav-item">• copy block of code comparison 3</a><a href="#copy-hello-step4" class="nav-item">• copy block of code comparison 4</a><a href="#copy-hello-step5" class="nav-item">• copy block of code comparison 5</a><a href="#copy-hello-step6" class="nav-item">• copy block of code comparison 6</a><a href="#copy-hello-step7" class="nav-item">• copy block of code comparison 7</a><a href="#copy-hello-step8" class="nav-item">• copy block of code comparison 8</a>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" data-fallback="../assets/hljs/highlight.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/scala.min.js" data-fallback="../assets/hljs/languages/scala.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
+    <!-- Scripts: provide AtlasStorage wrapper (so state.js can use a safe storage API) -->
+    <script>
+    (function(){
+        try {
+            // Test native localStorage availability
+            var ok = false;
+            try { localStorage.setItem('__atlas_test','1'); localStorage.removeItem('__atlas_test'); ok = true; } catch(e) { ok = false; }
+            if (ok) {
+                // Use native localStorage (but expose a wrapper API for compatibility)
+                window.AtlasStorage = {
+                    getItem: function(k){ return localStorage.getItem(k); },
+                    setItem: function(k,v){ localStorage.setItem(k,v); },
+                    removeItem: function(k){ localStorage.removeItem(k); },
+                    isNative: true
+                };
+            } else {
+                // Fallback: in-memory storage with eventual sync attempt
+                var mem = {};
+                window.AtlasStorage = {
+                    getItem: function(k){ return mem.hasOwnProperty(k) ? mem[k] : null; },
+                    setItem: function(k,v){ mem[k]=String(v); },
+                    removeItem: function(k){ delete mem[k]; },
+                    isNative: false,
+                    _mem: mem,
+                    trySync: function(){
+                        try {
+                            localStorage.setItem('__atlas_sync_test','1'); localStorage.removeItem('__atlas_sync_test');
+                            // sync all keys
+                            for (var key in mem) {
+                                if (mem.hasOwnProperty(key)) localStorage.setItem(key, mem[key]);
+                            }
+                            // if successful, switch to native
+                            window.AtlasStorage = {
+                                getItem: function(k){ return localStorage.getItem(k); },
+                                setItem: function(k,v){ localStorage.setItem(k,v); },
+                                removeItem: function(k){ localStorage.removeItem(k); },
+                                isNative: true
+                            };
+                            return true;
+                        } catch(e) { return false; }
+                    }
+                };
+            }
+        } catch(e) {
+            // Final fallback: minimal in-memory
+            var mem2 = {};
+            window.AtlasStorage = {
+                getItem: function(k){ return mem2.hasOwnProperty(k) ? mem2[k] : null; },
+                setItem: function(k,v){ mem2[k]=String(v); },
+                removeItem: function(k){ delete mem2[k]; },
+                isNative: false,
+                _mem: mem2
+            };
+        }
+    })();
+    </script>
+    <!-- Scripts: State must load before UI -->
+    <script src="../assets/js/state.js"></script>
+    <script src="../assets/js/ui.js"></script>
+</body>
+</html>

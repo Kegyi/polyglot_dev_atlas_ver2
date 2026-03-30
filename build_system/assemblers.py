@@ -1,4 +1,5 @@
 import os
+from html import escape
 from pathlib import Path
 from .renderers import render_keyword_pill
 from .utils import load_snippet, find_extension
@@ -57,9 +58,15 @@ def assemble_code_comparison(payload, langs, snippet_dir):
         code = load_snippet(snippet_path)
         
         if code:
+            # Escape code for safe HTML output and add hljs language class
+            esc = escape(code)
+            lang_cls = lang
+            if lang.startswith('scala'):
+                lang_cls = 'scala'
+
             html += f'<div class="code-card" data-lang="{lang}">'
             html += f'<div class="code-fn">{filename+ext if filename else "main."+ext}</div>'
-            html += f'<pre><code>{code}</code></pre></div>'
+            html += f'<pre><code class="language-{lang_cls}">{esc}</code></pre></div>'
         else:
             html += f'<div class="code-card" data-lang="{lang}">'
             html += f'<div class="snippet-missing">⚠️ Snippet not found for {lang.upper()}</div></div>'

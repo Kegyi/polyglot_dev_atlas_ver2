@@ -1,11 +1,15 @@
-const AtlasState = {
+window.AtlasState = {
     l: null, 
     r: null,
 
     init() {
-        // 1. Try to load from memory first
-        this.l = localStorage.getItem('atlas_primary');
-        this.r = localStorage.getItem('atlas_secondary');
+        // Storage backend (AtlasStorage provided by template, fallback to native localStorage)
+        var Storage = (typeof window !== 'undefined' && window.AtlasStorage) ? window.AtlasStorage : (window.localStorage ? window.localStorage : null);
+        // 1. Try to load from memory first (use hyphenated keys)
+        this.l = Storage && typeof Storage.getItem === 'function' ? Storage.getItem('atlas-primary') : null;
+        this.r = Storage && typeof Storage.getItem === 'function' ? Storage.getItem('atlas-secondary') : null;
+
+        // read from storage
 
         // 2. Fallback: If no memory, pick the first button available
         if (!this.l) {
@@ -13,6 +17,14 @@ const AtlasState = {
             if (firstBtn) this.l = firstBtn.id.replace('btn-', '');
         }
         
+        // Load saved theme (do not force-write during init)
+        try {
+            var savedTheme = (Storage && typeof Storage.getItem === 'function') ? Storage.getItem('atlas-theme') : (window.localStorage ? window.localStorage.getItem('atlas-theme') : null);
+            if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+        } catch (e) {
+            console.warn('AtlasState: unable to read atlas-theme from storage', e);
+        }
+
         this.updateUI();
     },
 
@@ -38,11 +50,29 @@ const AtlasState = {
 
     updateUI() {
         // Save to memory for the next page load
-        if (this.l) localStorage.setItem('atlas_primary', this.l);
-        else localStorage.removeItem('atlas_primary');
-        
-        if (this.r) localStorage.setItem('atlas_secondary', this.r);
-        else localStorage.removeItem('atlas_secondary');
+        try {
+            var Storage = (typeof window !== 'undefined' && window.AtlasStorage) ? window.AtlasStorage : (window.localStorage ? window.localStorage : null);
+            if (Storage && typeof Storage.setItem === 'function') {
+                if (this.l) {
+                    Storage.setItem('atlas-primary', this.l);
+                } else {
+                    Storage.removeItem('atlas-primary');
+                }
+
+                if (this.r) {
+                    Storage.setItem('atlas-secondary', this.r);
+                } else {
+                    Storage.removeItem('atlas-secondary');
+                }
+            } else if (window.localStorage) {
+                if (this.l) { window.localStorage.setItem('atlas-primary', this.l); }
+                else { window.localStorage.removeItem('atlas-primary'); }
+                if (this.r) { window.localStorage.setItem('atlas-secondary', this.r); }
+                else { window.localStorage.removeItem('atlas-secondary'); }
+            }
+        } catch (e) {
+            console.warn('AtlasState.updateUI: storage write failed', e);
+        }
 
         // --- Visual Sync ---
         const sL = document.getElementById('slot-l');

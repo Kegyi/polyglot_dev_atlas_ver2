@@ -8,7 +8,6 @@ from build_system.utils import load_snippet
 # Config
 BASE_TEMPLATE = "templates/base.html"
 CONTENT_DIR = "content/pages"
-COURSE_DIR = "content/courses"
 SNIPPET_DIR = "content/snippets"
 LANG_DEF = "content/definitions/languages.json"
 KEYWORD_DIR = "content/definitions/keywords"
@@ -25,7 +24,7 @@ def build_all():
     os.makedirs(OUTPUT_DIR)
     
     # 2. Ensure content directories exist (Auto-healing)
-    for folder in [CONTENT_DIR, COURSE_DIR, KEYWORD_DIR, SNIPPET_DIR]:
+    for folder in [CONTENT_DIR, KEYWORD_DIR, SNIPPET_DIR]:
         if not os.path.exists(folder):
             os.makedirs(folder)
             print(f"Created missing directory: {folder}")
@@ -43,32 +42,44 @@ def build_all():
                 if 'id' in data:
                     keywords[data['id']] = data
 
-    # 3. Discovery (Sidebar generation) - Safely handle empty directories
-    def discover_pages(directory):
-        pages = []
-        if os.path.exists(directory):
-            for f in os.listdir(directory):
-                if f.endswith(".json"):
-                    data = load_json(os.path.join(directory, f))
+    # 3. Discovery (Sidebar generation) - discover pages grouped by top-level subfolder (mode)
+    def discover_pages_by_mode(content_directory):
+        modes = {}
+        if not os.path.exists(content_directory):
+            return modes
+
+        for entry in os.listdir(content_directory):
+            entry_path = os.path.join(content_directory, entry)
+            if not os.path.isdir(entry_path):
+                continue
+
+            mode = entry
+            pages = []
+            for root, dirs, files in os.walk(entry_path):
+                for fname in files:
+                    if not fname.endswith('.json'):
+                        continue
+                    source_path = os.path.join(root, fname)
+                    rel_path = os.path.relpath(source_path, content_directory)
+                    url = rel_path.replace(os.sep, '/').replace('.json', '.html')
+                    data = load_json(source_path)
                     pages.append({
-                        "title": data.get("title", f),
-                        "url": f.replace(".json", ".html"),
-                        "source_path": os.path.join(directory, f)
+                        'title': data.get('title', fname),
+                        'url': url,
+                        'source_path': source_path
                     })
-        return pages
 
-    atlas_pages = discover_pages(CONTENT_DIR)
-    course_pages = discover_pages(COURSE_DIR)
+            modes[mode] = pages
+        return modes
 
-    # 4. Build Atlas Pages
-    for p in atlas_pages:
-        process_page(p['source_path'], langs, keywords, atlas_pages, "atlas")
+    modes = discover_pages_by_mode(CONTENT_DIR)
 
-    # 5. Build Course Pages
-    for p in course_pages:
-        process_page(p['source_path'], langs, keywords, course_pages, "course")
+    # 4. Build pages for each mode and preserve folder structure in dist
+    for mode_name, pages in modes.items():
+        for p in pages:
+            process_page(p['source_path'], langs, keywords, pages, mode_name, p['url'])
 
-def process_page(path, langs, keywords, sidebar_pages, mode):
+def process_page(path, langs, keywords, sidebar_pages, mode, url=None):
     """
     Orchestrates the conversion of a single JSON page into a styled HTML file.
     """
@@ -105,10 +116,9 @@ def process_page(path, langs, keywords, sidebar_pages, mode):
         else:
             print(f"  [Warning] No assembler found for block type: {b_type}")
 
-    # 2. Build Navigation UI
-    lang_picker = assemble_language_picker(langs)
-    # The left sidebar shows pages relevant to the current mode (Atlas vs Course)
-    sidebar = assemble_sidebar(sidebar_pages, mode)
+    # 2. Build Navigation UI placeholders (will be generated after asset_prefix)
+    lang_picker = ""
+    sidebar = ""
     
     # 3. Topic Sidebar Logic (Right Sidebar)
     # Rule: If only 1 topic exists, we hide the sidebar to maximize space.
@@ -134,23 +144,56 @@ def process_page(path, langs, keywords, sidebar_pages, mode):
     for script in config.get("scripts", []):
         extra_assets += f'<script src="assets/js/pages/{script}"></script>\n'
 
-    # 5. Final Template Assembly
+    # 5. Determine output path and compute asset prefix for correct relative links
+    if url:
+        out_rel = url
+    else:
+        out_rel = os.path.basename(path).replace('.json', '.html')
+
+    output_path = os.path.join(OUTPUT_DIR, out_rel.replace('/', os.sep))
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Compute prefix from page dir to OUTPUT_DIR (e.g., '..' or '../..')
+    page_dir = os.path.dirname(output_path)
+    rel_to_dist = os.path.relpath(OUTPUT_DIR, page_dir).replace(os.sep, '/')
+    if rel_to_dist == '.':
+        asset_prefix = ''
+    else:
+        asset_prefix = rel_to_dist + '/'
+
+    # Ensure extra_assets references include the asset prefix
+    prefixed_extra = ''
+    for style in config.get('styles', []):
+        prefixed_extra += f'<link rel="stylesheet" href="{asset_prefix}assets/css/pages/{style}">\n'
+    for script in config.get('scripts', []):
+        prefixed_extra += f'<script src="{asset_prefix}assets/js/pages/{script}"></script>\n'
+
+    # Build the language picker and sidebar with correct asset_prefix so links/icons resolve
+    lang_picker = assemble_language_picker(langs, asset_prefix)
+    sidebar = assemble_sidebar(sidebar_pages, mode, asset_prefix)
+
+    # 6. Final Template Assembly with asset prefix
     output = template.replace("{{ title }}", data.get("title", "Untitled Page"))
     output = output.replace("{{ language_picker }}", lang_picker)
     output = output.replace("{{ navigation_sidebar }}", sidebar)
     output = output.replace("{{ topic_sidebar }}", topic_sidebar_html)
     output = output.replace("{{ content }}", "\n".join(html_blocks))
-    output = output.replace("{{ extra_assets }}", extra_assets)
+    output = output.replace("{{ extra_assets }}", prefixed_extra)
     output = output.replace("{{ body_class_placeholders }}", body_class)
+    output = output.replace("{{ asset_prefix }}", asset_prefix)
 
-    # 6. Save to Dist
-    out_name = os.path.basename(path).replace(".json", ".html")
-    output_path = os.path.join(OUTPUT_DIR, out_name)
-    
+    # Fill slot placeholders: default to first language name if available
+    try:
+        primary_label = list(langs.values())[0].get('name') if langs and len(langs) > 0 else 'Primary'
+    except Exception:
+        primary_label = 'Primary'
+    output = output.replace("{{ slot_primary }}", primary_label)
+    output = output.replace("{{ slot_secondary }}", "")
+
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(output)
-        
-    print(f"  [Built] {out_name} (Mode: {mode})")
+
+    print(f"  [Built] {out_rel} (Mode: {mode})")
 
 if __name__ == "__main__":
     build_all()

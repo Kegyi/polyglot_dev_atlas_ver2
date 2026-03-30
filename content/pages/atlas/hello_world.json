@@ -1,5 +1,6 @@
 {
   "title": "Hello World Comparison Page Title",
+  "label": "comparison 1",
   "blocks": [
     {
       "id": "hello-step",

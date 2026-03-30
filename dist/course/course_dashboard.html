@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} | Polyglot Dev Atlas</title>
+    <title>Course Dashboard | Polyglot Dev Atlas</title>
     
     <!-- Core Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
     
     <!-- Core Styles (Order matters for variables) -->
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/themes.css">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/main.css">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/blocks.css">
+    <link rel="stylesheet" href="../assets/css/themes.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/blocks.css">
 
     <!-- PAGE INTENT ASSETS (Custom CSS/JS for specific pages) -->
-    {{ extra_assets }}
+    
 
     <!-- Highlight.js themes (switched by UI script) -->
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/hljs/atom-one-dark.min.css" id="hljs-theme-dark">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/hljs/github.min.css" id="hljs-theme-light" disabled>
+    <link rel="stylesheet" href="../assets/hljs/atom-one-dark.min.css" id="hljs-theme-dark">
+    <link rel="stylesheet" href="../assets/hljs/github.min.css" id="hljs-theme-light" disabled>
 </head>
 
-<body data-palette="zinc" data-theme="dark" class="{{ body_class_placeholders }}">
+<body data-palette="zinc" data-theme="dark" class="hide-toc">
 
     <!-- 1. GLOBAL HEADER -->
     <header id="global-header">
         <div class="header-left">
                 <div class="btn-group">
-                <button id="btn-atlas" class="active" onclick="location.href='{{ asset_prefix }}atlas/atlas_home.html'">ATLAS</button>
-                <button id="btn-course" onclick="location.href='{{ asset_prefix }}course/course_dashboard.html'">COURSE</button>
+                <button id="btn-atlas" class="active" onclick="location.href='../atlas/atlas_home.html'">ATLAS</button>
+                <button id="btn-course" onclick="location.href='../course/course_dashboard.html'">COURSE</button>
             </div>
         </div>
 
@@ -56,7 +56,7 @@
 
     <!-- 2. LANGUAGE PICKER STRIP -->
     <nav id="lang-picker">
-        {{ language_picker }}
+        <button class="lang-btn" id="btn-cpp" onclick="AtlasState.select('cpp', 'l')" oncontextmenu="AtlasState.select('cpp', 'r'); return false;"><img src="../assets/icons/cpp.svg" alt="" style="width:16px; height:16px;"> C++</button><button class="lang-btn" id="btn-go" onclick="AtlasState.select('go', 'l')" oncontextmenu="AtlasState.select('go', 'r'); return false;"><img src="../assets/icons/go.svg" alt="" style="width:16px; height:16px;"> Go</button><button class="lang-btn" id="btn-python" onclick="AtlasState.select('python', 'l')" oncontextmenu="AtlasState.select('python', 'r'); return false;"><img src="../assets/icons/python.svg" alt="" style="width:16px; height:16px;"> Python</button><button class="lang-btn" id="btn-typescript" onclick="AtlasState.select('typescript', 'l')" oncontextmenu="AtlasState.select('typescript', 'r'); return false;"><img src="../assets/icons/typescript.svg" alt="" style="width:16px; height:16px;"> TypeScript</button><button class="lang-btn" id="btn-scala2" onclick="AtlasState.select('scala2', 'l')" oncontextmenu="AtlasState.select('scala2', 'r'); return false;"><img src="../assets/icons/scala.svg" alt="" style="width:16px; height:16px;"> Scala 2</button><button class="lang-btn" id="btn-scala3" onclick="AtlasState.select('scala3', 'l')" oncontextmenu="AtlasState.select('scala3', 'r'); return false;"><img src="../assets/icons/scala3.svg" alt="" style="width:16px; height:16px;"> Scala 3</button>
     </nav>
 
     <!-- 3. MAIN WORKSPACE -->
@@ -66,13 +66,13 @@
                 <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </div>
             <div class="sidebar-content" id="nav-content">
-                {{ navigation_sidebar }}
+                <div class="nav-item active" onclick="location.href='../index.html'">📊 Dashboard</div><div class="sidebar-title">Tracks</div><div class="nav-item" onclick="location.href='../course/course_dashboard.html'">Course Dashboard</div>
             </div>
         </aside>
 
         <main id="content-stage">
             <div class="page-content">
-                {{ content }}
+                <div class="page-title">Course Dashboard</div>
             </div>
         </main>
 
@@ -81,13 +81,13 @@
                 <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </div>
             <div class="sidebar-content" id="topic-content">
-                {{ topic_sidebar }}
+                
             </div>
         </aside>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" data-fallback="{{ asset_prefix }}assets/hljs/highlight.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/scala.min.js" data-fallback="{{ asset_prefix }}assets/hljs/languages/scala.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" data-fallback="../assets/hljs/highlight.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/scala.min.js" data-fallback="../assets/hljs/languages/scala.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
     <!-- Scripts: provide AtlasStorage wrapper (so state.js can use a safe storage API) -->
     <script>
     (function(){
@@ -145,7 +145,7 @@
     })();
     </script>
     <!-- Scripts: State must load before UI -->
-    <script src="{{ asset_prefix }}assets/js/state.js"></script>
-    <script src="{{ asset_prefix }}assets/js/ui.js"></script>
+    <script src="../assets/js/state.js"></script>
+    <script src="../assets/js/ui.js"></script>
 </body>
 </html>
