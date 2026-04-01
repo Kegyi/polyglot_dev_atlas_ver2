@@ -1,0 +1,57 @@
+<!-- CODE COMPARISON MODULE -->
+<section class="comparison-section" id="comparison">
+    <div class="section-header">
+        <!-- Translated Title -->
+        <h2 class="section-title" data-i18n="comparison.title">
+            Syntax Comparison
+        </h2>
+        
+        <!-- Translated Description -->
+        <p class="section-desc" data-i18n="comparison.description">
+            Compare how common logic is implemented across different programming languages.
+        </p>
+    </div>
+
+    <!-- 
+        BRAIN ASSEMBLER TAG:
+        The Python builder will find '[[COMPARE:syntax_basics]]' 
+        and replace it with the full HTML grid of code snippets 
+        from your content/snippets/ folders.
+    -->
+    <div class="comparison-root">
+        [[COMPARE:syntax_basics]]
+    </div>
+</section>
+
+<style>
+    .comparison-section {
+        padding: 3rem 0;
+        margin-top: 2rem;
+    }
+
+    .section-header {
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--accent);
+        padding-left: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+
+    /* 
+       The grid container itself is styled in style.css, 
+       but we can add module-specific tweaks here. 
+    */
+    .comparison-root {
+        background: var(--bg-primary);
+        border-radius: 8px;
+    }
+</style>

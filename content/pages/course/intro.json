@@ -1,0 +1,66 @@
+{
+    "title": "Course Mode | Learning Pathways",
+    "description": "Step-by-step guided roadmaps to master programming concepts across multiple languages simultaneously.",
+    "template": "base.html",
+    "body_class": "course-view",
+    "blocks": [
+        {
+            "id": "course-intro",
+            "title": "Welcome to Course Mode",
+            "content": [
+                {
+                    "type": "h2",
+                    "text": "The Guided Learning Experience"
+                },
+                {
+                    "type": "text",
+                    "text": "Unlike the Atlas, which serves as a quick reference for syntax, Course Mode is designed for deep, structured learning. Here, we break down complex computer science topics into digestible lessons that demonstrate how fundamental logic remains consistent across different programming environments."
+                }
+            ]
+        },
+        {
+            "id": "how-it-works",
+            "title": "How Pathways Work",
+            "content": [
+                {
+                    "type": "h2",
+                    "text": "Concept-First Education"
+                },
+                {
+                    "type": "text",
+                    "text": "Each course follows a 'Concept-First' approach. Instead of merely memorizing keywords, you learn a core concept—such as Memory Management or Concurrency—and immediately see how that concept is implemented in the languages you have selected in the selector bar."
+                },
+                {
+                    "type": "h3",
+                    "text": "Progressive Difficulty"
+                },
+                {
+                    "type": "text",
+                    "text": "Lessons are arranged in the left sidebar from fundamental to advanced. We recommend following the sequence to build a solid mental model of how software works under the hood."
+                }
+            ]
+        },
+        {
+            "id": "active-pathways",
+            "title": "Available Pathways",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Currently, the following pathways are available for exploration:"
+                },
+                {
+                    "type": "text",
+                    "text": "• **The Foundations:** Data types, variables, and control flow."
+                },
+                {
+                    "type": "text",
+                    "text": "• **Systems Thinking:** Memory allocation, pointers, and performance."
+                },
+                {
+                    "type": "text",
+                    "text": "• **Object Orientation:** Classes, inheritance, and polymorphism across languages."
+                }
+            ]
+        }
+    ]
+}

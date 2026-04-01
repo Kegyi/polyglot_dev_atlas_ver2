@@ -1,151 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- 
+    The <html> element holds the state of the UI.
+    Sidebars: 'visible' or 'hidden'
+    Theme: 'dark' or 'light'
+    Palette: 'default', 'nord', or 'matrix'
+    View Mode: 'focused' or 'all'
+-->
+<html lang="en" 
+      data-theme="dark" 
+      data-palette="default" 
+      data-sidebar-l="visible" 
+      data-sidebar-r="visible" 
+      data-view-mode="focused">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} | Polyglot Dev Atlas</title>
-    
-    <!-- Core Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
-    
-    <!-- Core Styles (Order matters for variables) -->
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/themes.css">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/main.css">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/blocks.css">
+    <title>{{ title }}</title>
 
-    <!-- PAGE INTENT ASSETS (Custom CSS/JS for specific pages) -->
+    <!-- CRITICAL: Anti-Flash Script (Blocking) -->
+    <script>
+        (function() {
+            // Immediately restore UI state from localStorage
+            const theme = localStorage.getItem('theme') || 'dark';
+            const palette = localStorage.getItem('palette') || 'default';
+            const sl = localStorage.getItem('sidebar-l') || 'visible';
+            const sr = localStorage.getItem('sidebar-r') || 'visible';
+            const view = localStorage.getItem('view-mode') || 'focused';
+
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', theme);
+            doc.setAttribute('data-palette', palette);
+            doc.setAttribute('data-sidebar-l', sl);
+            doc.setAttribute('data-sidebar-r', sr);
+            doc.setAttribute('data-view-mode', view);
+
+            // Add loading class to keep body hidden until JS reveals it
+            doc.classList.add('is-loading');
+        })();
+    </script>
+
+    <!-- Base Styles (Prefixed for sub-pages) -->
+    <link rel="stylesheet" href="{{ asset_prefix }}assets/css/style.css">
+    
+    <!-- Page-specific CSS/JS from JSON -->
     {{ extra_assets }}
 
-    <!-- Highlight.js themes (switched by UI script) -->
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/hljs/atom-one-dark.min.css" id="hljs-theme-dark">
-    <link rel="stylesheet" href="{{ asset_prefix }}assets/hljs/github.min.css" id="hljs-theme-light" disabled>
+    <style>
+        /* FOUC Protection: Body is invisible while 'is-loading' is present */
+        html.is-loading body {
+            visibility: hidden;
+            opacity: 0;
+            /* Matches default dark theme background to prevent white-flash */
+            background-color: #0f172a; 
+        }
+    </style>
 </head>
+<body class="{{ body_class_placeholders }}">
 
-<body data-palette="zinc" data-theme="dark" class="{{ body_class_placeholders }}">
-
-    <!-- 1. GLOBAL HEADER -->
-    <header id="global-header">
-        <div class="header-left">
-                <div class="btn-group">
-                <button id="btn-atlas" class="active" onclick="location.href='{{ asset_prefix }}atlas/atlas_home.html'">ATLAS</button>
-                <button id="btn-course" onclick="location.href='{{ asset_prefix }}course/course_dashboard.html'">COURSE</button>
+    <!-- 1. TOP HEADER -->
+    <header class="main-header">
+        <div class="header-section">
+            <div class="logo">POLYGLOT <span>ATLAS</span></div>
+            <!-- Placeholder: Atlas/Course toggle -->
+            <div class="mode-switcher-wrapper">
+                {{ mode_switcher }}
             </div>
         </div>
 
-        <div class="selection-slots">
-            <div id="slot-l" class="slot">Primary</div>
-            <button id="swap-btn" onclick="AtlasState.swap()">
-                <svg viewBox="0 0 24 24"><path d="M18 4l2 2-2 2V5H8V3h10V1l2 2-2 2V4zM6 20l-2-2 2-2v1h10v2H6v2l-2-2 2-2v1z"/></svg>
-            </button>
-            <div id="slot-r" class="slot">Secondary</div>
-        </div>
-
-        <div class="header-right">
-            <div class="controls-pill">
-                <div class="palette-picker">
-                    <div class="palette-dot dot-zinc" onclick="setPalette('zinc', this)"></div>
-                    <div class="palette-dot dot-ocean" onclick="setPalette('ocean', this)"></div>
-                    <div class="palette-dot dot-sunset" onclick="setPalette('sunset', this)"></div>
+        <div class="header-section">
+            <div class="palette-theme">
+                <!-- Palette Selector Indicators -->
+                <div class="palette-group">
+                    <div class="pal-indicator p-def" onclick="app.setPalette('default', this)"><i></i><i></i></div>
+                    <div class="pal-indicator p-nord" onclick="app.setPalette('nord', this)"><i></i><i></i></div>
+                    <div class="pal-indicator p-mat" onclick="app.setPalette('matrix', this)"><i></i><i></i></div>
                 </div>
-                <button id="theme-toggle" onclick="toggleTheme()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c-4.41 0-8-3.59-8-8s3.59-8 8-8z"/></svg>
-                </button>
+                <!-- Theme Toggle -->
+                <button class="theme-btn" onclick="app.toggleTheme()" id="themeIcon">☼</button>
             </div>
         </div>
     </header>
 
-    <!-- 2. LANGUAGE PICKER STRIP -->
-    <nav id="lang-picker">
-        {{ language_picker }}
+    <!-- 2. PROGRAMMING LANGUAGE SELECTOR BAR -->
+    <nav class="selector-bar">
+        {{ language_selection_buttons }}
     </nav>
 
-    <!-- 3. MAIN WORKSPACE -->
-    <div id="workspace">
-        <aside id="nav-sidebar">
-            <div class="sidebar-handle" id="handle-l" onclick="document.body.classList.toggle('nav-collapsed')">
-                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-            </div>
-            <div class="sidebar-content" id="nav-content">
+    <!-- 3. MAIN LAYOUT CONTAINER -->
+    <div class="app-container">
+        
+        <!-- Sidebar Left (Global Nav) -->
+        <aside class="sidebar-left">
+            <div class="edge-toggle toggle-l" onclick="app.toggleSidebar('l')">◀</div>
+            <div class="sidebar-inner">
                 {{ navigation_sidebar }}
             </div>
         </aside>
 
-        <main id="content-stage">
-            <div class="page-content">
+        <!-- Main Content View -->
+        <main id="main-scroll-area">
+            <!-- view-mode toggle moved to the topic sidebar -->
+
+            <!-- Pre-Built Modular Content -->
+            <div class="content-wrapper">
                 {{ content }}
             </div>
         </main>
 
-        <aside id="topic-sidebar">
-            <div class="sidebar-handle" id="handle-r" onclick="document.body.classList.toggle('toc-collapsed')">
-                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-            </div>
-            <div class="sidebar-content" id="topic-content">
+        <!-- Sidebar Right (Topic Nav) -->
+        <aside class="sidebar-right">
+            <div class="edge-toggle toggle-r" onclick="app.toggleSidebar('r')">▶</div>
+            <div class="sidebar-inner">
+                <div class="topic-sidebar-header">
+                    <div class="header-row">
+                        <span class="view-mode-label">View mode:</span>
+                        <div class="view-mode-control"><button id="viewModeToggle" class="view-mode-btn">Focused</button></div>
+                        <span></span>
+                    </div>
+                    <div class="header-row header-row-2">
+                        <span class="sidebar-label">Topics</span>
+                    </div>
+                </div>
                 {{ topic_sidebar }}
             </div>
         </aside>
+
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" data-fallback="{{ asset_prefix }}assets/hljs/highlight.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/scala.min.js" data-fallback="{{ asset_prefix }}assets/hljs/languages/scala.min.js" onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='1';this.src=this.dataset.fallback;}else{window.__hljsMissingFallback=true;}"></script>
-    <!-- Scripts: provide AtlasStorage wrapper (so state.js can use a safe storage API) -->
-    <script>
-    (function(){
-        try {
-            // Test native localStorage availability
-            var ok = false;
-            try { localStorage.setItem('__atlas_test','1'); localStorage.removeItem('__atlas_test'); ok = true; } catch(e) { ok = false; }
-            if (ok) {
-                // Use native localStorage (but expose a wrapper API for compatibility)
-                window.AtlasStorage = {
-                    getItem: function(k){ return localStorage.getItem(k); },
-                    setItem: function(k,v){ localStorage.setItem(k,v); },
-                    removeItem: function(k){ localStorage.removeItem(k); },
-                    isNative: true
-                };
-            } else {
-                // Fallback: in-memory storage with eventual sync attempt
-                var mem = {};
-                window.AtlasStorage = {
-                    getItem: function(k){ return mem.hasOwnProperty(k) ? mem[k] : null; },
-                    setItem: function(k,v){ mem[k]=String(v); },
-                    removeItem: function(k){ delete mem[k]; },
-                    isNative: false,
-                    _mem: mem,
-                    trySync: function(){
-                        try {
-                            localStorage.setItem('__atlas_sync_test','1'); localStorage.removeItem('__atlas_sync_test');
-                            // sync all keys
-                            for (var key in mem) {
-                                if (mem.hasOwnProperty(key)) localStorage.setItem(key, mem[key]);
-                            }
-                            // if successful, switch to native
-                            window.AtlasStorage = {
-                                getItem: function(k){ return localStorage.getItem(k); },
-                                setItem: function(k,v){ localStorage.setItem(k,v); },
-                                removeItem: function(k){ localStorage.removeItem(k); },
-                                isNative: true
-                            };
-                            return true;
-                        } catch(e) { return false; }
-                    }
-                };
-            }
-        } catch(e) {
-            // Final fallback: minimal in-memory
-            var mem2 = {};
-            window.AtlasStorage = {
-                getItem: function(k){ return mem2.hasOwnProperty(k) ? mem2[k] : null; },
-                setItem: function(k,v){ mem2[k]=String(v); },
-                removeItem: function(k){ delete mem2[k]; },
-                isNative: false,
-                _mem: mem2
-            };
-        }
-    })();
-    </script>
-    <!-- Scripts: State must load before UI -->
-    <script src="{{ asset_prefix }}assets/js/state.js"></script>
-    <script src="{{ asset_prefix }}assets/js/ui.js"></script>
+    <!-- Core Runtime Logic -->
+    <script type="module" src="{{ asset_prefix }}assets/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+{
+    "title": "Welcome | Polyglot Dev Atlas",
+    "description": "A modular tool designed for polyglot developers to compare programming languages and follow structured learning paths.",
+    "template": "base.html",
+    "body_class": "home-view",
+    "blocks": [
+        {
+            "id": "intro",
+            "title": "Welcome to the Atlas",
+            "content": [
+                {
+                    "type": "h2",
+                    "text": "The Polyglot Mindset"
+                },
+                {
+                    "type": "text",
+                    "text": "The Polyglot Developer Atlas is built to help you navigate multiple programming environments simultaneously. Whether you are a systems engineer moving to web dev, or a scripter moving to low-level memory management, this tool provides the bridges you need."
+                }
+            ]
+        },
+        {
+            "id": "modes",
+            "title": "Understanding the Modes",
+            "content": [
+                {
+                    "type": "h3",
+                    "text": "Atlas Mode"
+                },
+                {
+                    "type": "text",
+                    "text": "In Atlas mode, you can select one or two programming languages from the top bar to see side-by-side comparisons of syntax, logic, and memory management. It acts as a live reference sheet for your daily coding tasks."
+                },
+                {
+                    "type": "h3",
+                    "text": "Course Mode"
+                },
+                {
+                    "type": "text",
+                    "text": "Course mode transforms the atlas into a structured learning roadmap. It guides you through the fundamental concepts of programming step-by-step, ensuring you understand the 'why' behind the syntax in every language."
+                }
+            ]
+        },
+        {
+            "id": "getting-started",
+            "title": "How to Navigate",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "1. Use the **Mode Switcher** in the header to jump between the Atlas and the Courses."
+                },
+                {
+                    "type": "text",
+                    "text": "2. Select your languages in the **Selector Bar** to trigger comparison views."
+                },
+                {
+                    "type": "text",
+                    "text": "3. Use the **Left Sidebar** to change pages and the **Right Sidebar** to focus on specific topics within a page."
+                },
+                {
+                    "type": "text",
+                    "text": "4. Toggle the **Sidebars** using the edge buttons (◀/▶) to clear the view for deep code reading."
+                }
+            ]
+        }
+    ]
+}

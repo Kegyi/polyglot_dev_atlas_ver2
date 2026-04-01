@@ -1,0 +1,6285 @@
+<!DOCTYPE html>
+<!-- 
+    The <html> element holds the state of the UI.
+    Sidebars: 'visible' or 'hidden'
+    Theme: 'dark' or 'light'
+    Palette: 'default', 'nord', or 'matrix'
+    View Mode: 'focused' or 'all'
+-->
+<html lang="en" 
+      data-theme="dark" 
+      data-palette="default" 
+      data-sidebar-l="visible" 
+      data-sidebar-r="visible" 
+      data-view-mode="focused">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns</title>
+
+    <!-- CRITICAL: Anti-Flash Script (Blocking) -->
+    <script>
+        (function() {
+            // Immediately restore UI state from localStorage
+            const theme = localStorage.getItem('theme') || 'dark';
+            const palette = localStorage.getItem('palette') || 'default';
+            const sl = localStorage.getItem('sidebar-l') || 'visible';
+            const sr = localStorage.getItem('sidebar-r') || 'visible';
+            const view = localStorage.getItem('view-mode') || 'focused';
+
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', theme);
+            doc.setAttribute('data-palette', palette);
+            doc.setAttribute('data-sidebar-l', sl);
+            doc.setAttribute('data-sidebar-r', sr);
+            doc.setAttribute('data-view-mode', view);
+
+            // Add loading class to keep body hidden until JS reveals it
+            doc.classList.add('is-loading');
+        })();
+    </script>
+
+    <!-- Base Styles (Prefixed for sub-pages) -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- Page-specific CSS/JS from JSON -->
+    
+
+    <style>
+        /* FOUC Protection: Body is invisible while 'is-loading' is present */
+        html.is-loading body {
+            visibility: hidden;
+            opacity: 0;
+            /* Matches default dark theme background to prevent white-flash */
+            background-color: #0f172a; 
+        }
+    </style>
+</head>
+<body class="mode-atlas atlas-view design-patterns-page">
+
+    <!-- 1. TOP HEADER -->
+    <header class="main-header">
+        <div class="header-section">
+            <div class="logo">POLYGLOT <span>ATLAS</span></div>
+            <!-- Placeholder: Atlas/Course toggle -->
+            <div class="mode-switcher-wrapper">
+                <div class="mode-switcher"><a href="../index.html" class="mode-btn active">Atlas</a><a href="../course/intro.html" class="mode-btn ">Course</a></div>
+            </div>
+        </div>
+
+        <div class="header-section">
+            <div class="palette-theme">
+                <!-- Palette Selector Indicators -->
+                <div class="palette-group">
+                    <div class="pal-indicator p-def" onclick="app.setPalette('default', this)"><i></i><i></i></div>
+                    <div class="pal-indicator p-nord" onclick="app.setPalette('nord', this)"><i></i><i></i></div>
+                    <div class="pal-indicator p-mat" onclick="app.setPalette('matrix', this)"><i></i><i></i></div>
+                </div>
+                <!-- Theme Toggle -->
+                <button class="theme-btn" onclick="app.toggleTheme()" id="themeIcon">☼</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. PROGRAMMING LANGUAGE SELECTOR BAR -->
+    <nav class="selector-bar">
+        <div class="selector-container"><button class="lang-pill" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-pill" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-pill" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-pill" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-pill" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-pill" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button><button class="swap-btn" onclick="app.swapLanguages()">⇄ SWAP</button></div>
+    </nav>
+
+    <!-- 3. MAIN LAYOUT CONTAINER -->
+    <div class="app-container">
+        
+        <!-- Sidebar Left (Global Nav) -->
+        <aside class="sidebar-left">
+            <div class="edge-toggle toggle-l" onclick="app.toggleSidebar('l')">◀</div>
+            <div class="sidebar-inner">
+                <ul class="nav-list"><li class=""><a href="../index.html">Welcome | Polyglot Dev Atlas</a></li><li class="active"><a href="../atlas/design_patterns.html">Design Patterns</a></li><li class=""><a href="../atlas/syntax.html">Basic Syntax | Atlas</a></li></ul>
+            </div>
+        </aside>
+
+        <!-- Main Content View -->
+        <main id="main-scroll-area">
+            <!-- view-mode toggle moved to the topic sidebar -->
+
+            <!-- Pre-Built Modular Content -->
+            <div class="content-wrapper">
+                <h1  class="">Design Patterns</h1><p  class="">Design patterns are reusable solutions to common software design problems. They provide a template for how to solve a problem that can be used in many different situations. This page explores various design patterns, their implementations across different programming languages, and modern variants that leverage contemporary language features.</p><div  class="blocks-container ">
+        <div class="topic-section  minimal-block" id="creational_patterns">
+            <div class="topic-header" onclick="app.toggleTopic('creational_patterns')">
+                <h2>Creational patterns</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section  " id="abstract_factory">
+            <div class="topic-header" onclick="app.toggleTopic('abstract_factory')">
+                <h3>Abstract Factory</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+struct Button {
+    virtual ~Button() = default;
+    virtual std::string render() const = 0;
+};
+
+struct Dialog {
+    virtual ~Dialog() = default;
+    virtual std::string render() const = 0;
+};
+
+struct WidgetFactory {
+    virtual ~WidgetFactory() = default;
+    virtual std::unique_ptr&lt;Button&gt; createButton() const = 0;
+    virtual std::unique_ptr&lt;Dialog&gt; createDialog() const = 0;
+};
+
+struct LightButton : Button {
+    std::string render() const override { return "light button"; }
+};
+
+struct LightDialog : Dialog {
+    std::string render() const override { return "light dialog"; }
+};
+
+struct DarkButton : Button {
+    std::string render() const override { return "dark button"; }
+};
+
+struct DarkDialog : Dialog {
+    std::string render() const override { return "dark dialog"; }
+};
+
+struct LightFactory : WidgetFactory {
+    std::unique_ptr&lt;Button&gt; createButton() const override { return std::make_unique&lt;LightButton&gt;(); }
+    std::unique_ptr&lt;Dialog&gt; createDialog() const override { return std::make_unique&lt;LightDialog&gt;(); }
+};
+
+struct DarkFactory : WidgetFactory {
+    std::unique_ptr&lt;Button&gt; createButton() const override { return std::make_unique&lt;DarkButton&gt;(); }
+    std::unique_ptr&lt;Dialog&gt; createDialog() const override { return std::make_unique&lt;DarkDialog&gt;(); }
+};
+
+void showScreen(const WidgetFactory& factory) {
+    auto button = factory.createButton();
+    auto dialog = factory.createDialog();
+    std::cout &lt;&lt; button-&gt;render() &lt;&lt; " + " &lt;&lt; dialog-&gt;render() &lt;&lt; '\n';
+}
+
+int main() {
+    LightFactory light;
+    DarkFactory dark;
+    showScreen(light);
+    showScreen(dark);
+}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Button interface{ Render() string }
+type Dialog interface{ Render() string }
+
+type WidgetFactory interface {
+	CreateButton() Button
+	CreateDialog() Dialog
+}
+
+type LightButton struct{}
+
+func (LightButton) Render() string { return "light button" }
+
+type LightDialog struct{}
+
+func (LightDialog) Render() string { return "light dialog" }
+
+type DarkButton struct{}
+
+func (DarkButton) Render() string { return "dark button" }
+
+type DarkDialog struct{}
+
+func (DarkDialog) Render() string { return "dark dialog" }
+
+type LightFactory struct{}
+
+func (LightFactory) CreateButton() Button { return LightButton{} }
+func (LightFactory) CreateDialog() Dialog { return LightDialog{} }
+
+type DarkFactory struct{}
+
+func (DarkFactory) CreateButton() Button { return DarkButton{} }
+func (DarkFactory) CreateDialog() Dialog { return DarkDialog{} }
+
+func showScreen(factory WidgetFactory) {
+	button := factory.CreateButton()
+	dialog := factory.CreateDialog()
+	fmt.Printf("%s + %s\n", button.Render(), dialog.Render())
+}
+
+func main() {
+	showScreen(LightFactory{})
+	showScreen(DarkFactory{})
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+
+class Button(ABC):
+    @abstractmethod
+    def render(self) -&gt; str: ...
+
+
+class Dialog(ABC):
+    @abstractmethod
+    def render(self) -&gt; str: ...
+
+
+class WidgetFactory(ABC):
+    @abstractmethod
+    def create_button(self) -&gt; Button: ...
+
+    @abstractmethod
+    def create_dialog(self) -&gt; Dialog: ...
+
+
+class LightButton(Button):
+    def render(self) -&gt; str:
+        return "light button"
+
+
+class LightDialog(Dialog):
+    def render(self) -&gt; str:
+        return "light dialog"
+
+
+class DarkButton(Button):
+    def render(self) -&gt; str:
+        return "dark button"
+
+
+class DarkDialog(Dialog):
+    def render(self) -&gt; str:
+        return "dark dialog"
+
+
+class LightFactory(WidgetFactory):
+    def create_button(self) -&gt; Button:
+        return LightButton()
+
+    def create_dialog(self) -&gt; Dialog:
+        return LightDialog()
+
+
+class DarkFactory(WidgetFactory):
+    def create_button(self) -&gt; Button:
+        return DarkButton()
+
+    def create_dialog(self) -&gt; Dialog:
+        return DarkDialog()
+
+
+def show_screen(factory: WidgetFactory) -&gt; None:
+    print(f"{factory.create_button().render()} + {factory.create_dialog().render()}")
+
+
+show_screen(LightFactory())
+show_screen(DarkFactory())</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Abstract Factory
+trait UIElement
+
+case class Button(label: String) extends UIElement
+case class Checkbox(label: String) extends UIElement
+
+trait UIFactory {
+  def createButton(label: String): Button
+  def createCheckbox(label: String): Checkbox
+}
+
+object LightThemeFactory extends UIFactory {
+  def createButton(label: String): Button = Button(s"Light Button: $label")
+  def createCheckbox(label: String): Checkbox = Checkbox(s"Light Checkbox: $label")
+}
+
+object DarkThemeFactory extends UIFactory {
+  def createButton(label: String): Button = Button(s"Dark Button: $label")
+  def createCheckbox(label: String): Checkbox = Checkbox(s"Dark Checkbox: $label")
+}
+
+object Main extends App {
+  val lightFactory: UIFactory = LightThemeFactory
+  val darkFactory: UIFactory = DarkThemeFactory
+  
+  println(lightFactory.createButton("OK"))
+  println(darkFactory.createButton("OK"))
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Abstract Factory
+trait UIElement
+
+case class Button(label: String) extends UIElement
+case class Checkbox(label: String) extends UIElement
+
+trait UIFactory:
+  def createButton(label: String): Button
+  def createCheckbox(label: String): Checkbox
+
+object LightThemeFactory extends UIFactory:
+  def createButton(label: String): Button = Button(s"Light Button: $label")
+  def createCheckbox(label: String): Checkbox = Checkbox(s"Light Checkbox: $label")
+
+object DarkThemeFactory extends UIFactory:
+  def createButton(label: String): Button = Button(s"Dark Button: $label")
+  def createCheckbox(label: String): Checkbox = Checkbox(s"Dark Checkbox: $label")
+
+@main def main(): Unit =
+  val lightFactory: UIFactory = LightThemeFactory
+  val darkFactory: UIFactory = DarkThemeFactory
+  
+  println(lightFactory.createButton("OK"))
+  println(darkFactory.createButton("OK"))
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Button {
+  render(): string;
+}
+
+interface Dialog {
+  render(): string;
+}
+
+interface WidgetFactory {
+  createButton(): Button;
+  createDialog(): Dialog;
+}
+
+class LightButton implements Button {
+  render(): string {
+    return 'light button';
+  }
+}
+
+class LightDialog implements Dialog {
+  render(): string {
+    return 'light dialog';
+  }
+}
+
+class DarkButton implements Button {
+  render(): string {
+    return 'dark button';
+  }
+}
+
+class DarkDialog implements Dialog {
+  render(): string {
+    return 'dark dialog';
+  }
+}
+
+class LightFactory implements WidgetFactory {
+  createButton(): Button {
+    return new LightButton();
+  }
+
+  createDialog(): Dialog {
+    return new LightDialog();
+  }
+}
+
+class DarkFactory implements WidgetFactory {
+  createButton(): Button {
+    return new DarkButton();
+  }
+
+  createDialog(): Dialog {
+    return new DarkDialog();
+  }
+}
+
+function showScreen(factory: WidgetFactory): void {
+  console.log(`${factory.createButton().render()} + ${factory.createDialog().render()}`);
+}
+
+showScreen(new LightFactory());
+showScreen(new DarkFactory());</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="builder">
+            <div class="topic-header" onclick="app.toggleTopic('builder')">
+                <h3>Builder</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+struct Report {
+    std::string title;
+    std::vector&lt;std::string&gt; sections;
+};
+
+class ReportBuilder {
+public:
+    ReportBuilder& title(std::string value) {
+        report_.title = std::move(value);
+        return *this;
+    }
+
+    ReportBuilder& section(std::string value) {
+        report_.sections.push_back(std::move(value));
+        return *this;
+    }
+
+    Report build() {
+        return report_;
+    }
+
+private:
+    Report report_;
+};
+
+int main() {
+    Report report = ReportBuilder()
+        .title("Daily Build")
+        .section("tests: green")
+        .section("deploy: staged")
+        .build();
+
+    std::cout &lt;&lt; report.title &lt;&lt; '\n';
+    for (const auto& section : report.sections) {
+        std::cout &lt;&lt; "- " &lt;&lt; section &lt;&lt; '\n';
+    }
+}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Report struct {
+	Title    string
+	Sections []string
+}
+
+type ReportBuilder struct {
+	report Report
+}
+
+func (b *ReportBuilder) Title(value string) *ReportBuilder {
+	b.report.Title = value
+	return b
+}
+
+func (b *ReportBuilder) Section(value string) *ReportBuilder {
+	b.report.Sections = append(b.report.Sections, value)
+	return b
+}
+
+func (b *ReportBuilder) Build() Report {
+	return b.report
+}
+
+func main() {
+	report := (&ReportBuilder{}).
+		Title("Daily Build").
+		Section("tests: green").
+		Section("deploy: staged").
+		Build()
+
+	fmt.Println(report.Title)
+	for _, section := range report.Sections {
+		fmt.Println("-", section)
+	}
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass, field
+
+
+@dataclass
+class Report:
+    title: str = ""
+    sections: list[str] = field(default_factory=list)
+
+
+class ReportBuilder:
+    def __init__(self) -&gt; None:
+        self._report = Report()
+
+    def title(self, value: str) -&gt; "ReportBuilder":
+        self._report.title = value
+        return self
+
+    def section(self, value: str) -&gt; "ReportBuilder":
+        self._report.sections.append(value)
+        return self
+
+    def build(self) -&gt; Report:
+        return self._report
+
+
+report = (
+    ReportBuilder()
+    .title("Daily Build")
+    .section("tests: green")
+    .section("deploy: staged")
+    .build()
+)
+
+print(report.title)
+for section in report.sections:
+    print(f"- {section}")</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Builder
+case class House(
+    walls: String = "",
+    roof: String = "",
+    windows: Int = 0,
+    doors: Int = 0
+)
+
+class HouseBuilder {
+    private var walls: String = ""
+    private var roof: String = ""
+    private var windows: Int = 0
+    private var doors: Int = 0
+
+    def withWalls(w: String): HouseBuilder = {
+        walls = w
+        this
+    }
+
+    def withRoof(r: String): HouseBuilder = {
+        roof = r
+        this
+    }
+
+    def withWindows(w: Int): HouseBuilder = {
+        windows = w
+        this
+    }
+
+    def withDoors(d: Int): HouseBuilder = {
+        doors = d
+        this
+    }
+
+    def build(): House = House(walls, roof, windows, doors)
+}
+
+object Main extends App {
+    val house = new HouseBuilder()
+        .withWalls("Wood")
+        .withRoof("Shingles")
+        .withWindows(8)
+        .withDoors(2)
+        .build()
+
+    println(house)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Builder
+case class House(
+    walls: String = "",
+    roof: String = "",
+    windows: Int = 0,
+    doors: Int = 0
+)
+
+class HouseBuilder:
+    private var walls: String = ""
+    private var roof: String = ""
+    private var windows: Int = 0
+    private var doors: Int = 0
+
+    def withWalls(w: String): HouseBuilder =
+        walls = w
+        this
+
+    def withRoof(r: String): HouseBuilder =
+        roof = r
+        this
+
+    def withWindows(w: Int): HouseBuilder =
+        windows = w
+        this
+
+    def withDoors(d: Int): HouseBuilder =
+        doors = d
+        this
+
+    def build(): House = House(walls, roof, windows, doors)
+
+@main def main(): Unit =
+    val house = new HouseBuilder()
+        .withWalls("Wood")
+        .withRoof("Shingles")
+        .withWindows(8)
+        .withDoors(2)
+        .build()
+
+    println(house)
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>type Report = {
+  title: string;
+  sections: string[];
+};
+
+class ReportBuilder {
+  private report: Report = { title: '', sections: [] };
+
+  title(value: string): this {
+    this.report.title = value;
+    return this;
+  }
+
+  section(value: string): this {
+    this.report.sections.push(value);
+    return this;
+  }
+
+  build(): Report {
+    return this.report;
+  }
+}
+
+const report = new ReportBuilder()
+  .title('Daily Build')
+  .section('tests: green')
+  .section('deploy: staged')
+  .build();
+
+console.log(report.title);
+for (const section of report.sections) {
+  console.log(`- ${section}`);
+}</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="factory_method">
+            <div class="topic-header" onclick="app.toggleTopic('factory_method')">
+                <h3>Factory Method</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+struct Parser {
+    virtual ~Parser() = default;
+    virtual std::string parse() const = 0;
+};
+
+struct JsonParser : Parser {
+    std::string parse() const override { return "parsed json"; }
+};
+
+struct CsvParser : Parser {
+    std::string parse() const override { return "parsed csv"; }
+};
+
+class ImportJob {
+public:
+    virtual ~ImportJob() = default;
+    std::string run() const {
+        return createParser()-&gt;parse();
+    }
+
+private:
+    virtual std::unique_ptr&lt;Parser&gt; createParser() const = 0;
+};
+
+class JsonImportJob : public ImportJob {
+private:
+    std::unique_ptr&lt;Parser&gt; createParser() const override { return std::make_unique&lt;JsonParser&gt;(); }
+};
+
+class CsvImportJob : public ImportJob {
+private:
+    std::unique_ptr&lt;Parser&gt; createParser() const override { return std::make_unique&lt;CsvParser&gt;(); }
+};
+
+int main() {
+    JsonImportJob json;
+    CsvImportJob csv;
+    std::cout &lt;&lt; json.run() &lt;&lt; '\n';
+    std::cout &lt;&lt; csv.run() &lt;&lt; '\n';
+}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Parser interface{ Parse() string }
+
+type JSONParser struct{}
+
+func (JSONParser) Parse() string { return "parsed json" }
+
+type CSVParser struct{}
+
+func (CSVParser) Parse() string { return "parsed csv" }
+
+type ImportJob interface {
+	Run() string
+	createParser() Parser
+}
+
+type JSONImportJob struct{}
+
+func (JSONImportJob) createParser() Parser { return JSONParser{} }
+func (j JSONImportJob) Run() string        { return j.createParser().Parse() }
+
+type CSVImportJob struct{}
+
+func (CSVImportJob) createParser() Parser { return CSVParser{} }
+func (j CSVImportJob) Run() string        { return j.createParser().Parse() }
+
+func main() {
+	jobs := []ImportJob{JSONImportJob{}, CSVImportJob{}}
+	for _, job := range jobs {
+		fmt.Println(job.Run())
+	}
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+
+class Parser(ABC):
+    @abstractmethod
+    def parse(self) -&gt; str: ...
+
+
+class JsonParser(Parser):
+    def parse(self) -&gt; str:
+        return "parsed json"
+
+
+class CsvParser(Parser):
+    def parse(self) -&gt; str:
+        return "parsed csv"
+
+
+class ImportJob(ABC):
+    def run(self) -&gt; str:
+        return self.create_parser().parse()
+
+    @abstractmethod
+    def create_parser(self) -&gt; Parser: ...
+
+
+class JsonImportJob(ImportJob):
+    def create_parser(self) -&gt; Parser:
+        return JsonParser()
+
+
+class CsvImportJob(ImportJob):
+    def create_parser(self) -&gt; Parser:
+        return CsvParser()
+
+
+for job in (JsonImportJob(), CsvImportJob()):
+    print(job.run())</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Factory Method
+trait Vehicle {
+    def drive(): String
+}
+
+case class Car() extends Vehicle {
+    def drive(): String = "Driving a car on road"
+}
+
+case class Truck() extends Vehicle {
+    def drive(): String = "Driving a truck on highway"
+}
+
+trait Factory {
+    def createVehicle(): Vehicle
+}
+
+object CarFactory extends Factory {
+    def createVehicle(): Vehicle = Car()
+}
+
+object TruckFactory extends Factory {
+    def createVehicle(): Vehicle = Truck()
+}
+
+object Main extends App {
+    val carFactory: Factory = CarFactory
+    val truckFactory: Factory = TruckFactory
+    
+    println(carFactory.createVehicle().drive())
+    println(truckFactory.createVehicle().drive())
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Factory Method
+trait Vehicle:
+    def drive(): String
+
+case class Car() extends Vehicle:
+    def drive(): String = "Driving a car on road"
+
+case class Truck() extends Vehicle:
+    def drive(): String = "Driving a truck on highway"
+
+trait Factory:
+    def createVehicle(): Vehicle
+
+object CarFactory extends Factory:
+    def createVehicle(): Vehicle = Car()
+
+object TruckFactory extends Factory:
+    def createVehicle(): Vehicle = Truck()
+
+@main def main(): Unit =
+    val carFactory: Factory = CarFactory
+    val truckFactory: Factory = TruckFactory
+    
+    println(carFactory.createVehicle().drive())
+    println(truckFactory.createVehicle().drive())
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Parser {
+  parse(): string;
+}
+
+class JsonParser implements Parser {
+  parse(): string {
+    return 'parsed json';
+  }
+}
+
+class CsvParser implements Parser {
+  parse(): string {
+    return 'parsed csv';
+  }
+}
+
+abstract class ImportJob {
+  run(): string {
+    return this.createParser().parse();
+  }
+
+  protected abstract createParser(): Parser;
+}
+
+class JsonImportJob extends ImportJob {
+  protected createParser(): Parser {
+    return new JsonParser();
+  }
+}
+
+class CsvImportJob extends ImportJob {
+  protected createParser(): Parser {
+    return new CsvParser();
+  }
+}
+
+for (const job of [new JsonImportJob(), new CsvImportJob()]) {
+  console.log(job.run());
+}</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="prototype">
+            <div class="topic-header" onclick="app.toggleTopic('prototype')">
+                <h3>Prototype</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+class Shape {
+public:
+    explicit Shape(std::string color) : color_(std::move(color)) {}
+    virtual ~Shape() = default;
+    virtual std::unique_ptr&lt;Shape&gt; clone() const = 0;
+    virtual void describe() const = 0;
+
+protected:
+    std::string color_;
+};
+
+class Circle : public Shape {
+public:
+    Circle(std::string color, int radius) : Shape(std::move(color)), radius_(radius) {}
+
+    std::unique_ptr&lt;Shape&gt; clone() const override {
+        return std::make_unique&lt;Circle&gt;(*this);
+    }
+
+    void describe() const override {
+        std::cout &lt;&lt; color_ &lt;&lt; " circle radius=" &lt;&lt; radius_ &lt;&lt; '\n';
+    }
+
+private:
+    int radius_;
+};
+
+int main() {
+    Circle templateCircle("blue", 12);
+    auto copy = templateCircle.clone();
+    templateCircle.describe();
+    copy-&gt;describe();
+}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Prototype interface {
+	Clone() Prototype
+	Describe()
+}
+
+type Report struct {
+	Title string
+	Tags  []string
+}
+
+func (r Report) Clone() Prototype {
+	tags := append([]string(nil), r.Tags...)
+	return Report{Title: r.Title, Tags: tags}
+}
+
+func (r Report) Describe() {
+	fmt.Printf("%s %v\n", r.Title, r.Tags)
+}
+
+func main() {
+	template := Report{Title: "weekly", Tags: []string{"ops", "summary"}}
+	copy := template.Clone()
+	template.Describe()
+	copy.Describe()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+from copy import deepcopy
+
+
+@dataclass
+class Report:
+    title: str
+    tags: list[str]
+
+    def clone(self) -&gt; "Report":
+        return deepcopy(self)
+
+
+template = Report("weekly", ["ops", "summary"])
+copy = template.clone()
+
+print(template)
+print(copy)</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Prototype
+trait Prototype {
+    def clone(): Prototype
+}
+
+case class Document(title: String, content: String) extends Prototype {
+    def clone(): Document = this.copy()
+}
+
+object Main extends App {
+    val original = Document("Report", "Initial content")
+    val copy1 = original.clone()
+    val copy2 = original.clone()
+    
+    println(original)
+    println(copy1)
+    println(copy2)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Prototype
+trait Prototype:
+    def clone(): Prototype
+
+case class Document(title: String, content: String) extends Prototype:
+    def clone(): Document = this.copy()
+
+@main def main(): Unit =
+    val original = Document("Report", "Initial content")
+    val copy1 = original.clone()
+    val copy2 = original.clone()
+    
+    println(original)
+    println(copy1)
+    println(copy2)
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Prototype&lt;T&gt; {
+  clone(): T;
+}
+
+class Report implements Prototype&lt;Report&gt; {
+  constructor(
+    public readonly title: string,
+    public readonly tags: string[],
+  ) {}
+
+  clone(): Report {
+    return new Report(this.title, [...this.tags]);
+  }
+}
+
+const template = new Report('weekly', ['ops', 'summary']);
+const copy = template.clone();
+
+console.log(template);
+console.log(copy);</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="singleton">
+            <div class="topic-header" onclick="app.toggleTopic('singleton')">
+                <h3>Singleton</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><p  class="">Example implementation across language variants.</p><div  class="note note-info ">Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Config {
+public:
+    static Config& instance() {
+        static Config config;
+        return config;
+    }
+
+    void setEnv(std::string value) {
+        env_ = std::move(value);
+    }
+
+    const std::string& env() const {
+        return env_;
+    }
+
+private:
+    Config() = default;
+    std::string env_ = "dev";
+};
+
+int main() {
+    Config::instance().setEnv("prod");
+    std::cout &lt;&lt; Config::instance().env() &lt;&lt; '\n';
+}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+type Config struct {
+	Env string
+}
+
+var (
+	once   sync.Once
+	shared *Config
+)
+
+func Instance() *Config {
+	once.Do(func() {
+		shared = &Config{Env: "dev"}
+	})
+	return shared
+}
+
+func main() {
+	Instance().Env = "prod"
+	fmt.Println(Instance().Env)
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Config:
+    _instance: "Config | None" = None
+
+    def __new__(cls) -&gt; "Config":
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.env = "dev"
+        return cls._instance
+
+
+Config().env = "prod"
+print(Config().env)</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Singleton
+object Config {
+    private var env: String = "dev"
+
+    def getEnv(): String = env
+    
+    def setEnv(e: String): Unit = {
+        env = e
+    }
+}
+
+object Main extends App {
+    println(Config.getEnv())
+    Config.setEnv("prod")
+    println(Config.getEnv())
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Singleton
+object Config:
+    private var env: String = "dev"
+
+    def getEnv(): String = env
+    
+    def setEnv(e: String): Unit =
+        env = e
+
+@main def main(): Unit =
+    println(Config.getEnv())
+    Config.setEnv("prod")
+    println(Config.getEnv())
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Config {
+  private static shared: Config | null = null;
+
+  private constructor(public env: string) {}
+
+  static instance(): Config {
+    if (!Config.shared) {
+      Config.shared = new Config('dev');
+    }
+    return Config.shared;
+  }
+}
+
+Config.instance().env = 'prod';
+console.log(Config.instance().env);</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="object_pool">
+            <div class="topic-header" onclick="app.toggleTopic('object_pool')">
+                <h3>Object Pool</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_object_pool" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="lazy_initialization">
+            <div class="topic-header" onclick="app.toggleTopic('lazy_initialization')">
+                <h3>Lazy Initialization</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_lazy_initialization" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="multiton">
+            <div class="topic-header" onclick="app.toggleTopic('multiton')">
+                <h3>Multiton</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_multiton" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section  minimal-block" id="structural_patterns">
+            <div class="topic-header" onclick="app.toggleTopic('structural_patterns')">
+                <h2>Structural patterns</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section  " id="adapter">
+            <div class="topic-header" onclick="app.toggleTopic('adapter')">
+                <h3>Adapter</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+struct Printer {
+    virtual ~Printer() = default;
+    virtual void print(const std::string& message) const = 0;
+};
+
+class JsonLogger {
+public:
+    void writeJson(const std::string& payload) const {
+        std::cout &lt;&lt; payload &lt;&lt; '\n';
+    }
+};
+
+class JsonLoggerAdapter : public Printer {
+public:
+    explicit JsonLoggerAdapter(const JsonLogger& logger) : logger_(logger) {}
+
+    void print(const std::string& message) const override {
+        logger_.writeJson("{\"message\":\"" + message + "\"}");
+    }
+
+private:
+    const JsonLogger& logger_;
+};
+
+int main() {
+    JsonLogger logger;
+    JsonLoggerAdapter printer(logger);
+    printer.print("build finished");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Printer interface {
+	Print(message string)
+}
+
+type JSONLogger struct{}
+
+func (JSONLogger) WriteJSON(payload string) {
+	fmt.Println(payload)
+}
+
+type JSONLoggerAdapter struct {
+	logger JSONLogger
+}
+
+func (a JSONLoggerAdapter) Print(message string) {
+	a.logger.WriteJSON(fmt.Sprintf("{\"message\":\"%s\"}", message))
+}
+
+func main() {
+	printer := JSONLoggerAdapter{logger: JSONLogger{}}
+	printer.Print("build finished")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+
+
+class Printer:
+    def print(self, message: str) -&gt; None:
+        raise NotImplementedError
+
+
+class JsonLogger:
+    def write_json(self, payload: str) -&gt; None:
+        print(payload)
+
+
+@dataclass
+class JsonLoggerAdapter(Printer):
+    logger: JsonLogger
+
+    def print(self, message: str) -&gt; None:
+        self.logger.write_json(f'{{"message":"{message}"}}')
+
+
+JsonLoggerAdapter(JsonLogger()).print("build finished")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Adapter
+trait Printer {
+    def printText(text: String): Unit
+}
+
+case class TextPrinter() extends Printer {
+    def printText(text: String): Unit = println(s"Printing: $text")
+}
+
+class JSONObject(val data: Map[String, String])
+
+class JSONToPrinterAdapter(json: JSONObject) extends Printer {
+    def printText(text: String): Unit = {
+        println(s"Adapted JSON: ${json.data.toString()}")
+    }
+}
+
+object Main extends App {
+    val textPrinter: Printer = TextPrinter()
+    textPrinter.printText("Hello")
+    
+    val json = JSONObject(Map("key" -&gt; "value"))
+    val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
+    adaptedPrinter.printText("")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Adapter
+trait Printer:
+    def printText(text: String): Unit
+
+case class TextPrinter() extends Printer:
+    def printText(text: String): Unit = println(s"Printing: $text")
+
+class JSONObject(val data: Map[String, String])
+
+class JSONToPrinterAdapter(json: JSONObject) extends Printer:
+    def printText(text: String): Unit =
+        println(s"Adapted JSON: ${json.data.toString()}")
+
+@main def main(): Unit =
+    val textPrinter: Printer = TextPrinter()
+    textPrinter.printText("Hello")
+    
+    val json = JSONObject(Map("key" -&gt; "value"))
+    val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
+    adaptedPrinter.printText("")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Printer {
+  print(message: string): void;
+}
+
+class JsonLogger {
+  writeJson(payload: string): void {
+    console.log(payload);
+  }
+}
+
+class JsonLoggerAdapter implements Printer {
+  constructor(private readonly logger: JsonLogger) {}
+
+  print(message: string): void {
+    this.logger.writeJson(`{"message":"${message}"}`);
+  }
+}
+
+new JsonLoggerAdapter(new JsonLogger()).print('build finished');
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="bridge">
+            <div class="topic-header" onclick="app.toggleTopic('bridge')">
+                <h3>Bridge</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+struct Sender {
+    virtual ~Sender() = default;
+    virtual void send(const std::string& message) const = 0;
+};
+
+struct EmailSender : Sender {
+    void send(const std::string& message) const override {
+        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '\n';
+    }
+};
+
+struct SmsSender : Sender {
+    void send(const std::string& message) const override {
+        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '\n';
+    }
+};
+
+class Notification {
+public:
+    explicit Notification(const Sender& sender) : sender_(sender) {}
+    virtual ~Notification() = default;
+    virtual void notify(const std::string& message) const = 0;
+
+protected:
+    const Sender& sender_;
+};
+
+class AlertNotification : public Notification {
+public:
+    using Notification::Notification;
+
+    void notify(const std::string& message) const override {
+        sender_.send("alert -&gt; " + message);
+    }
+};
+
+int main() {
+    EmailSender email;
+    SmsSender sms;
+    AlertNotification(email).notify("CPU high");
+    AlertNotification(sms).notify("CPU high");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Sender interface {
+	Send(message string)
+}
+
+type EmailSender struct{}
+
+func (EmailSender) Send(message string) {
+	fmt.Println("email:", message)
+}
+
+type SMSSender struct{}
+
+func (SMSSender) Send(message string) {
+	fmt.Println("sms:", message)
+}
+
+type AlertNotification struct {
+	sender Sender
+}
+
+func (n AlertNotification) Notify(message string) {
+	n.sender.Send("alert -&gt; " + message)
+}
+
+func main() {
+	AlertNotification{sender: EmailSender{}}.Notify("CPU high")
+	AlertNotification{sender: SMSSender{}}.Notify("CPU high")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+from typing import Protocol
+
+
+class Sender(Protocol):
+    def send(self, message: str) -&gt; None: ...
+
+
+class EmailSender:
+    def send(self, message: str) -&gt; None:
+        print(f"email: {message}")
+
+
+class SmsSender:
+    def send(self, message: str) -&gt; None:
+        print(f"sms: {message}")
+
+
+@dataclass
+class AlertNotification:
+    sender: Sender
+
+    def notify(self, message: str) -&gt; None:
+        self.sender.send(f"alert -&gt; {message}")
+
+
+AlertNotification(EmailSender()).notify("CPU high")
+AlertNotification(SmsSender()).notify("CPU high")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Bridge
+trait Sender {
+    def send(msg: String): Unit
+}
+
+case class EmailSender() extends Sender {
+    def send(msg: String): Unit = println(s"Email: $msg")
+}
+
+case class SMSSender() extends Sender {
+    def send(msg: String): Unit = println(s"SMS: $msg")
+}
+
+abstract class Notification(sender: Sender) {
+    def notify(msg: String): Unit = sender.send(msg)
+}
+
+class Alert(sender: Sender) extends Notification(sender)
+
+object Main extends App {
+    val emailSender = EmailSender()
+    val smsSender = SMSSender()
+    
+    val emailAlert = new Alert(emailSender)
+    val smsAlert = new Alert(smsSender)
+    
+    emailAlert.notify("Test alert")
+    smsAlert.notify("Test alert")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Bridge
+trait Sender:
+    def send(msg: String): Unit
+
+case class EmailSender() extends Sender:
+    def send(msg: String): Unit = println(s"Email: $msg")
+
+case class SMSSender() extends Sender:
+    def send(msg: String): Unit = println(s"SMS: $msg")
+
+abstract class Notification(sender: Sender) {
+    def notify(msg: String): Unit = sender.send(msg)
+}
+
+class Alert(sender: Sender) extends Notification(sender)
+
+@main def main(): Unit =
+    val emailSender = EmailSender()
+    val smsSender = SMSSender()
+    
+    val emailAlert = new Alert(emailSender)
+    val smsAlert = new Alert(smsSender)
+    
+    emailAlert.notify("Test alert")
+    smsAlert.notify("Test alert")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Sender {
+  send(message: string): void;
+}
+
+class EmailSender implements Sender {
+  send(message: string): void {
+    console.log(`email: ${message}`);
+  }
+}
+
+class SmsSender implements Sender {
+  send(message: string): void {
+    console.log(`sms: ${message}`);
+  }
+}
+
+class AlertNotification {
+  constructor(private readonly sender: Sender) {}
+
+  notify(message: string): void {
+    this.sender.send(`alert -&gt; ${message}`);
+  }
+}
+
+new AlertNotification(new EmailSender()).notify('CPU high');
+new AlertNotification(new SmsSender()).notify('CPU high');
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="composite">
+            <div class="topic-header" onclick="app.toggleTopic('composite')">
+                <h3>Composite</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;numeric&gt;
+#include &lt;vector&gt;
+
+struct Node {
+    virtual ~Node() = default;
+    virtual int totalSize() const = 0;
+};
+
+struct File : Node {
+    explicit File(int size) : size_(size) {}
+    int totalSize() const override { return size_; }
+    int size_;
+};
+
+class Folder : public Node {
+public:
+    void add(std::unique_ptr&lt;Node&gt; child) {
+        children_.push_back(std::move(child));
+    }
+
+    int totalSize() const override {
+        int sum = 0;
+        for (const auto& child : children_) {
+            sum += child-&gt;totalSize();
+        }
+        return sum;
+    }
+
+private:
+    std::vector&lt;std::unique_ptr&lt;Node&gt;&gt; children_;
+};
+
+int main() {
+    auto root = std::make_unique&lt;Folder&gt;();
+    root-&gt;add(std::make_unique&lt;File&gt;(5));
+    auto sub = std::make_unique&lt;Folder&gt;();
+    sub-&gt;add(std::make_unique&lt;File&gt;(7));
+    sub-&gt;add(std::make_unique&lt;File&gt;(3));
+    root-&gt;add(std::move(sub));
+    std::cout &lt;&lt; root-&gt;totalSize() &lt;&lt; '\n';
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Node interface {
+	TotalSize() int
+}
+
+type File struct {
+	size int
+}
+
+func (f File) TotalSize() int { return f.size }
+
+type Folder struct {
+	children []Node
+}
+
+func (f *Folder) Add(child Node) {
+	f.children = append(f.children, child)
+}
+
+func (f Folder) TotalSize() int {
+	total := 0
+	for _, child := range f.children {
+		total += child.TotalSize()
+	}
+	return total
+}
+
+func main() {
+	root := &Folder{}
+	root.Add(File{size: 5})
+	sub := &Folder{}
+	sub.Add(File{size: 7})
+	sub.Add(File{size: 3})
+	root.Add(sub)
+	fmt.Println(root.TotalSize())
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass, field
+from typing import Protocol
+
+
+class Node(Protocol):
+    def total_size(self) -&gt; int: ...
+
+
+@dataclass
+class File:
+    size: int
+
+    def total_size(self) -&gt; int:
+        return self.size
+
+
+@dataclass
+class Folder:
+    children: list[Node] = field(default_factory=list)
+
+    def add(self, child: Node) -&gt; None:
+        self.children.append(child)
+
+    def total_size(self) -&gt; int:
+        return sum(child.total_size() for child in self.children)
+
+
+root = Folder()
+root.add(File(5))
+sub = Folder([File(7), File(3)])
+root.add(sub)
+print(root.total_size())
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Composite
+trait FileSystemNode {
+    def getSize(): Long
+}
+
+case class File(name: String, size: Long) extends FileSystemNode {
+    def getSize(): Long = size
+}
+
+class Folder(name: String) extends FileSystemNode {
+    private var children: List[FileSystemNode] = List()
+    
+    def add(node: FileSystemNode): Unit = {
+        children = children :+ node
+    }
+    
+    def getSize(): Long = children.map(_.getSize()).sum
+}
+
+object Main extends App {
+    val file1 = File("file1.txt", 100)
+    val file2 = File("file2.txt", 200)
+    
+    val folder = new Folder("documents")
+    folder.add(file1)
+    folder.add(file2)
+    
+    println(s"Folder size: ${folder.getSize()}")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Composite
+trait FileSystemNode:
+    def getSize(): Long
+
+case class File(name: String, size: Long) extends FileSystemNode:
+    def getSize(): Long = size
+
+class Folder(name: String) extends FileSystemNode:
+    private var children: List[FileSystemNode] = List()
+    
+    def add(node: FileSystemNode): Unit =
+        children = children :+ node
+    
+    def getSize(): Long = children.map(_.getSize()).sum
+
+@main def main(): Unit =
+    val file1 = File("file1.txt", 100)
+    val file2 = File("file2.txt", 200)
+    
+    val folder = new Folder("documents")
+    folder.add(file1)
+    folder.add(file2)
+    
+    println(s"Folder size: ${folder.getSize()}")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Node {
+  totalSize(): number;
+}
+
+class FileNode implements Node {
+  constructor(private readonly size: number) {}
+
+  totalSize(): number {
+    return this.size;
+  }
+}
+
+class Folder implements Node {
+  private readonly children: Node[] = [];
+
+  add(child: Node): void {
+    this.children.push(child);
+  }
+
+  totalSize(): number {
+    return this.children.reduce((sum, child) =&gt; sum + child.totalSize(), 0);
+  }
+}
+
+const root = new Folder();
+root.add(new FileNode(5));
+const sub = new Folder();
+sub.add(new FileNode(7));
+sub.add(new FileNode(3));
+root.add(sub);
+console.log(root.totalSize());
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="decorator">
+            <div class="topic-header" onclick="app.toggleTopic('decorator')">
+                <h3>Decorator</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+struct Notifier {
+    virtual ~Notifier() = default;
+    virtual void send(const std::string& message) const = 0;
+};
+
+struct EmailNotifier : Notifier {
+    void send(const std::string& message) const override {
+        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '\n';
+    }
+};
+
+class NotifierDecorator : public Notifier {
+public:
+    explicit NotifierDecorator(std::unique_ptr&lt;Notifier&gt; inner) : inner_(std::move(inner)) {}
+
+protected:
+    std::unique_ptr&lt;Notifier&gt; inner_;
+};
+
+class SmsDecorator : public NotifierDecorator {
+public:
+    using NotifierDecorator::NotifierDecorator;
+
+    void send(const std::string& message) const override {
+        inner_-&gt;send(message);
+        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '\n';
+    }
+};
+
+int main() {
+    auto notifier = std::make_unique&lt;SmsDecorator&gt;(std::make_unique&lt;EmailNotifier&gt;());
+    notifier-&gt;send("deployment done");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Notifier interface {
+	Send(message string)
+}
+
+type EmailNotifier struct{}
+
+func (EmailNotifier) Send(message string) {
+	fmt.Println("email:", message)
+}
+
+type SMSDecorator struct {
+	inner Notifier
+}
+
+func (d SMSDecorator) Send(message string) {
+	d.inner.Send(message)
+	fmt.Println("sms:", message)
+}
+
+func main() {
+	notifier := SMSDecorator{inner: EmailNotifier{}}
+	notifier.Send("deployment done")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+from typing import Protocol
+
+
+class Notifier(Protocol):
+    def send(self, message: str) -&gt; None: ...
+
+
+class EmailNotifier:
+    def send(self, message: str) -&gt; None:
+        print(f"email: {message}")
+
+
+@dataclass
+class SmsDecorator:
+    inner: Notifier
+
+    def send(self, message: str) -&gt; None:
+        self.inner.send(message)
+        print(f"sms: {message}")
+
+
+SmsDecorator(EmailNotifier()).send("deployment done")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Decorator
+trait Notification {
+    def send(): Unit
+}
+
+class BasicNotification extends Notification {
+    def send(): Unit = print("Sending notification")
+}
+
+class EmailNotification(notif: Notification) extends Notification {
+    def send(): Unit = {
+        notif.send()
+        print(" + Email")
+    }
+}
+
+class SMSNotification(notif: Notification) extends Notification {
+    def send(): Unit = {
+        notif.send()
+        print(" + SMS")
+    }
+}
+
+object Main extends App {
+    var notif: Notification = new BasicNotification()
+    notif = new EmailNotification(notif)
+    notif = new SMSNotification(notif)
+    
+    notif.send()
+    println()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Decorator
+trait Notification:
+    def send(): Unit
+
+class BasicNotification extends Notification:
+    def send(): Unit = print("Sending notification")
+
+class EmailNotification(notif: Notification) extends Notification:
+    def send(): Unit =
+        notif.send()
+        print(" + Email")
+
+class SMSNotification(notif: Notification) extends Notification:
+    def send(): Unit =
+        notif.send()
+        print(" + SMS")
+
+@main def main(): Unit =
+    var notif: Notification = new BasicNotification()
+    notif = new EmailNotification(notif)
+    notif = new SMSNotification(notif)
+    
+    notif.send()
+    println()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Notifier {
+  send(message: string): void;
+}
+
+class EmailNotifier implements Notifier {
+  send(message: string): void {
+    console.log(`email: ${message}`);
+  }
+}
+
+class SmsDecorator implements Notifier {
+  constructor(private readonly inner: Notifier) {}
+
+  send(message: string): void {
+    this.inner.send(message);
+    console.log(`sms: ${message}`);
+  }
+}
+
+new SmsDecorator(new EmailNotifier()).send('deployment done');
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="facade">
+            <div class="topic-header" onclick="app.toggleTopic('facade')">
+                <h3>Facade</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+struct Compiler {
+    void run() const { std::cout &lt;&lt; "compile\n"; }
+};
+
+struct TestRunner {
+    void run() const { std::cout &lt;&lt; "test\n"; }
+};
+
+struct Packager {
+    void run() const { std::cout &lt;&lt; "package\n"; }
+};
+
+class ReleaseFacade {
+public:
+    void deploy() const {
+        compiler_.run();
+        tests_.run();
+        packager_.run();
+    }
+
+private:
+    Compiler compiler_;
+    TestRunner tests_;
+    Packager packager_;
+};
+
+int main() {
+    ReleaseFacade().deploy();
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Compiler struct{}
+
+func (Compiler) Run() { fmt.Println("compile") }
+
+type TestRunner struct{}
+
+func (TestRunner) Run() { fmt.Println("test") }
+
+type Packager struct{}
+
+func (Packager) Run() { fmt.Println("package") }
+
+type ReleaseFacade struct {
+	compiler Compiler
+	tests    TestRunner
+	packager Packager
+}
+
+func (f ReleaseFacade) Deploy() {
+	f.compiler.Run()
+	f.tests.Run()
+	f.packager.Run()
+}
+
+func main() {
+	ReleaseFacade{}.Deploy()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Compiler:
+    def run(self) -&gt; None:
+        print("compile")
+
+
+class TestRunner:
+    def run(self) -&gt; None:
+        print("test")
+
+
+class Packager:
+    def run(self) -&gt; None:
+        print("package")
+
+
+class ReleaseFacade:
+    def __init__(self) -&gt; None:
+        self.compiler = Compiler()
+        self.tests = TestRunner()
+        self.packager = Packager()
+
+    def deploy(self) -&gt; None:
+        self.compiler.run()
+        self.tests.run()
+        self.packager.run()
+
+
+ReleaseFacade().deploy()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Facade
+class Compiler {
+    def compile(): Unit = println("Compiling code...")
+}
+
+class Tester {
+    def test(): Unit = println("Running tests...")
+}
+
+class Deployer {
+    def deploy(): Unit = println("Deploying package...")
+}
+
+class BuildFacade {
+    private val compiler = new Compiler()
+    private val tester = new Tester()
+    private val deployer = new Deployer()
+    
+    def build(): Unit = {
+        compiler.compile()
+        tester.test()
+        deployer.deploy()
+    }
+}
+
+object Main extends App {
+    val facade = new BuildFacade()
+    facade.build()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Facade
+class Compiler:
+    def compile(): Unit = println("Compiling code...")
+
+class Tester:
+    def test(): Unit = println("Running tests...")
+
+class Deployer:
+    def deploy(): Unit = println("Deploying package...")
+
+class BuildFacade:
+    private val compiler = new Compiler()
+    private val tester = new Tester()
+    private val deployer = new Deployer()
+    
+    def build(): Unit =
+        compiler.compile()
+        tester.test()
+        deployer.deploy()
+
+@main def main(): Unit =
+    val facade = new BuildFacade()
+    facade.build()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Compiler {
+  run(): void {
+    console.log('compile');
+  }
+}
+
+class TestRunner {
+  run(): void {
+    console.log('test');
+  }
+}
+
+class Packager {
+  run(): void {
+    console.log('package');
+  }
+}
+
+class ReleaseFacade {
+  private readonly compiler = new Compiler();
+  private readonly tests = new TestRunner();
+  private readonly packager = new Packager();
+
+  deploy(): void {
+    this.compiler.run();
+    this.tests.run();
+    this.packager.run();
+  }
+}
+
+new ReleaseFacade().deploy();
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="flyweight">
+            <div class="topic-header" onclick="app.toggleTopic('flyweight')">
+                <h3>Flyweight</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+
+struct GlyphStyle {
+    explicit GlyphStyle(std::string font) : font(std::move(font)) {}
+    std::string font;
+};
+
+class StyleFactory {
+public:
+    const GlyphStyle* get(const std::string& font) {
+        auto it = styles_.find(font);
+        if (it == styles_.end()) {
+            it = styles_.emplace(font, std::make_unique&lt;GlyphStyle&gt;(font)).first;
+        }
+        return it-&gt;second.get();
+    }
+
+private:
+    std::unordered_map&lt;std::string, std::unique_ptr&lt;GlyphStyle&gt;&gt; styles_;
+};
+
+int main() {
+    StyleFactory factory;
+    const GlyphStyle* first = factory.get("mono-12");
+    const GlyphStyle* second = factory.get("mono-12");
+    std::cout &lt;&lt; std::boolalpha &lt;&lt; (first == second) &lt;&lt; '\n';
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type GlyphStyle struct {
+	font string
+}
+
+type StyleFactory struct {
+	styles map[string]*GlyphStyle
+}
+
+func NewStyleFactory() *StyleFactory {
+	return &StyleFactory{styles: map[string]*GlyphStyle{}}
+}
+
+func (f *StyleFactory) Get(font string) *GlyphStyle {
+	if style, ok := f.styles[font]; ok {
+		return style
+	}
+	style := &GlyphStyle{font: font}
+	f.styles[font] = style
+	return style
+}
+
+func main() {
+	factory := NewStyleFactory()
+	first := factory.Get("mono-12")
+	second := factory.Get("mono-12")
+	fmt.Println(first == second)
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class GlyphStyle:
+    def __init__(self, font: str) -&gt; None:
+        self.font = font
+
+
+class StyleFactory:
+    def __init__(self) -&gt; None:
+        self._styles: dict[str, GlyphStyle] = {}
+
+    def get(self, font: str) -&gt; GlyphStyle:
+        if font not in self._styles:
+            self._styles[font] = GlyphStyle(font)
+        return self._styles[font]
+
+
+factory = StyleFactory()
+first = factory.get("mono-12")
+second = factory.get("mono-12")
+print(first is second)
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Flyweight
+case class GlyphStyle(font: String, size: Int)
+
+class Glyph(char: Char, style: GlyphStyle) {
+    def render(): Unit = println(s"$char in ${style.font}")
+}
+
+class GlyphFactory {
+    private var cache: Map[GlyphStyle, GlyphStyle] = Map()
+    
+    def getStyle(font: String, size: Int): GlyphStyle = {
+        val key = GlyphStyle(font, size)
+        cache.getOrElse(key, {
+            cache = cache + (key -&gt; key)
+            key
+        })
+    }
+}
+
+object Main extends App {
+    val factory = new GlyphFactory()
+    
+    val style1 = factory.getStyle("Arial", 12)
+    val style2 = factory.getStyle("Arial", 12)
+    
+    val glyph1 = new Glyph('A', style1)
+    val glyph2 = new Glyph('B', style2)
+    
+    glyph1.render()
+    glyph2.render()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Flyweight
+case class GlyphStyle(font: String, size: Int)
+
+class Glyph(char: Char, style: GlyphStyle):
+    def render(): Unit = println(s"$char in ${style.font}")
+
+class GlyphFactory:
+    private var cache: Map[GlyphStyle, GlyphStyle] = Map()
+    
+    def getStyle(font: String, size: Int): GlyphStyle =
+        val key = GlyphStyle(font, size)
+        cache.getOrElse(key, {
+            cache = cache + (key -&gt; key)
+            key
+        })
+
+@main def main(): Unit =
+    val factory = new GlyphFactory()
+    
+    val style1 = factory.getStyle("Arial", 12)
+    val style2 = factory.getStyle("Arial", 12)
+    
+    val glyph1 = new Glyph('A', style1)
+    val glyph2 = new Glyph('B', style2)
+    
+    glyph1.render()
+    glyph2.render()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class GlyphStyle {
+  constructor(public readonly font: string) {}
+}
+
+class StyleFactory {
+  private readonly styles = new Map&lt;string, GlyphStyle&gt;();
+
+  get(font: string): GlyphStyle {
+    const existing = this.styles.get(font);
+    if (existing) {
+      return existing;
+    }
+    const created = new GlyphStyle(font);
+    this.styles.set(font, created);
+    return created;
+  }
+}
+
+const factory = new StyleFactory();
+const first = factory.get('mono-12');
+const second = factory.get('mono-12');
+console.log(first === second);
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="proxy">
+            <div class="topic-header" onclick="app.toggleTopic('proxy')">
+                <h3>Proxy</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+struct Image {
+    virtual ~Image() = default;
+    virtual void display() = 0;
+};
+
+class RealImage : public Image {
+public:
+    RealImage() {
+        std::cout &lt;&lt; "load image\n";
+    }
+
+    void display() override {
+        std::cout &lt;&lt; "display image\n";
+    }
+};
+
+class ImageProxy : public Image {
+public:
+    void display() override {
+        if (!real_) {
+            real_ = std::make_unique&lt;RealImage&gt;();
+        }
+        real_-&gt;display();
+    }
+
+private:
+    std::unique_ptr&lt;RealImage&gt; real_;
+};
+
+int main() {
+    ImageProxy proxy;
+    proxy.display();
+    proxy.display();
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Image interface {
+	Display()
+}
+
+type RealImage struct{}
+
+func NewRealImage() *RealImage {
+	fmt.Println("load image")
+	return &RealImage{}
+}
+
+func (RealImage) Display() {
+	fmt.Println("display image")
+}
+
+type ImageProxy struct {
+	real *RealImage
+}
+
+func (p *ImageProxy) Display() {
+	if p.real == nil {
+		p.real = NewRealImage()
+	}
+	p.real.Display()
+}
+
+func main() {
+	proxy := &ImageProxy{}
+	proxy.Display()
+	proxy.Display()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class RealImage:
+    def __init__(self) -&gt; None:
+        print("load image")
+
+    def display(self) -&gt; None:
+        print("display image")
+
+
+class ImageProxy:
+    def __init__(self) -&gt; None:
+        self._real: RealImage | None = None
+
+    def display(self) -&gt; None:
+        if self._real is None:
+            self._real = RealImage()
+        self._real.display()
+
+
+proxy = ImageProxy()
+proxy.display()
+proxy.display()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Proxy
+trait Image {
+    def display(): Unit
+}
+
+class RealImage(filename: String) extends Image {
+    private def loadFromDisk(): Unit = println(s"Loading $filename from disk")
+    
+    def display(): Unit = {
+        loadFromDisk()
+        println(s"Displaying $filename")
+    }
+}
+
+class ImageProxy(filename: String) extends Image {
+    private var realImage: Option[RealImage] = None
+    
+    def display(): Unit = {
+        if (realImage.isEmpty) {
+            realImage = Some(new RealImage(filename))
+        }
+        realImage.get.display()
+    }
+}
+
+object Main extends App {
+    val image: Image = new ImageProxy("photo.jpg")
+    image.display()
+    image.display()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Proxy
+trait Image:
+    def display(): Unit
+
+class RealImage(filename: String) extends Image:
+    private def loadFromDisk(): Unit = println(s"Loading $filename from disk")
+    
+    def display(): Unit =
+        loadFromDisk()
+        println(s"Displaying $filename")
+
+class ImageProxy(filename: String) extends Image:
+    private var realImage: Option[RealImage] = None
+    
+    def display(): Unit =
+        if (realImage.isEmpty) {
+            realImage = Some(new RealImage(filename))
+        }
+        realImage.get.display()
+
+@main def main(): Unit =
+    val image: Image = new ImageProxy("photo.jpg")
+    image.display()
+    image.display()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class RealImage {
+  constructor() {
+    console.log('load image');
+  }
+
+  display(): void {
+    console.log('display image');
+  }
+}
+
+class ImageProxy {
+  private real: RealImage | null = null;
+
+  display(): void {
+    if (!this.real) {
+      this.real = new RealImage();
+    }
+    this.real.display();
+  }
+}
+
+const proxy = new ImageProxy();
+proxy.display();
+proxy.display();
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="data_mapper">
+            <div class="topic-header" onclick="app.toggleTopic('data_mapper')">
+                <h3>Data Mapper</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_data_mapper" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="object_adapter">
+            <div class="topic-header" onclick="app.toggleTopic('object_adapter')">
+                <h3>Object Adapter</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_object_adapter" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="class_adapter">
+            <div class="topic-header" onclick="app.toggleTopic('class_adapter')">
+                <h3>Class Adapter</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_class_adapter" missing in content/snippets/*/</div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section  minimal-block" id="behavioral_patterns">
+            <div class="topic-header" onclick="app.toggleTopic('behavioral_patterns')">
+                <h2>Behavioral patterns</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section  " id="chain_of_responsibility">
+            <div class="topic-header" onclick="app.toggleTopic('chain_of_responsibility')">
+                <h3>Chain Of Responsibility</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+class Request {
+public:
+    int level;
+    std::string message;
+    Request(int l, const std::string& m) : level(l), message(m) {}
+};
+
+class Handler {
+protected:
+    std::shared_ptr&lt;Handler&gt; next;
+public:
+    void setNext(std::shared_ptr&lt;Handler&gt; handler) { next = handler; }
+    virtual void handle(const Request& req) = 0;
+};
+
+class LowLevelHandler : public Handler {
+public:
+    void handle(const Request& req) override {
+        if (req.level &lt;= 1) {
+            std::cout &lt;&lt; "LowLevelHandler: Processing " &lt;&lt; req.message &lt;&lt; std::endl;
+        } else if (next) {
+            next-&gt;handle(req);
+        }
+    }
+};
+
+class MidLevelHandler : public Handler {
+public:
+    void handle(const Request& req) override {
+        if (req.level == 2) {
+            std::cout &lt;&lt; "MidLevelHandler: Processing " &lt;&lt; req.message &lt;&lt; std::endl;
+        } else if (next) {
+            next-&gt;handle(req);
+        }
+    }
+};
+
+class HighLevelHandler : public Handler {
+public:
+    void handle(const Request& req) override {
+        if (req.level &gt;= 3) {
+            std::cout &lt;&lt; "HighLevelHandler: Processing " &lt;&lt; req.message &lt;&lt; std::endl;
+        }
+    }
+};
+
+int main() {
+    auto low = std::make_shared&lt;LowLevelHandler&gt;();
+    auto mid = std::make_shared&lt;MidLevelHandler&gt;();
+    auto high = std::make_shared&lt;HighLevelHandler&gt;();
+    
+    low-&gt;setNext(mid);
+    mid-&gt;setNext(high);
+    
+    Request r1(1, "Simple request");
+    Request r2(2, "Normal request");
+    Request r3(3, "Critical request");
+    
+    low-&gt;handle(r1);
+    low-&gt;handle(r2);
+    low-&gt;handle(r3);
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import (
+	"fmt"
+)
+
+type Request struct {
+	level   int
+	message string
+}
+
+type Handler interface {
+	SetNext(Handler)
+	Handle(*Request)
+}
+
+type AbstractHandler struct {
+	next Handler
+}
+
+func (h *AbstractHandler) SetNext(next Handler) {
+	h.next = next
+}
+
+type LowHandler struct {
+	AbstractHandler
+}
+
+func (h *LowHandler) Handle(req *Request) {
+	if req.level &lt;= 1 {
+		fmt.Printf("LowHandler: Processing %s\n", req.message)
+	} else if h.next != nil {
+		h.next.Handle(req)
+	}
+}
+
+type MidHandler struct {
+	AbstractHandler
+}
+
+func (h *MidHandler) Handle(req *Request) {
+	if req.level == 2 {
+		fmt.Printf("MidHandler: Processing %s\n", req.message)
+	} else if h.next != nil {
+		h.next.Handle(req)
+	}
+}
+
+type HighHandler struct {
+	AbstractHandler
+}
+
+func (h *HighHandler) Handle(req *Request) {
+	if req.level &gt;= 3 {
+		fmt.Printf("HighHandler: Processing %s\n", req.message)
+	}
+}
+
+func main() {
+	low := &LowHandler{}
+	mid := &MidHandler{}
+	high := &HighHandler{}
+
+	low.SetNext(mid)
+	mid.SetNext(high)
+
+	low.Handle(&Request{1, "Simple"})
+	low.Handle(&Request{2, "Normal"})
+	low.Handle(&Request{3, "Critical"})
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+from typing import Optional
+
+class Request:
+    def __init__(self, level: int, message: str):
+        self.level = level
+        self.message = message
+
+class Handler(ABC):
+    def __init__(self):
+        self.next: Optional[Handler] = None
+    
+    def set_next(self, handler: "Handler") -&gt; "Handler":
+        self.next = handler
+        return handler
+    
+    @abstractmethod
+    def handle(self, request: Request) -&gt; str:
+        pass
+
+class LowHandler(Handler):
+    def handle(self, request: Request) -&gt; str:
+        if request.level &lt;= 1:
+            return f"LowHandler: {request.message}"
+        return self.next.handle(request) if self.next else ""
+
+class MidHandler(Handler):
+    def handle(self, request: Request) -&gt; str:
+        if request.level == 2:
+            return f"MidHandler: {request.message}"
+        return self.next.handle(request) if self.next else ""
+
+class HighHandler(Handler):
+    def handle(self, request: Request) -&gt; str:
+        if request.level &gt;= 3:
+            return f"HighHandler: {request.message}"
+        return ""
+
+low = LowHandler()
+mid = MidHandler()
+high = HighHandler()
+
+low.set_next(mid).set_next(high)
+
+print(low.handle(Request(1, "Simple")))
+print(low.handle(Request(2, "Normal")))
+print(low.handle(Request(3, "Critical")))
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Chain of Responsibility
+case class Request(level: Int, message: String)
+
+trait Handler {
+    protected var next: Option[Handler] = None
+    
+    def setNext(h: Handler): Handler = {
+        next = Some(h)
+        h
+    }
+    
+    def handle(req: Request): Unit
+}
+
+class LowHandler extends Handler {
+    def handle(req: Request): Unit = {
+        if (req.level &lt;= 1) {
+            println(s"LowHandler: ${req.message}")
+        } else {
+            next.foreach(_.handle(req))
+        }
+    }
+}
+
+class MidHandler extends Handler {
+    def handle(req: Request): Unit = {
+        if (req.level == 2) {
+            println(s"MidHandler: ${req.message}")
+        } else {
+            next.foreach(_.handle(req))
+        }
+    }
+}
+
+class HighHandler extends Handler {
+    def handle(req: Request): Unit = {
+        if (req.level &gt;= 3) {
+            println(s"HighHandler: ${req.message}")
+        }
+    }
+}
+
+object Main extends App {
+    val low = new LowHandler()
+    val mid = new MidHandler()
+    val high = new HighHandler()
+    
+    low.setNext(mid).setNext(high)
+    
+    low.handle(Request(1, "Simple"))
+    low.handle(Request(2, "Normal"))
+    low.handle(Request(3, "Critical"))
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Chain of Responsibility
+case class Request(level: Int, message: String)
+
+trait Handler:
+    protected var next: Option[Handler] = None
+    
+    def setNext(h: Handler): Handler =
+        next = Some(h)
+        h
+    
+    def handle(req: Request): Unit
+
+class LowHandler extends Handler:
+    def handle(req: Request): Unit =
+        if (req.level &lt;= 1) {
+            println(s"LowHandler: ${req.message}")
+        } else {
+            next.foreach(_.handle(req))
+        }
+
+class MidHandler extends Handler:
+    def handle(req: Request): Unit =
+        if (req.level == 2) {
+            println(s"MidHandler: ${req.message}")
+        } else {
+            next.foreach(_.handle(req))
+        }
+
+class HighHandler extends Handler:
+    def handle(req: Request): Unit =
+        if (req.level &gt;= 3) {
+            println(s"HighHandler: ${req.message}")
+        }
+
+@main def main(): Unit =
+    val low = new LowHandler()
+    val mid = new MidHandler()
+    val high = new HighHandler()
+    
+    low.setNext(mid).setNext(high)
+    
+    low.handle(Request(1, "Simple"))
+    low.handle(Request(2, "Normal"))
+    low.handle(Request(3, "Critical"))
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IHandler {
+    setNext(next: IHandler): void;
+    handle(request: Request): void;
+}
+
+class Request {
+    constructor(public level: number, public message: string) {}
+}
+
+abstract class BaseHandler implements IHandler {
+    protected next: IHandler | null = null;
+    
+    setNext(next: IHandler): void {
+        this.next = next;
+    }
+    
+    abstract handle(request: Request): void;
+}
+
+class LowHandler extends BaseHandler {
+    handle(request: Request): void {
+        if (request.level &lt;= 1) {
+            console.log(`LowHandler: ${request.message}`);
+        } else if (this.next) {
+            this.next.handle(request);
+        }
+    }
+}
+
+class MidHandler extends BaseHandler {
+    handle(request: Request): void {
+        if (request.level === 2) {
+            console.log(`MidHandler: ${request.message}`);
+        } else if (this.next) {
+            this.next.handle(request);
+        }
+    }
+}
+
+class HighHandler extends BaseHandler {
+    handle(request: Request): void {
+        if (request.level &gt;= 3) {
+            console.log(`HighHandler: ${request.message}`);
+        }
+    }
+}
+
+const low = new LowHandler();
+const mid = new MidHandler();
+const high = new HighHandler();
+
+low.setNext(mid);
+mid.setNext(high);
+
+low.handle(new Request(1, "Simple"));
+low.handle(new Request(2, "Normal"));
+low.handle(new Request(3, "Critical"));
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Chain of Responsibility using std::function
+// The chain is a flat vector of handlers; no linked-list of subclasses required.
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+struct Request {
+    int level;
+    std::string message;
+};
+
+// Each handler returns true if it handled the request, stopping propagation.
+using Handler = std::function&lt;bool(const Request&)&gt;;
+
+void process(const std::vector&lt;Handler&gt;& chain, const Request& req) {
+    for (const auto& handler : chain) {
+        if (handler(req)) return;
+    }
+}
+
+int main() {
+    std::vector&lt;Handler&gt; chain = {
+        [](const Request& req) -&gt; bool {
+            if (req.level &gt; 1) return false;
+            std::cout &lt;&lt; "LowLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            return true;
+        },
+        [](const Request& req) -&gt; bool {
+            if (req.level != 2) return false;
+            std::cout &lt;&lt; "MidLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            return true;
+        },
+        [](const Request& req) -&gt; bool {
+            std::cout &lt;&lt; "HighLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            return true;
+        },
+    };
+
+    process(chain, {1, "low request"});
+    process(chain, {2, "mid request"});
+    process(chain, {3, "high request"});
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Chain of Responsibility using a flat list of callables
+# No linked-list of handler subclasses - handlers are plain functions returning bool.
+from typing import Callable
+from dataclasses import dataclass
+
+@dataclass
+class Request:
+    level: int
+    message: str
+
+Handler = Callable[[Request], bool]
+
+def process(chain: list[Handler], req: Request) -&gt; None:
+    for handler in chain:
+        if handler(req):
+            return
+
+def low_handler(req: Request) -&gt; bool:
+    if req.level &gt; 1:
+        return False
+    print(f"LowLevelHandler: {req.message}")
+    return True
+
+def mid_handler(req: Request) -&gt; bool:
+    if req.level != 2:
+        return False
+    print(f"MidLevelHandler: {req.message}")
+    return True
+
+def high_handler(req: Request) -&gt; bool:
+    print(f"HighLevelHandler: {req.message}")
+    return True
+
+chain: list[Handler] = [low_handler, mid_handler, high_handler]
+
+process(chain, Request(1, "low request"))
+process(chain, Request(2, "mid request"))
+process(chain, Request(3, "high request"))
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="command">
+            <div class="topic-header" onclick="app.toggleTopic('command')">
+                <h3>Command</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+#include &lt;vector&gt;
+
+class Receiver {
+public:
+    void turnOn() { std::cout &lt;&lt; "Device is ON\n"; }
+    void turnOff() { std::cout &lt;&lt; "Device is OFF\n"; }
+};
+
+class Command {
+public:
+    virtual ~Command() = default;
+    virtual void execute() = 0;
+};
+
+class TurnOnCommand : public Command {
+private:
+    std::shared_ptr&lt;Receiver&gt; receiver;
+public:
+    TurnOnCommand(std::shared_ptr&lt;Receiver&gt; r) : receiver(r) {}
+    void execute() override { receiver-&gt;turnOn(); }
+};
+
+class TurnOffCommand : public Command {
+private:
+    std::shared_ptr&lt;Receiver&gt; receiver;
+public:
+    TurnOffCommand(std::shared_ptr&lt;Receiver&gt; r) : receiver(r) {}
+    void execute() override { receiver-&gt;turnOff(); }
+};
+
+class Invoker {
+private:
+    std::vector&lt;std::shared_ptr&lt;Command&gt;&gt; commands;
+public:
+    void addCommand(std::shared_ptr&lt;Command&gt; cmd) { commands.push_back(cmd); }
+    void executeAll() {
+        for (auto& cmd : commands) {
+            cmd-&gt;execute();
+        }
+    }
+};
+
+int main() {
+    auto device = std::make_shared&lt;Receiver&gt;();
+    auto invoker = std::make_unique&lt;Invoker&gt;();
+    
+    invoker-&gt;addCommand(std::make_shared&lt;TurnOnCommand&gt;(device));
+    invoker-&gt;addCommand(std::make_shared&lt;TurnOffCommand&gt;(device));
+    
+    invoker-&gt;executeAll();
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Receiver struct{}
+
+func (r *Receiver) TurnOn() {
+	fmt.Println("Device is ON")
+}
+
+func (r *Receiver) TurnOff() {
+	fmt.Println("Device is OFF")
+}
+
+type Command interface {
+	Execute()
+}
+
+type TurnOnCommand struct {
+	receiver *Receiver
+}
+
+func (c *TurnOnCommand) Execute() {
+	c.receiver.TurnOn()
+}
+
+type TurnOffCommand struct {
+	receiver *Receiver
+}
+
+func (c *TurnOffCommand) Execute() {
+	c.receiver.TurnOff()
+}
+
+type Invoker struct {
+	commands []Command
+}
+
+func (i *Invoker) AddCommand(cmd Command) {
+	i.commands = append(i.commands, cmd)
+}
+
+func (i *Invoker) ExecuteAll() {
+	for _, cmd := range i.commands {
+		cmd.Execute()
+	}
+}
+
+func main() {
+	device := &Receiver{}
+	invoker := &Invoker{}
+
+	invoker.AddCommand(&TurnOnCommand{device})
+	invoker.AddCommand(&TurnOffCommand{device})
+
+	invoker.ExecuteAll()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Receiver:
+    def turn_on(self):
+        print("Device is ON")
+    
+    def turn_off(self):
+        print("Device is OFF")
+
+class Command(ABC):
+    @abstractmethod
+    def execute(self) -&gt; None:
+        pass
+
+class TurnOnCommand(Command):
+    def __init__(self, receiver: Receiver):
+        self.receiver = receiver
+    
+    def execute(self) -&gt; None:
+        self.receiver.turn_on()
+
+class TurnOffCommand(Command):
+    def __init__(self, receiver: Receiver):
+        self.receiver = receiver
+    
+    def execute(self) -&gt; None:
+        self.receiver.turn_off()
+
+class Invoker:
+    def __init__(self):
+        self.commands: list[Command] = []
+    
+    def add_command(self, command: Command) -&gt; None:
+        self.commands.append(command)
+    
+    def execute_all(self) -&gt; None:
+        for cmd in self.commands:
+            cmd.execute()
+
+device = Receiver()
+invoker = Invoker()
+
+invoker.add_command(TurnOnCommand(device))
+invoker.add_command(TurnOffCommand(device))
+
+invoker.execute_all()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Command
+class Device {
+    def turnOn(): Unit = println("Device is ON")
+    def turnOff(): Unit = println("Device is OFF")
+}
+
+trait Command {
+    def execute(): Unit
+}
+
+class TurnOnCommand(device: Device) extends Command {
+    def execute(): Unit = device.turnOn()
+}
+
+class TurnOffCommand(device: Device) extends Command {
+    def execute(): Unit = device.turnOff()
+}
+
+class Invoker {
+    private var commands: List[Command] = List()
+    
+    def addCommand(cmd: Command): Unit = {
+        commands = commands :+ cmd
+    }
+    
+    def executeAll(): Unit = {
+        commands.foreach(_.execute())
+    }
+}
+
+object Main extends App {
+    val device = new Device()
+    val invoker = new Invoker()
+    
+    invoker.addCommand(new TurnOnCommand(device))
+    invoker.addCommand(new TurnOffCommand(device))
+    
+    invoker.executeAll()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Command
+class Device:
+    def turnOn(): Unit = println("Device is ON")
+    def turnOff(): Unit = println("Device is OFF")
+
+trait Command:
+    def execute(): Unit
+
+class TurnOnCommand(device: Device) extends Command:
+    def execute(): Unit = device.turnOn()
+
+class TurnOffCommand(device: Device) extends Command:
+    def execute(): Unit = device.turnOff()
+
+class Invoker:
+    private var commands: List[Command] = List()
+    
+    def addCommand(cmd: Command): Unit =
+        commands = commands :+ cmd
+    
+    def executeAll(): Unit =
+        commands.foreach(_.execute())
+
+@main def main(): Unit =
+    val device = new Device()
+    val invoker = new Invoker()
+    
+    invoker.addCommand(new TurnOnCommand(device))
+    invoker.addCommand(new TurnOffCommand(device))
+    
+    invoker.executeAll()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface ICommand {
+    execute(): void;
+}
+
+class Receiver {
+    turnOn(): void {
+        console.log("Device is ON");
+    }
+    
+    turnOff(): void {
+        console.log("Device is OFF");
+    }
+}
+
+class TurnOnCommand implements ICommand {
+    constructor(private receiver: Receiver) {}
+    
+    execute(): void {
+        this.receiver.turnOn();
+    }
+}
+
+class TurnOffCommand implements ICommand {
+    constructor(private receiver: Receiver) {}
+    
+    execute(): void {
+        this.receiver.turnOff();
+    }
+}
+
+class Invoker {
+    private commands: ICommand[] = [];
+    
+    addCommand(command: ICommand): void {
+        this.commands.push(command);
+    }
+    
+    executeAll(): void {
+        for (const cmd of this.commands) {
+            cmd.execute();
+        }
+    }
+}
+
+const device = new Receiver();
+const invoker = new Invoker();
+
+invoker.addCommand(new TurnOnCommand(device));
+invoker.addCommand(new TurnOffCommand(device));
+
+invoker.executeAll();
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Command using std::function
+// Replaces the command class hierarchy with a simple callable; lambdas capture context directly.
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;vector&gt;
+
+class Device {
+public:
+    void turnOn()  const { std::cout &lt;&lt; "Device is ON\n"; }
+    void turnOff() const { std::cout &lt;&lt; "Device is OFF\n"; }
+};
+
+int main() {
+    Device device;
+
+    // Commands are just callables – no base class, no heap allocation per command
+    std::vector&lt;std::function&lt;void()&gt;&gt; commands;
+    commands.emplace_back([&device] { device.turnOn();  });
+    commands.emplace_back([&device] { device.turnOff(); });
+
+    for (const auto& cmd : commands) {
+        cmd();
+    }
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+// Modern Go Command using function closures.
+// No Command interface or struct types needed.
+
+type Device struct{}
+
+func (d Device) TurnOn()  { fmt.Println("Device is ON") }
+func (d Device) TurnOff() { fmt.Println("Device is OFF") }
+
+func main() {
+	device := Device{}
+
+	commands := []func(){
+		func() { device.TurnOn() },
+		func() { device.TurnOff() },
+	}
+
+	for _, cmd := range commands {
+		cmd()
+	}
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Command using plain callables
+# No Command ABC or class hierarchy - commands are just Callable[[], None].
+from typing import Callable
+
+class Device:
+    def turn_on(self) -&gt; None:
+        print("Device is ON")
+
+    def turn_off(self) -&gt; None:
+        print("Device is OFF")
+
+device = Device()
+
+# Commands are plain callables - bound methods, lambdas, or closures
+commands: list[Callable[[], None]] = [
+    device.turn_on,
+    device.turn_off,
+]
+
+for cmd in commands:
+    cmd()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Command using () =&gt; void closures
+// No Command interface or class hierarchy - commands are plain callable closures.
+
+class Device {
+    turnOn():  void { console.log("Device is ON"); }
+    turnOff(): void { console.log("Device is OFF"); }
+}
+
+const device = new Device();
+
+const commands: Array&lt;() =&gt; void&gt; = [
+    () =&gt; device.turnOn(),
+    () =&gt; device.turnOff(),
+];
+
+commands.forEach(cmd =&gt; cmd());
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="observer">
+            <div class="topic-header" onclick="app.toggleTopic('observer')">
+                <h3>Observer</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;memory&gt;
+
+class Observer {
+public:
+    virtual ~Observer() = default;
+    virtual void update(const std::string& msg) = 0;
+};
+
+class Subject {
+private:
+    std::vector&lt;std::shared_ptr&lt;Observer&gt;&gt; observers;
+public:
+    void attach(std::shared_ptr&lt;Observer&gt; observer) {
+        observers.push_back(observer);
+    }
+    
+    void notify(const std::string& msg) {
+        for (auto& obs : observers) {
+            obs-&gt;update(msg);
+        }
+    }
+};
+
+class ConcreteObserver : public Observer {
+private:
+    std::string name;
+public:
+    ConcreteObserver(const std::string& n) : name(n) {}
+    
+    void update(const std::string& msg) override {
+        std::cout &lt;&lt; name &lt;&lt; " received: " &lt;&lt; msg &lt;&lt; std::endl;
+    }
+};
+
+int main() {
+    auto subject = std::make_shared&lt;Subject&gt;();
+    auto obs1 = std::make_shared&lt;ConcreteObserver&gt;("Observer1");
+    auto obs2 = std::make_shared&lt;ConcreteObserver&gt;("Observer2");
+    
+    subject-&gt;attach(obs1);
+    subject-&gt;attach(obs2);
+    
+    subject-&gt;notify("Event 1");
+    subject-&gt;notify("Event 2");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Observer interface {
+	Update(msg string)
+}
+
+type Subject struct {
+	observers []Observer
+}
+
+func (s *Subject) Attach(observer Observer) {
+	s.observers = append(s.observers, observer)
+}
+
+func (s *Subject) Notify(msg string) {
+	for _, observer := range s.observers {
+		observer.Update(msg)
+	}
+}
+
+type ConcreteObserver struct {
+	name string
+}
+
+func (c *ConcreteObserver) Update(msg string) {
+	fmt.Printf("%s received: %s\n", c.name, msg)
+}
+
+func main() {
+	subject := &Subject{}
+	obs1 := &ConcreteObserver{"Observer1"}
+	obs2 := &ConcreteObserver{"Observer2"}
+
+	subject.Attach(obs1)
+	subject.Attach(obs2)
+
+	subject.Notify("Event 1")
+	subject.Notify("Event 2")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Observer(ABC):
+    @abstractmethod
+    def update(self, msg: str) -&gt; None:
+        pass
+
+class Subject:
+    def __init__(self):
+        self.observers: list[Observer] = []
+    
+    def attach(self, observer: Observer) -&gt; None:
+        self.observers.append(observer)
+    
+    def notify(self, msg: str) -&gt; None:
+        for observer in self.observers:
+            observer.update(msg)
+
+class ConcreteObserver(Observer):
+    def __init__(self, name: str):
+        self.name = name
+    
+    def update(self, msg: str) -&gt; None:
+        print(f"{self.name} received: {msg}")
+
+subject = Subject()
+obs1 = ConcreteObserver("Observer1")
+obs2 = ConcreteObserver("Observer2")
+
+subject.attach(obs1)
+subject.attach(obs2)
+
+subject.notify("Event 1")
+subject.notify("Event 2")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Observer
+trait Observer {
+    def update(msg: String): Unit
+}
+
+class Subject {
+    private var observers: List[Observer] = List()
+    
+    def attach(observer: Observer): Unit = {
+        observers = observers :+ observer
+    }
+    
+    def notify(msg: String): Unit = {
+        observers.foreach(_.update(msg))
+    }
+}
+
+class ConcreteObserver(name: String) extends Observer {
+    def update(msg: String): Unit = {
+        println(s"$name received: $msg")
+    }
+}
+
+object Main extends App {
+    val subject = new Subject()
+    val obs1 = new ConcreteObserver("Observer1")
+    val obs2 = new ConcreteObserver("Observer2")
+    
+    subject.attach(obs1)
+    subject.attach(obs2)
+    
+    subject.notify("Event 1")
+    subject.notify("Event 2")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Observer
+trait Observer:
+    def update(msg: String): Unit
+
+class Subject:
+    private var observers: List[Observer] = List()
+    
+    def attach(observer: Observer): Unit =
+        observers = observers :+ observer
+    
+    def notify(msg: String): Unit =
+        observers.foreach(_.update(msg))
+
+class ConcreteObserver(name: String) extends Observer:
+    def update(msg: String): Unit =
+        println(s"$name received: $msg")
+
+@main def main(): Unit =
+    val subject = new Subject()
+    val obs1 = new ConcreteObserver("Observer1")
+    val obs2 = new ConcreteObserver("Observer2")
+    
+    subject.attach(obs1)
+    subject.attach(obs2)
+    
+    subject.notify("Event 1")
+    subject.notify("Event 2")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IObserver {
+    update(msg: string): void;
+}
+
+class Subject {
+    private observers: IObserver[] = [];
+    
+    attach(observer: IObserver): void {
+        this.observers.push(observer);
+    }
+    
+    notify(msg: string): void {
+        for (const observer of this.observers) {
+            observer.update(msg);
+        }
+    }
+}
+
+class ConcreteObserver implements IObserver {
+    constructor(private name: string) {}
+    
+    update(msg: string): void {
+        console.log(`${this.name} received: ${msg}`);
+    }
+}
+
+const subject = new Subject();
+const obs1 = new ConcreteObserver("Observer1");
+const obs2 = new ConcreteObserver("Observer2");
+
+subject.attach(obs1);
+subject.attach(obs2);
+
+subject.notify("Event 1");
+subject.notify("Event 2");
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Observer using std::function callbacks
+// Removes the Observer interface; any callable (lambda, free function, member) subscribes directly.
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+class Subject {
+public:
+    using Listener = std::function&lt;void(const std::string&)&gt;;
+
+    void subscribe(Listener listener) {
+        listeners_.push_back(std::move(listener));
+    }
+
+    void notify(const std::string& msg) const {
+        for (const auto& listener : listeners_) {
+            listener(msg);
+        }
+    }
+
+private:
+    std::vector&lt;Listener&gt; listeners_;
+};
+
+int main() {
+    Subject subject;
+
+    // Lambdas subscribe directly – no Observer subclass needed
+    subject.subscribe([](const std::string& msg) {
+        std::cout &lt;&lt; "Observer1 received: " &lt;&lt; msg &lt;&lt; '\n';
+    });
+    subject.subscribe([](const std::string& msg) {
+        std::cout &lt;&lt; "Observer2 received: " &lt;&lt; msg &lt;&lt; '\n';
+    });
+
+    subject.notify("Event 1");
+    subject.notify("Event 2");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+// Modern Go Observer using a slice of function callbacks.
+// No Observer interface or struct types needed.
+
+type Subject struct {
+	listeners []func(string)
+}
+
+func (s *Subject) Subscribe(listener func(string)) {
+	s.listeners = append(s.listeners, listener)
+}
+
+func (s *Subject) Notify(msg string) {
+	for _, l := range s.listeners {
+		l(msg)
+	}
+}
+
+func main() {
+	subject := &Subject{}
+
+	subject.Subscribe(func(msg string) {
+		fmt.Println("Observer1 received:", msg)
+	})
+	subject.Subscribe(func(msg string) {
+		fmt.Println("Observer2 received:", msg)
+	})
+
+	subject.Notify("Event 1")
+	subject.Notify("Event 2")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Observer using function callbacks
+# No Observer ABC or subclasses - any callable with the right signature subscribes directly.
+from typing import Callable
+
+class Subject:
+    def __init__(self) -&gt; None:
+        self._listeners: list[Callable[[str], None]] = []
+
+    def subscribe(self, listener: Callable[[str], None]) -&gt; None:
+        self._listeners.append(listener)
+
+    def notify(self, msg: str) -&gt; None:
+        for listener in self._listeners:
+            listener(msg)
+
+subject = Subject()
+
+# Lambdas or regular functions - no Observer subclass needed
+subject.subscribe(lambda msg: print(f"Observer1 received: {msg}"))
+subject.subscribe(lambda msg: print(f"Observer2 received: {msg}"))
+
+subject.notify("Event 1")
+subject.notify("Event 2")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Observer using typed function callbacks
+// No Observer interface or class hierarchy - listeners are plain typed callbacks.
+
+type Listener&lt;T&gt; = (event: T) =&gt; void;
+
+class Subject&lt;T&gt; {
+    private listeners: Array&lt;Listener&lt;T&gt;&gt; = [];
+
+    subscribe(listener: Listener&lt;T&gt;): void {
+        this.listeners.push(listener);
+    }
+
+    notify(event: T): void {
+        this.listeners.forEach(l =&gt; l(event));
+    }
+}
+
+const subject = new Subject&lt;string&gt;();
+
+subject.subscribe(msg =&gt; console.log(`Observer1 received: ${msg}`));
+subject.subscribe(msg =&gt; console.log(`Observer2 received: ${msg}`));
+
+subject.notify("Event 1");
+subject.notify("Event 2");
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="state">
+            <div class="topic-header" onclick="app.toggleTopic('state')">
+                <h3>State</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+class State {
+public:
+    virtual ~State() = default;
+    virtual void handle() = 0;
+};
+
+class StartState : public State {
+public:
+    void handle() override {
+        std::cout &lt;&lt; "Entering start state\n";
+    }
+};
+
+class RunningState : public State {
+public:
+    void handle() override {
+        std::cout &lt;&lt; "Running state active\n";
+    }
+};
+
+class StoppedState : public State {
+public:
+    void handle() override {
+        std::cout &lt;&lt; "Stopped state active\n";
+    }
+};
+
+class Context {
+private:
+    std::shared_ptr&lt;State&gt; state;
+public:
+    void setState(std::shared_ptr&lt;State&gt; s) { state = s; }
+    void request() { state-&gt;handle(); }
+};
+
+int main() {
+    Context ctx;
+    
+    ctx.setState(std::make_shared&lt;StartState&gt;());
+    ctx.request();
+    
+    ctx.setState(std::make_shared&lt;RunningState&gt;());
+    ctx.request();
+    
+    ctx.setState(std::make_shared&lt;StoppedState&gt;());
+    ctx.request();
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type State interface {
+	Handle()
+}
+
+type StartState struct{}
+
+func (s *StartState) Handle() {
+	fmt.Println("Entering start state")
+}
+
+type RunningState struct{}
+
+func (s *RunningState) Handle() {
+	fmt.Println("Running state active")
+}
+
+type StoppedState struct{}
+
+func (s *StoppedState) Handle() {
+	fmt.Println("Stopped state active")
+}
+
+type Context struct {
+	state State
+}
+
+func (c *Context) SetState(s State) {
+	c.state = s
+}
+
+func (c *Context) Request() {
+	c.state.Handle()
+}
+
+func main() {
+	ctx := &Context{}
+
+	ctx.SetState(&StartState{})
+	ctx.Request()
+
+	ctx.SetState(&RunningState{})
+	ctx.Request()
+
+	ctx.SetState(&StoppedState{})
+	ctx.Request()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class State(ABC):
+    @abstractmethod
+    def handle(self) -&gt; None:
+        pass
+
+class StartState(State):
+    def handle(self) -&gt; None:
+        print("Entering start state")
+
+class RunningState(State):
+    def handle(self) -&gt; None:
+        print("Running state active")
+
+class StoppedState(State):
+    def handle(self) -&gt; None:
+        print("Stopped state active")
+
+class Context:
+    def __init__(self):
+        self.state: State = None
+    
+    def set_state(self, state: State) -&gt; None:
+        self.state = state
+    
+    def request(self) -&gt; None:
+        self.state.handle()
+
+ctx = Context()
+
+ctx.set_state(StartState())
+ctx.request()
+
+ctx.set_state(RunningState())
+ctx.request()
+
+ctx.set_state(StoppedState())
+ctx.request()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// State
+trait State {
+    def handle(): Unit
+}
+
+class StartState extends State {
+    def handle(): Unit = println("Entering start state")
+}
+
+class RunningState extends State {
+    def handle(): Unit = println("Running state active")
+}
+
+class StoppedState extends State {
+    def handle(): Unit = println("Stopped state active")
+}
+
+class Context(private var state: State) {
+    def setState(s: State): Unit = {
+        state = s
+    }
+    
+    def request(): Unit = {
+        state.handle()
+    }
+}
+
+object Main extends App {
+    val ctx = new Context(new StartState())
+    
+    ctx.request()
+    
+    ctx.setState(new RunningState())
+    ctx.request()
+    
+    ctx.setState(new StoppedState())
+    ctx.request()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala State using sealed trait ADT + pattern matching (Scala 3)
+// No State trait or subclass hierarchy - states are plain ADT cases.
+// Transitions are just variable reassignments.
+
+sealed trait State
+case object StartState   extends State
+case object RunningState extends State
+case object StoppedState extends State
+
+def handle(state: State): Unit = state match
+  case StartState   =&gt; println("Entering start state")
+  case RunningState =&gt; println("Running state active")
+  case StoppedState =&gt; println("Stopped state active")
+
+@main def stateModernExample(): Unit =
+  var state: State = StartState
+  handle(state)
+
+  state = RunningState
+  handle(state)
+
+  state = StoppedState
+  handle(state)
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IState {
+    handle(): void;
+}
+
+class StartState implements IState {
+    handle(): void {
+        console.log("Entering start state");
+    }
+}
+
+class RunningState implements IState {
+    handle(): void {
+        console.log("Running state active");
+    }
+}
+
+class StoppedState implements IState {
+    handle(): void {
+        console.log("Stopped state active");
+    }
+}
+
+class Context {
+    private state: IState;
+    
+    setState(state: IState): void {
+        this.state = state;
+    }
+    
+    request(): void {
+        this.state.handle();
+    }
+}
+
+const ctx = new Context();
+
+ctx.setState(new StartState());
+ctx.request();
+
+ctx.setState(new RunningState());
+ctx.request();
+
+ctx.setState(new StoppedState());
+ctx.request();
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ State using std::variant
+// States are plain value types; transitions are just assignments.
+// No virtual dispatch, no heap allocation, exhaustive state handling enforced by the compiler.
+#include &lt;iostream&gt;
+#include &lt;variant&gt;
+
+struct StartState   { void handle() const { std::cout &lt;&lt; "Entering start state\n"; } };
+struct RunningState { void handle() const { std::cout &lt;&lt; "Running state active\n"; } };
+struct StoppedState { void handle() const { std::cout &lt;&lt; "Stopped state active\n"; } };
+
+using State = std::variant&lt;StartState, RunningState, StoppedState&gt;;
+
+void handle(const State& state) {
+    std::visit([](const auto& s) { s.handle(); }, state);
+}
+
+int main() {
+    State state = StartState{};
+    handle(state);
+
+    state = RunningState{};
+    handle(state);
+
+    state = StoppedState{};
+    handle(state);
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python State using structural pattern matching (Python 3.10+)
+# No State ABC or subclass hierarchy - states are plain dataclasses.
+from __future__ import annotations
+from dataclasses import dataclass
+
+@dataclass
+class StartState:
+    pass
+
+@dataclass
+class RunningState:
+    pass
+
+@dataclass
+class StoppedState:
+    pass
+
+type State = StartState | RunningState | StoppedState  # Python 3.12+
+
+def handle(state: StartState | RunningState | StoppedState) -&gt; None:
+    match state:
+        case StartState():
+            print("Entering start state")
+        case RunningState():
+            print("Running state active")
+        case StoppedState():
+            print("Stopped state active")
+
+state: StartState | RunningState | StoppedState = StartState()
+handle(state)
+
+state = RunningState()
+handle(state)
+
+state = StoppedState()
+handle(state)
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript State using discriminated union + exhaustive switch
+// No IState interface or class hierarchy - states are plain tagged objects.
+
+type StartState   = { kind: "start" };
+type RunningState = { kind: "running" };
+type StoppedState = { kind: "stopped" };
+
+type State = StartState | RunningState | StoppedState;
+
+function handle(state: State): void {
+    switch (state.kind) {
+        case "start":   console.log("Entering start state");  break;
+        case "running": console.log("Running state active");   break;
+        case "stopped": console.log("Stopped state active");   break;
+        default: {
+            const _exhaustive: never = state; // compile error on missing case
+        }
+    }
+}
+
+let state: State = { kind: "start" };
+handle(state);
+
+state = { kind: "running" };
+handle(state);
+
+state = { kind: "stopped" };
+handle(state);
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="strategy">
+            <div class="topic-header" onclick="app.toggleTopic('strategy')">
+                <h3>Strategy</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+class Strategy {
+public:
+    virtual ~Strategy() = default;
+    virtual int execute(int a, int b) = 0;
+};
+
+class AddStrategy : public Strategy {
+public:
+    int execute(int a, int b) override {
+        return a + b;
+    }
+};
+
+class SubtractStrategy : public Strategy {
+public:
+    int execute(int a, int b) override {
+        return a - b;
+    }
+};
+
+class MultiplyStrategy : public Strategy {
+public:
+    int execute(int a, int b) override {
+        return a * b;
+    }
+};
+
+class Context {
+private:
+    std::shared_ptr&lt;Strategy&gt; strategy;
+public:
+    void setStrategy(std::shared_ptr&lt;Strategy&gt; s) { strategy = s; }
+    int executeStrategy(int a, int b) { return strategy-&gt;execute(a, b); }
+};
+
+int main() {
+    Context ctx;
+    
+    ctx.setStrategy(std::make_shared&lt;AddStrategy&gt;());
+    std::cout &lt;&lt; "Add: " &lt;&lt; ctx.executeStrategy(5, 3) &lt;&lt; std::endl;
+    
+    ctx.setStrategy(std::make_shared&lt;SubtractStrategy&gt;());
+    std::cout &lt;&lt; "Subtract: " &lt;&lt; ctx.executeStrategy(5, 3) &lt;&lt; std::endl;
+    
+    ctx.setStrategy(std::make_shared&lt;MultiplyStrategy&gt;());
+    std::cout &lt;&lt; "Multiply: " &lt;&lt; ctx.executeStrategy(5, 3) &lt;&lt; std::endl;
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Strategy interface {
+	Execute(int, int) int
+}
+
+type AddStrategy struct{}
+
+func (s *AddStrategy) Execute(a, b int) int {
+	return a + b
+}
+
+type SubtractStrategy struct{}
+
+func (s *SubtractStrategy) Execute(a, b int) int {
+	return a - b
+}
+
+type MultiplyStrategy struct{}
+
+func (s *MultiplyStrategy) Execute(a, b int) int {
+	return a * b
+}
+
+type Context struct {
+	strategy Strategy
+}
+
+func (c *Context) SetStrategy(s Strategy) {
+	c.strategy = s
+}
+
+func (c *Context) ExecuteStrategy(a, b int) int {
+	return c.strategy.Execute(a, b)
+}
+
+func main() {
+	ctx := &Context{}
+
+	ctx.SetStrategy(&AddStrategy{})
+	fmt.Printf("Add: %d\n", ctx.ExecuteStrategy(5, 3))
+
+	ctx.SetStrategy(&SubtractStrategy{})
+	fmt.Printf("Subtract: %d\n", ctx.ExecuteStrategy(5, 3))
+
+	ctx.SetStrategy(&MultiplyStrategy{})
+	fmt.Printf("Multiply: %d\n", ctx.ExecuteStrategy(5, 3))
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Strategy(ABC):
+    @abstractmethod
+    def execute(self, a: int, b: int) -&gt; int:
+        pass
+
+class AddStrategy(Strategy):
+    def execute(self, a: int, b: int) -&gt; int:
+        return a + b
+
+class SubtractStrategy(Strategy):
+    def execute(self, a: int, b: int) -&gt; int:
+        return a - b
+
+class MultiplyStrategy(Strategy):
+    def execute(self, a: int, b: int) -&gt; int:
+        return a * b
+
+class Context:
+    def __init__(self):
+        self.strategy: Strategy = None
+    
+    def set_strategy(self, strategy: Strategy) -&gt; None:
+        self.strategy = strategy
+    
+    def execute_strategy(self, a: int, b: int) -&gt; int:
+        return self.strategy.execute(a, b)
+
+ctx = Context()
+
+ctx.set_strategy(AddStrategy())
+print(f"Add: {ctx.execute_strategy(5, 3)}")
+
+ctx.set_strategy(SubtractStrategy())
+print(f"Subtract: {ctx.execute_strategy(5, 3)}")
+
+ctx.set_strategy(MultiplyStrategy())
+print(f"Multiply: {ctx.execute_strategy(5, 3)}")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Strategy
+trait Strategy {
+    def execute(a: Int, b: Int): Int
+}
+
+class AddStrategy extends Strategy {
+    def execute(a: Int, b: Int): Int = a + b
+}
+
+class SubtractStrategy extends Strategy {
+    def execute(a: Int, b: Int): Int = a - b
+}
+
+class MultiplyStrategy extends Strategy {
+    def execute(a: Int, b: Int): Int = a * b
+}
+
+class Context(private var strategy: Strategy) {
+    def setStrategy(s: Strategy): Unit = {
+        strategy = s
+    }
+    
+    def executeStrategy(a: Int, b: Int): Int = {
+        strategy.execute(a, b)
+    }
+}
+
+object Main extends App {
+    val ctx = new Context(new AddStrategy())
+    
+    println(s"Add: ${ctx.executeStrategy(5, 3)}")
+    
+    ctx.setStrategy(new SubtractStrategy())
+    println(s"Subtract: ${ctx.executeStrategy(5, 3)}")
+    
+    ctx.setStrategy(new MultiplyStrategy())
+    println(s"Multiply: ${ctx.executeStrategy(5, 3)}")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala Strategy using function values and Scala 3 type classes (given/using)
+// No Strategy trait or subclasses - strategies are plain function values.
+
+// Approach 1: function value (simplest)
+class Calculator(val strategy: (Int, Int) =&gt; Int):
+  def execute(a: Int, b: Int): Int = strategy(a, b)
+
+// Approach 2: type class with given/using (Scala 3) - zero-overhead, compile-time resolved
+trait Strategy:
+  def execute(a: Int, b: Int): Int
+
+given addStrategy: Strategy with
+  def execute(a: Int, b: Int) = a + b
+
+given subtractStrategy: Strategy with
+  def execute(a: Int, b: Int) = a - b
+
+def calculate(a: Int, b: Int)(using s: Strategy): Int = s.execute(a, b)
+
+@main def strategyModernExample(): Unit =
+  // Function value approach
+  val add  = Calculator(_ + _)
+  val sub  = Calculator(_ - _)
+  val mul  = Calculator(_ * _)
+  println(s"Add: ${add.execute(5, 3)}")
+  println(s"Subtract: ${sub.execute(5, 3)}")
+  println(s"Multiply: ${mul.execute(5, 3)}")
+
+  // Type class approach
+  println(s"Given add: ${calculate(5, 3)(using addStrategy)}")
+  println(s"Given sub: ${calculate(5, 3)(using subtractStrategy)}")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IStrategy {
+    execute(a: number, b: number): number;
+}
+
+class AddStrategy implements IStrategy {
+    execute(a: number, b: number): number {
+        return a + b;
+    }
+}
+
+class SubtractStrategy implements IStrategy {
+    execute(a: number, b: number): number {
+        return a - b;
+    }
+}
+
+class MultiplyStrategy implements IStrategy {
+    execute(a: number, b: number): number {
+        return a * b;
+    }
+}
+
+class Context {
+    private strategy: IStrategy;
+    
+    setStrategy(strategy: IStrategy): void {
+        this.strategy = strategy;
+    }
+    
+    executeStrategy(a: number, b: number): number {
+        return this.strategy.execute(a, b);
+    }
+}
+
+const ctx = new Context();
+
+ctx.setStrategy(new AddStrategy());
+console.log(`Add: ${ctx.executeStrategy(5, 3)}`);
+
+ctx.setStrategy(new SubtractStrategy());
+console.log(`Subtract: ${ctx.executeStrategy(5, 3)}`);
+
+ctx.setStrategy(new MultiplyStrategy());
+console.log(`Multiply: ${ctx.executeStrategy(5, 3)}`);
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
+// No virtual dispatch, no heap allocation for small strategies.
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+
+// --- Approach 1: Policy-based design (compile-time strategy selection) ---
+// Each strategy is a plain callable type; zero overhead at runtime.
+
+struct Add      { int operator()(int a, int b) const { return a + b; } };
+struct Subtract { int operator()(int a, int b) const { return a - b; } };
+struct Multiply { int operator()(int a, int b) const { return a * b; } };
+
+template&lt;typename Policy&gt;
+class Calculator {
+public:
+    int execute(int a, int b) const { return Policy{}(a, b); }
+};
+
+// --- Approach 2: std::function (runtime strategy selection) ---
+// Lambdas and free functions slot in directly; no strategy base class needed.
+
+class DynamicCalculator {
+public:
+    using Strategy = std::function&lt;int(int, int)&gt;;
+
+    explicit DynamicCalculator(Strategy strategy) : strategy_(std::move(strategy)) {}
+
+    int execute(int a, int b) const { return strategy_(a, b); }
+
+private:
+    Strategy strategy_;
+};
+
+int main() {
+    // Compile-time selection – different types, resolved at compile time
+    Calculator&lt;Add&gt;      adder;
+    Calculator&lt;Subtract&gt; subtractor;
+    Calculator&lt;Multiply&gt; multiplier;
+
+    std::cout &lt;&lt; "Add: "      &lt;&lt; adder.execute(5, 3)      &lt;&lt; '\n';
+    std::cout &lt;&lt; "Subtract: " &lt;&lt; subtractor.execute(5, 3) &lt;&lt; '\n';
+    std::cout &lt;&lt; "Multiply: " &lt;&lt; multiplier.execute(5, 3) &lt;&lt; '\n';
+
+    // Runtime selection via lambda – swap strategy without recompiling
+    DynamicCalculator calc([](int a, int b) { return a + b; });
+    std::cout &lt;&lt; "Dynamic add: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '\n';
+
+    calc = DynamicCalculator([](int a, int b) { return a * b; });
+    std::cout &lt;&lt; "Dynamic mul: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '\n';
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+// Modern Go Strategy using function values.
+// No Strategy interface or struct implementations needed.
+
+type Strategy func(a, b int) int
+
+type Calculator struct {
+	strategy Strategy
+}
+
+func (c *Calculator) Execute(a, b int) int {
+	return c.strategy(a, b)
+}
+
+func main() {
+	calc := &Calculator{strategy: func(a, b int) int { return a + b }}
+	fmt.Println("Add:", calc.Execute(5, 3))
+
+	calc.strategy = func(a, b int) int { return a - b }
+	fmt.Println("Subtract:", calc.Execute(5, 3))
+
+	calc.strategy = func(a, b int) int { return a * b }
+	fmt.Println("Multiply:", calc.Execute(5, 3))
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Strategy using plain callables
+# No Strategy ABC or subclasses - any callable with the right signature works.
+from typing import Callable
+
+Strategy = Callable[[int, int], int]
+
+class Calculator:
+    def __init__(self, strategy: Strategy) -&gt; None:
+        self.strategy = strategy
+
+    def execute(self, a: int, b: int) -&gt; int:
+        return self.strategy(a, b)
+
+# Named functions, lambdas, or method references all slot in directly
+calc = Calculator(lambda a, b: a + b)
+print(f"Add: {calc.execute(5, 3)}")
+
+calc.strategy = lambda a, b: a - b
+print(f"Subtract: {calc.execute(5, 3)}")
+
+calc.strategy = lambda a, b: a * b
+print(f"Multiply: {calc.execute(5, 3)}")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Strategy using function types
+// No Strategy interface or class hierarchy - strategies are plain function values.
+
+type Strategy = (a: number, b: number) =&gt; number;
+
+class Calculator {
+    constructor(public strategy: Strategy) {}
+
+    execute(a: number, b: number): number {
+        return this.strategy(a, b);
+    }
+}
+
+let calc = new Calculator((a, b) =&gt; a + b);
+console.log("Add:", calc.execute(5, 3));
+
+calc.strategy = (a, b) =&gt; a - b;
+console.log("Subtract:", calc.execute(5, 3));
+
+calc.strategy = (a, b) =&gt; a * b;
+console.log("Multiply:", calc.execute(5, 3));
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="template_method">
+            <div class="topic-header" onclick="app.toggleTopic('template_method')">
+                <h3>Template Method</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+
+class DataProcessor {
+public:
+    virtual ~DataProcessor() = default;
+    
+    void process() {
+        readData();
+        parseData();
+        writeData();
+    }
+    
+protected:
+    virtual void readData() = 0;
+    virtual void parseData() = 0;
+    virtual void writeData() = 0;
+};
+
+class CSVProcessor : public DataProcessor {
+protected:
+    void readData() override {
+        std::cout &lt;&lt; "Reading CSV data\n";
+    }
+    
+    void parseData() override {
+        std::cout &lt;&lt; "Parsing CSV\n";
+    }
+    
+    void writeData() override {
+        std::cout &lt;&lt; "Writing processed CSV\n";
+    }
+};
+
+class JSONProcessor : public DataProcessor {
+protected:
+    void readData() override {
+        std::cout &lt;&lt; "Reading JSON data\n";
+    }
+    
+    void parseData() override {
+        std::cout &lt;&lt; "Parsing JSON\n";
+    }
+    
+    void writeData() override {
+        std::cout &lt;&lt; "Writing processed JSON\n";
+    }
+};
+
+int main() {
+    CSVProcessor csv;
+    csv.process();
+    
+    JSONProcessor json;
+    json.process();
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type DataProcessor interface {
+	ReadData()
+	ParseData()
+	WriteData()
+	Process()
+}
+
+type BaseProcessor struct {
+	processor DataProcessor
+}
+
+func (b *BaseProcessor) Process() {
+	b.processor.ReadData()
+	b.processor.ParseData()
+	b.processor.WriteData()
+}
+
+type CSVProcessor struct {
+	BaseProcessor
+}
+
+func (c *CSVProcessor) ReadData() {
+	fmt.Println("Reading CSV data")
+}
+
+func (c *CSVProcessor) ParseData() {
+	fmt.Println("Parsing CSV")
+}
+
+func (c *CSVProcessor) WriteData() {
+	fmt.Println("Writing processed CSV")
+}
+
+type JSONProcessor struct {
+	BaseProcessor
+}
+
+func (j *JSONProcessor) ReadData() {
+	fmt.Println("Reading JSON data")
+}
+
+func (j *JSONProcessor) ParseData() {
+	fmt.Println("Parsing JSON")
+}
+
+func (j *JSONProcessor) WriteData() {
+	fmt.Println("Writing processed JSON")
+}
+
+func main() {
+	csv := &CSVProcessor{}
+	csv.processor = csv
+	csv.Process()
+
+	json := &JSONProcessor{}
+	json.processor = json
+	json.Process()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class DataProcessor(ABC):
+    def process(self) -&gt; None:
+        self.read_data()
+        self.parse_data()
+        self.write_data()
+    
+    @abstractmethod
+    def read_data(self) -&gt; None:
+        pass
+    
+    @abstractmethod
+    def parse_data(self) -&gt; None:
+        pass
+    
+    @abstractmethod
+    def write_data(self) -&gt; None:
+        pass
+
+class CSVProcessor(DataProcessor):
+    def read_data(self) -&gt; None:
+        print("Reading CSV data")
+    
+    def parse_data(self) -&gt; None:
+        print("Parsing CSV")
+    
+    def write_data(self) -&gt; None:
+        print("Writing processed CSV")
+
+class JSONProcessor(DataProcessor):
+    def read_data(self) -&gt; None:
+        print("Reading JSON data")
+    
+    def parse_data(self) -&gt; None:
+        print("Parsing JSON")
+    
+    def write_data(self) -&gt; None:
+        print("Writing processed JSON")
+
+csv = CSVProcessor()
+csv.process()
+
+json = JSONProcessor()
+json.process()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Template Method
+abstract class DataProcessor {
+    final def process(): Unit = {
+        readData()
+        parseData()
+        writeData()
+    }
+    
+    protected def readData(): Unit
+    protected def parseData(): Unit
+    protected def writeData(): Unit
+}
+
+class CSVProcessor extends DataProcessor {
+    protected def readData(): Unit = println("Reading CSV data")
+    protected def parseData(): Unit = println("Parsing CSV")
+    protected def writeData(): Unit = println("Writing processed CSV")
+}
+
+class JSONProcessor extends DataProcessor {
+    protected def readData(): Unit = println("Reading JSON data")
+    protected def parseData(): Unit = println("Parsing JSON")
+    protected def writeData(): Unit = println("Writing processed JSON")
+}
+
+object Main extends App {
+    val csv: DataProcessor = new CSVProcessor()
+    csv.process()
+    
+    println()
+    
+    val json: DataProcessor = new JSONProcessor()
+    json.process()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Template Method
+abstract class DataProcessor {
+    final def process(): Unit = {
+        readData()
+        parseData()
+        writeData()
+    }
+    
+    protected def readData(): Unit
+    protected def parseData(): Unit
+    protected def writeData(): Unit
+}
+
+class CSVProcessor extends DataProcessor:
+    protected def readData(): Unit = println("Reading CSV data")
+    protected def parseData(): Unit = println("Parsing CSV")
+    protected def writeData(): Unit = println("Writing processed CSV")
+
+class JSONProcessor extends DataProcessor:
+    protected def readData(): Unit = println("Reading JSON data")
+    protected def parseData(): Unit = println("Parsing JSON")
+    protected def writeData(): Unit = println("Writing processed JSON")
+
+@main def main(): Unit =
+    val csv: DataProcessor = new CSVProcessor()
+    csv.process()
+    
+    println()
+    
+    val json: DataProcessor = new JSONProcessor()
+    json.process()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>abstract class DataProcessor {
+    process(): void {
+        this.readData();
+        this.parseData();
+        this.writeData();
+    }
+    
+    protected abstract readData(): void;
+    protected abstract parseData(): void;
+    protected abstract writeData(): void;
+}
+
+class CSVProcessor extends DataProcessor {
+    protected readData(): void {
+        console.log("Reading CSV data");
+    }
+    
+    protected parseData(): void {
+        console.log("Parsing CSV");
+    }
+    
+    protected writeData(): void {
+        console.log("Writing processed CSV");
+    }
+}
+
+class JSONProcessor extends DataProcessor {
+    protected readData(): void {
+        console.log("Reading JSON data");
+    }
+    
+    protected parseData(): void {
+        console.log("Parsing JSON");
+    }
+    
+    protected writeData(): void {
+        console.log("Writing processed JSON");
+    }
+}
+
+const csv = new CSVProcessor();
+csv.process();
+
+const json = new JSONProcessor();
+json.process();
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
+// Compile-time polymorphism: no virtual dispatch, no vtable, concrete steps inlined.
+#include &lt;iostream&gt;
+
+template&lt;typename Derived&gt;
+class DataProcessor {
+public:
+    void process() {
+        derived().readData();
+        derived().parseData();
+        derived().writeData();
+    }
+
+private:
+    Derived& derived() { return static_cast&lt;Derived&&gt;(*this); }
+};
+
+class CSVProcessor : public DataProcessor&lt;CSVProcessor&gt; {
+public:
+    void readData()  const { std::cout &lt;&lt; "Reading CSV data\n"; }
+    void parseData() const { std::cout &lt;&lt; "Parsing CSV\n"; }
+    void writeData() const { std::cout &lt;&lt; "Writing processed CSV\n"; }
+};
+
+class JSONProcessor : public DataProcessor&lt;JSONProcessor&gt; {
+public:
+    void readData()  const { std::cout &lt;&lt; "Reading JSON data\n"; }
+    void parseData() const { std::cout &lt;&lt; "Parsing JSON\n"; }
+    void writeData() const { std::cout &lt;&lt; "Writing processed JSON\n"; }
+};
+
+int main() {
+    CSVProcessor csv;
+    csv.process();
+
+    JSONProcessor json;
+    json.process();
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Template Method using higher-order functions
+# No abstract base class - the template is a plain function that takes callables.
+from typing import Callable
+
+def process_data(
+    read:  Callable[[], None],
+    parse: Callable[[], None],
+    write: Callable[[], None],
+) -&gt; None:
+    read()
+    parse()
+    write()
+
+# CSV processor - plain functions, no subclass needed
+def csv_read()  -&gt; None: print("Reading CSV data")
+def csv_parse() -&gt; None: print("Parsing CSV")
+def csv_write() -&gt; None: print("Writing processed CSV")
+
+# JSON processor
+def json_read()  -&gt; None: print("Reading JSON data")
+def json_parse() -&gt; None: print("Parsing JSON")
+def json_write() -&gt; None: print("Writing processed JSON")
+
+process_data(csv_read,  csv_parse,  csv_write)
+process_data(json_read, json_parse, json_write)
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="visitor">
+            <div class="topic-header" onclick="app.toggleTopic('visitor')">
+                <h3>Visitor</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+class Visitor;
+
+class Element {
+public:
+    virtual ~Element() = default;
+    virtual void accept(Visitor* visitor) = 0;
+};
+
+class Circle : public Element {
+public:
+    void accept(Visitor* visitor) override;
+    void draw() { std::cout &lt;&lt; "Drawing circle\n"; }
+};
+
+class Rectangle : public Element {
+public:
+    void accept(Visitor* visitor) override;
+    void draw() { std::cout &lt;&lt; "Drawing rectangle\n"; }
+};
+
+class Visitor {
+public:
+    virtual ~Visitor() = default;
+    virtual void visit(Circle* c) = 0;
+    virtual void visit(Rectangle* r) = 0;
+};
+
+void Circle::accept(Visitor* visitor) {
+    visitor-&gt;visit(this);
+}
+
+void Rectangle::accept(Visitor* visitor) {
+    visitor-&gt;visit(this);
+}
+
+class DrawVisitor : public Visitor {
+public:
+    void visit(Circle* c) override {
+        c-&gt;draw();
+    }
+    
+    void visit(Rectangle* r) override {
+        r-&gt;draw();
+    }
+};
+
+int main() {
+    auto circle = std::make_shared&lt;Circle&gt;();
+    auto rectangle = std::make_shared&lt;Rectangle&gt;();
+    auto visitor = std::make_shared&lt;DrawVisitor&gt;();
+    
+    circle-&gt;accept(visitor.get());
+    rectangle-&gt;accept(visitor.get());
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Visitor interface {
+	VisitCircle(*Circle)
+	VisitRectangle(*Rectangle)
+}
+
+type Element interface {
+	Accept(Visitor)
+}
+
+type Circle struct{}
+
+func (c *Circle) Accept(v Visitor) {
+	v.VisitCircle(c)
+}
+
+func (c *Circle) Draw() {
+	fmt.Println("Drawing circle")
+}
+
+type Rectangle struct{}
+
+func (r *Rectangle) Accept(v Visitor) {
+	v.VisitRectangle(r)
+}
+
+func (r *Rectangle) Draw() {
+	fmt.Println("Drawing rectangle")
+}
+
+type DrawVisitor struct{}
+
+func (dv *DrawVisitor) VisitCircle(c *Circle) {
+	c.Draw()
+}
+
+func (dv *DrawVisitor) VisitRectangle(r *Rectangle) {
+	r.Draw()
+}
+
+func main() {
+	circle := &Circle{}
+	rectangle := &Rectangle{}
+	visitor := &DrawVisitor{}
+
+	circle.Accept(visitor)
+	rectangle.Accept(visitor)
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Visitor(ABC):
+    @abstractmethod
+    def visit_circle(self, circle: "Circle") -&gt; None:
+        pass
+    
+    @abstractmethod
+    def visit_rectangle(self, rectangle: "Rectangle") -&gt; None:
+        pass
+
+class Element(ABC):
+    @abstractmethod
+    def accept(self, visitor: Visitor) -&gt; None:
+        pass
+
+class Circle(Element):
+    def accept(self, visitor: Visitor) -&gt; None:
+        visitor.visit_circle(self)
+    
+    def draw(self) -&gt; None:
+        print("Drawing circle")
+
+class Rectangle(Element):
+    def accept(self, visitor: Visitor) -&gt; None:
+        visitor.visit_rectangle(self)
+    
+    def draw(self) -&gt; None:
+        print("Drawing rectangle")
+
+class DrawVisitor(Visitor):
+    def visit_circle(self, circle: Circle) -&gt; None:
+        circle.draw()
+    
+    def visit_rectangle(self, rectangle: Rectangle) -&gt; None:
+        rectangle.draw()
+
+circle = Circle()
+rectangle = Rectangle()
+visitor = DrawVisitor()
+
+circle.accept(visitor)
+rectangle.accept(visitor)
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Visitor
+trait Visitor {
+    def visitCircle(c: Circle): Unit
+    def visitRectangle(r: Rectangle): Unit
+}
+
+trait Element {
+    def accept(visitor: Visitor): Unit
+}
+
+class Circle extends Element {
+    def accept(visitor: Visitor): Unit = {
+        visitor.visitCircle(this)
+    }
+    
+    def draw(): Unit = println("Drawing circle")
+}
+
+class Rectangle extends Element {
+    def accept(visitor: Visitor): Unit = {
+        visitor.visitRectangle(this)
+    }
+    
+    def draw(): Unit = println("Drawing rectangle")
+}
+
+class DrawVisitor extends Visitor {
+    def visitCircle(c: Circle): Unit = {
+        c.draw()
+    }
+    
+    def visitRectangle(r: Rectangle): Unit = {
+        r.draw()
+    }
+}
+
+object Main extends App {
+    val circle = new Circle()
+    val rectangle = new Rectangle()
+    val visitor = new DrawVisitor()
+    
+    circle.accept(visitor)
+    rectangle.accept(visitor)
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala Visitor using sealed trait ADT + pattern matching (Scala 3)
+// No Visitor trait, no accept/visit - shapes are plain ADT cases.
+// The compiler enforces exhaustiveness at compile time.
+
+sealed trait Shape
+case class Circle()    extends Shape
+case class Rectangle() extends Shape
+
+// Operations are plain functions - exhaustive match enforced by the compiler
+def draw(shape: Shape): Unit = shape match
+  case Circle()    =&gt; println("Drawing circle")
+  case Rectangle() =&gt; println("Drawing rectangle")
+
+// Adding an operation without touching Shape types
+def describe(shape: Shape): String = shape match
+  case Circle()    =&gt; "it's a circle"
+  case Rectangle() =&gt; "it's a rectangle"
+
+@main def visitorModernExample(): Unit =
+  val shapes = List(Circle(), Rectangle())
+  shapes.foreach(draw)
+  shapes.map(describe).foreach(println)
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IVisitor {
+    visitCircle(c: Circle): void;
+    visitRectangle(r: Rectangle): void;
+}
+
+interface IElement {
+    accept(visitor: IVisitor): void;
+}
+
+class Circle implements IElement {
+    accept(visitor: IVisitor): void {
+        visitor.visitCircle(this);
+    }
+    
+    draw(): void {
+        console.log("Drawing circle");
+    }
+}
+
+class Rectangle implements IElement {
+    accept(visitor: IVisitor): void {
+        visitor.visitRectangle(this);
+    }
+    
+    draw(): void {
+        console.log("Drawing rectangle");
+    }
+}
+
+class DrawVisitor implements IVisitor {
+    visitCircle(c: Circle): void {
+        c.draw();
+    }
+    
+    visitRectangle(r: Rectangle): void {
+        r.draw();
+    }
+}
+
+const circle = new Circle();
+const rectangle = new Rectangle();
+const visitor = new DrawVisitor();
+
+circle.accept(visitor);
+rectangle.accept(visitor);
+</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Visitor using std::variant + std::visit
+// Eliminates double-dispatch ceremony; shapes are plain value types with no base class.
+#include &lt;iostream&gt;
+#include &lt;variant&gt;
+
+struct Circle {
+    void draw() const { std::cout &lt;&lt; "Drawing circle\n"; }
+};
+
+struct Rectangle {
+    void draw() const { std::cout &lt;&lt; "Drawing rectangle\n"; }
+};
+
+using Shape = std::variant&lt;Circle, Rectangle&gt;;
+
+// --- Named visitor struct ---
+struct DrawVisitor {
+    void operator()(const Circle& c)    const { c.draw(); }
+    void operator()(const Rectangle& r) const { r.draw(); }
+};
+
+// --- Overload helper: compose lambdas into one callable (C++17) ---
+template&lt;class... Ts&gt;
+struct overload : Ts... { using Ts::operator()...; };
+
+template&lt;class... Ts&gt;
+overload(Ts...) -&gt; overload&lt;Ts...&gt;;
+
+int main() {
+    Shape circle    = Circle{};
+    Shape rectangle = Rectangle{};
+
+    // Using a named visitor
+    DrawVisitor draw;
+    std::visit(draw, circle);
+    std::visit(draw, rectangle);
+
+    // Inline overload pattern – add a second "operation" without touching Shape types
+    auto describe = overload{
+        [](const Circle&)    { std::cout &lt;&lt; "it's a circle\n"; },
+        [](const Rectangle&) { std::cout &lt;&lt; "it's a rectangle\n"; },
+    };
+    std::visit(describe, circle);
+    std::visit(describe, rectangle);
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+// Modern Go Visitor using a type switch.
+// No Visitor interface, no Accept method - shapes are plain structs.
+
+type Circle struct{}
+type Rectangle struct{}
+
+type Shape interface{ isShape() }
+
+func (Circle) isShape()    {}
+func (Rectangle) isShape() {}
+
+// draw is a plain function - no visitor struct needed
+func draw(s Shape) {
+	switch s.(type) {
+	case Circle:
+		fmt.Println("Drawing circle")
+	case Rectangle:
+		fmt.Println("Drawing rectangle")
+	default:
+		panic("unknown shape")
+	}
+}
+
+// Second operation - added without touching Shape types
+func describe(s Shape) string {
+	switch s.(type) {
+	case Circle:
+		return "it's a circle"
+	case Rectangle:
+		return "it's a rectangle"
+	default:
+		return "unknown"
+	}
+}
+
+func main() {
+	shapes := []Shape{Circle{}, Rectangle{}}
+	for _, s := range shapes {
+		draw(s)
+	}
+	fmt.Println(describe(Circle{}))
+	fmt.Println(describe(Rectangle{}))
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Visitor using functools.singledispatch
+# No accept/visit ceremony - shapes are plain dataclasses, operations are functions.
+from __future__ import annotations
+from dataclasses import dataclass
+from functools import singledispatch
+
+@dataclass
+class Circle:
+    pass
+
+@dataclass
+class Rectangle:
+    pass
+
+# --- Operation 1: draw ---
+@singledispatch
+def draw(shape: object) -&gt; None:
+    raise NotImplementedError(f"draw not implemented for {type(shape)}")
+
+@draw.register
+def _(shape: Circle) -&gt; None:
+    print("Drawing circle")
+
+@draw.register
+def _(shape: Rectangle) -&gt; None:
+    print("Drawing rectangle")
+
+# --- Operation 2: describe - added without touching shape types ---
+@singledispatch
+def describe(shape: object) -&gt; str:
+    raise NotImplementedError(f"describe not implemented for {type(shape)}")
+
+@describe.register
+def _(shape: Circle) -&gt; str:
+    return "it's a circle"
+
+@describe.register
+def _(shape: Rectangle) -&gt; str:
+    return "it's a rectangle"
+
+draw(Circle())
+draw(Rectangle())
+print(describe(Circle()))
+print(describe(Rectangle()))
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Visitor using discriminated unions + exhaustive switch
+// No Visitor interface or accept/visit ceremony - shapes are plain data objects.
+
+interface Circle    { readonly kind: "circle" }
+interface Rectangle { readonly kind: "rectangle" }
+
+type Shape = Circle | Rectangle;
+
+// Operation is a plain function - no "visitor" class needed
+function draw(shape: Shape): void {
+    switch (shape.kind) {
+        case "circle":    console.log("Drawing circle");    break;
+        case "rectangle": console.log("Drawing rectangle"); break;
+        default: {
+            const _exhaustive: never = shape; // compile error if Shape grows
+        }
+    }
+}
+
+// Adding a second operation - no changes to Shape types required
+function describe(shape: Shape): string {
+    switch (shape.kind) {
+        case "circle":    return "it's a circle";
+        case "rectangle": return "it's a rectangle";
+        default: {
+            const _exhaustive: never = shape;
+            return "";
+        }
+    }
+}
+
+const circle: Shape    = { kind: "circle" };
+const rectangle: Shape = { kind: "rectangle" };
+
+draw(circle);
+draw(rectangle);
+console.log(describe(circle));
+console.log(describe(rectangle));
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="interpreter">
+            <div class="topic-header" onclick="app.toggleTopic('interpreter')">
+                <h3>Interpreter</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;memory&gt;
+
+class Expression {
+public:
+    virtual ~Expression() = default;
+    virtual bool interpret(const std::string& ctx) = 0;
+};
+
+class TerminalExpression : public Expression {
+private:
+    std::string literal;
+public:
+    TerminalExpression(const std::string& lit) : literal(lit) {}
+    
+    bool interpret(const std::string& ctx) override {
+        return ctx.find(literal) != std::string::npos;
+    }
+};
+
+class OrExpression : public Expression {
+private:
+    std::shared_ptr&lt;Expression&gt; expr1, expr2;
+public:
+    OrExpression(std::shared_ptr&lt;Expression&gt; e1, std::shared_ptr&lt;Expression&gt; e2)
+        : expr1(e1), expr2(e2) {}
+    
+    bool interpret(const std::string& ctx) override {
+        return expr1-&gt;interpret(ctx) || expr2-&gt;interpret(ctx);
+    }
+};
+
+class AndExpression : public Expression {
+private:
+    std::shared_ptr&lt;Expression&gt; expr1, expr2;
+public:
+    AndExpression(std::shared_ptr&lt;Expression&gt; e1, std::shared_ptr&lt;Expression&gt; e2)
+        : expr1(e1), expr2(e2) {}
+    
+    bool interpret(const std::string& ctx) override {
+        return expr1-&gt;interpret(ctx) && expr2-&gt;interpret(ctx);
+    }
+};
+
+int main() {
+    auto c1 = std::make_shared&lt;TerminalExpression&gt;("cat");
+    auto c2 = std::make_shared&lt;TerminalExpression&gt;("dog");
+    auto expr = std::make_shared&lt;OrExpression&gt;(c1, c2);
+    
+    std::cout &lt;&lt; (expr-&gt;interpret("cat") ? "true" : "false") &lt;&lt; std::endl;
+    std::cout &lt;&lt; (expr-&gt;interpret("bird") ? "true" : "false") &lt;&lt; std::endl;
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type Expression interface {
+	Interpret(string) bool
+}
+
+type TerminalExpression struct {
+	literal string
+}
+
+func (t *TerminalExpression) Interpret(ctx string) bool {
+	return strings.Contains(ctx, t.literal)
+}
+
+type OrExpression struct {
+	expr1, expr2 Expression
+}
+
+func (o *OrExpression) Interpret(ctx string) bool {
+	return o.expr1.Interpret(ctx) || o.expr2.Interpret(ctx)
+}
+
+type AndExpression struct {
+	expr1, expr2 Expression
+}
+
+func (a *AndExpression) Interpret(ctx string) bool {
+	return a.expr1.Interpret(ctx) && a.expr2.Interpret(ctx)
+}
+
+func main() {
+	c1 := &TerminalExpression{"cat"}
+	c2 := &TerminalExpression{"dog"}
+	expr := &OrExpression{c1, c2}
+
+	fmt.Println(expr.Interpret("cat"))
+	fmt.Println(expr.Interpret("bird"))
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Expression(ABC):
+    @abstractmethod
+    def interpret(self, ctx: str) -&gt; bool:
+        pass
+
+class TerminalExpression(Expression):
+    def __init__(self, literal: str):
+        self.literal = literal
+    
+    def interpret(self, ctx: str) -&gt; bool:
+        return self.literal in ctx
+
+class OrExpression(Expression):
+    def __init__(self, expr1: Expression, expr2: Expression):
+        self.expr1 = expr1
+        self.expr2 = expr2
+    
+    def interpret(self, ctx: str) -&gt; bool:
+        return self.expr1.interpret(ctx) or self.expr2.interpret(ctx)
+
+class AndExpression(Expression):
+    def __init__(self, expr1: Expression, expr2: Expression):
+        self.expr1 = expr1
+        self.expr2 = expr2
+    
+    def interpret(self, ctx: str) -&gt; bool:
+        return self.expr1.interpret(ctx) and self.expr2.interpret(ctx)
+
+c1 = TerminalExpression("cat")
+c2 = TerminalExpression("dog")
+expr = OrExpression(c1, c2)
+
+print(expr.interpret("cat"))
+print(expr.interpret("bird"))
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Interpreter
+trait Expression {
+    def interpret(ctx: String): Boolean
+}
+
+class TerminalExpression(literal: String) extends Expression {
+    def interpret(ctx: String): Boolean = ctx.contains(literal)
+}
+
+class OrExpression(expr1: Expression, expr2: Expression) extends Expression {
+    def interpret(ctx: String): Boolean = expr1.interpret(ctx) || expr2.interpret(ctx)
+}
+
+class AndExpression(expr1: Expression, expr2: Expression) extends Expression {
+    def interpret(ctx: String): Boolean = expr1.interpret(ctx) && expr2.interpret(ctx)
+}
+
+object Main extends App {
+    val c1: Expression = new TerminalExpression("cat")
+    val c2: Expression = new TerminalExpression("dog")
+    val expr: Expression = new OrExpression(c1, c2)
+    
+    println(expr.interpret("cat"))
+    println(expr.interpret("bird"))
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Interpreter
+trait Expression:
+    def interpret(ctx: String): Boolean
+
+class TerminalExpression(literal: String) extends Expression:
+    def interpret(ctx: String): Boolean = ctx.contains(literal)
+
+class OrExpression(expr1: Expression, expr2: Expression) extends Expression:
+    def interpret(ctx: String): Boolean = expr1.interpret(ctx) || expr2.interpret(ctx)
+
+class AndExpression(expr1: Expression, expr2: Expression) extends Expression:
+    def interpret(ctx: String): Boolean = expr1.interpret(ctx) && expr2.interpret(ctx)
+
+@main def main(): Unit =
+    val c1: Expression = new TerminalExpression("cat")
+    val c2: Expression = new TerminalExpression("dog")
+    val expr: Expression = new OrExpression(c1, c2)
+    
+    println(expr.interpret("cat"))
+    println(expr.interpret("bird"))
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Expression {
+    interpret(ctx: string): boolean;
+}
+
+class TerminalExpression implements Expression {
+    constructor(private literal: string) {}
+    
+    interpret(ctx: string): boolean {
+        return ctx.includes(this.literal);
+    }
+}
+
+class OrExpression implements Expression {
+    constructor(private expr1: Expression, private expr2: Expression) {}
+    
+    interpret(ctx: string): boolean {
+        return this.expr1.interpret(ctx) || this.expr2.interpret(ctx);
+    }
+}
+
+class AndExpression implements Expression {
+    constructor(private expr1: Expression, private expr2: Expression) {}
+    
+    interpret(ctx: string): boolean {
+        return this.expr1.interpret(ctx) && this.expr2.interpret(ctx);
+    }
+}
+
+const c1 = new TerminalExpression("cat");
+const c2 = new TerminalExpression("dog");
+const expr = new OrExpression(c1, c2);
+
+console.log(expr.interpret("cat"));
+console.log(expr.interpret("bird"));
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="iterator">
+            <div class="topic-header" onclick="app.toggleTopic('iterator')">
+                <h3>Iterator</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;memory&gt;
+
+template &lt;typename T&gt;
+class Iterator {
+public:
+    virtual ~Iterator() = default;
+    virtual bool hasNext() = 0;
+    virtual T next() = 0;
+};
+
+template &lt;typename T&gt;
+class Collection {
+public:
+    virtual ~Collection() = default;
+    virtual std::unique_ptr&lt;Iterator&lt;T&gt;&gt; createIterator() = 0;
+};
+
+template &lt;typename T&gt;
+class ArrayIterator : public Iterator&lt;T&gt; {
+private:
+    std::vector&lt;T&gt;& items;
+    int position = 0;
+public:
+    ArrayIterator(std::vector&lt;T&gt;& items) : items(items) {}
+    
+    bool hasNext() override {
+        return position &lt; items.size();
+    }
+    
+    T next() override {
+        return items[position++];
+    }
+};
+
+template &lt;typename T&gt;
+class ArrayCollection : public Collection&lt;T&gt; {
+private:
+    std::vector&lt;T&gt; items;
+public:
+    void add(T item) { items.push_back(item); }
+    
+    std::unique_ptr&lt;Iterator&lt;T&gt;&gt; createIterator() override {
+        return std::make_unique&lt;ArrayIterator&lt;T&gt;&gt;(items);
+    }
+};
+
+int main() {
+    ArrayCollection&lt;int&gt; collection;
+    collection.add(10);
+    collection.add(20);
+    collection.add(30);
+    
+    auto it = collection.createIterator();
+    while (it-&gt;hasNext()) {
+        std::cout &lt;&lt; it-&gt;next() &lt;&lt; " ";
+    }
+    std::cout &lt;&lt; std::endl;
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Iterator interface {
+	HasNext() bool
+	Next() int
+}
+
+type Collection interface {
+	CreateIterator() Iterator
+}
+
+type ArrayIterator struct {
+	items    []int
+	position int
+}
+
+func (i *ArrayIterator) HasNext() bool {
+	return i.position &lt; len(i.items)
+}
+
+func (i *ArrayIterator) Next() int {
+	result := i.items[i.position]
+	i.position++
+	return result
+}
+
+type ArrayCollection struct {
+	items []int
+}
+
+func (c *ArrayCollection) Add(item int) {
+	c.items = append(c.items, item)
+}
+
+func (c *ArrayCollection) CreateIterator() Iterator {
+	return &ArrayIterator{c.items, 0}
+}
+
+func main() {
+	collection := &ArrayCollection{}
+	collection.Add(10)
+	collection.Add(20)
+	collection.Add(30)
+
+	it := collection.CreateIterator()
+	for it.HasNext() {
+		fmt.Printf("%d ", it.Next())
+	}
+	fmt.Println()
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+from typing import Any, Iterator as PyIterator
+
+class Iterator(ABC):
+    @abstractmethod
+    def has_next(self) -&gt; bool:
+        pass
+    
+    @abstractmethod
+    def next(self) -&gt; Any:
+        pass
+
+class Collection(ABC):
+    @abstractmethod
+    def create_iterator(self) -&gt; Iterator:
+        pass
+
+class ArrayIterator(Iterator):
+    def __init__(self, items: list):
+        self.items = items
+        self.position = 0
+    
+    def has_next(self) -&gt; bool:
+        return self.position &lt; len(self.items)
+    
+    def next(self) -&gt; Any:
+        result = self.items[self.position]
+        self.position += 1
+        return result
+
+class ArrayCollection(Collection):
+    def __init__(self):
+        self.items = []
+    
+    def add(self, item: Any) -&gt; None:
+        self.items.append(item)
+    
+    def create_iterator(self) -&gt; Iterator:
+        return ArrayIterator(self.items)
+
+collection = ArrayCollection()
+collection.add(10)
+collection.add(20)
+collection.add(30)
+
+it = collection.create_iterator()
+while it.has_next():
+    print(it.next(), end=" ")
+print()
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Iterator
+trait CustomIterator[T] {
+    def hasNext: Boolean
+    def next(): T
+}
+
+trait CustomCollection[T] {
+    def createIterator(): CustomIterator[T]
+}
+
+class ArrayIterator[T](items: Vector[T]) extends CustomIterator[T] {
+    private var position = 0
+    
+    def hasNext: Boolean = position &lt; items.length
+    
+    def next(): T = {
+        val result = items(position)
+        position += 1
+        result
+    }
+}
+
+class ArrayCollection[T](items: Vector[T]) extends CustomCollection[T] {
+    def createIterator(): CustomIterator[T] = new ArrayIterator(items)
+}
+
+object Main extends App {
+    val collection = new ArrayCollection(Vector(10, 20, 30))
+    val it = collection.createIterator()
+    
+    while (it.hasNext) {
+        print(it.next() + " ")
+    }
+    println()
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Iterator
+trait CustomIterator[T]:
+    def hasNext: Boolean
+    def next(): T
+
+trait CustomCollection[T]:
+    def createIterator(): CustomIterator[T]
+
+class ArrayIterator[T](items: Vector[T]) extends CustomIterator[T]:
+    private var position = 0
+    
+    def hasNext: Boolean = position &lt; items.length
+    
+    def next(): T =
+        val result = items(position)
+        position += 1
+        result
+
+class ArrayCollection[T](items: Vector[T]) extends CustomCollection[T]:
+    def createIterator(): CustomIterator[T] = new ArrayIterator(items)
+
+@main def main(): Unit =
+    val collection = new ArrayCollection(Vector(10, 20, 30))
+    val it = collection.createIterator()
+    
+    while (it.hasNext) {
+        print(it.next() + " ")
+    }
+    println()
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IIterator {
+    hasNext(): boolean;
+    next(): number;
+}
+
+interface ICollection {
+    createIterator(): IIterator;
+}
+
+class ArrayIterator implements IIterator {
+    private position = 0;
+    
+    constructor(private items: number[]) {}
+    
+    hasNext(): boolean {
+        return this.position &lt; this.items.length;
+    }
+    
+    next(): number {
+        return this.items[this.position++];
+    }
+}
+
+class ArrayCollection implements ICollection {
+    private items: number[] = [];
+    
+    add(item: number): void {
+        this.items.push(item);
+    }
+    
+    createIterator(): IIterator {
+        return new ArrayIterator(this.items);
+    }
+}
+
+const collection = new ArrayCollection();
+collection.add(10);
+collection.add(20);
+collection.add(30);
+
+const it = collection.createIterator();
+let result = "";
+while (it.hasNext()) {
+    result += it.next() + " ";
+}
+console.log(result);
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="mediator">
+            <div class="topic-header" onclick="app.toggleTopic('mediator')">
+                <h3>Mediator</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+class Mediator {
+public:
+    virtual ~Mediator() = default;
+    virtual void notify(void* sender, const std::string& event) = 0;
+};
+
+class User {
+protected:
+    std::shared_ptr&lt;Mediator&gt; mediator;
+    std::string name;
+public:
+    User(std::shared_ptr&lt;Mediator&gt; m, const std::string& n) : mediator(m), name(n) {}
+    virtual ~User() = default;
+    virtual void send(const std::string& msg) = 0;
+    virtual void receive(const std::string& msg) = 0;
+};
+
+class ChatUser : public User {
+public:
+    using User::User;
+    
+    void send(const std::string& msg) override {
+        std::cout &lt;&lt; name &lt;&lt; " sends: " &lt;&lt; msg &lt;&lt; std::endl;
+        mediator-&gt;notify(this, msg);
+    }
+    
+    void receive(const std::string& msg) override {
+        std::cout &lt;&lt; name &lt;&lt; " receives: " &lt;&lt; msg &lt;&lt; std::endl;
+    }
+};
+
+class ChatRoom : public Mediator {
+private:
+    std::shared_ptr&lt;ChatUser&gt; user1, user2;
+public:
+    void addUser(std::shared_ptr&lt;ChatUser&gt; u1, std::shared_ptr&lt;ChatUser&gt; u2) {
+        user1 = u1;
+        user2 = u2;
+    }
+    
+    void notify(void* sender, const std::string& event) override {
+        if (sender == user1.get()) {
+            user2-&gt;receive(event);
+        } else {
+            user1-&gt;receive(event);
+        }
+    }
+};
+
+int main() {
+    auto room = std::make_shared&lt;ChatRoom&gt;();
+    auto u1 = std::make_shared&lt;ChatUser&gt;(room, "Alice");
+    auto u2 = std::make_shared&lt;ChatUser&gt;(room, "Bob");
+    
+    room-&gt;addUser(u1, u2);
+    
+    u1-&gt;send("Hello!");
+    u2-&gt;send("Hi there!");
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Mediator interface {
+	Notify(sender interface{}, event string)
+}
+
+type User struct {
+	mediator Mediator
+	name     string
+}
+
+func (u *User) Send(msg string) {
+	fmt.Printf("%s sends: %s\n", u.name, msg)
+	u.mediator.Notify(u, msg)
+}
+
+func (u *User) Receive(msg string) {
+	fmt.Printf("%s receives: %s\n", u.name, msg)
+}
+
+type ChatRoom struct {
+	user1 *User
+	user2 *User
+}
+
+func (cr *ChatRoom) AddUsers(u1, u2 *User) {
+	cr.user1 = u1
+	cr.user2 = u2
+}
+
+func (cr *ChatRoom) Notify(sender interface{}, event string) {
+	if sender == cr.user1 {
+		cr.user2.Receive(event)
+	} else {
+		cr.user1.Receive(event)
+	}
+}
+
+func main() {
+	room := &ChatRoom{}
+	u1 := &User{room, "Alice"}
+	u2 := &User{room, "Bob"}
+
+	room.AddUsers(u1, u2)
+
+	u1.Send("Hello!")
+	u2.Send("Hi there!")
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+
+class Mediator(ABC):
+    @abstractmethod
+    def notify(self, sender: "User", event: str) -&gt; None:
+        pass
+
+class User:
+    def __init__(self, mediator: Mediator, name: str):
+        self.mediator = mediator
+        self.name = name
+    
+    def send(self, msg: str) -&gt; None:
+        print(f"{self.name} sends: {msg}")
+        self.mediator.notify(self, msg)
+    
+    def receive(self, msg: str) -&gt; None:
+        print(f"{self.name} receives: {msg}")
+
+class ChatRoom(Mediator):
+    def __init__(self):
+        self.user1: User = None
+        self.user2: User = None
+    
+    def add_users(self, u1: User, u2: User) -&gt; None:
+        self.user1 = u1
+        self.user2 = u2
+    
+    def notify(self, sender: User, event: str) -&gt; None:
+        if sender == self.user1:
+            self.user2.receive(event)
+        else:
+            self.user1.receive(event)
+
+room = ChatRoom()
+u1 = User(room, "Alice")
+u2 = User(room, "Bob")
+
+room.add_users(u1, u2)
+
+u1.send("Hello!")
+u2.send("Hi there!")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Mediator
+trait ChatMediator {
+    def sendMessage(sender: ChatUser, msg: String): Unit
+}
+
+class ChatRoom extends ChatMediator {
+    private var user1: Option[ChatUser] = None
+    private var user2: Option[ChatUser] = None
+    
+    def addUsers(u1: ChatUser, u2: ChatUser): Unit = {
+        user1 = Some(u1)
+        user2 = Some(u2)
+    }
+    
+    def sendMessage(sender: ChatUser, msg: String): Unit = {
+        if (sender == user1.orNull) {
+            user2.foreach(_.receive(msg))
+        } else {
+            user1.foreach(_.receive(msg))
+        }
+    }
+}
+
+class ChatUser(name: String, mediator: ChatMediator) {
+    def send(msg: String): Unit = {
+        println(s"$name sends: $msg")
+        mediator.sendMessage(this, msg)
+    }
+    
+    def receive(msg: String): Unit = {
+        println(s"$name receives: $msg")
+    }
+}
+
+object Main extends App {
+    val room = new ChatRoom()
+    val u1 = new ChatUser("Alice", room)
+    val u2 = new ChatUser("Bob", room)
+    
+    room.addUsers(u1, u2)
+    
+    u1.send("Hello!")
+    u2.send("Hi there!")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Mediator
+trait ChatMediator:
+    def sendMessage(sender: ChatUser, msg: String): Unit
+
+class ChatRoom extends ChatMediator:
+    private var user1: Option[ChatUser] = None
+    private var user2: Option[ChatUser] = None
+    
+    def addUsers(u1: ChatUser, u2: ChatUser): Unit =
+        user1 = Some(u1)
+        user2 = Some(u2)
+    
+    def sendMessage(sender: ChatUser, msg: String): Unit =
+        if (sender == user1.orNull) {
+            user2.foreach(_.receive(msg))
+        } else {
+            user1.foreach(_.receive(msg))
+        }
+
+class ChatUser(name: String, mediator: ChatMediator):
+    def send(msg: String): Unit =
+        println(s"$name sends: $msg")
+        mediator.sendMessage(this, msg)
+    
+    def receive(msg: String): Unit =
+        println(s"$name receives: $msg")
+
+@main def main(): Unit =
+    val room = new ChatRoom()
+    val u1 = new ChatUser("Alice", room)
+    val u2 = new ChatUser("Bob", room)
+    
+    room.addUsers(u1, u2)
+    
+    u1.send("Hello!")
+    u2.send("Hi there!")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IMediator {
+    notify(sender: User, event: string): void;
+}
+
+class User {
+    constructor(protected mediator: IMediator, public name: string) {}
+    
+    send(msg: string): void {
+        console.log(`${this.name} sends: ${msg}`);
+        this.mediator.notify(this, msg);
+    }
+    
+    receive(msg: string): void {
+        console.log(`${this.name} receives: ${msg}`);
+    }
+}
+
+class ChatRoom implements IMediator {
+    private user1: User;
+    private user2: User;
+    
+    addUsers(u1: User, u2: User): void {
+        this.user1 = u1;
+        this.user2 = u2;
+    }
+    
+    notify(sender: User, event: string): void {
+        if (sender === this.user1) {
+            this.user2.receive(event);
+        } else {
+            this.user1.receive(event);
+        }
+    }
+}
+
+const room = new ChatRoom();
+const u1 = new User(room, "Alice");
+const u2 = new User(room, "Bob");
+
+room.addUsers(u1, u2);
+
+u1.send("Hello!");
+u2.send("Hi there!");
+</code></pre></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section  " id="memento">
+            <div class="topic-header" onclick="app.toggleTopic('memento')">
+                <h3>Memento</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;memory&gt;
+
+class Memento {
+private:
+    std::string state;
+public:
+    Memento(const std::string& s) : state(s) {}
+    std::string getState() const { return state; }
+};
+
+class Originator {
+private:
+    std::string state;
+public:
+    void setState(const std::string& s) { state = s; }
+    std::string getState() const { return state; }
+    
+    std::shared_ptr&lt;Memento&gt; saveState() {
+        return std::make_shared&lt;Memento&gt;(state);
+    }
+    
+    void restoreState(const std::shared_ptr&lt;Memento&gt;& memento) {
+        state = memento-&gt;getState();
+    }
+};
+
+class Caretaker {
+private:
+    std::vector&lt;std::shared_ptr&lt;Memento&gt;&gt; history;
+public:
+    void save(std::shared_ptr&lt;Memento&gt; memento) {
+        history.push_back(memento);
+    }
+    
+    std::shared_ptr&lt;Memento&gt; restore(int index) {
+        if (index &gt;= 0 && index &lt; history.size()) {
+            return history[index];
+        }
+        return nullptr;
+    }
+};
+
+int main() {
+    Originator originator;
+    Caretaker caretaker;
+    
+    originator.setState("State 1");
+    caretaker.save(originator.saveState());
+    
+    originator.setState("State 2");
+    caretaker.save(originator.saveState());
+    
+    originator.setState("State 3");
+    std::cout &lt;&lt; "Current: " &lt;&lt; originator.getState() &lt;&lt; std::endl;
+    
+    originator.restoreState(caretaker.restore(0));
+    std::cout &lt;&lt; "Restored: " &lt;&lt; originator.getState() &lt;&lt; std::endl;
+}
+</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+
+import "fmt"
+
+type Memento struct {
+	state string
+}
+
+func (m *Memento) GetState() string {
+	return m.state
+}
+
+type Originator struct {
+	state string
+}
+
+func (o *Originator) SetState(s string) {
+	o.state = s
+}
+
+func (o *Originator) GetState() string {
+	return o.state
+}
+
+func (o *Originator) SaveState() *Memento {
+	return &Memento{o.state}
+}
+
+func (o *Originator) RestoreState(m *Memento) {
+	o.state = m.GetState()
+}
+
+type Caretaker struct {
+	history []*Memento
+}
+
+func (c *Caretaker) Save(m *Memento) {
+	c.history = append(c.history, m)
+}
+
+func (c *Caretaker) Restore(index int) *Memento {
+	if index &gt;= 0 && index &lt; len(c.history) {
+		return c.history[index]
+	}
+	return nil
+}
+
+func main() {
+	origin := &Originator{}
+	caretaker := &Caretaker{}
+
+	origin.SetState("State 1")
+	caretaker.Save(origin.SaveState())
+
+	origin.SetState("State 2")
+	caretaker.Save(origin.SaveState())
+
+	origin.SetState("State 3")
+	fmt.Printf("Current: %s\n", origin.GetState())
+
+	origin.RestoreState(caretaker.Restore(0))
+	fmt.Printf("Restored: %s\n", origin.GetState())
+}
+</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Memento:
+    def __init__(self, state: str):
+        self.state = state
+    
+    def get_state(self) -&gt; str:
+        return self.state
+
+class Originator:
+    def __init__(self):
+        self.state = ""
+    
+    def set_state(self, state: str) -&gt; None:
+        self.state = state
+    
+    def get_state(self) -&gt; str:
+        return self.state
+    
+    def save_state(self) -&gt; Memento:
+        return Memento(self.state)
+    
+    def restore_state(self, memento: Memento) -&gt; None:
+        self.state = memento.get_state()
+
+class Caretaker:
+    def __init__(self):
+        self.history: list[Memento] = []
+    
+    def save(self, memento: Memento) -&gt; None:
+        self.history.append(memento)
+    
+    def restore(self, index: int) -&gt; Memento:
+        if 0 &lt;= index &lt; len(self.history):
+            return self.history[index]
+        return None
+
+originator = Originator()
+caretaker = Caretaker()
+
+originator.set_state("State 1")
+caretaker.save(originator.save_state())
+
+originator.set_state("State 2")
+caretaker.save(originator.save_state())
+
+originator.set_state("State 3")
+print(f"Current: {originator.get_state()}")
+
+originator.restore_state(caretaker.restore(0))
+print(f"Restored: {originator.get_state()}")
+</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Memento
+case class Memento(state: String)
+
+class Originator(private var state: String) {
+    def setState(s: String): Unit = {
+        state = s
+    }
+    
+    def getState: String = state
+    
+    def saveState(): Memento = Memento(state)
+    
+    def restoreState(memento: Memento): Unit = {
+        state = memento.state
+    }
+}
+
+class Caretaker {
+    private var history: List[Memento] = List()
+    
+    def save(memento: Memento): Unit = {
+        history = history :+ memento
+    }
+    
+    def restore(index: Int): Option[Memento] = {
+        if (index &gt;= 0 && index &lt; history.length) Some(history(index))
+        else None
+    }
+}
+
+object Main extends App {
+    val originator = new Originator("State 1")
+    val caretaker = new Caretaker()
+    
+    caretaker.save(originator.saveState())
+    
+    originator.setState("State 2")
+    caretaker.save(originator.saveState())
+    
+    originator.setState("State 3")
+    println(s"Current: ${originator.getState}")
+    
+    caretaker.restore(0).foreach(originator.restoreState)
+    println(s"Restored: ${originator.getState}")
+}
+</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Memento
+case class Memento(state: String)
+
+class Originator(private var state: String):
+    def setState(s: String): Unit =
+        state = s
+    
+    def getState: String = state
+    
+    def saveState(): Memento = Memento(state)
+    
+    def restoreState(memento: Memento): Unit =
+        state = memento.state
+
+class Caretaker:
+    private var history: List[Memento] = List()
+    
+    def save(memento: Memento): Unit =
+        history = history :+ memento
+    
+    def restore(index: Int): Option[Memento] =
+        if (index &gt;= 0 && index &lt; history.length) Some(history(index))
+        else None
+
+@main def main(): Unit =
+    val originator = new Originator("State 1")
+    val caretaker = new Caretaker()
+    
+    caretaker.save(originator.saveState())
+    
+    originator.setState("State 2")
+    caretaker.save(originator.saveState())
+    
+    originator.setState("State 3")
+    println(s"Current: ${originator.getState}")
+    
+    caretaker.restore(0).foreach(originator.restoreState)
+    println(s"Restored: ${originator.getState}")
+</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Memento {
+    constructor(private state: string) {}
+    
+    getState(): string {
+        return this.state;
+    }
+}
+
+class Originator {
+    private state: string = "";
+    
+    setState(state: string): void {
+        this.state = state;
+    }
+    
+    getState(): string {
+        return this.state;
+    }
+    
+    saveState(): Memento {
+        return new Memento(this.state);
+    }
+    
+    restoreState(memento: Memento): void {
+        this.state = memento.getState();
+    }
+}
+
+class Caretaker {
+    private history: Memento[] = [];
+    
+    save(memento: Memento): void {
+        this.history.push(memento);
+    }
+    
+    restore(index: number): Memento | null {
+        if (index &gt;= 0 && index &lt; this.history.length) {
+            return this.history[index];
+        }
+        return null;
+    }
+}
+
+const originator = new Originator();
+const caretaker = new Caretaker();
+
+originator.setState("State 1");
+caretaker.save(originator.saveState());
+
+originator.setState("State 2");
+caretaker.save(originator.saveState());
+
+originator.setState("State 3");
+console.log(`Current: ${originator.getState()}`);
+
+const restored = caretaker.restore(0);
+if (restored) {
+    originator.restoreState(restored);
+    console.log(`Restored: ${originator.getState()}`);
+}
+</code></pre></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </main>
+
+        <!-- Sidebar Right (Topic Nav) -->
+        <aside class="sidebar-right">
+            <div class="edge-toggle toggle-r" onclick="app.toggleSidebar('r')">▶</div>
+            <div class="sidebar-inner">
+                <div class="topic-sidebar-header">
+                    <div class="header-row">
+                        <span class="view-mode-label">View mode:</span>
+                        <div class="view-mode-control"><button id="viewModeToggle" class="view-mode-btn">Focused</button></div>
+                        <span></span>
+                    </div>
+                    <div class="header-row header-row-2">
+                        <span class="sidebar-label">Topics</span>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-group" data-topic-id="creational_patterns"><span onclick="app.focusTopic('creational_patterns')">Creational patterns</span><ul class="nav-sublist"><li data-topic-id="abstract_factory" onclick="app.focusTopic('abstract_factory')">Abstract Factory</li><li data-topic-id="builder" onclick="app.focusTopic('builder')">Builder</li><li data-topic-id="factory_method" onclick="app.focusTopic('factory_method')">Factory Method</li><li data-topic-id="prototype" onclick="app.focusTopic('prototype')">Prototype</li><li data-topic-id="singleton" onclick="app.focusTopic('singleton')">Singleton</li><li data-topic-id="object_pool" onclick="app.focusTopic('object_pool')">Object Pool</li><li data-topic-id="lazy_initialization" onclick="app.focusTopic('lazy_initialization')">Lazy Initialization</li><li data-topic-id="multiton" onclick="app.focusTopic('multiton')">Multiton</li></ul></li><li class="toc-group" data-topic-id="structural_patterns"><span onclick="app.focusTopic('structural_patterns')">Structural patterns</span><ul class="nav-sublist"><li data-topic-id="adapter" onclick="app.focusTopic('adapter')">Adapter</li><li data-topic-id="bridge" onclick="app.focusTopic('bridge')">Bridge</li><li data-topic-id="composite" onclick="app.focusTopic('composite')">Composite</li><li data-topic-id="decorator" onclick="app.focusTopic('decorator')">Decorator</li><li data-topic-id="facade" onclick="app.focusTopic('facade')">Facade</li><li data-topic-id="flyweight" onclick="app.focusTopic('flyweight')">Flyweight</li><li data-topic-id="proxy" onclick="app.focusTopic('proxy')">Proxy</li><li data-topic-id="data_mapper" onclick="app.focusTopic('data_mapper')">Data Mapper</li><li data-topic-id="object_adapter" onclick="app.focusTopic('object_adapter')">Object Adapter</li><li data-topic-id="class_adapter" onclick="app.focusTopic('class_adapter')">Class Adapter</li></ul></li><li class="toc-group" data-topic-id="behavioral_patterns"><span onclick="app.focusTopic('behavioral_patterns')">Behavioral patterns</span><ul class="nav-sublist"><li data-topic-id="chain_of_responsibility" onclick="app.focusTopic('chain_of_responsibility')">Chain Of Responsibility</li><li data-topic-id="command" onclick="app.focusTopic('command')">Command</li><li data-topic-id="observer" onclick="app.focusTopic('observer')">Observer</li><li data-topic-id="state" onclick="app.focusTopic('state')">State</li><li data-topic-id="strategy" onclick="app.focusTopic('strategy')">Strategy</li><li data-topic-id="template_method" onclick="app.focusTopic('template_method')">Template Method</li><li data-topic-id="visitor" onclick="app.focusTopic('visitor')">Visitor</li><li data-topic-id="interpreter" onclick="app.focusTopic('interpreter')">Interpreter</li><li data-topic-id="iterator" onclick="app.focusTopic('iterator')">Iterator</li><li data-topic-id="mediator" onclick="app.focusTopic('mediator')">Mediator</li><li data-topic-id="memento" onclick="app.focusTopic('memento')">Memento</li></ul></li></ul></div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Core Runtime Logic -->
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

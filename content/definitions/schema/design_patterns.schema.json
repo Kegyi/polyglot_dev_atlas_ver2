@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Page Schema for Atlas v2",
+  "type": "object",
+  "required": ["title"],
+  "additionalProperties": false,
+  "properties": {
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "template": { "type": "string", "default": "base.html" },
+    "body_class": { "type": "string" },
+    "extra_assets": { 
+      "type": "array", 
+      "items": { "type": "string" },
+      "description": "CSS or JS files to load specifically for this page."
+    },
+    "content": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/topLevelContentItem" }
+    }
+  },
+  "definitions": {
+    "commonAttributes": {
+      "properties": {
+        "class": { "type": "string", "description": "Custom CSS classes." },
+        "id": { "type": "string", "description": "HTML anchor ID." }
+      }
+    },
+    "topLevelContentItem": {
+      "oneOf": [
+        { "$ref": "#/definitions/blocksItem" },
+        { "$ref": "#/definitions/headerItem" },
+        { "$ref": "#/definitions/textItem" }
+      ]
+    },
+    "headerItem": {
+      "type": "object",
+      "required": ["type", "text"],
+      "allOf": [{ "$ref": "#/definitions/commonAttributes" }],
+      "properties": {
+        "type": { "enum": ["h1", "h2", "h3", "h4", "h5", "h6", "title"] },
+        "text": { "type": "string" }
+      }
+    },
+    "blocksItem": {
+      "type": "object",
+      "required": ["type", "blocks"],
+      "allOf": [{ "$ref": "#/definitions/commonAttributes" }],
+      "properties": {
+        "type": { "const": "blocks" },
+        "blocks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/block" }
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": ["id", "title", "content"],
+      "allOf": [{ "$ref": "#/definitions/commonAttributes" }],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "collapsed": { "type": "boolean", "default": false },
+        "content": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/contentItem" }
+        }
+      }
+    },
+    "contentItem": {
+      "oneOf": [
+        { "$ref": "#/definitions/blocksItem" },
+        { "$ref": "#/definitions/textItem" },
+        { "$ref": "#/definitions/noteItem" },
+        { "$ref": "#/definitions/codeItem" },
+        { "$ref": "#/definitions/headerItem" },
+        { "$ref": "#/definitions/imageItem" },
+        { "$ref": "#/definitions/listItem" }
+      ]
+    },
+    "textItem": {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "text" },
+        "text": { "type": "string" },
+        "format": { "enum": ["plain", "html", "markdown"], "default": "plain" }
+      }
+    },
+    "noteItem": {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "note" },
+        "variant": { "enum": ["info", "warning", "danger", "success"], "default": "info" },
+        "text": { "type": "string" }
+      }
+    },
+    "codeItem": {
+      "type": "object",
+      "required": ["type", "name"],
+      "properties": {
+        "type": { "const": "code" },
+        "name": { "type": "string", "description": "Filename in snippets/ folder" },
+        "caption": { "type": "string" }
+      }
+    },
+    "imageItem": {
+      "type": "object",
+      "required": ["type", "src"],
+      "properties": {
+        "type": { "const": "image" },
+        "src": { "type": "string" },
+        "alt": { "type": "string" },
+        "caption": { "type": "string" }
+      }
+    },
+    "listItem": {
+      "type": "object",
+      "required": ["type", "items"],
+      "properties": {
+        "type": { "const": "list" },
+        "ordered": { "type": "boolean", "default": false },
+        "items": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

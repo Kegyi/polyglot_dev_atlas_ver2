@@ -1,0 +1,45 @@
+<!-- TOPIC SECTION: SYNTAX OVERVIEW -->
+<div class="topic-section active" id="topic-syntax-basics">
+    
+    <!-- Convenience Toggle Header: The whole div triggers the collapse -->
+    <div class="topic-header" onclick="app.toggleTopic('topic-syntax-basics')">
+        <h2 data-i18n="topics.syntax_basics.title">01. Syntax Basics</h2>
+        <div class="arrow">^</div>
+    </div>
+
+    <!-- Topic Body: Contains multiple sub-items (text and code) -->
+    <div class="topic-body">
+        
+        <!-- Sub-item 1: Variables -->
+        <div class="topic-content-item">
+            <h2 data-i18n="topics.syntax_basics.variables.h2">Variable Declarations</h2>
+            <p data-i18n="topics.syntax_basics.variables.p1">
+                Modern languages vary in how they handle type safety. Systems languages often require explicit types, while scripting languages prefer inference.
+            </p>
+            
+            <!-- Comparison Grid: Assembled by the Python Brain -->
+            <div class="comparison-grid">
+                [[COMPARE:variable_declaration]]
+            </div>
+            
+            <p data-i18n="topics.syntax_basics.variables.p2">
+                Using <code>auto</code> in C++ or <code>let/const</code> in JavaScript allows for cleaner code while maintaining the respective language's memory safety guarantees.
+            </p>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
+
+        <!-- Sub-item 2: Scoping (Example of H3 nesting) -->
+        <div class="topic-content-item">
+            <h3 data-i18n="topics.syntax_basics.scoping.h3">Block Scoping & Lifetime</h3>
+            <p data-i18n="topics.syntax_basics.scoping.p1">
+                The lifetime of a variable is strictly tied to its surrounding block in both C++ and modern JavaScript (using block-scoped keywords).
+            </p>
+            
+            <div class="comparison-grid">
+                [[COMPARE:block_scoping]]
+            </div>
+        </div>
+
+    </div>
+</div>
