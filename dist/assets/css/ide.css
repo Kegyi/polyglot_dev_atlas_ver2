@@ -1,0 +1,16 @@
+/* IDE / Code-Style */
+:root[data-palette] {
+  --ide-accent: #22c1ff;
+}
+body.ide-style, .ide-style { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; }
+.topic-section.ide-style { background: #0b0f14; border-color: rgba(255,255,255,0.04); color: #e6eef6; }
+.topic-header.ide-style { background: rgba(255,255,255,0.02); }
+.topic-body.ide-style { padding: 12px; }
+.code-block pre { background: #020406; color: #e6eef6; border-radius: 6px; padding: 14px; }
+.topic-section.ide-style h2, .topic-section.ide-style h3 { color: var(--ide-accent); }
+
+/* Compact spacing */
+.ide-style .topic-section { margin-bottom: 12px; padding: 8px; }
+
+/* Small helper */
+.ide-compact { line-height: 1.25; }

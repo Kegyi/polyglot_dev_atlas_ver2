@@ -1,0 +1,159 @@
+{
+    "title": "Content Element Library",
+    "category": "Documentation",
+    "template": "base.html",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Element Showcase"
+        },
+        {
+            "type": "text",
+            "text": "The engine processes a specific set of JSON objects. Each type maps to a semantic HTML structure designed for technical documentation."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "text_elements",
+                    "title": "Typography & Headings",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Standard paragraphs use <code>type: 'text'</code>. Headings use <code>type: 'title'</code>. Titles are 'smart'—their size scales based on how many blocks deep they are buried."
+                        }
+                    ]
+                },
+                {
+                    "id": "note_elements",
+                    "title": "Callouts & Notes",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Notes are used to highlight specific information. They support different variants via the <code>variant</code> key."
+                        },
+                        {
+                            "type": "note",
+                            "variant": "info",
+                            "text": "This is an <b>info</b> variant. Useful for general tips."
+                        },
+                        {
+                            "type": "note",
+                            "variant": "warning",
+                            "text": "This is a <b>warning</b> variant. Use this to highlight anti-patterns or dangers."
+                        },
+                        {
+                            "type": "note",
+                            "variant": "error",
+                            "text": "This is an <b>error</b> variant. Use this to highlight critical issues or common mistakes."
+                        },
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "note_formatting",
+                                    "title": "Formatting Notes",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "The content inside notes can be formatted with the same JSON structure as regular pages. This allows you to include lists, code blocks, and even tables inside notes for maximum clarity."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "prefer inline <code>&lt;code&gt;…&lt;/code&gt;</code> for short labels. For multi-line code use a separate <code>pre</code> block outside the note, or include a small <code>pre</code> inside the note — the renderer supports it but keep tables and large blocks outside notes for best layout. Avoid raw block-level HTML inside notes unless necessary."
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Examples (copyable)"
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "info",
+                                            "text": "<b>Basic — Inline</b><br/>Use inline code for short labels: <code>&lt;code&gt;npm install&lt;/code&gt;</code>."
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "info",
+                                            "text": "<b>Small code inside a note</b><br/><pre><code>const greet = (name) => `Hello ${name}`;\nconsole.log(greet('World'));</code></pre>"
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "warning",
+                                            "text": "<b>Table inside a note</b><br/><table><thead><tr><th>Flag</th><th>Behavior</th></tr></thead><tbody><tr><td><code>--prod</code></td><td>Enable production optimizations</td></tr><tr><td><code>--watch</code></td><td>Rebuild on file changes</td></tr></tbody></table>"
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "error",
+                                            "text": "<b>Advanced — long code:</b><br/>keep full examples outside notes for better layout. Example JSON snippet to reference a code block:\n<pre><code>{\n  \"type\": \"code\",\n  \"name\": \"example_snippet\"\n}\n</code></pre>"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "list_elements",
+                    "title": "Lists",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Lists support both unordered (bullet) and ordered (numbered) formats."
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "Bullet item one",
+                                "Bullet item two"
+                            ]
+                        },
+                        {
+                            "type": "list",
+                            "ordered": true,
+                            "items": [
+                                "First steps",
+                                "Second steps"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "code_comparison",
+                    "title": "Code Comparison Grid",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "The <code>code</code> type is the heart of the Atlas. It looks for files in <code>content/snippets/</code> that match the provided name."
+                        },
+                        {
+                            "type": "code",
+                            "name": "design_patterns_singleton"
+                        },
+                        {
+                            "type": "note",
+                            "variant": "info",
+                            "text": "The grid above automatically responds to the primary/secondary selection logic and applies theme-aware syntax highlighting."
+                        }
+                    ]
+                },
+                {
+                    "id": "image_elements",
+                    "title": "Images",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Images use the <code>image</code> type and support captions."
+                        },
+                        {
+                            "type": "image",
+                            "src": "assets/image/funny-programming-memes-11-640x708.jpeg",
+                            "alt": "Example Image",
+                            "caption": "Figure 1: An example placeholder image demonstrating the figure layout."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

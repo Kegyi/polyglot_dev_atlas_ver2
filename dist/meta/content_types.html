@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Element Library</title>
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-meta  ">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle " onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/intro.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle active" onclick="app.prepareModeSwitch()">Meta</a></div>
+            </div>
+            <div class="nav-center">
+                <div class="toggle-group view-toggles">
+                    <button id="view-single-btn" class="toggle">Single</button>
+                    <button id="view-double-btn" class="toggle">Double</button>
+                </div>
+                <button id="swap-btn" class="icon-btn">⇄</button>
+            </div>
+            <div class="nav-right">
+                <!-- Phase 3: Global Geometric Style Picker -->
+                <div class="style-picker">
+                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                </div>
+
+                <div class="palette-picker">
+                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../meta/index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Guide</span></a></li>
+<li class=""><a href="../meta/blocks_nesting.html">Hierarchical Structure</a></li>
+<li class="active"><a href="../meta/content_types.html">Content Element Library</a></li>
+<li class=""><a href="../meta/customization.html">Styling & Customization</a></li>
+<li class=""><a href="../meta/getting_started.html">Meta: Getting Started</a></li>
+<li class=""><a href="../meta/page_schema.html">Page Configuration</a></li><li class="nav-item nav-showcases"><a href="#" onclick="app.openShowcases();return false;">Showcases <span class="collection-marker">collection</span></a></li></ul><ul class="nav-list nav-showcase-list" id="toc-showcases" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeShowcases();return false;">← Back</a></li><li class=""><a href="../meta/showcases/index.html">All Showcases</a></li>
+<li class=""><a href="../meta/showcases/showcase_gallery.html">Gallery Style Showcase</a></li>
+<li class=""><a href="../meta/showcases/showcase_ide.html">IDE Style Showcase</a></li>
+<li class=""><a href="../meta/showcases/showcase_playground.html">Playground Style Showcase</a></li>
+<li class=""><a href="../meta/showcases/showcase_reference.html">Reference Style Showcase</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <h2  class="">Element Showcase</h2><p  class="">The engine processes a specific set of JSON objects. Each type maps to a semantic HTML structure designed for technical documentation.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="text_elements">
+            <div class="topic-header" onclick="app.toggleTopic('text_elements')">
+                <h2>Typography & Headings</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Standard paragraphs use <code>type: 'text'</code>. Headings use <code>type: 'title'</code>. Titles are 'smart'—their size scales based on how many blocks deep they are buried.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="note_elements">
+            <div class="topic-header" onclick="app.toggleTopic('note_elements')">
+                <h2>Callouts & Notes</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Notes are used to highlight specific information. They support different variants via the <code>variant</code> key.</p><div  class="note note-info "><div class="note-content">This is an <b>info</b> variant. Useful for general tips.</div></div><div  class="note note-warning "><div class="note-content">This is a <b>warning</b> variant. Use this to highlight anti-patterns or dangers.</div></div><div  class="note note-error "><div class="note-content">This is an <b>error</b> variant. Use this to highlight critical issues or common mistakes.</div></div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="note_formatting">
+            <div class="topic-header" onclick="app.toggleTopic('note_formatting')">
+                <h3>Formatting Notes</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">The content inside notes can be formatted with the same JSON structure as regular pages. This allows you to include lists, code blocks, and even tables inside notes for maximum clarity.</p><p  class="">prefer inline <code>&lt;code&gt;…&lt;/code&gt;</code> for short labels. For multi-line code use a separate <code>pre</code> block outside the note, or include a small <code>pre</code> inside the note — the renderer supports it but keep tables and large blocks outside notes for best layout. Avoid raw block-level HTML inside notes unless necessary.</p><h4  class="">Examples (copyable)</h4><div  class="note note-info "><div class="note-content"><b>Basic — Inline</b><br/>Use inline code for short labels: <code>&lt;code&gt;npm install&lt;/code&gt;</code>.</div></div><div  class="note note-info "><div class="note-content"><b>Small code inside a note</b><br/><pre><code>const greet = (name) => `Hello ${name}`;
+console.log(greet('World'));</code></pre></div></div><div  class="note note-warning "><div class="note-content"><b>Table inside a note</b><br/><table><thead><tr><th>Flag</th><th>Behavior</th></tr></thead><tbody><tr><td><code>--prod</code></td><td>Enable production optimizations</td></tr><tr><td><code>--watch</code></td><td>Rebuild on file changes</td></tr></tbody></table></div></div><div  class="note note-error "><div class="note-content"><b>Advanced — long code:</b><br/>keep full examples outside notes for better layout. Example JSON snippet to reference a code block:
+<pre><code>{
+  "type": "code",
+  "name": "example_snippet"
+}
+</code></pre></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="list_elements">
+            <div class="topic-header" onclick="app.toggleTopic('list_elements')">
+                <h2>Lists</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Lists support both unordered (bullet) and ordered (numbered) formats.</p><ul class=""><li>Bullet item one</li><li>Bullet item two</li></ul><ol class=""><li>First steps</li><li>Second steps</li></ol>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="code_comparison">
+            <div class="topic-header" onclick="app.toggleTopic('code_comparison')">
+                <h2>Code Comparison Grid</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">The <code>code</code> type is the heart of the Atlas. It looks for files in <code>content/snippets/</code> that match the provided name.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_singleton"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Config {
+public:
+    static Config& instance() {
+        static Config config;
+        return config;
+    }
+
+    void setEnv(std::string value) {
+        env_ = std::move(value);
+    }
+
+    const std::string& env() const {
+        return env_;
+    }
+
+private:
+    Config() = default;
+    std::string env_ = "dev";
+};
+
+int main() {
+    Config::instance().setEnv("prod");
+    std::cout &lt;&lt; Config::instance().env() &lt;&lt; '/n';
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+type Config struct {
+	Env string
+}
+
+var (
+	once   sync.Once
+	shared *Config
+)
+
+func Instance() *Config {
+	once.Do(func() {
+		shared = &Config{Env: "dev"}
+	})
+	return shared
+}
+
+func main() {
+	Instance().Env = "prod"
+	fmt.Println(Instance().Env)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
+    _instance: "Config | None" = None
+
+    def __new__(cls) -&gt; "Config":
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.env = "dev"
+        return cls._instance
+
+
+Config().env = "prod"
+print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
+object Config {
+    private var env: String = "dev"
+
+    def getEnv(): String = env
+    
+    def setEnv(e: String): Unit = {
+        env = e
+    }
+}
+
+object Main extends App {
+    println(Config.getEnv())
+    Config.setEnv("prod")
+    println(Config.getEnv())
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
+object Config:
+    private var env: String = "dev"
+
+    def getEnv(): String = env
+    
+    def setEnv(e: String): Unit =
+        env = e
+
+@main def main(): Unit =
+    println(Config.getEnv())
+    Config.setEnv("prod")
+    println(Config.getEnv())
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
+  private static shared: Config | null = null;
+
+  private constructor(public env: string) {}
+
+  static instance(): Config {
+    if (!Config.shared) {
+      Config.shared = new Config('dev');
+    }
+    return Config.shared;
+  }
+}
+
+Config.instance().env = 'prod';
+console.log(Config.instance().env);</code></pre></div></div><div  class="note note-info "><div class="note-content">The grid above automatically responds to the primary/secondary selection logic and applies theme-aware syntax highlighting.</div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="image_elements">
+            <div class="topic-header" onclick="app.toggleTopic('image_elements')">
+                <h2>Images</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Images use the <code>image</code> type and support captions.</p><figure class=""><img src="../assets/image/funny-programming-memes-11-640x708.jpeg" alt="Example Image"><figcaption>Figure 1: An example placeholder image demonstrating the figure layout.</figcaption></figure>
+            </div>
+        </div>
+        </div>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="text_elements" data-depth="1"><span onclick="app.focusTopic('text_elements')">Typography & Headings</span></li><li class="toc-item depth-1" data-topic-id="note_elements" data-depth="1"><span onclick="app.focusTopic('note_elements')">Callouts & Notes</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="note_formatting" data-depth="2"><span onclick="app.focusTopic('note_formatting')">Formatting Notes</span></li></ul></li><li class="toc-item depth-1" data-topic-id="list_elements" data-depth="1"><span onclick="app.focusTopic('list_elements')">Lists</span></li><li class="toc-item depth-1" data-topic-id="code_comparison" data-depth="1"><span onclick="app.focusTopic('code_comparison')">Code Comparison Grid</span></li><li class="toc-item depth-1" data-topic-id="image_elements" data-depth="1"><span onclick="app.focusTopic('image_elements')">Images</span></li></ul></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
+</body>
+</html>

@@ -18,7 +18,7 @@
                 {
                     "id": "creational_patterns",
                     "title": "Creational patterns",
-                    "class": "minimal-block", 
+                    "style": "text_style", 
                     "content": [
                         {
                             "type": "blocks",
@@ -64,8 +64,7 @@
                                     "title": "Singleton",
                                     "content": [
                                         { "type": "text", "text": "Ensure a class has only one instance and provide a global point of access." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "note", "text": "Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness." },
+                                        { "type": "note", "text": "Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness." },
                                         { "type": "text", "text": "Example implementation across language variants." },
                                         { "type": "code", "name": "design_patterns_singleton" }
                                     ]
@@ -104,7 +103,7 @@
                 {
                     "id": "structural_patterns",
                     "title": "Structural patterns",
-                    "class": "minimal-block", 
+                    "style": "text_style", 
                     "content": [
                         {
                             "type": "blocks",
@@ -207,7 +206,7 @@
                 {
                     "id": "behavioral_patterns",
                     "title": "Behavioral patterns",
-                    "class": "minimal-block", 
+                    "style": "text_style", 
                     "content": [
                         {
                             "type": "blocks",
@@ -252,7 +251,7 @@
                                         { "type": "text", "text": "Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch." },
                                         { "type": "text", "text": "Example implementation across language variants." },
                                         { "type": "code", "name": "design_patterns_state" },
-                                        {  "type": "title", "text": "Modern variant of the pattern" },
+                                        { "type": "title", "text": "Modern variant of the pattern" },
                                         { "type": "code", "name": "design_patterns_state_modern" }
                                     ]
                                 },
@@ -263,7 +262,7 @@
                                         { "type": "text", "text": "Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies." },
                                         { "type": "text", "text": "Example implementation across language variants." },
                                         { "type": "code", "name": "design_patterns_strategy" },
-                                        {  "type": "title", "text": "Modern variant of the pattern" },
+                                        { "type": "title", "text": "Modern variant of the pattern" },
                                         { "type": "code", "name": "design_patterns_strategy_modern" }
                                     ]
                                 },
@@ -274,7 +273,7 @@
                                         { "type": "text", "text": "Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls." },
                                         { "type": "text", "text": "Example implementation across language variants." },
                                         { "type": "code", "name": "design_patterns_template_method" },
-                                        {  "type": "title", "text": "Modern variant of the pattern" },
+                                        { "type": "title", "text": "Modern variant of the pattern" },
                                         { "type": "code", "name": "design_patterns_template_method_modern" }
                                     ]
                                 },
@@ -285,7 +284,7 @@
                                         { "type": "text", "text": "Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies." },
                                         { "type": "text", "text": "Example implementation across language variants." },
                                         { "type": "code", "name": "design_patterns_visitor" },
-                                        {  "type": "title", "text": "Modern variant of the pattern" },
+                                        { "type": "title", "text": "Modern variant of the pattern" },
                                         { "type": "code", "name": "design_patterns_visitor_modern" }
                                     ]
                                 },

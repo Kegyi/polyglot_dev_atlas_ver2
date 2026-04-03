@@ -1,0 +1,17 @@
+{
+  "title": "Reference Style Showcase",
+  "path": "meta/reference-showcase/",
+  "style": "reference-style",
+  "extra_assets": ["assets/css/reference.css"],
+  "content": [
+    { "type": "blocks", "blocks": [
+      { "id": "reference_overview", "title": "Reference Overview", "content": [
+        { "type": "text", "text": "Dense, information-first layout suitable for API references and dense docs." },
+        { "type": "table", "headers": ["Field","Type","Description"], "rows": [["id","int","Unique id"],["name","string","Display name"]] }
+      ] },
+      { "id": "reference_lookup", "title": "Quick Lookup", "content": [
+        { "type": "note", "variant": "info", "text": "Use in-page search for quick lookup." }
+      ] }
+    ] }
+  ]
+}

@@ -1,133 +1,143 @@
 <!DOCTYPE html>
-<!-- 
-    The <html> element holds the state of the UI.
-    Sidebars: 'visible' or 'hidden'
-    Theme: 'dark' or 'light'
-    Palette: 'default', 'nord', or 'matrix'
-    View Mode: 'focused' or 'all'
--->
-<html lang="en" 
-      data-theme="dark" 
-      data-palette="default" 
-      data-sidebar-l="visible" 
-      data-sidebar-r="visible" 
-      data-view-mode="focused">
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Syntax | Atlas</title>
-
-    <!-- CRITICAL: Anti-Flash Script (Blocking) -->
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
     <script>
         (function() {
-            // Immediately restore UI state from localStorage
-            const theme = localStorage.getItem('theme') || 'dark';
-            const palette = localStorage.getItem('palette') || 'default';
-            const sl = localStorage.getItem('sidebar-l') || 'visible';
-            const sr = localStorage.getItem('sidebar-r') || 'visible';
-            const view = localStorage.getItem('view-mode') || 'focused';
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
 
+            // 2. Set attributes on documentElement immediately. 
             const doc = document.documentElement;
-            doc.setAttribute('data-theme', theme);
-            doc.setAttribute('data-palette', palette);
-            doc.setAttribute('data-sidebar-l', sl);
-            doc.setAttribute('data-sidebar-r', sr);
-            doc.setAttribute('data-view-mode', view);
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
 
-            // Add loading class to keep body hidden until JS reveals it
-            doc.classList.add('is-loading');
+            // If the user had Showcases open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
         })();
     </script>
 
-    <!-- Base Styles (Prefixed for sub-pages) -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    
-    <!-- Page-specific CSS/JS from JSON -->
-    
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
 
-    <style>
-        /* FOUC Protection: Body is invisible while 'is-loading' is present */
-        html.is-loading body {
-            visibility: hidden;
-            opacity: 0;
-            /* Matches default dark theme background to prevent white-flash */
-            background-color: #0f172a; 
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
 </head>
-<body class="mode-atlas atlas-view syntax-page">
-
-    <!-- 1. TOP HEADER -->
-    <header class="main-header">
-        <div class="header-section">
-            <div class="logo">POLYGLOT <span>ATLAS</span></div>
-            <!-- Placeholder: Atlas/Course toggle -->
-            <div class="mode-switcher-wrapper">
-                <div class="mode-switcher"><a href="../index.html" class="mode-btn active">Atlas</a><a href="../course/intro.html" class="mode-btn ">Course</a></div>
+<body class="mode-atlas no-topics atlas-view syntax-page">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/intro.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
             </div>
-        </div>
-
-        <div class="header-section">
-            <div class="palette-theme">
-                <!-- Palette Selector Indicators -->
-                <div class="palette-group">
-                    <div class="pal-indicator p-def" onclick="app.setPalette('default', this)"><i></i><i></i></div>
-                    <div class="pal-indicator p-nord" onclick="app.setPalette('nord', this)"><i></i><i></i></div>
-                    <div class="pal-indicator p-mat" onclick="app.setPalette('matrix', this)"><i></i><i></i></div>
+            <div class="nav-center">
+                <div class="toggle-group view-toggles">
+                    <button id="view-single-btn" class="toggle">Single</button>
+                    <button id="view-double-btn" class="toggle">Double</button>
                 </div>
-                <!-- Theme Toggle -->
-                <button class="theme-btn" onclick="app.toggleTheme()" id="themeIcon">☼</button>
+                <button id="swap-btn" class="icon-btn">⇄</button>
+            </div>
+            <div class="nav-right">
+                <!-- Phase 3: Global Geometric Style Picker -->
+                <div class="style-picker">
+                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                </div>
+
+                <div class="palette-picker">
+                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
             </div>
         </div>
-    </header>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- 2. PROGRAMMING LANGUAGE SELECTOR BAR -->
-    <nav class="selector-bar">
-        <div class="selector-container"><button class="lang-pill" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-pill" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-pill" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-pill" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-pill" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-pill" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button><button class="swap-btn" onclick="app.swapLanguages()">⇄ SWAP</button></div>
-    </nav>
-
-    <!-- 3. MAIN LAYOUT CONTAINER -->
-    <div class="app-container">
-        
-        <!-- Sidebar Left (Global Nav) -->
-        <aside class="sidebar-left">
-            <div class="edge-toggle toggle-l" onclick="app.toggleSidebar('l')">◀</div>
-            <div class="sidebar-inner">
-                <ul class="nav-list"><li class=""><a href="../index.html">Welcome | Polyglot Dev Atlas</a></li><li class=""><a href="../atlas/design_patterns.html">Design Patterns</a></li><li class="active"><a href="../atlas/syntax.html">Basic Syntax | Atlas</a></li></ul>
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Dev Atlas</span></a></li>
+<li class=""><a href="../atlas/design_patterns.html">Design Patterns</a></li>
+<li class="active"><a href="../atlas/syntax.html">Basic Syntax<span class="sidebar-wrap-indent">Atlas</span></a></li></ul>
             </div>
         </aside>
-
-        <!-- Main Content View -->
-        <main id="main-scroll-area">
-            <!-- view-mode toggle moved to the topic sidebar -->
-
-            <!-- Pre-Built Modular Content -->
+        
+        <main id="content">
             <div class="content-wrapper">
                 
             </div>
         </main>
 
-        <!-- Sidebar Right (Topic Nav) -->
-        <aside class="sidebar-right">
-            <div class="edge-toggle toggle-r" onclick="app.toggleSidebar('r')">▶</div>
-            <div class="sidebar-inner">
-                <div class="topic-sidebar-header">
-                    <div class="header-row">
-                        <span class="view-mode-label">View mode:</span>
-                        <div class="view-mode-control"><button id="viewModeToggle" class="view-mode-btn">Focused</button></div>
-                        <span></span>
-                    </div>
-                    <div class="header-row header-row-2">
-                        <span class="sidebar-label">Topics</span>
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
                     </div>
                 </div>
-                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"></ul></div>
+                
             </div>
         </aside>
-
     </div>
 
-    <!-- Core Runtime Logic -->
-    <script type="module" src="../assets/js/main.js"></script>
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
 </body>
 </html>

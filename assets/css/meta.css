@@ -1,0 +1,70 @@
+/* Meta Mode - Compact Guide Style
+   - Indigo accent for headings and sidebar highlights
+   - Slightly denser vertical rhythm for quick-scanning docs
+   - Monospace emphasis for small code-like labels and callouts
+   - Tighter topic headers, subtle cards for example blocks
+*/
+:root[data-palette="default"] {
+  --meta-accent: #6c5ce7; /* indigo */
+  --meta-muted: #556074;
+  --meta-bg: var(--bg, #fff);
+}
+
+/* Apply when page sets the meta style class on the body */
+body.meta-home, body .meta-style, .meta-style {
+  --accent-color: var(--meta-accent);
+}
+
+/* Tighter content spacing for guide pages */
+.topic-section {
+  margin: 0 0 10px 0;
+  padding: 8px 0;
+}
+.topic-header h2, .topic-header h3, .topic-header h1 {
+  color: var(--accent-color);
+  margin: 0;
+  font-weight: 600;
+}
+.topic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.topic-body {
+  padding: 6px 0 12px 10px;
+}
+
+/* Callouts to match meta palette */
+.note.note-info { background: rgba(108,92,231,0.06); border-left: 3px solid var(--meta-accent); color: var(--meta-muted); padding: 8px 10px; }
+.note.note-warning { background: #fff7e6; border-left: 3px solid #e67e22; color: #6a4b00; padding: 8px 10px; }
+.note.note-error { background: #feecec; border-left: 3px solid #e74c3c; color: #5a1b1b; padding: 8px 10px; }
+
+/* Keep note internals readable in meta pages too */
+.note table { display: table; width: 100%; border-collapse: collapse; margin: 6px 0; }
+.note table th, .note table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
+.note pre { background: rgba(0,0,0,0.02); padding: 8px; border-radius: 6px; overflow: auto; margin: 6px 0; }
+.note code { white-space: pre-wrap; word-break: break-word; }
+.note .note-content { display: block; width: 100%; }
+
+/* Monospace labels and small inline code emphasis for guides */
+code, kbd, .meta-label { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size: 0.92em; background: rgba(0,0,0,0.03); padding: 2px 6px; border-radius: 4px; }
+
+/* Example card */
+.example-card {
+  border-radius: 6px; border: 1px solid rgba(0,0,0,0.06); background: rgba(108,92,231,0.03); padding: 10px; margin: 8px 0;
+}
+
+/* Code block tweaks for meta docs */
+pre code { font-size: 0.92em; }
+
+/* Slightly increase sidebar contrast for meta pages */
+.topic-sidebar-container .nav-list li.active > span { color: var(--meta-accent); font-weight: 600; }
+
+/* Small helpers */
+.meta-compact { line-height: 1.28; }
+
+/* Ensure images used in meta pages are not oversized */
+.topic-section img { max-width: 100%; height: auto; display:block; margin: 6px 0; }

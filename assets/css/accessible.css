@@ -1,0 +1,7 @@
+/* Accessible / High-Contrast Style */
+:root[data-palette] { --acc-accent: #ffcc00; }
+.accessible-style { font-size: 1.1rem; line-height: 1.6; }
+.accessible-style p, .accessible-style li { color: var(--text); }
+.accessible-style a { text-decoration: underline; }
+.accessible-style :focus { outline: 3px solid var(--acc-accent); outline-offset: 2px; }
+.accessible-hero { padding: 18px; font-weight:700; }

@@ -1,0 +1,18 @@
+{
+  "title": "Gallery Style Showcase",
+  "path": "meta/gallery-showcase/",
+  "style": "gallery-style",
+  "extra_assets": ["assets/css/gallery.css"],
+  "content": [
+    { "type": "blocks", "blocks": [
+      { "id": "gallery_overview", "title": "Gallery Overview", "content": [
+        { "type": "text", "text": "A visual-forward layout for screenshots, art, and UI showcases." },
+        { "type": "image", "src": "assets/icons/sample-gallery.png", "alt": "Sample" }
+      ] },
+      { "id": "gallery_tiles", "title": "Tiles", "content": [
+        { "type": "list", "items": ["Screenshot 1","Screenshot 2","Screenshot 3"] },
+        { "type": "note", "variant": "info", "text": "Optimize images for web for faster loading." }
+      ] }
+    ] }
+  ]
+}

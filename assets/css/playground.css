@@ -1,0 +1,6 @@
+/* Playground / Demo Style */
+:root[data-palette] { --play-accent: #34d399; }
+.playground-style .example-card { border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 16px; background: var(--panel); }
+.example-run { display:flex; gap:12px; align-items:center; }
+.playground-style .control { background: rgba(0,0,0,0.04); padding:6px 10px; border-radius:6px; }
+.playground-note { font-size:0.95rem; color: var(--text-dim); }

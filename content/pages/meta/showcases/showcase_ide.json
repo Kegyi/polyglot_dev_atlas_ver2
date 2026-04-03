@@ -1,0 +1,20 @@
+{
+  "title": "IDE Style Showcase",
+  "path": "meta/ide-showcase/",
+  "style": "ide-style",
+  "extra_assets": ["assets/css/ide.css"],
+  "content": [
+    { "type": "blocks", "blocks": [
+      { "id": "ide_overview", "title": "IDE-style Overview", "content": [
+        { "type": "text", "text": "A compact, developer-focused skin that emphasizes monospaced type, clear code blocks, and strong contrast for editors." },
+        { "type": "code", "language": "cpp", "code": "#include <iostream>\nint main() { std::cout << \"Hello IDE\"; }" }
+      ] },
+      { "id": "ide_diff", "title": "Side-by-side Diff", "content": [
+        { "type": "code_comparison", "left": { "language": "cpp", "code": "int add(int a,int b){return a+b;}" }, "right": { "language": "cpp", "code": "int add(int a, int b) { return a + b; }" } }
+      ] },
+      { "id": "ide_notes", "title": "Notes & Tips", "content": [
+        { "type": "note", "variant": "info", "title": "Editor Tip", "text": "Use a narrow column width for reading diffs." }
+      ] }
+    ] }
+  ]
+}

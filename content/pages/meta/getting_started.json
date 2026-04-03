@@ -1,0 +1,10 @@
+{
+  "title": "Meta: Getting Started",
+  "template": "base.html",
+  "content": [
+    { "type": "title", "text": "Getting Started with Meta Mode" },
+    { "type": "text", "text": "This short page demonstrates the features available in Meta Mode." },
+    { "type": "list", "ordered": false, "items": ["Framework overview", "Build-system hooks", "Documentation conventions"] },
+    { "type": "code", "name": "example-setup" }
+  ]
+}

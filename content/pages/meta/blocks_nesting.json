@@ -1,0 +1,85 @@
+{
+    "title": "Hierarchical Structure",
+    "category": "Documentation",
+    "template": "base.html",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Nesting & Recursive Blocks"
+        },
+        {
+            "type": "text",
+            "text": "The Atlas engine is built on a recursive rendering logic. A <code>blocks</code> element can contain an array of other <code>blocks</code>, allowing you to create deeply nested documentation hierarchies."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "smart_headings",
+                    "title": "1. Smart Heading Logic",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "To maintain semantic structure without manual tagging, use <code>type: 'title'</code>. The engine automatically calculates the correct heading level (h2 through h6) based on the nesting depth."
+                        },
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "nesting_example",
+                                    "title": "Example: This is an H3",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Because this block is inside another block, its title automatically shrank from H2 to H3."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "visibility_depth",
+                    "title": "2. Automatic Visibility Depth",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "To prevent 'Information Overload', the engine implements a default visibility rule: <b>The 2-Level Rule</b>."
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<b>Levels 1 & 2:</b> Expanded by default (depth 2 and 3).",
+                                "<b>Levels 3+:</b> Automatically collapsed on page load (depth 4+)."
+                            ]
+                        },
+                        {
+                            "type": "note",
+                            "variant": "warning",
+                            "text": "Any block at Level 3 or deeper will appear with the <code>is-collapsed</code> state unless you manually override it."
+                        }
+                    ]
+                },
+                {
+                    "id": "manual_overrides",
+                    "title": "3. Manual Toggles",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "You can bypass the automatic visibility logic by using the <code>collapsed</code> property in the JSON."
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<code>'collapsed': true</code> — Forces a block to start hidden.",
+                                "<code>'collapsed': false</code> — Forces a deep block to start visible."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

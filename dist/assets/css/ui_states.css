@@ -1,0 +1,187 @@
+/**
+ * Polyglot Atlas - UI States & Interaction Styles
+ * Handles zero-flicker persistent selection using root attributes.
+ */
+
+/* --- 1. LANGUAGE SELECTOR LIST --- */
+.lang-selector-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.lang-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.lang-btn:hover {
+    opacity: 0.8;
+    background: var(--border);
+}
+
+/**
+ * INSTANT BUTTON HIGHLIGHTING
+ * Matches the root data-primary/secondary with the button ID.
+ */
+/* Primary Highlight */
+html[data-primary="cpp"] .lang-btn[data-lang-id="cpp"],
+html[data-primary="go"] .lang-btn[data-lang-id="go"],
+html[data-primary="python"] .lang-btn[data-lang-id="python"],
+html[data-primary="typescript"] .lang-btn[data-lang-id="typescript"],
+html[data-primary="scala2"] .lang-btn[data-lang-id="scala2"],
+html[data-primary="scala3"] .lang-btn[data-lang-id="scala3"],
+.lang-btn.active-primary {
+    opacity: 1;
+    border-color: var(--lang-color, var(--accent));
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 12px var(--lang-color, var(--accent));
+}
+
+/* Secondary Highlight (Only in double mode) */
+html[data-selection-mode="double"][data-secondary="cpp"] .lang-btn[data-lang-id="cpp"],
+html[data-selection-mode="double"][data-secondary="go"] .lang-btn[data-lang-id="go"],
+html[data-selection-mode="double"][data-secondary="python"] .lang-btn[data-lang-id="python"],
+html[data-selection-mode="double"][data-secondary="typescript"] .lang-btn[data-lang-id="typescript"],
+html[data-selection-mode="double"][data-secondary="scala2"] .lang-btn[data-lang-id="scala2"],
+html[data-selection-mode="double"][data-secondary="scala3"] .lang-btn[data-lang-id="scala3"],
+.lang-btn.active-secondary {
+    opacity: 1;
+    border-color: var(--lang-color, var(--accent));
+    border-style: dashed;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* --- 2. TOGGLE GROUPS --- */
+.toggle-group {
+    display: flex;
+    background: var(--bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+html[data-selection-mode="single"] #view-single-btn,
+html[data-selection-mode="double"] #view-double-btn,
+.toggle.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* --- 3. SWAP BUTTON --- */
+#swap-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--accent) !important;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: none;
+}
+
+html[data-selection-mode="double"] #swap-btn {
+    display: inline-flex;
+}
+
+/* --- 4. CODE COMPARISON GRID --- */
+.code-comparison-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 25px 0;
+    width: 100%;
+}
+
+html[data-selection-mode="double"] .code-comparison-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* --- 5. INSTANT CODE BLOCK VISIBILITY --- */
+.code-block {
+    display: none; /* Hidden by default */
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+/* Show block if it matches primary */
+html[data-primary="cpp"] .code-block[data-lang="cpp"],
+html[data-primary="go"] .code-block[data-lang="go"],
+html[data-primary="python"] .code-block[data-lang="python"],
+html[data-primary="typescript"] .code-block[data-lang="typescript"],
+html[data-primary="scala2"] .code-block[data-lang="scala2"],
+html[data-primary="scala3"] .code-block[data-lang="scala3"],
+/* Show block if it matches secondary AND we are in double mode */
+html[data-selection-mode="double"][data-secondary="cpp"] .code-block[data-lang="cpp"],
+html[data-selection-mode="double"][data-secondary="go"] .code-block[data-lang="go"],
+html[data-selection-mode="double"][data-secondary="python"] .code-block[data-lang="python"],
+html[data-selection-mode="double"][data-secondary="typescript"] .code-block[data-lang="typescript"],
+html[data-selection-mode="double"][data-secondary="scala2"] .code-block[data-lang="scala2"],
+html[data-selection-mode="double"][data-secondary="scala3"] .code-block[data-lang="scala3"] {
+    display: block;
+}
+
+.block-header-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--border);
+    color: var(--text-dim);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 0 0 0 8px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    background: transparent !important;
+}
+
+/* --- 6. UTILITIES & RESPONSIVENESS --- */
+@media (max-width: 1280px) {
+    html[data-selection-mode="double"] .code-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+    .code-block {
+        margin-bottom: 10px;
+    }
+}

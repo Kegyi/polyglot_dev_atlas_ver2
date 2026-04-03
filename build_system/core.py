@@ -19,7 +19,7 @@ class AtlasBuilder:
         self.warnings = []
 
     def _log_warning(self, message):
-        print(f"⚠️  WARNING: {message}")
+        print(f"WARNING: {message}")
         self.warnings.append(message)
 
     def _read_file(self, path, required=False):
@@ -42,90 +42,109 @@ class AtlasBuilder:
 
     # --- RECURSIVE SCHEMA RENDERER ---
 
-    def render_content(self, content_list, depth=2):
-        """Recursively renders the 'content' array based on the JSON Schema."""
+    def render_content(self, content_list, depth=2, inherited_style=""):
+        """Recursively renders content. Inherits styles and increments depth for smart titles."""
         html = ""
         for item in content_list:
-            html += self.render_item(item, depth)
+            html += self.render_item(item, depth, inherited_style)
         return html
 
-    def render_item(self, item, depth=2):
-        """Maps specific JSON items to HTML strings."""
+    def render_item(self, item, depth=2, inherited_style=""):
         itype = item.get("type")
         custom_class = item.get("class", "")
         item_id = item.get("id", "")
         id_attr = f'id="{item_id}"' if item_id else ""
 
-        # 1. Headers (Direct)
-        if itype in ["h1", "h2", "h3", "h4", "h5", "h6", "title"]:
-            tag = "h1" if itype == "title" else itype
+        # Smart Heading Scaling
+        if itype == "title":
+            tag = f"h{min(depth, 6)}"
             return f'<{tag} {id_attr} class="{custom_class}">{item.get("text")}</{tag}>'
+        
+        elif itype in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+            return f'<{itype} {id_attr} class="{custom_class}">{item.get("text")}</{itype}>'
 
-        # 2. Text Paragraphs
         elif itype == "text":
             text = item.get("text", "")
             return f'<p {id_attr} class="{custom_class}">{text}</p>'
 
-        # 3. Notes / Callouts
         elif itype == "note":
             variant = item.get("variant", "info")
-            return f'<div {id_attr} class="note note-{variant} {custom_class}">{item.get("text")}</div>'
+            # Wrap note content in a dedicated container so inner block elements
+            # (tables, pre, code) can be targeted separately by CSS and render
+            # correctly inside the flexible note layout.
+            content_html = item.get("text", "")
+            return f'<div {id_attr} class="note note-{variant} {custom_class}"><div class="note-content">{content_html}</div></div>'
 
-        # 4. Code Comparison (Assembler)
         elif itype == "code":
             return self.assemble_code_comparison(item.get("name"))
 
-        # 5. Images
         elif itype == "image":
             alt = item.get("alt", "")
             src = item.get("src", "")
             return f'<figure class="{custom_class}"><img src="{src}" alt="{alt}"><figcaption>{item.get("caption", "")}</figcaption></figure>'
 
-        # 6. Lists
         elif itype == "list":
             tag = "ol" if item.get("ordered") else "ul"
             list_items = "".join([f"<li>{i}</li>" for i in item.get("items", [])])
             return f'<{tag} class="{custom_class}">{list_items}</{tag}>'
 
-        # 7. Blocks Container (Recursion point)
         elif itype == "blocks":
             block_html = ""
             for block in item.get("blocks", []):
-                block_html += self.render_block(block, depth)
+                block_html += self.render_block(block, depth, inherited_style)
             return f'<div {id_attr} class="blocks-container {custom_class}">{block_html}</div>'
 
         return f"<!-- Unknown item type: {itype} -->"
 
-    def render_block(self, block_data, depth=2):
-        """Renders a single collapsible Topic Block with dynamic heading levels."""
+    def render_block(self, block_data, depth=2, inherited_style=""):
+        """Renders a collapsible block with inheritance and depth-based visibility logic."""
         bid = block_data.get("id", "topic-unknown")
         title = block_data.get("title", "Untitled Topic")
         custom_class = block_data.get("class", "")
-        collapsed = "is-collapsed" if block_data.get("collapsed") else ""
-        body_class = "collapsed" if block_data.get("collapsed") else ""
         
-        # Determine heading tag based on nesting depth
+        # Style Inheritance
+        # If the block defines a `style` key (even empty string), treat it as an explicit override.
+        # Only inherit when `style` is not present on the block.
+        if "style" in block_data:
+            current_style = block_data.get("style", "")
+        else:
+            current_style = inherited_style
+        
+        # Smart Heading Calculation
         h_tag = f"h{min(depth, 6)}"
 
+        # Visibility Depth (Default: Top 2 levels expanded)
+        is_manual_collapsed = block_data.get("collapsed")
+        if is_manual_collapsed is None:
+            should_collapse = depth > 3 # Level 1 (depth 2) and Level 2 (depth 3) are visible
+        else:
+            should_collapse = is_manual_collapsed
+
+        collapsed_class = "is-collapsed" if should_collapse else ""
+        body_class = "collapsed" if should_collapse else ""
+
         html = f'''
-        <div class="topic-section {collapsed} {custom_class}" id="{bid}">
+        <div class="topic-section {current_style} {collapsed_class} {custom_class}" id="{bid}">
             <div class="topic-header" onclick="app.toggleTopic('{bid}')">
                 <{h_tag}>{title}</{h_tag}>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body {body_class}">
-                {self.render_content(block_data.get("content", []), depth + 1)}
+                {self.render_content(block_data.get("content", []), depth + 1, current_style)}
             </div>
         </div>
         '''
         return html
 
-    # --- ASSEMBLERS ---
+    # --- ASSEMBLERS (PHASE 2: Depth-Tagged Sidebars) ---
 
     def assemble_code_comparison(self, snippet_id):
         snippet_root = os.path.join(self.content_dir, "snippets")
-        html = '<div class="comparison-grid">'
+        html = f'<div class="code-comparison-grid" data-snippet-id="{snippet_id}">'
         found_any = False
+        
+        hljs_map = {"scala2": "scala", "scala3": "scala", "typescript": "ts"}
+
         if os.path.exists(snippet_root):
             for lang_dir in sorted(os.listdir(snippet_root)):
                 dir_path = os.path.join(snippet_root, lang_dir)
@@ -135,93 +154,158 @@ class AtlasBuilder:
                     found_any = True
                     raw_code = self._read_file(os.path.join(dir_path, target))
                     escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
-                    html += f'<div class="code-card" data-lang="{lang_dir}"><span class="lang-tag">{lang_dir.upper()}</span><pre><code>{escaped}</code></pre></div>'
+                    hljs_lang = hljs_map.get(lang_dir, lang_dir)
+                    html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                             f'<div class="block-header-tag">{lang_dir.upper()}</div>'
+                             f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
         
         if not found_any:
             self._log_warning(f"Snippet '{snippet_id}' not found.")
-            return f'<div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "{snippet_id}" missing in content/snippets/*/</div>'
+            # Emphasize the label so it stands out visually inside the note.
+            content_html = f"<span class=\"snippet-error\">Snippet Error:</span> \"{snippet_id}\" missing"
+            return f'<div class="note note-error"><div class="note-content">{content_html}</div></div>'
         return html + '</div>'
 
-    def assemble_navigation(self, current_page_id, prefix, active_mode):
-        nav_html = '<ul class="nav-list">'
+    def assemble_navigation(self, current_page_url, prefix, active_mode):
+        # Primary nav and a hidden showcases list. The JS toggles between them.
+        nav_html = ''
+
+        def format_title_for_sidebar(title, cutoff=30):
+            # Manual break marker
+            if '|' in title:
+                first, rest = title.split('|', 1)
+                return f"{first.strip()}<span class=\"sidebar-wrap-indent\">{rest.strip()}</span>"
+
+            # If shorter than cutoff, return unchanged
+            if len(title) <= cutoff:
+                return title
+
+            # Try to break at common delimiters before cutoff
+            for d in [';', ',', '.', '-', ':']:
+                idx = title.rfind(d, 0, cutoff)
+                if idx != -1:
+                    a = title[:idx+1].strip()
+                    b = title[idx+1:].strip()
+                    return f"{a}<span class=\"sidebar-wrap-indent\">{b}</span>"
+
+            # Fallback: break at last space before cutoff
+            idx = title.rfind(' ', 0, cutoff)
+            if idx != -1:
+                a = title[:idx].strip()
+                b = title[idx+1:].strip()
+                return f"{a}<span class=\"sidebar-wrap-indent\">{b}</span>"
+
+            return title
+
+        main_items = []
+        showcase_entries = []
+        # Detect showcase collection pages intentionally placed under
+        # content/pages/meta/showcases/ (rel_path == 'meta/showcases').
+        # Also accept files named with the 'showcase_' prefix. We collect
+        # them with a priority so an intro/index in the subdir can appear
+        # first when the submenu opens.
         for p in self.site_registry.get(active_mode, []):
-            active = "active" if p['id'] == current_page_id else ""
-            nav_html += f'<li class="{active}"><a href="{prefix}{p["url"]}">{p["title"]}</a></li>'
-        return nav_html + '</ul>'
+            # Mark active when the page URL exactly matches the currently
+            # rendered page URL. This avoids collisions where multiple pages
+            # share the same filename (e.g., index) but live in different
+            # directories such as `meta/` and `meta/showcases/`.
+            active = "active" if p.get('url') == current_page_url else ""
+            safe_title = format_title_for_sidebar(p.get('title', ''))
+            item_html = f'<li class="{active}"><a href="{prefix}{p["url"]}">{safe_title}</a></li>'
+            rel = p.get('rel_path', '').replace('\\', '/')
+            if rel == 'meta/showcases':
+                # Highest priority: explicit showcases subdir items (index will be first)
+                showcase_entries.append((0, item_html))
+            elif p.get('id', '').startswith('showcase_'):
+                showcase_entries.append((1, item_html))
+            else:
+                main_items.append(item_html)
+
+        # Sort showcase entries by priority so the intro/index (priority 0)
+        # from the subdir appears before the other showcase pages.
+        showcase_items = [h for _, h in sorted(showcase_entries, key=lambda x: x[0])]
+
+        # Main navigation (index and primary pages first). Showcases is a
+        # secondary collection marker appended so index.html remains top.
+        nav_html += '<ul class="nav-list" id="toc-main">'
+        nav_html += '\n'.join(main_items)
+        # Only render the Showcases collection for the Meta documentation mode.
+        if active_mode == 'meta' and showcase_items:
+            # Showcases toggle is visible but marked as a collection.
+            nav_html += '<li class="nav-item nav-showcases"><a href="#" onclick="app.openShowcases();return false;">Showcases <span class="collection-marker">collection</span></a></li>'
+        nav_html += '</ul>'
+
+        # Hidden showcases list (JS will reveal it) - only for Meta mode
+        if active_mode == 'meta' and showcase_items:
+            nav_html += '<ul class="nav-list nav-showcase-list" id="toc-showcases" style="display:none">'
+            # back control
+            nav_html += '<li class="nav-item nav-back"><a href="#" onclick="app.closeShowcases();return false;">← Back</a></li>'
+            # group label and group name for clarity
+            nav_html += '\n'.join(showcase_items)
+            nav_html += '</ul>'
+
+        return nav_html
 
     def assemble_topic_sidebar(self, page_data):
-        """Extracts block IDs recursively to build the Table of Contents."""
-        # Build a nested TOC: top-level group blocks -> their child blocks
-        def gather_subblocks(items):
-            """Recursively find all 'blocks' entries inside items and return their block list."""
+        """Builds the TOC recursively with depth markers for density control."""
+        
+        def gather_subblocks(items, current_depth=1):
+            """Internal recursive walker to map topics with their depth."""
             subs = []
             for it in items:
                 if it.get("type") == "blocks":
                     for b in it.get("blocks", []):
-                        subs.append({"id": b.get("id"), "title": b.get("title")})
-                # descend into known container slots
-                if isinstance(it, dict):
-                    if "blocks" in it:
-                        for b in it.get("blocks", []):
-                            # each block may itself contain nested 'content' with blocks
-                            if isinstance(b, dict) and "content" in b:
-                                subs.extend(gather_subblocks(b.get("content", [])))
-                    if "content" in it:
-                        subs.extend(gather_subblocks(it.get("content", [])))
+                        child_blocks = gather_subblocks(b.get("content", []), current_depth + 1)
+                        subs.append({
+                            "id": b.get("id"),
+                            "title": b.get("title"),
+                            "depth": current_depth,
+                            "children": child_blocks
+                        })
             return subs
 
-        toc_html = []
+        def render_toc_list(blocks):
+            """Turns mapped blocks into HTML <li> elements with data-depth tags."""
+            html = ""
+            for b in blocks:
+                depth_class = f"depth-{b['depth']}"
+                html += f'<li class="toc-item {depth_class}" data-topic-id="{b["id"]}" data-depth="{b["depth"]}">'
+                html += f'<span onclick="app.focusTopic(\'{b["id"]}\')">{b["title"]}</span>'
+                if b["children"]:
+                    html += '<ul class="nav-sublist">'
+                    html += render_toc_list(b["children"])
+                    html += '</ul>'
+                html += '</li>'
+            return html
 
-        # Container for topic sidebar (view-mode control is rendered in the template)
-        toc_html.append('<div class="topic-sidebar-container">')
-
-        toc_html.append('<ul class="nav-list" id="toc">')
-
-        # Top-level: look for blocks items in the page content that represent groups
-        for item in page_data.get("content", []):
-            if item.get("type") != "blocks":
-                continue
-            # each top-level block in this item is a group (e.g., creational_patterns)
-            for group in item.get("blocks", []):
-                gid = group.get("id")
-                gtitle = group.get("title", "Untitled")
-                # collect immediate child blocks under this group's content
-                children = []
-                if isinstance(group, dict):
-                    # find nested 'blocks' within group's content recursively
-                    children = gather_subblocks(group.get("content", []))
-
-                # render group title as clickable header and attach data-topic-id to the group li
-                toc_html.append(f'<li class="toc-group" data-topic-id="{gid}"><span onclick="app.focusTopic(\'{gid}\')">{gtitle}</span>')
-                if children:
-                    toc_html.append('<ul class="nav-sublist">')
-                    for c in children:
-                        # render each child with a data-topic-id for reliable selection
-                        toc_html.append(f'<li data-topic-id="{c["id"]}" onclick="app.focusTopic(\'{c["id"]}\')">{c["title"]}</li>')
-                    toc_html.append('</ul>')
-                toc_html.append('</li>')
-
-        toc_html.append('</ul>')
-        toc_html.append('</div>')
+        # Initialize the scan
+        mapped_topics = gather_subblocks(page_data.get("content", []), current_depth=1)
+        
+        toc_html = ['<div class="topic-sidebar-container">', '<ul class="nav-list" id="toc">']
+        toc_html.append(render_toc_list(mapped_topics))
+        toc_html.append('</ul></div>')
+        
         return "".join(toc_html)
 
     def assemble_language_selector(self):
         data = self._load_json(self.lang_def_path, required=True)
-        if not data: return "<!-- Lang Def Missing -->"
-        html = '<div class="selector-container">'
+        if not data: return ""
+        html = ""
         for lid, info in data.items():
-            color = info.get("color", "var(--accent)")
-            html += f'<button class="lang-pill" data-lang-id="{lid}" style="--lang-color: {color}">{info.get("name", lid)}</button>'
-        html += '<button class="swap-btn" onclick="app.swapLanguages()">⇄ SWAP</button></div>'
+            color = info.get("color", "#777")
+            html += f'<button class="lang-btn" data-lang-id="{lid}" style="--lang-color: {color}">{info.get("name", lid)}</button>'
         return html
 
     def assemble_mode_switcher(self, active_mode, prefix):
-        html = '<div class="mode-switcher">'
-        targets = {"atlas": "index.html", "course": "course/intro.html"}
-        for m in sorted(self.site_registry.keys()):
+        html = '<div class="toggle-group mode-toggles">'
+        # Add the new Meta mode (framework documentation) to the switcher
+        targets = {"atlas": "index.html", "course": "course/intro.html", "meta": "meta/index.html"}
+        for m in ["atlas", "course", "meta"]:
             active = "active" if m == active_mode else ""
             target_url = prefix + targets.get(m, "index.html")
-            html += f'<a href="{target_url}" class="mode-btn {active}">{m.capitalize()}</a>'
+            # Close the UI-only showcases view when switching modes so the
+            # destination mode can restore its own saved state if present.
+            html += f'<a href="{target_url}" class="toggle {active}" onclick="app.prepareModeSwitch()">{m.capitalize()}</a>'
         return html + '</div>'
 
     # --- BUILD PROCESS ---
@@ -233,22 +317,39 @@ class AtlasBuilder:
         prefix = "./" if depth == 0 else "../" * depth
         mode = rel_path.split(os.sep)[0] if rel_path else "atlas"
 
+        # Topic Detection
+        has_topics = any(item.get('type') == 'blocks' for item in data.get('content', []))
+        topic_class = "" if has_topics else "no-topics"
+        
+        # Style Inheritance initialization
+        page_preset_style = data.get("style", "") 
+
         template_file = data.get('template', 'base.html')
         template = self._read_file(os.path.join(self.templates_dir, template_file), required=True)
         if not template: return
 
-        # Render Content via Schema Logic
-        page_html = self.render_content(data.get("content", []), depth=2)
+        # Render Content with depth tracking (2 = Level 1)
+        page_html = self.render_content(data.get("content", []), depth=2, inherited_style=page_preset_style)
 
-        # Placeholder Replacement
+        # Normalize asset paths produced inside content HTML:
+        # - convert backslashes to forward slashes
+        # - ensure relative asset references (assets/...) are prefixed correctly
+        # so they resolve from the generated page location.
+        page_html = page_html.replace('\\', '/')
+        # Add prefix to src/href that start with assets/
+        page_html = re.sub(r'(src|href)="assets/', lambda m: f"{m.group(1)}=\"{prefix}assets/", page_html)
+
+        # Build Output
         output = template.replace("{{ title }}", data.get("title", "Polyglot Atlas"))
         output = output.replace("{{ asset_prefix }}", prefix)
         output = output.replace("{{ mode_switcher }}", self.assemble_mode_switcher(mode, prefix))
         output = output.replace("{{ language_selection_buttons }}", self.assemble_language_selector())
-        output = output.replace("{{ navigation_sidebar }}", self.assemble_navigation(page_entry['id'], prefix, mode))
-        output = output.replace("{{ topic_sidebar }}", self.assemble_topic_sidebar(data))
+        # Compute the page URL as stored in the registry (consistent format)
+        current_page_url = os.path.join(rel_path, page_entry['id'] + ".html").replace("\\", "/")
+        output = output.replace("{{ navigation_sidebar }}", self.assemble_navigation(current_page_url, prefix, mode))
+        output = output.replace("{{ topic_sidebar }}", self.assemble_topic_sidebar(data) if has_topics else "")
         output = output.replace("{{ content }}", page_html)
-        output = output.replace("{{ body_class_placeholders }}", f"mode-{mode} {data.get('body_class', '')}")
+        output = output.replace("{{ body_class_placeholders }}", f"mode-{mode} {topic_class} {data.get('body_class', '')}")
 
         # Extra Assets
         extras = []
@@ -257,20 +358,19 @@ class AtlasBuilder:
             extras.append(tag)
         output = output.replace("{{ extra_assets }}", "\n".join(extras))
 
-        # Save
+        # Save to dist/
         out_dir = os.path.join(self.dist_dir, rel_path)
         os.makedirs(out_dir, exist_ok=True)
         with open(os.path.join(out_dir, f"{page_entry['id']}.html"), 'w', encoding='utf-8') as f:
             f.write(output)
 
     def build(self):
-        print("🛠️  Initializing Build Process...")
+        print("🛠️ Initializing Build Process...")
         self.warnings = []
         self.site_registry = {}
         if os.path.exists(self.dist_dir): shutil.rmtree(self.dist_dir)
         os.makedirs(self.dist_dir)
 
-        # 1. Scan folders to build the site map
         for root, _, files in os.walk(self.pages_dir):
             rel = os.path.relpath(root, self.pages_dir)
             if rel == ".": rel = ""
@@ -287,12 +387,31 @@ class AtlasBuilder:
                         "path": p_path, "rel_path": rel
                     })
 
-        # 2. Generate pages from registry
+        # Prioritize default pages for each mode so they appear first in navigation.
+        def prioritize_mode(mode, preferred_ids):
+            if mode not in self.site_registry:
+                return
+            items = self.site_registry[mode]
+            ordered = []
+            # Add preferred ids first (if present)
+            for pid in preferred_ids:
+                for it in items:
+                    if it['id'] == pid and it not in ordered:
+                        ordered.append(it)
+            # Then add remaining items in original order
+            for it in items:
+                if it not in ordered:
+                    ordered.append(it)
+            self.site_registry[mode] = ordered
+
+        prioritize_mode('atlas', ['index'])
+        prioritize_mode('course', ['intro'])
+        prioritize_mode('meta', ['index'])
+
         for mk in sorted(self.site_registry.keys()):
             for pe in self.site_registry[mk]:
                 self.process_page(pe)
 
-        # 3. Static Asset Sync
         if os.path.exists(self.assets_dir):
             shutil.copytree(self.assets_dir, os.path.join(self.dist_dir, "assets"))
         

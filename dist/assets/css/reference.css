@@ -1,0 +1,7 @@
+/* Reference / Dense Grid Style */
+:root[data-palette] { --ref-accent: #8b5cf6; }
+.reference-style { font-size: 0.92rem; }
+.reference-style .topic-body { padding: 10px; }
+.reference-table { width:100%; border-collapse: collapse; font-size:0.9rem; }
+.reference-table th, .reference-table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
+.reference-style .topic-section { background: transparent; border: 1px solid rgba(0,0,0,0.04); }

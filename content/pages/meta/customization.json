@@ -1,0 +1,97 @@
+{
+    "title": "Styling & Customization",
+    "category": "Documentation",
+    "template": "base.html",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "The Three-Tier Style System"
+        },
+        {
+            "type": "text",
+            "text": "The Polyglot Atlas v2 separates structure from aesthetics. You can control the 'feel' of the interface through three different layers of customization."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "global_geometric_styles",
+                    "title": "1. Global Geometric Styles",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "The Style Picker in the navbar controls the physical properties of all components globally. These are driven by CSS variables like <code>--radius</code> and <code>--pad</code>."
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<b>⬚ Sharp:</b> Zero border-radius, thin borders, compact padding. Best for a terminal/IDE look.",
+                                "<b>◯ Round:</b> Standard 12px radius, soft shadows. The default modern experience.",
+                                "<b>☁ Airy:</b> 24px radius, double padding, and heavy shadows. Designed for high-readability focus."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "page_level_presets",
+                    "title": "2. Page Presets (Inheritance)",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "As seen in this guide, setting a preset at the top of the JSON file changes the default appearance of all nested content."
+                        },
+                        {
+                            "type": "note",
+                            "variant": "info",
+                            "text": "Setting <code>'style': 'text_style'</code> in the root JSON object makes all blocks render without borders, resembling a documentation article."
+                        }
+                    ]
+                },
+                {
+                    "id": "block_overrides",
+                    "title": "3. Local Block Overrides",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Individual blocks can break away from the page preset by defining their own <code>style</code> property."
+                        },
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "override_example",
+                                    "title": "I am an Override",
+                                    "style": "",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Even though this page uses <code>text_style</code>, this specific block has its style set to empty (default), so it appears as a standard bordered card."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "information_density",
+                    "title": "4. Information Density",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Independent of the visual style, the <b>Detailed / Compact</b> toggle in the right sidebar controls how many levels of the Table of Contents are visible."
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<b>Detailed:</b> Shows every nested sub-topic in the sidebar.",
+                                "<b>Compact:</b> Hides everything below Level 1 for a cleaner navigation experience."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

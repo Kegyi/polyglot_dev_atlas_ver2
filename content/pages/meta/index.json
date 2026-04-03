@@ -1,0 +1,66 @@
+{
+  "title": "Welcome | Polyglot Guide",
+  "template": "base.html",
+  "style": "meta-style",
+  "body_class": "meta-home",
+  "extra_assets": ["meta.css"],
+  "content": [
+    { "type": "title", "text": "Welcome to the Polyglot Guide | Meta Mode Guide" },
+    { "type": "text", "text": "Welcome to Meta Mode — the centralized documentation for the framework and build-system features." },
+    { "type": "text", "text": "This mode is dedicated to explaining the inner workings of the Polyglot Dev Atlas. It serves as both a manual and a live testing environment for new engine features." },
+    { "type": "note", "variant": "info", "text": "This entire guide is generated from JSON files located in <code>content/pages/meta/</code>. This page uses <code>meta.css</code> for styling with <code>\"style\": \"meta-style\"</code>." },
+    {
+      "type": "blocks",
+      "blocks": [
+        {
+          "id": "meta-getting-started",
+          "title": "Getting Started",
+          "collapsed": false,
+          "content": [
+            { "type": "text", "text": "This guide explains how to use Meta Mode and the available utilities." },
+            { "type": "blocks", "blocks": [
+              {
+                "id": "meta-usage",
+                "title": "Usage",
+                "content": [
+                  { "type": "text", "text": "Use the mode switcher to enter Meta mode. Pages in this mode live under content/pages/meta/." }
+                ]
+              }
+            ] },
+            {
+              "type": "blocks",
+              "blocks": [
+                {
+                  "id": "build_pipeline",
+                  "title": "The Build Pipeline",
+                  "content": [
+                    { "type": "text", "text": "The engine uses a 4-stage process to transform your data into a high-performance static site:" },
+                    { "type": "list", "ordered": true, "items": [
+                      "<b>Registry Scan:</b> Python maps all JSON files to build the navigation sidebars.",
+                      "<b>Schema Parsing:</b> The recursive renderer translates JSON objects into HTML tags.",
+                      "<b>Asset Syncing:</b> CSS, JS, and Syntax Highlighting files are mirrored to the distribution folder.",
+                      "<b>Persistence Injection:</b> LocalStorage logic is baked into the headers to prevent UI flashing."
+                    ] }
+                  ]
+                },
+                {
+                  "id": "core_technologies",
+                  "title": "Core Technologies",
+                  "content": [
+                    { "type": "text", "text": "The Atlas is designed to be zero-dependency on the client side, utilizing standard modern web APIs:" },
+                    { "type": "list", "items": [
+                      "<b>Python 3:</b> The static site generator core.",
+                      "<b>CSS Grid & Variables:</b> Powering the geometric design system and color palettes.",
+                      "<b>Intersection Observer:</b> Driving the high-performance Scroll-Spy sidebar.",
+                      "<b>Highlight.js:</b> Handling multi-language syntax highlighting."
+                    ] }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

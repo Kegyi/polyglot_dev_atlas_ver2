@@ -1,0 +1,17 @@
+{
+  "title": "Playground Style Showcase",
+  "path": "meta/playground-showcase/",
+  "style": "playground-style",
+  "extra_assets": ["assets/css/playground.css"],
+  "content": [
+    { "type": "blocks", "blocks": [
+      { "id": "playground_overview", "title": "Playground Overview", "content": [
+        { "type": "text", "text": "An exploratory style for interactive demos and small experiments." },
+        { "type": "code", "language": "js", "code": "console.log('Playground ready')" }
+      ] },
+      { "id": "playground_examples", "title": "Interactive Examples", "content": [
+        { "type": "note", "variant": "warning", "text": "Experiment outputs may vary across browsers." }
+      ] }
+    ] }
+  ]
+}

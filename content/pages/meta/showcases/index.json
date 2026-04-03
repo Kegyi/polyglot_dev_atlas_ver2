@@ -1,0 +1,13 @@
+{
+  "title": "All Showcases",
+  "path": "meta/showcases/",
+  "style": "showcase-index",
+  "content": [
+    { "type": "blocks", "blocks": [
+      { "id": "showcases_intro", "title": "Welcome to Showcases", "content": [
+        { "type": "text", "text": "Explore curated presentation styles demonstrating layouts and patterns for tutorials, references, galleries, playgrounds, and IDE-like pages. Use the list to the left to open a specific showcase." },
+        { "type": "list", "items": ["Tutorial Style","Reference Style","IDE Style","Playground Style","Gallery Style"] }
+      ] }
+    ] }
+  ]
+}

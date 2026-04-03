@@ -1,0 +1,72 @@
+{
+    "title": "Page Configuration",
+    "category": "Documentation",
+    "template": "base.html",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "The Root Schema"
+        },
+        {
+            "type": "text",
+            "text": "Every page in the Atlas is a JSON file. The root object defines the metadata, the layout behavior, and the style inheritance for all child elements."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "identity_properties",
+                    "title": "Identity & Navigation",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "These keys determine how the page appears in the search engine and sidebars:"
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<b>title:</b> String. The main heading and browser tab title.",
+                                "<b>category:</b> String. Grouping label for the sidebar registry.",
+                                "<b>description:</b> String. Used for SEO and future card previews."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "inheritance_properties",
+                    "title": "Style Inheritance (Presets)",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "One of the most powerful features of the v2 engine is the ability to set a default 'look' for a page."
+                        },
+                        {
+                            "type": "note",
+                            "variant": "info",
+                            "text": "If you set <code>style: 'text_style'</code> at the root, every nested block will lose its borders and backgrounds to look like an article, unless that block specifically overrides it."
+                        }
+                    ]
+                },
+                {
+                    "id": "technical_properties",
+                    "title": "Technical Metadata",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Properties that control the underlying HTML engine:"
+                        },
+                        {
+                            "type": "list",
+                            "items": [
+                                "<b>template:</b> Usually <code>base.html</code>. Determines the layout file used.",
+                                "<b>body_class:</b> String. Injects custom CSS classes into the body (e.g., for page-specific CSS selectors).",
+                                "<b>extra_assets:</b> Array. List of CSS or JS files in <code>assets/css/</code> or <code>assets/js/</code> to load only for this page."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,123 +1,131 @@
 <!DOCTYPE html>
-<!-- 
-    The <html> element holds the state of the UI.
-    Sidebars: 'visible' or 'hidden'
-    Theme: 'dark' or 'light'
-    Palette: 'default', 'nord', or 'matrix'
-    View Mode: 'focused' or 'all'
--->
-<html lang="en" 
-      data-theme="dark" 
-      data-palette="default" 
-      data-sidebar-l="visible" 
-      data-sidebar-r="visible" 
-      data-view-mode="focused">
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design Patterns</title>
-
-    <!-- CRITICAL: Anti-Flash Script (Blocking) -->
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
     <script>
         (function() {
-            // Immediately restore UI state from localStorage
-            const theme = localStorage.getItem('theme') || 'dark';
-            const palette = localStorage.getItem('palette') || 'default';
-            const sl = localStorage.getItem('sidebar-l') || 'visible';
-            const sr = localStorage.getItem('sidebar-r') || 'visible';
-            const view = localStorage.getItem('view-mode') || 'focused';
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
 
+            // 2. Set attributes on documentElement immediately. 
             const doc = document.documentElement;
-            doc.setAttribute('data-theme', theme);
-            doc.setAttribute('data-palette', palette);
-            doc.setAttribute('data-sidebar-l', sl);
-            doc.setAttribute('data-sidebar-r', sr);
-            doc.setAttribute('data-view-mode', view);
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
 
-            // Add loading class to keep body hidden until JS reveals it
-            doc.classList.add('is-loading');
+            // If the user had Showcases open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
         })();
     </script>
 
-    <!-- Base Styles (Prefixed for sub-pages) -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    
-    <!-- Page-specific CSS/JS from JSON -->
-    
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
 
-    <style>
-        /* FOUC Protection: Body is invisible while 'is-loading' is present */
-        html.is-loading body {
-            visibility: hidden;
-            opacity: 0;
-            /* Matches default dark theme background to prevent white-flash */
-            background-color: #0f172a; 
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
 </head>
-<body class="mode-atlas atlas-view design-patterns-page">
-
-    <!-- 1. TOP HEADER -->
-    <header class="main-header">
-        <div class="header-section">
-            <div class="logo">POLYGLOT <span>ATLAS</span></div>
-            <!-- Placeholder: Atlas/Course toggle -->
-            <div class="mode-switcher-wrapper">
-                <div class="mode-switcher"><a href="../index.html" class="mode-btn active">Atlas</a><a href="../course/intro.html" class="mode-btn ">Course</a></div>
+<body class="mode-atlas  atlas-view design-patterns-page">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/intro.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
             </div>
-        </div>
-
-        <div class="header-section">
-            <div class="palette-theme">
-                <!-- Palette Selector Indicators -->
-                <div class="palette-group">
-                    <div class="pal-indicator p-def" onclick="app.setPalette('default', this)"><i></i><i></i></div>
-                    <div class="pal-indicator p-nord" onclick="app.setPalette('nord', this)"><i></i><i></i></div>
-                    <div class="pal-indicator p-mat" onclick="app.setPalette('matrix', this)"><i></i><i></i></div>
+            <div class="nav-center">
+                <div class="toggle-group view-toggles">
+                    <button id="view-single-btn" class="toggle">Single</button>
+                    <button id="view-double-btn" class="toggle">Double</button>
                 </div>
-                <!-- Theme Toggle -->
-                <button class="theme-btn" onclick="app.toggleTheme()" id="themeIcon">☼</button>
+                <button id="swap-btn" class="icon-btn">⇄</button>
+            </div>
+            <div class="nav-right">
+                <!-- Phase 3: Global Geometric Style Picker -->
+                <div class="style-picker">
+                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                </div>
+
+                <div class="palette-picker">
+                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
             </div>
         </div>
-    </header>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- 2. PROGRAMMING LANGUAGE SELECTOR BAR -->
-    <nav class="selector-bar">
-        <div class="selector-container"><button class="lang-pill" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-pill" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-pill" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-pill" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-pill" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-pill" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button><button class="swap-btn" onclick="app.swapLanguages()">⇄ SWAP</button></div>
-    </nav>
-
-    <!-- 3. MAIN LAYOUT CONTAINER -->
-    <div class="app-container">
-        
-        <!-- Sidebar Left (Global Nav) -->
-        <aside class="sidebar-left">
-            <div class="edge-toggle toggle-l" onclick="app.toggleSidebar('l')">◀</div>
-            <div class="sidebar-inner">
-                <ul class="nav-list"><li class=""><a href="../index.html">Welcome | Polyglot Dev Atlas</a></li><li class="active"><a href="../atlas/design_patterns.html">Design Patterns</a></li><li class=""><a href="../atlas/syntax.html">Basic Syntax | Atlas</a></li></ul>
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Dev Atlas</span></a></li>
+<li class="active"><a href="../atlas/design_patterns.html">Design Patterns</a></li>
+<li class=""><a href="../atlas/syntax.html">Basic Syntax<span class="sidebar-wrap-indent">Atlas</span></a></li></ul>
             </div>
         </aside>
-
-        <!-- Main Content View -->
-        <main id="main-scroll-area">
-            <!-- view-mode toggle moved to the topic sidebar -->
-
-            <!-- Pre-Built Modular Content -->
+        
+        <main id="content">
             <div class="content-wrapper">
                 <h1  class="">Design Patterns</h1><p  class="">Design patterns are reusable solutions to common software design problems. They provide a template for how to solve a problem that can be used in many different situations. This page explores various design patterns, their implementations across different programming languages, and modern variants that leverage contemporary language features.</p><div  class="blocks-container ">
-        <div class="topic-section  minimal-block" id="creational_patterns">
+        <div class="topic-section text_style  " id="creational_patterns">
             <div class="topic-header" onclick="app.toggleTopic('creational_patterns')">
                 <h2>Creational patterns</h2>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
-        <div class="topic-section  " id="abstract_factory">
+        <div class="topic-section text_style  " id="abstract_factory">
             <div class="topic-header" onclick="app.toggleTopic('abstract_factory')">
                 <h3>Abstract Factory</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_abstract_factory"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -166,7 +174,7 @@ struct DarkFactory : WidgetFactory {
 void showScreen(const WidgetFactory& factory) {
     auto button = factory.createButton();
     auto dialog = factory.createDialog();
-    std::cout &lt;&lt; button-&gt;render() &lt;&lt; " + " &lt;&lt; dialog-&gt;render() &lt;&lt; '\n';
+    std::cout &lt;&lt; button-&gt;render() &lt;&lt; " + " &lt;&lt; dialog-&gt;render() &lt;&lt; '/n';
 }
 
 int main() {
@@ -174,7 +182,7 @@ int main() {
     DarkFactory dark;
     showScreen(light);
     showScreen(dark);
-}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -215,14 +223,14 @@ func (DarkFactory) CreateDialog() Dialog { return DarkDialog{} }
 func showScreen(factory WidgetFactory) {
 	button := factory.CreateButton()
 	dialog := factory.CreateDialog()
-	fmt.Printf("%s + %s\n", button.Render(), dialog.Render())
+	fmt.Printf("%s + %s/n", button.Render(), dialog.Render())
 }
 
 func main() {
 	showScreen(LightFactory{})
 	showScreen(DarkFactory{})
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 
 class Button(ABC):
@@ -284,7 +292,7 @@ def show_screen(factory: WidgetFactory) -&gt; None:
 
 
 show_screen(LightFactory())
-show_screen(DarkFactory())</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Abstract Factory
+show_screen(DarkFactory())</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Abstract Factory
 trait UIElement
 
 case class Button(label: String) extends UIElement
@@ -312,7 +320,7 @@ object Main extends App {
   println(lightFactory.createButton("OK"))
   println(darkFactory.createButton("OK"))
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Abstract Factory
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Abstract Factory
 trait UIElement
 
 case class Button(label: String) extends UIElement
@@ -336,7 +344,7 @@ object DarkThemeFactory extends UIFactory:
   
   println(lightFactory.createButton("OK"))
   println(darkFactory.createButton("OK"))
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Button {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Button {
   render(): string;
 }
 
@@ -402,13 +410,13 @@ showScreen(new DarkFactory());</code></pre></div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="builder">
+        <div class="topic-section text_style  " id="builder">
             <div class="topic-header" onclick="app.toggleTopic('builder')">
                 <h3>Builder</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_builder"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;utility&gt;
 #include &lt;vector&gt;
@@ -445,11 +453,11 @@ int main() {
         .section("deploy: staged")
         .build();
 
-    std::cout &lt;&lt; report.title &lt;&lt; '\n';
+    std::cout &lt;&lt; report.title &lt;&lt; '/n';
     for (const auto& section : report.sections) {
-        std::cout &lt;&lt; "- " &lt;&lt; section &lt;&lt; '\n';
+        std::cout &lt;&lt; "- " &lt;&lt; section &lt;&lt; '/n';
     }
-}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -488,7 +496,7 @@ func main() {
 		fmt.Println("-", section)
 	}
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass, field
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
 
 
 @dataclass
@@ -523,7 +531,7 @@ report = (
 
 print(report.title)
 for section in report.sections:
-    print(f"- {section}")</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Builder
+    print(f"- {section}")</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Builder
 case class House(
     walls: String = "",
     roof: String = "",
@@ -570,7 +578,7 @@ object Main extends App {
 
     println(house)
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Builder
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Builder
 case class House(
     walls: String = "",
     roof: String = "",
@@ -611,7 +619,7 @@ class HouseBuilder:
         .build()
 
     println(house)
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>type Report = {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Report = {
   title: string;
   sections: string[];
 };
@@ -647,13 +655,13 @@ for (const section of report.sections) {
             </div>
         </div>
         
-        <div class="topic-section  " id="factory_method">
+        <div class="topic-section text_style  " id="factory_method">
             <div class="topic-header" onclick="app.toggleTopic('factory_method')">
                 <h3>Factory Method</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_factory_method"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -694,9 +702,9 @@ private:
 int main() {
     JsonImportJob json;
     CsvImportJob csv;
-    std::cout &lt;&lt; json.run() &lt;&lt; '\n';
-    std::cout &lt;&lt; csv.run() &lt;&lt; '\n';
-}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+    std::cout &lt;&lt; json.run() &lt;&lt; '/n';
+    std::cout &lt;&lt; csv.run() &lt;&lt; '/n';
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -731,7 +739,7 @@ func main() {
 		fmt.Println(job.Run())
 	}
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 
 class Parser(ABC):
@@ -768,7 +776,7 @@ class CsvImportJob(ImportJob):
 
 
 for job in (JsonImportJob(), CsvImportJob()):
-    print(job.run())</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Factory Method
+    print(job.run())</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Factory Method
 trait Vehicle {
     def drive(): String
 }
@@ -800,7 +808,7 @@ object Main extends App {
     println(carFactory.createVehicle().drive())
     println(truckFactory.createVehicle().drive())
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Factory Method
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Factory Method
 trait Vehicle:
     def drive(): String
 
@@ -825,7 +833,7 @@ object TruckFactory extends Factory:
     
     println(carFactory.createVehicle().drive())
     println(truckFactory.createVehicle().drive())
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Parser {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Parser {
   parse(): string;
 }
 
@@ -867,13 +875,13 @@ for (const job of [new JsonImportJob(), new CsvImportJob()]) {
             </div>
         </div>
         
-        <div class="topic-section  " id="prototype">
+        <div class="topic-section text_style  " id="prototype">
             <div class="topic-header" onclick="app.toggleTopic('prototype')">
                 <h3>Prototype</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_prototype"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -897,7 +905,7 @@ public:
     }
 
     void describe() const override {
-        std::cout &lt;&lt; color_ &lt;&lt; " circle radius=" &lt;&lt; radius_ &lt;&lt; '\n';
+        std::cout &lt;&lt; color_ &lt;&lt; " circle radius=" &lt;&lt; radius_ &lt;&lt; '/n';
     }
 
 private:
@@ -909,7 +917,7 @@ int main() {
     auto copy = templateCircle.clone();
     templateCircle.describe();
     copy-&gt;describe();
-}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -929,7 +937,7 @@ func (r Report) Clone() Prototype {
 }
 
 func (r Report) Describe() {
-	fmt.Printf("%s %v\n", r.Title, r.Tags)
+	fmt.Printf("%s %v/n", r.Title, r.Tags)
 }
 
 func main() {
@@ -938,7 +946,7 @@ func main() {
 	template.Describe()
 	copy.Describe()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from copy import deepcopy
 
 
@@ -955,7 +963,7 @@ template = Report("weekly", ["ops", "summary"])
 copy = template.clone()
 
 print(template)
-print(copy)</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Prototype
+print(copy)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Prototype
 trait Prototype {
     def clone(): Prototype
 }
@@ -973,7 +981,7 @@ object Main extends App {
     println(copy1)
     println(copy2)
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Prototype
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Prototype
 trait Prototype:
     def clone(): Prototype
 
@@ -988,7 +996,7 @@ case class Document(title: String, content: String) extends Prototype:
     println(original)
     println(copy1)
     println(copy2)
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Prototype&lt;T&gt; {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Prototype&lt;T&gt; {
   clone(): T;
 }
 
@@ -1011,13 +1019,13 @@ console.log(copy);</code></pre></div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="singleton">
+        <div class="topic-section text_style  " id="singleton">
             <div class="topic-header" onclick="app.toggleTopic('singleton')">
                 <h3>Singleton</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><p  class="">Example implementation across language variants.</p><div  class="note note-info ">Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><div  class="note note-info "><div class="note-content">Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div></div><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_singleton"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 class Config {
@@ -1042,8 +1050,8 @@ private:
 
 int main() {
     Config::instance().setEnv("prod");
-    std::cout &lt;&lt; Config::instance().env() &lt;&lt; '\n';
-}</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+    std::cout &lt;&lt; Config::instance().env() &lt;&lt; '/n';
+}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -1070,7 +1078,7 @@ func main() {
 	Instance().Env = "prod"
 	fmt.Println(Instance().Env)
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Config:
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
     _instance: "Config | None" = None
 
     def __new__(cls) -&gt; "Config":
@@ -1081,7 +1089,7 @@ func main() {
 
 
 Config().env = "prod"
-print(Config().env)</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Singleton
+print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
 object Config {
     private var env: String = "dev"
 
@@ -1097,7 +1105,7 @@ object Main extends App {
     Config.setEnv("prod")
     println(Config.getEnv())
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Singleton
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
 object Config:
     private var env: String = "dev"
 
@@ -1110,7 +1118,7 @@ object Config:
     println(Config.getEnv())
     Config.setEnv("prod")
     println(Config.getEnv())
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Config {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
   private static shared: Config | null = null;
 
   private constructor(public env: string) {}
@@ -1128,53 +1136,53 @@ console.log(Config.instance().env);</code></pre></div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="object_pool">
+        <div class="topic-section text_style  " id="object_pool">
             <div class="topic-header" onclick="app.toggleTopic('object_pool')">
                 <h3>Object Pool</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_object_pool" missing in content/snippets/*/</div>
+                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_object_pool" missing</div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="lazy_initialization">
+        <div class="topic-section text_style  " id="lazy_initialization">
             <div class="topic-header" onclick="app.toggleTopic('lazy_initialization')">
                 <h3>Lazy Initialization</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_lazy_initialization" missing in content/snippets/*/</div>
+                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_lazy_initialization" missing</div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="multiton">
+        <div class="topic-section text_style  " id="multiton">
             <div class="topic-header" onclick="app.toggleTopic('multiton')">
                 <h3>Multiton</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_multiton" missing in content/snippets/*/</div>
+                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_multiton" missing</div></div>
             </div>
         </div>
         </div>
             </div>
         </div>
         
-        <div class="topic-section  minimal-block" id="structural_patterns">
+        <div class="topic-section text_style  " id="structural_patterns">
             <div class="topic-header" onclick="app.toggleTopic('structural_patterns')">
                 <h2>Structural patterns</h2>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
-        <div class="topic-section  " id="adapter">
+        <div class="topic-section text_style  " id="adapter">
             <div class="topic-header" onclick="app.toggleTopic('adapter')">
                 <h3>Adapter</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_adapter"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Printer {
@@ -1185,7 +1193,7 @@ struct Printer {
 class JsonLogger {
 public:
     void writeJson(const std::string& payload) const {
-        std::cout &lt;&lt; payload &lt;&lt; '\n';
+        std::cout &lt;&lt; payload &lt;&lt; '/n';
     }
 };
 
@@ -1194,7 +1202,7 @@ public:
     explicit JsonLoggerAdapter(const JsonLogger& logger) : logger_(logger) {}
 
     void print(const std::string& message) const override {
-        logger_.writeJson("{\"message\":\"" + message + "\"}");
+        logger_.writeJson("{/"message/":/"" + message + "/"}");
     }
 
 private:
@@ -1206,7 +1214,7 @@ int main() {
     JsonLoggerAdapter printer(logger);
     printer.print("build finished");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1225,14 +1233,14 @@ type JSONLoggerAdapter struct {
 }
 
 func (a JSONLoggerAdapter) Print(message string) {
-	a.logger.WriteJSON(fmt.Sprintf("{\"message\":\"%s\"}", message))
+	a.logger.WriteJSON(fmt.Sprintf("{/"message/":/"%s/"}", message))
 }
 
 func main() {
 	printer := JSONLoggerAdapter{logger: JSONLogger{}}
 	printer.Print("build finished")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 
 
 class Printer:
@@ -1254,7 +1262,7 @@ class JsonLoggerAdapter(Printer):
 
 
 JsonLoggerAdapter(JsonLogger()).print("build finished")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Adapter
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Adapter
 trait Printer {
     def printText(text: String): Unit
 }
@@ -1279,7 +1287,7 @@ object Main extends App {
     val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
     adaptedPrinter.printText("")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Adapter
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Adapter
 trait Printer:
     def printText(text: String): Unit
 
@@ -1299,7 +1307,7 @@ class JSONToPrinterAdapter(json: JSONObject) extends Printer:
     val json = JSONObject(Map("key" -&gt; "value"))
     val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
     adaptedPrinter.printText("")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Printer {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Printer {
   print(message: string): void;
 }
 
@@ -1322,13 +1330,13 @@ new JsonLoggerAdapter(new JsonLogger()).print('build finished');
             </div>
         </div>
         
-        <div class="topic-section  " id="bridge">
+        <div class="topic-section text_style  " id="bridge">
             <div class="topic-header" onclick="app.toggleTopic('bridge')">
                 <h3>Bridge</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_bridge"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1339,13 +1347,13 @@ struct Sender {
 
 struct EmailSender : Sender {
     void send(const std::string& message) const override {
-        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '\n';
+        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '/n';
     }
 };
 
 struct SmsSender : Sender {
     void send(const std::string& message) const override {
-        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '\n';
+        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '/n';
     }
 };
 
@@ -1374,7 +1382,7 @@ int main() {
     AlertNotification(email).notify("CPU high");
     AlertNotification(sms).notify("CPU high");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1406,7 +1414,7 @@ func main() {
 	AlertNotification{sender: EmailSender{}}.Notify("CPU high")
 	AlertNotification{sender: SMSSender{}}.Notify("CPU high")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from typing import Protocol
 
 
@@ -1434,7 +1442,7 @@ class AlertNotification:
 
 AlertNotification(EmailSender()).notify("CPU high")
 AlertNotification(SmsSender()).notify("CPU high")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Bridge
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Bridge
 trait Sender {
     def send(msg: String): Unit
 }
@@ -1463,7 +1471,7 @@ object Main extends App {
     emailAlert.notify("Test alert")
     smsAlert.notify("Test alert")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Bridge
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Bridge
 trait Sender:
     def send(msg: String): Unit
 
@@ -1488,7 +1496,7 @@ class Alert(sender: Sender) extends Notification(sender)
     
     emailAlert.notify("Test alert")
     smsAlert.notify("Test alert")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Sender {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Sender {
   send(message: string): void;
 }
 
@@ -1518,13 +1526,13 @@ new AlertNotification(new SmsSender()).notify('CPU high');
             </div>
         </div>
         
-        <div class="topic-section  " id="composite">
+        <div class="topic-section text_style  " id="composite">
             <div class="topic-header" onclick="app.toggleTopic('composite')">
                 <h3>Composite</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_composite"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;numeric&gt;
 #include &lt;vector&gt;
@@ -1565,9 +1573,9 @@ int main() {
     sub-&gt;add(std::make_unique&lt;File&gt;(7));
     sub-&gt;add(std::make_unique&lt;File&gt;(3));
     root-&gt;add(std::move(sub));
-    std::cout &lt;&lt; root-&gt;totalSize() &lt;&lt; '\n';
+    std::cout &lt;&lt; root-&gt;totalSize() &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1606,7 +1614,7 @@ func main() {
 	root.Add(sub)
 	fmt.Println(root.TotalSize())
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass, field
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
 from typing import Protocol
 
 
@@ -1638,7 +1646,7 @@ root.add(File(5))
 sub = Folder([File(7), File(3)])
 root.add(sub)
 print(root.total_size())
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Composite
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Composite
 trait FileSystemNode {
     def getSize(): Long
 }
@@ -1667,7 +1675,7 @@ object Main extends App {
     
     println(s"Folder size: ${folder.getSize()}")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Composite
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Composite
 trait FileSystemNode:
     def getSize(): Long
 
@@ -1691,7 +1699,7 @@ class Folder(name: String) extends FileSystemNode:
     folder.add(file2)
     
     println(s"Folder size: ${folder.getSize()}")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Node {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Node {
   totalSize(): number;
 }
 
@@ -1726,13 +1734,13 @@ console.log(root.totalSize());
             </div>
         </div>
         
-        <div class="topic-section  " id="decorator">
+        <div class="topic-section text_style  " id="decorator">
             <div class="topic-header" onclick="app.toggleTopic('decorator')">
                 <h3>Decorator</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_decorator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1743,7 +1751,7 @@ struct Notifier {
 
 struct EmailNotifier : Notifier {
     void send(const std::string& message) const override {
-        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '\n';
+        std::cout &lt;&lt; "email: " &lt;&lt; message &lt;&lt; '/n';
     }
 };
 
@@ -1761,7 +1769,7 @@ public:
 
     void send(const std::string& message) const override {
         inner_-&gt;send(message);
-        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '\n';
+        std::cout &lt;&lt; "sms: " &lt;&lt; message &lt;&lt; '/n';
     }
 };
 
@@ -1769,7 +1777,7 @@ int main() {
     auto notifier = std::make_unique&lt;SmsDecorator&gt;(std::make_unique&lt;EmailNotifier&gt;());
     notifier-&gt;send("deployment done");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1796,7 +1804,7 @@ func main() {
 	notifier := SMSDecorator{inner: EmailNotifier{}}
 	notifier.Send("deployment done")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from typing import Protocol
 
 
@@ -1819,7 +1827,7 @@ class SmsDecorator:
 
 
 SmsDecorator(EmailNotifier()).send("deployment done")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Decorator
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Decorator
 trait Notification {
     def send(): Unit
 }
@@ -1850,7 +1858,7 @@ object Main extends App {
     notif.send()
     println()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Decorator
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Decorator
 trait Notification:
     def send(): Unit
 
@@ -1874,7 +1882,7 @@ class SMSNotification(notif: Notification) extends Notification:
     
     notif.send()
     println()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Notifier {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Notifier {
   send(message: string): void;
 }
 
@@ -1898,25 +1906,25 @@ new SmsDecorator(new EmailNotifier()).send('deployment done');
             </div>
         </div>
         
-        <div class="topic-section  " id="facade">
+        <div class="topic-section text_style  " id="facade">
             <div class="topic-header" onclick="app.toggleTopic('facade')">
                 <h3>Facade</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_facade"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Compiler {
-    void run() const { std::cout &lt;&lt; "compile\n"; }
+    void run() const { std::cout &lt;&lt; "compile/n"; }
 };
 
 struct TestRunner {
-    void run() const { std::cout &lt;&lt; "test\n"; }
+    void run() const { std::cout &lt;&lt; "test/n"; }
 };
 
 struct Packager {
-    void run() const { std::cout &lt;&lt; "package\n"; }
+    void run() const { std::cout &lt;&lt; "package/n"; }
 };
 
 class ReleaseFacade {
@@ -1936,7 +1944,7 @@ private:
 int main() {
     ReleaseFacade().deploy();
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1967,7 +1975,7 @@ func (f ReleaseFacade) Deploy() {
 func main() {
 	ReleaseFacade{}.Deploy()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Compiler:
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Compiler:
     def run(self) -&gt; None:
         print("compile")
 
@@ -1995,7 +2003,7 @@ class ReleaseFacade:
 
 
 ReleaseFacade().deploy()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Facade
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Facade
 class Compiler {
     def compile(): Unit = println("Compiling code...")
 }
@@ -2024,7 +2032,7 @@ object Main extends App {
     val facade = new BuildFacade()
     facade.build()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Facade
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Facade
 class Compiler:
     def compile(): Unit = println("Compiling code...")
 
@@ -2047,7 +2055,7 @@ class BuildFacade:
 @main def main(): Unit =
     val facade = new BuildFacade()
     facade.build()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Compiler {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Compiler {
   run(): void {
     console.log('compile');
   }
@@ -2082,13 +2090,13 @@ new ReleaseFacade().deploy();
             </div>
         </div>
         
-        <div class="topic-section  " id="flyweight">
+        <div class="topic-section text_style  " id="flyweight">
             <div class="topic-header" onclick="app.toggleTopic('flyweight')">
                 <h3>Flyweight</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_flyweight"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 #include &lt;unordered_map&gt;
@@ -2116,9 +2124,9 @@ int main() {
     StyleFactory factory;
     const GlyphStyle* first = factory.get("mono-12");
     const GlyphStyle* second = factory.get("mono-12");
-    std::cout &lt;&lt; std::boolalpha &lt;&lt; (first == second) &lt;&lt; '\n';
+    std::cout &lt;&lt; std::boolalpha &lt;&lt; (first == second) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2149,7 +2157,7 @@ func main() {
 	second := factory.Get("mono-12")
 	fmt.Println(first == second)
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class GlyphStyle:
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class GlyphStyle:
     def __init__(self, font: str) -&gt; None:
         self.font = font
 
@@ -2168,7 +2176,7 @@ factory = StyleFactory()
 first = factory.get("mono-12")
 second = factory.get("mono-12")
 print(first is second)
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Flyweight
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Flyweight
 case class GlyphStyle(font: String, size: Int)
 
 class Glyph(char: Char, style: GlyphStyle) {
@@ -2199,7 +2207,7 @@ object Main extends App {
     glyph1.render()
     glyph2.render()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Flyweight
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Flyweight
 case class GlyphStyle(font: String, size: Int)
 
 class Glyph(char: Char, style: GlyphStyle):
@@ -2226,7 +2234,7 @@ class GlyphFactory:
     
     glyph1.render()
     glyph2.render()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class GlyphStyle {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class GlyphStyle {
   constructor(public readonly font: string) {}
 }
 
@@ -2252,13 +2260,13 @@ console.log(first === second);
             </div>
         </div>
         
-        <div class="topic-section  " id="proxy">
+        <div class="topic-section text_style  " id="proxy">
             <div class="topic-header" onclick="app.toggleTopic('proxy')">
                 <h3>Proxy</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_proxy"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 struct Image {
@@ -2269,11 +2277,11 @@ struct Image {
 class RealImage : public Image {
 public:
     RealImage() {
-        std::cout &lt;&lt; "load image\n";
+        std::cout &lt;&lt; "load image/n";
     }
 
     void display() override {
-        std::cout &lt;&lt; "display image\n";
+        std::cout &lt;&lt; "display image/n";
     }
 };
 
@@ -2295,7 +2303,7 @@ int main() {
     proxy.display();
     proxy.display();
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2330,7 +2338,7 @@ func main() {
 	proxy.Display()
 	proxy.Display()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class RealImage:
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class RealImage:
     def __init__(self) -&gt; None:
         print("load image")
 
@@ -2351,7 +2359,7 @@ class ImageProxy:
 proxy = ImageProxy()
 proxy.display()
 proxy.display()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Proxy
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Proxy
 trait Image {
     def display(): Unit
 }
@@ -2381,7 +2389,7 @@ object Main extends App {
     image.display()
     image.display()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Proxy
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Proxy
 trait Image:
     def display(): Unit
 
@@ -2405,7 +2413,7 @@ class ImageProxy(filename: String) extends Image:
     val image: Image = new ImageProxy("photo.jpg")
     image.display()
     image.display()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class RealImage {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class RealImage {
   constructor() {
     console.log('load image');
   }
@@ -2433,53 +2441,53 @@ proxy.display();
             </div>
         </div>
         
-        <div class="topic-section  " id="data_mapper">
+        <div class="topic-section text_style  " id="data_mapper">
             <div class="topic-header" onclick="app.toggleTopic('data_mapper')">
                 <h3>Data Mapper</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_data_mapper" missing in content/snippets/*/</div>
+                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_data_mapper" missing</div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="object_adapter">
+        <div class="topic-section text_style  " id="object_adapter">
             <div class="topic-header" onclick="app.toggleTopic('object_adapter')">
                 <h3>Object Adapter</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_object_adapter" missing in content/snippets/*/</div>
+                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_object_adapter" missing</div></div>
             </div>
         </div>
         
-        <div class="topic-section  " id="class_adapter">
+        <div class="topic-section text_style  " id="class_adapter">
             <div class="topic-header" onclick="app.toggleTopic('class_adapter')">
                 <h3>Class Adapter</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="build-error" style="padding:1rem; border:1px solid var(--sel-l); color:var(--sel-l); margin:1rem 0; border-radius:8px; font-family:monospace; font-size:0.8rem;">⚠️ Snippet Error: "design_patterns_class_adapter" missing in content/snippets/*/</div>
+                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_class_adapter" missing</div></div>
             </div>
         </div>
         </div>
             </div>
         </div>
         
-        <div class="topic-section  minimal-block" id="behavioral_patterns">
+        <div class="topic-section text_style  " id="behavioral_patterns">
             <div class="topic-header" onclick="app.toggleTopic('behavioral_patterns')">
                 <h2>Behavioral patterns</h2>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
-        <div class="topic-section  " id="chain_of_responsibility">
+        <div class="topic-section text_style  " id="chain_of_responsibility">
             <div class="topic-header" onclick="app.toggleTopic('chain_of_responsibility')">
                 <h3>Chain Of Responsibility</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_chain_of_responsibility"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -2545,7 +2553,7 @@ int main() {
     low-&gt;handle(r2);
     low-&gt;handle(r3);
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -2575,7 +2583,7 @@ type LowHandler struct {
 
 func (h *LowHandler) Handle(req *Request) {
 	if req.level &lt;= 1 {
-		fmt.Printf("LowHandler: Processing %s\n", req.message)
+		fmt.Printf("LowHandler: Processing %s/n", req.message)
 	} else if h.next != nil {
 		h.next.Handle(req)
 	}
@@ -2587,7 +2595,7 @@ type MidHandler struct {
 
 func (h *MidHandler) Handle(req *Request) {
 	if req.level == 2 {
-		fmt.Printf("MidHandler: Processing %s\n", req.message)
+		fmt.Printf("MidHandler: Processing %s/n", req.message)
 	} else if h.next != nil {
 		h.next.Handle(req)
 	}
@@ -2599,7 +2607,7 @@ type HighHandler struct {
 
 func (h *HighHandler) Handle(req *Request) {
 	if req.level &gt;= 3 {
-		fmt.Printf("HighHandler: Processing %s\n", req.message)
+		fmt.Printf("HighHandler: Processing %s/n", req.message)
 	}
 }
 
@@ -2615,7 +2623,7 @@ func main() {
 	low.Handle(&Request{2, "Normal"})
 	low.Handle(&Request{3, "Critical"})
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 from typing import Optional
 
 class Request:
@@ -2662,7 +2670,7 @@ low.set_next(mid).set_next(high)
 print(low.handle(Request(1, "Simple")))
 print(low.handle(Request(2, "Normal")))
 print(low.handle(Request(3, "Critical")))
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Chain of Responsibility
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Chain of Responsibility
 case class Request(level: Int, message: String)
 
 trait Handler {
@@ -2715,7 +2723,7 @@ object Main extends App {
     low.handle(Request(2, "Normal"))
     low.handle(Request(3, "Critical"))
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Chain of Responsibility
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Chain of Responsibility
 case class Request(level: Int, message: String)
 
 trait Handler:
@@ -2759,7 +2767,7 @@ class HighHandler extends Handler:
     low.handle(Request(1, "Simple"))
     low.handle(Request(2, "Normal"))
     low.handle(Request(3, "Critical"))
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IHandler {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IHandler {
     setNext(next: IHandler): void;
     handle(request: Request): void;
 }
@@ -2816,7 +2824,7 @@ mid.setNext(high);
 low.handle(new Request(1, "Simple"));
 low.handle(new Request(2, "Normal"));
 low.handle(new Request(3, "Critical"));
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Chain of Responsibility using std::function
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_chain_of_responsibility_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Chain of Responsibility using std::function
 // The chain is a flat vector of handlers; no linked-list of subclasses required.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -2841,16 +2849,16 @@ int main() {
     std::vector&lt;Handler&gt; chain = {
         [](const Request& req) -&gt; bool {
             if (req.level &gt; 1) return false;
-            std::cout &lt;&lt; "LowLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            std::cout &lt;&lt; "LowLevelHandler: " &lt;&lt; req.message &lt;&lt; '/n';
             return true;
         },
         [](const Request& req) -&gt; bool {
             if (req.level != 2) return false;
-            std::cout &lt;&lt; "MidLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            std::cout &lt;&lt; "MidLevelHandler: " &lt;&lt; req.message &lt;&lt; '/n';
             return true;
         },
         [](const Request& req) -&gt; bool {
-            std::cout &lt;&lt; "HighLevelHandler: " &lt;&lt; req.message &lt;&lt; '\n';
+            std::cout &lt;&lt; "HighLevelHandler: " &lt;&lt; req.message &lt;&lt; '/n';
             return true;
         },
     };
@@ -2859,7 +2867,7 @@ int main() {
     process(chain, {2, "mid request"});
     process(chain, {3, "high request"});
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Chain of Responsibility using a flat list of callables
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Chain of Responsibility using a flat list of callables
 # No linked-list of handler subclasses - handlers are plain functions returning bool.
 from typing import Callable
 from dataclasses import dataclass
@@ -2901,20 +2909,20 @@ process(chain, Request(3, "high request"))
             </div>
         </div>
         
-        <div class="topic-section  " id="command">
+        <div class="topic-section text_style  " id="command">
             <div class="topic-header" onclick="app.toggleTopic('command')">
                 <h3>Command</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_command"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;vector&gt;
 
 class Receiver {
 public:
-    void turnOn() { std::cout &lt;&lt; "Device is ON\n"; }
-    void turnOff() { std::cout &lt;&lt; "Device is OFF\n"; }
+    void turnOn() { std::cout &lt;&lt; "Device is ON/n"; }
+    void turnOff() { std::cout &lt;&lt; "Device is OFF/n"; }
 };
 
 class Command {
@@ -2960,7 +2968,7 @@ int main() {
     
     invoker-&gt;executeAll();
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3017,7 +3025,7 @@ func main() {
 
 	invoker.ExecuteAll()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Receiver:
     def turn_on(self):
@@ -3063,7 +3071,7 @@ invoker.add_command(TurnOnCommand(device))
 invoker.add_command(TurnOffCommand(device))
 
 invoker.execute_all()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Command
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Command
 class Device {
     def turnOn(): Unit = println("Device is ON")
     def turnOff(): Unit = println("Device is OFF")
@@ -3102,7 +3110,7 @@ object Main extends App {
     
     invoker.executeAll()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Command
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Command
 class Device:
     def turnOn(): Unit = println("Device is ON")
     def turnOff(): Unit = println("Device is OFF")
@@ -3133,7 +3141,7 @@ class Invoker:
     invoker.addCommand(new TurnOffCommand(device))
     
     invoker.executeAll()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface ICommand {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface ICommand {
     execute(): void;
 }
 
@@ -3184,7 +3192,7 @@ invoker.addCommand(new TurnOnCommand(device));
 invoker.addCommand(new TurnOffCommand(device));
 
 invoker.executeAll();
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Command using std::function
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_command_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Command using std::function
 // Replaces the command class hierarchy with a simple callable; lambdas capture context directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3192,8 +3200,8 @@ invoker.executeAll();
 
 class Device {
 public:
-    void turnOn()  const { std::cout &lt;&lt; "Device is ON\n"; }
-    void turnOff() const { std::cout &lt;&lt; "Device is OFF\n"; }
+    void turnOn()  const { std::cout &lt;&lt; "Device is ON/n"; }
+    void turnOff() const { std::cout &lt;&lt; "Device is OFF/n"; }
 };
 
 int main() {
@@ -3208,7 +3216,7 @@ int main() {
         cmd();
     }
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3232,7 +3240,7 @@ func main() {
 		cmd()
 	}
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Command using plain callables
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Command using plain callables
 # No Command ABC or class hierarchy - commands are just Callable[[], None].
 from typing import Callable
 
@@ -3253,7 +3261,7 @@ commands: list[Callable[[], None]] = [
 
 for cmd in commands:
     cmd()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Command using () =&gt; void closures
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Command using () =&gt; void closures
 // No Command interface or class hierarchy - commands are plain callable closures.
 
 class Device {
@@ -3273,13 +3281,13 @@ commands.forEach(cmd =&gt; cmd());
             </div>
         </div>
         
-        <div class="topic-section  " id="observer">
+        <div class="topic-section text_style  " id="observer">
             <div class="topic-header" onclick="app.toggleTopic('observer')">
                 <h3>Observer</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_observer"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -3326,7 +3334,7 @@ int main() {
     subject-&gt;notify("Event 1");
     subject-&gt;notify("Event 2");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3353,7 +3361,7 @@ type ConcreteObserver struct {
 }
 
 func (c *ConcreteObserver) Update(msg string) {
-	fmt.Printf("%s received: %s\n", c.name, msg)
+	fmt.Printf("%s received: %s/n", c.name, msg)
 }
 
 func main() {
@@ -3367,7 +3375,7 @@ func main() {
 	subject.Notify("Event 1")
 	subject.Notify("Event 2")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Observer(ABC):
     @abstractmethod
@@ -3401,7 +3409,7 @@ subject.attach(obs2)
 
 subject.notify("Event 1")
 subject.notify("Event 2")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Observer
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Observer
 trait Observer {
     def update(msg: String): Unit
 }
@@ -3435,7 +3443,7 @@ object Main extends App {
     subject.notify("Event 1")
     subject.notify("Event 2")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Observer
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Observer
 trait Observer:
     def update(msg: String): Unit
 
@@ -3462,7 +3470,7 @@ class ConcreteObserver(name: String) extends Observer:
     
     subject.notify("Event 1")
     subject.notify("Event 2")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IObserver {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IObserver {
     update(msg: string): void;
 }
 
@@ -3497,7 +3505,7 @@ subject.attach(obs2);
 
 subject.notify("Event 1");
 subject.notify("Event 2");
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Observer using std::function callbacks
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_observer_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Observer using std::function callbacks
 // Removes the Observer interface; any callable (lambda, free function, member) subscribes directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3527,16 +3535,16 @@ int main() {
 
     // Lambdas subscribe directly – no Observer subclass needed
     subject.subscribe([](const std::string& msg) {
-        std::cout &lt;&lt; "Observer1 received: " &lt;&lt; msg &lt;&lt; '\n';
+        std::cout &lt;&lt; "Observer1 received: " &lt;&lt; msg &lt;&lt; '/n';
     });
     subject.subscribe([](const std::string& msg) {
-        std::cout &lt;&lt; "Observer2 received: " &lt;&lt; msg &lt;&lt; '\n';
+        std::cout &lt;&lt; "Observer2 received: " &lt;&lt; msg &lt;&lt; '/n';
     });
 
     subject.notify("Event 1");
     subject.notify("Event 2");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3570,7 +3578,7 @@ func main() {
 	subject.Notify("Event 1")
 	subject.Notify("Event 2")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Observer using function callbacks
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Observer using function callbacks
 # No Observer ABC or subclasses - any callable with the right signature subscribes directly.
 from typing import Callable
 
@@ -3593,7 +3601,7 @@ subject.subscribe(lambda msg: print(f"Observer2 received: {msg}"))
 
 subject.notify("Event 1")
 subject.notify("Event 2")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Observer using typed function callbacks
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Observer using typed function callbacks
 // No Observer interface or class hierarchy - listeners are plain typed callbacks.
 
 type Listener&lt;T&gt; = (event: T) =&gt; void;
@@ -3621,13 +3629,13 @@ subject.notify("Event 2");
             </div>
         </div>
         
-        <div class="topic-section  " id="state">
+        <div class="topic-section text_style  " id="state">
             <div class="topic-header" onclick="app.toggleTopic('state')">
                 <h3>State</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_state"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class State {
@@ -3639,21 +3647,21 @@ public:
 class StartState : public State {
 public:
     void handle() override {
-        std::cout &lt;&lt; "Entering start state\n";
+        std::cout &lt;&lt; "Entering start state/n";
     }
 };
 
 class RunningState : public State {
 public:
     void handle() override {
-        std::cout &lt;&lt; "Running state active\n";
+        std::cout &lt;&lt; "Running state active/n";
     }
 };
 
 class StoppedState : public State {
 public:
     void handle() override {
-        std::cout &lt;&lt; "Stopped state active\n";
+        std::cout &lt;&lt; "Stopped state active/n";
     }
 };
 
@@ -3677,7 +3685,7 @@ int main() {
     ctx.setState(std::make_shared&lt;StoppedState&gt;());
     ctx.request();
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3727,7 +3735,7 @@ func main() {
 	ctx.SetState(&StoppedState{})
 	ctx.Request()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class State(ABC):
     @abstractmethod
@@ -3766,7 +3774,7 @@ ctx.request()
 
 ctx.set_state(StoppedState())
 ctx.request()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// State
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// State
 trait State {
     def handle(): Unit
 }
@@ -3804,7 +3812,7 @@ object Main extends App {
     ctx.setState(new StoppedState())
     ctx.request()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala State using sealed trait ADT + pattern matching (Scala 3)
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala State using sealed trait ADT + pattern matching (Scala 3)
 // No State trait or subclass hierarchy - states are plain ADT cases.
 // Transitions are just variable reassignments.
 
@@ -3827,7 +3835,7 @@ def handle(state: State): Unit = state match
 
   state = StoppedState
   handle(state)
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IState {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IState {
     handle(): void;
 }
 
@@ -3871,15 +3879,15 @@ ctx.request();
 
 ctx.setState(new StoppedState());
 ctx.request();
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ State using std::variant
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_state_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ State using std::variant
 // States are plain value types; transitions are just assignments.
 // No virtual dispatch, no heap allocation, exhaustive state handling enforced by the compiler.
 #include &lt;iostream&gt;
 #include &lt;variant&gt;
 
-struct StartState   { void handle() const { std::cout &lt;&lt; "Entering start state\n"; } };
-struct RunningState { void handle() const { std::cout &lt;&lt; "Running state active\n"; } };
-struct StoppedState { void handle() const { std::cout &lt;&lt; "Stopped state active\n"; } };
+struct StartState   { void handle() const { std::cout &lt;&lt; "Entering start state/n"; } };
+struct RunningState { void handle() const { std::cout &lt;&lt; "Running state active/n"; } };
+struct StoppedState { void handle() const { std::cout &lt;&lt; "Stopped state active/n"; } };
 
 using State = std::variant&lt;StartState, RunningState, StoppedState&gt;;
 
@@ -3897,7 +3905,7 @@ int main() {
     state = StoppedState{};
     handle(state);
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python State using structural pattern matching (Python 3.10+)
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python State using structural pattern matching (Python 3.10+)
 # No State ABC or subclass hierarchy - states are plain dataclasses.
 from __future__ import annotations
 from dataclasses import dataclass
@@ -3933,7 +3941,7 @@ handle(state)
 
 state = StoppedState()
 handle(state)
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript State using discriminated union + exhaustive switch
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript State using discriminated union + exhaustive switch
 // No IState interface or class hierarchy - states are plain tagged objects.
 
 type StartState   = { kind: "start" };
@@ -3965,13 +3973,13 @@ handle(state);
             </div>
         </div>
         
-        <div class="topic-section  " id="strategy">
+        <div class="topic-section text_style  " id="strategy">
             <div class="topic-header" onclick="app.toggleTopic('strategy')">
                 <h3>Strategy</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_strategy"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Strategy {
@@ -4021,7 +4029,7 @@ int main() {
     ctx.setStrategy(std::make_shared&lt;MultiplyStrategy&gt;());
     std::cout &lt;&lt; "Multiply: " &lt;&lt; ctx.executeStrategy(5, 3) &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4063,15 +4071,15 @@ func main() {
 	ctx := &Context{}
 
 	ctx.SetStrategy(&AddStrategy{})
-	fmt.Printf("Add: %d\n", ctx.ExecuteStrategy(5, 3))
+	fmt.Printf("Add: %d/n", ctx.ExecuteStrategy(5, 3))
 
 	ctx.SetStrategy(&SubtractStrategy{})
-	fmt.Printf("Subtract: %d\n", ctx.ExecuteStrategy(5, 3))
+	fmt.Printf("Subtract: %d/n", ctx.ExecuteStrategy(5, 3))
 
 	ctx.SetStrategy(&MultiplyStrategy{})
-	fmt.Printf("Multiply: %d\n", ctx.ExecuteStrategy(5, 3))
+	fmt.Printf("Multiply: %d/n", ctx.ExecuteStrategy(5, 3))
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Strategy(ABC):
     @abstractmethod
@@ -4110,7 +4118,7 @@ print(f"Subtract: {ctx.execute_strategy(5, 3)}")
 
 ctx.set_strategy(MultiplyStrategy())
 print(f"Multiply: {ctx.execute_strategy(5, 3)}")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Strategy
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Strategy
 trait Strategy {
     def execute(a: Int, b: Int): Int
 }
@@ -4148,7 +4156,7 @@ object Main extends App {
     ctx.setStrategy(new MultiplyStrategy())
     println(s"Multiply: ${ctx.executeStrategy(5, 3)}")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala Strategy using function values and Scala 3 type classes (given/using)
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Strategy using function values and Scala 3 type classes (given/using)
 // No Strategy trait or subclasses - strategies are plain function values.
 
 // Approach 1: function value (simplest)
@@ -4179,7 +4187,7 @@ def calculate(a: Int, b: Int)(using s: Strategy): Int = s.execute(a, b)
   // Type class approach
   println(s"Given add: ${calculate(5, 3)(using addStrategy)}")
   println(s"Given sub: ${calculate(5, 3)(using subtractStrategy)}")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IStrategy {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IStrategy {
     execute(a: number, b: number): number;
 }
 
@@ -4223,7 +4231,7 @@ console.log(`Subtract: ${ctx.executeStrategy(5, 3)}`);
 
 ctx.setStrategy(new MultiplyStrategy());
 console.log(`Multiply: ${ctx.executeStrategy(5, 3)}`);
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_strategy_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
 // No virtual dispatch, no heap allocation for small strategies.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -4262,18 +4270,18 @@ int main() {
     Calculator&lt;Subtract&gt; subtractor;
     Calculator&lt;Multiply&gt; multiplier;
 
-    std::cout &lt;&lt; "Add: "      &lt;&lt; adder.execute(5, 3)      &lt;&lt; '\n';
-    std::cout &lt;&lt; "Subtract: " &lt;&lt; subtractor.execute(5, 3) &lt;&lt; '\n';
-    std::cout &lt;&lt; "Multiply: " &lt;&lt; multiplier.execute(5, 3) &lt;&lt; '\n';
+    std::cout &lt;&lt; "Add: "      &lt;&lt; adder.execute(5, 3)      &lt;&lt; '/n';
+    std::cout &lt;&lt; "Subtract: " &lt;&lt; subtractor.execute(5, 3) &lt;&lt; '/n';
+    std::cout &lt;&lt; "Multiply: " &lt;&lt; multiplier.execute(5, 3) &lt;&lt; '/n';
 
     // Runtime selection via lambda – swap strategy without recompiling
     DynamicCalculator calc([](int a, int b) { return a + b; });
-    std::cout &lt;&lt; "Dynamic add: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '\n';
+    std::cout &lt;&lt; "Dynamic add: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '/n';
 
     calc = DynamicCalculator([](int a, int b) { return a * b; });
-    std::cout &lt;&lt; "Dynamic mul: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '\n';
+    std::cout &lt;&lt; "Dynamic mul: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4300,7 +4308,7 @@ func main() {
 	calc.strategy = func(a, b int) int { return a * b }
 	fmt.Println("Multiply:", calc.Execute(5, 3))
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Strategy using plain callables
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Strategy using plain callables
 # No Strategy ABC or subclasses - any callable with the right signature works.
 from typing import Callable
 
@@ -4322,7 +4330,7 @@ print(f"Subtract: {calc.execute(5, 3)}")
 
 calc.strategy = lambda a, b: a * b
 print(f"Multiply: {calc.execute(5, 3)}")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Strategy using function types
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Strategy using function types
 // No Strategy interface or class hierarchy - strategies are plain function values.
 
 type Strategy = (a: number, b: number) =&gt; number;
@@ -4347,13 +4355,13 @@ console.log("Multiply:", calc.execute(5, 3));
             </div>
         </div>
         
-        <div class="topic-section  " id="template_method">
+        <div class="topic-section text_style  " id="template_method">
             <div class="topic-header" onclick="app.toggleTopic('template_method')">
                 <h3>Template Method</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_template_method"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 class DataProcessor {
 public:
@@ -4374,30 +4382,30 @@ protected:
 class CSVProcessor : public DataProcessor {
 protected:
     void readData() override {
-        std::cout &lt;&lt; "Reading CSV data\n";
+        std::cout &lt;&lt; "Reading CSV data/n";
     }
     
     void parseData() override {
-        std::cout &lt;&lt; "Parsing CSV\n";
+        std::cout &lt;&lt; "Parsing CSV/n";
     }
     
     void writeData() override {
-        std::cout &lt;&lt; "Writing processed CSV\n";
+        std::cout &lt;&lt; "Writing processed CSV/n";
     }
 };
 
 class JSONProcessor : public DataProcessor {
 protected:
     void readData() override {
-        std::cout &lt;&lt; "Reading JSON data\n";
+        std::cout &lt;&lt; "Reading JSON data/n";
     }
     
     void parseData() override {
-        std::cout &lt;&lt; "Parsing JSON\n";
+        std::cout &lt;&lt; "Parsing JSON/n";
     }
     
     void writeData() override {
-        std::cout &lt;&lt; "Writing processed JSON\n";
+        std::cout &lt;&lt; "Writing processed JSON/n";
     }
 };
 
@@ -4408,7 +4416,7 @@ int main() {
     JSONProcessor json;
     json.process();
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4470,7 +4478,7 @@ func main() {
 	json.processor = json
 	json.Process()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class DataProcessor(ABC):
     def process(self) -&gt; None:
@@ -4515,7 +4523,7 @@ csv.process()
 
 json = JSONProcessor()
 json.process()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Template Method
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Template Method
 abstract class DataProcessor {
     final def process(): Unit = {
         readData()
@@ -4549,7 +4557,7 @@ object Main extends App {
     val json: DataProcessor = new JSONProcessor()
     json.process()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Template Method
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Template Method
 abstract class DataProcessor {
     final def process(): Unit = {
         readData()
@@ -4580,7 +4588,7 @@ class JSONProcessor extends DataProcessor:
     
     val json: DataProcessor = new JSONProcessor()
     json.process()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>abstract class DataProcessor {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">abstract class DataProcessor {
     process(): void {
         this.readData();
         this.parseData();
@@ -4625,7 +4633,7 @@ csv.process();
 
 const json = new JSONProcessor();
 json.process();
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_template_method_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
 // Compile-time polymorphism: no virtual dispatch, no vtable, concrete steps inlined.
 #include &lt;iostream&gt;
 
@@ -4644,16 +4652,16 @@ private:
 
 class CSVProcessor : public DataProcessor&lt;CSVProcessor&gt; {
 public:
-    void readData()  const { std::cout &lt;&lt; "Reading CSV data\n"; }
-    void parseData() const { std::cout &lt;&lt; "Parsing CSV\n"; }
-    void writeData() const { std::cout &lt;&lt; "Writing processed CSV\n"; }
+    void readData()  const { std::cout &lt;&lt; "Reading CSV data/n"; }
+    void parseData() const { std::cout &lt;&lt; "Parsing CSV/n"; }
+    void writeData() const { std::cout &lt;&lt; "Writing processed CSV/n"; }
 };
 
 class JSONProcessor : public DataProcessor&lt;JSONProcessor&gt; {
 public:
-    void readData()  const { std::cout &lt;&lt; "Reading JSON data\n"; }
-    void parseData() const { std::cout &lt;&lt; "Parsing JSON\n"; }
-    void writeData() const { std::cout &lt;&lt; "Writing processed JSON\n"; }
+    void readData()  const { std::cout &lt;&lt; "Reading JSON data/n"; }
+    void parseData() const { std::cout &lt;&lt; "Parsing JSON/n"; }
+    void writeData() const { std::cout &lt;&lt; "Writing processed JSON/n"; }
 };
 
 int main() {
@@ -4663,7 +4671,7 @@ int main() {
     JSONProcessor json;
     json.process();
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Template Method using higher-order functions
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Template Method using higher-order functions
 # No abstract base class - the template is a plain function that takes callables.
 from typing import Callable
 
@@ -4692,13 +4700,13 @@ process_data(json_read, json_parse, json_write)
             </div>
         </div>
         
-        <div class="topic-section  " id="visitor">
+        <div class="topic-section text_style  " id="visitor">
             <div class="topic-header" onclick="app.toggleTopic('visitor')">
                 <h3>Visitor</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_visitor"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Visitor;
@@ -4712,13 +4720,13 @@ public:
 class Circle : public Element {
 public:
     void accept(Visitor* visitor) override;
-    void draw() { std::cout &lt;&lt; "Drawing circle\n"; }
+    void draw() { std::cout &lt;&lt; "Drawing circle/n"; }
 };
 
 class Rectangle : public Element {
 public:
     void accept(Visitor* visitor) override;
-    void draw() { std::cout &lt;&lt; "Drawing rectangle\n"; }
+    void draw() { std::cout &lt;&lt; "Drawing rectangle/n"; }
 };
 
 class Visitor {
@@ -4755,7 +4763,7 @@ int main() {
     circle-&gt;accept(visitor.get());
     rectangle-&gt;accept(visitor.get());
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4806,7 +4814,7 @@ func main() {
 	circle.Accept(visitor)
 	rectangle.Accept(visitor)
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Visitor(ABC):
     @abstractmethod
@@ -4849,7 +4857,7 @@ visitor = DrawVisitor()
 
 circle.accept(visitor)
 rectangle.accept(visitor)
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Visitor
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Visitor
 trait Visitor {
     def visitCircle(c: Circle): Unit
     def visitRectangle(r: Rectangle): Unit
@@ -4893,7 +4901,7 @@ object Main extends App {
     circle.accept(visitor)
     rectangle.accept(visitor)
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Modern Scala Visitor using sealed trait ADT + pattern matching (Scala 3)
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Visitor using sealed trait ADT + pattern matching (Scala 3)
 // No Visitor trait, no accept/visit - shapes are plain ADT cases.
 // The compiler enforces exhaustiveness at compile time.
 
@@ -4915,7 +4923,7 @@ def describe(shape: Shape): String = shape match
   val shapes = List(Circle(), Rectangle())
   shapes.foreach(draw)
   shapes.map(describe).foreach(println)
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IVisitor {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IVisitor {
     visitCircle(c: Circle): void;
     visitRectangle(r: Rectangle): void;
 }
@@ -4960,17 +4968,17 @@ const visitor = new DrawVisitor();
 
 circle.accept(visitor);
 rectangle.accept(visitor);
-</code></pre></div></div><h1  class="">Modern variant of the pattern</h1><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>// Modern C++ Visitor using std::variant + std::visit
+</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_visitor_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Visitor using std::variant + std::visit
 // Eliminates double-dispatch ceremony; shapes are plain value types with no base class.
 #include &lt;iostream&gt;
 #include &lt;variant&gt;
 
 struct Circle {
-    void draw() const { std::cout &lt;&lt; "Drawing circle\n"; }
+    void draw() const { std::cout &lt;&lt; "Drawing circle/n"; }
 };
 
 struct Rectangle {
-    void draw() const { std::cout &lt;&lt; "Drawing rectangle\n"; }
+    void draw() const { std::cout &lt;&lt; "Drawing rectangle/n"; }
 };
 
 using Shape = std::variant&lt;Circle, Rectangle&gt;;
@@ -4999,13 +5007,13 @@ int main() {
 
     // Inline overload pattern – add a second "operation" without touching Shape types
     auto describe = overload{
-        [](const Circle&)    { std::cout &lt;&lt; "it's a circle\n"; },
-        [](const Rectangle&) { std::cout &lt;&lt; "it's a rectangle\n"; },
+        [](const Circle&)    { std::cout &lt;&lt; "it's a circle/n"; },
+        [](const Rectangle&) { std::cout &lt;&lt; "it's a rectangle/n"; },
     };
     std::visit(describe, circle);
     std::visit(describe, rectangle);
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5052,7 +5060,7 @@ func main() {
 	fmt.Println(describe(Circle{}))
 	fmt.Println(describe(Rectangle{}))
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code># Modern Python Visitor using functools.singledispatch
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Visitor using functools.singledispatch
 # No accept/visit ceremony - shapes are plain dataclasses, operations are functions.
 from __future__ import annotations
 from dataclasses import dataclass
@@ -5096,7 +5104,7 @@ draw(Circle())
 draw(Rectangle())
 print(describe(Circle()))
 print(describe(Rectangle()))
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>// Modern TypeScript Visitor using discriminated unions + exhaustive switch
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Visitor using discriminated unions + exhaustive switch
 // No Visitor interface or accept/visit ceremony - shapes are plain data objects.
 
 interface Circle    { readonly kind: "circle" }
@@ -5138,13 +5146,13 @@ console.log(describe(rectangle));
             </div>
         </div>
         
-        <div class="topic-section  " id="interpreter">
+        <div class="topic-section text_style  " id="interpreter">
             <div class="topic-header" onclick="app.toggleTopic('interpreter')">
                 <h3>Interpreter</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_interpreter"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;memory&gt;
 
@@ -5197,7 +5205,7 @@ int main() {
     std::cout &lt;&lt; (expr-&gt;interpret("cat") ? "true" : "false") &lt;&lt; std::endl;
     std::cout &lt;&lt; (expr-&gt;interpret("bird") ? "true" : "false") &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -5240,7 +5248,7 @@ func main() {
 	fmt.Println(expr.Interpret("cat"))
 	fmt.Println(expr.Interpret("bird"))
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Expression(ABC):
     @abstractmethod
@@ -5276,7 +5284,7 @@ expr = OrExpression(c1, c2)
 
 print(expr.interpret("cat"))
 print(expr.interpret("bird"))
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Interpreter
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Interpreter
 trait Expression {
     def interpret(ctx: String): Boolean
 }
@@ -5301,7 +5309,7 @@ object Main extends App {
     println(expr.interpret("cat"))
     println(expr.interpret("bird"))
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Interpreter
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Interpreter
 trait Expression:
     def interpret(ctx: String): Boolean
 
@@ -5321,7 +5329,7 @@ class AndExpression(expr1: Expression, expr2: Expression) extends Expression:
     
     println(expr.interpret("cat"))
     println(expr.interpret("bird"))
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface Expression {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Expression {
     interpret(ctx: string): boolean;
 }
 
@@ -5359,13 +5367,13 @@ console.log(expr.interpret("bird"));
             </div>
         </div>
         
-        <div class="topic-section  " id="iterator">
+        <div class="topic-section text_style  " id="iterator">
             <div class="topic-header" onclick="app.toggleTopic('iterator')">
                 <h3>Iterator</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_iterator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -5425,7 +5433,7 @@ int main() {
     }
     std::cout &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5477,7 +5485,7 @@ func main() {
 	}
 	fmt.Println()
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 from typing import Any, Iterator as PyIterator
 
 class Iterator(ABC):
@@ -5526,7 +5534,7 @@ it = collection.create_iterator()
 while it.has_next():
     print(it.next(), end=" ")
 print()
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Iterator
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Iterator
 trait CustomIterator[T] {
     def hasNext: Boolean
     def next(): T
@@ -5561,7 +5569,7 @@ object Main extends App {
     }
     println()
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Iterator
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Iterator
 trait CustomIterator[T]:
     def hasNext: Boolean
     def next(): T
@@ -5590,7 +5598,7 @@ class ArrayCollection[T](items: Vector[T]) extends CustomCollection[T]:
         print(it.next() + " ")
     }
     println()
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IIterator {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IIterator {
     hasNext(): boolean;
     next(): number;
 }
@@ -5640,13 +5648,13 @@ console.log(result);
             </div>
         </div>
         
-        <div class="topic-section  " id="mediator">
+        <div class="topic-section text_style  " id="mediator">
             <div class="topic-header" onclick="app.toggleTopic('mediator')">
                 <h3>Mediator</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_mediator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Mediator {
@@ -5708,7 +5716,7 @@ int main() {
     u1-&gt;send("Hello!");
     u2-&gt;send("Hi there!");
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5722,12 +5730,12 @@ type User struct {
 }
 
 func (u *User) Send(msg string) {
-	fmt.Printf("%s sends: %s\n", u.name, msg)
+	fmt.Printf("%s sends: %s/n", u.name, msg)
 	u.mediator.Notify(u, msg)
 }
 
 func (u *User) Receive(msg string) {
-	fmt.Printf("%s receives: %s\n", u.name, msg)
+	fmt.Printf("%s receives: %s/n", u.name, msg)
 }
 
 type ChatRoom struct {
@@ -5758,7 +5766,7 @@ func main() {
 	u1.Send("Hello!")
 	u2.Send("Hi there!")
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Mediator(ABC):
     @abstractmethod
@@ -5800,7 +5808,7 @@ room.add_users(u1, u2)
 
 u1.send("Hello!")
 u2.send("Hi there!")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Mediator
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Mediator
 trait ChatMediator {
     def sendMessage(sender: ChatUser, msg: String): Unit
 }
@@ -5844,7 +5852,7 @@ object Main extends App {
     u1.send("Hello!")
     u2.send("Hi there!")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Mediator
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Mediator
 trait ChatMediator:
     def sendMessage(sender: ChatUser, msg: String): Unit
 
@@ -5880,7 +5888,7 @@ class ChatUser(name: String, mediator: ChatMediator):
     
     u1.send("Hello!")
     u2.send("Hi there!")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>interface IMediator {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IMediator {
     notify(sender: User, event: string): void;
 }
 
@@ -5927,13 +5935,13 @@ u2.send("Hi there!");
             </div>
         </div>
         
-        <div class="topic-section  " id="memento">
+        <div class="topic-section text_style  " id="memento">
             <div class="topic-header" onclick="app.toggleTopic('memento')">
                 <h3>Memento</h3>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="comparison-grid"><div class="code-card" data-lang="cpp"><span class="lang-tag">CPP</span><pre><code>#include &lt;iostream&gt;
+                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_memento"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
@@ -5994,7 +6002,7 @@ int main() {
     originator.restoreState(caretaker.restore(0));
     std::cout &lt;&lt; "Restored: " &lt;&lt; originator.getState() &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-card" data-lang="go"><span class="lang-tag">GO</span><pre><code>package main
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -6052,12 +6060,12 @@ func main() {
 	caretaker.Save(origin.SaveState())
 
 	origin.SetState("State 3")
-	fmt.Printf("Current: %s\n", origin.GetState())
+	fmt.Printf("Current: %s/n", origin.GetState())
 
 	origin.RestoreState(caretaker.Restore(0))
-	fmt.Printf("Restored: %s\n", origin.GetState())
+	fmt.Printf("Restored: %s/n", origin.GetState())
 }
-</code></pre></div><div class="code-card" data-lang="python"><span class="lang-tag">PYTHON</span><pre><code>class Memento:
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Memento:
     def __init__(self, state: str):
         self.state = state
     
@@ -6106,7 +6114,7 @@ print(f"Current: {originator.get_state()}")
 
 originator.restore_state(caretaker.restore(0))
 print(f"Restored: {originator.get_state()}")
-</code></pre></div><div class="code-card" data-lang="scala2"><span class="lang-tag">SCALA2</span><pre><code>// Memento
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Memento
 case class Memento(state: String)
 
 class Originator(private var state: String) {
@@ -6151,7 +6159,7 @@ object Main extends App {
     caretaker.restore(0).foreach(originator.restoreState)
     println(s"Restored: ${originator.getState}")
 }
-</code></pre></div><div class="code-card" data-lang="scala3"><span class="lang-tag">SCALA3</span><pre><code>// Memento
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Memento
 case class Memento(state: String)
 
 class Originator(private var state: String):
@@ -6189,7 +6197,7 @@ class Caretaker:
     
     caretaker.restore(0).foreach(originator.restoreState)
     println(s"Restored: ${originator.getState}")
-</code></pre></div><div class="code-card" data-lang="typescript"><span class="lang-tag">TYPESCRIPT</span><pre><code>class Memento {
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Memento {
     constructor(private state: string) {}
     
     getState(): string {
@@ -6259,27 +6267,29 @@ if (restored) {
             </div>
         </main>
 
-        <!-- Sidebar Right (Topic Nav) -->
-        <aside class="sidebar-right">
-            <div class="edge-toggle toggle-r" onclick="app.toggleSidebar('r')">▶</div>
-            <div class="sidebar-inner">
-                <div class="topic-sidebar-header">
-                    <div class="header-row">
-                        <span class="view-mode-label">View mode:</span>
-                        <div class="view-mode-control"><button id="viewModeToggle" class="view-mode-btn">Focused</button></div>
-                        <span></span>
-                    </div>
-                    <div class="header-row header-row-2">
-                        <span class="sidebar-label">Topics</span>
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
                     </div>
                 </div>
-                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-group" data-topic-id="creational_patterns"><span onclick="app.focusTopic('creational_patterns')">Creational patterns</span><ul class="nav-sublist"><li data-topic-id="abstract_factory" onclick="app.focusTopic('abstract_factory')">Abstract Factory</li><li data-topic-id="builder" onclick="app.focusTopic('builder')">Builder</li><li data-topic-id="factory_method" onclick="app.focusTopic('factory_method')">Factory Method</li><li data-topic-id="prototype" onclick="app.focusTopic('prototype')">Prototype</li><li data-topic-id="singleton" onclick="app.focusTopic('singleton')">Singleton</li><li data-topic-id="object_pool" onclick="app.focusTopic('object_pool')">Object Pool</li><li data-topic-id="lazy_initialization" onclick="app.focusTopic('lazy_initialization')">Lazy Initialization</li><li data-topic-id="multiton" onclick="app.focusTopic('multiton')">Multiton</li></ul></li><li class="toc-group" data-topic-id="structural_patterns"><span onclick="app.focusTopic('structural_patterns')">Structural patterns</span><ul class="nav-sublist"><li data-topic-id="adapter" onclick="app.focusTopic('adapter')">Adapter</li><li data-topic-id="bridge" onclick="app.focusTopic('bridge')">Bridge</li><li data-topic-id="composite" onclick="app.focusTopic('composite')">Composite</li><li data-topic-id="decorator" onclick="app.focusTopic('decorator')">Decorator</li><li data-topic-id="facade" onclick="app.focusTopic('facade')">Facade</li><li data-topic-id="flyweight" onclick="app.focusTopic('flyweight')">Flyweight</li><li data-topic-id="proxy" onclick="app.focusTopic('proxy')">Proxy</li><li data-topic-id="data_mapper" onclick="app.focusTopic('data_mapper')">Data Mapper</li><li data-topic-id="object_adapter" onclick="app.focusTopic('object_adapter')">Object Adapter</li><li data-topic-id="class_adapter" onclick="app.focusTopic('class_adapter')">Class Adapter</li></ul></li><li class="toc-group" data-topic-id="behavioral_patterns"><span onclick="app.focusTopic('behavioral_patterns')">Behavioral patterns</span><ul class="nav-sublist"><li data-topic-id="chain_of_responsibility" onclick="app.focusTopic('chain_of_responsibility')">Chain Of Responsibility</li><li data-topic-id="command" onclick="app.focusTopic('command')">Command</li><li data-topic-id="observer" onclick="app.focusTopic('observer')">Observer</li><li data-topic-id="state" onclick="app.focusTopic('state')">State</li><li data-topic-id="strategy" onclick="app.focusTopic('strategy')">Strategy</li><li data-topic-id="template_method" onclick="app.focusTopic('template_method')">Template Method</li><li data-topic-id="visitor" onclick="app.focusTopic('visitor')">Visitor</li><li data-topic-id="interpreter" onclick="app.focusTopic('interpreter')">Interpreter</li><li data-topic-id="iterator" onclick="app.focusTopic('iterator')">Iterator</li><li data-topic-id="mediator" onclick="app.focusTopic('mediator')">Mediator</li><li data-topic-id="memento" onclick="app.focusTopic('memento')">Memento</li></ul></li></ul></div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="creational_patterns" data-depth="1"><span onclick="app.focusTopic('creational_patterns')">Creational patterns</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="abstract_factory" data-depth="2"><span onclick="app.focusTopic('abstract_factory')">Abstract Factory</span></li><li class="toc-item depth-2" data-topic-id="builder" data-depth="2"><span onclick="app.focusTopic('builder')">Builder</span></li><li class="toc-item depth-2" data-topic-id="factory_method" data-depth="2"><span onclick="app.focusTopic('factory_method')">Factory Method</span></li><li class="toc-item depth-2" data-topic-id="prototype" data-depth="2"><span onclick="app.focusTopic('prototype')">Prototype</span></li><li class="toc-item depth-2" data-topic-id="singleton" data-depth="2"><span onclick="app.focusTopic('singleton')">Singleton</span></li><li class="toc-item depth-2" data-topic-id="object_pool" data-depth="2"><span onclick="app.focusTopic('object_pool')">Object Pool</span></li><li class="toc-item depth-2" data-topic-id="lazy_initialization" data-depth="2"><span onclick="app.focusTopic('lazy_initialization')">Lazy Initialization</span></li><li class="toc-item depth-2" data-topic-id="multiton" data-depth="2"><span onclick="app.focusTopic('multiton')">Multiton</span></li></ul></li><li class="toc-item depth-1" data-topic-id="structural_patterns" data-depth="1"><span onclick="app.focusTopic('structural_patterns')">Structural patterns</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="adapter" data-depth="2"><span onclick="app.focusTopic('adapter')">Adapter</span></li><li class="toc-item depth-2" data-topic-id="bridge" data-depth="2"><span onclick="app.focusTopic('bridge')">Bridge</span></li><li class="toc-item depth-2" data-topic-id="composite" data-depth="2"><span onclick="app.focusTopic('composite')">Composite</span></li><li class="toc-item depth-2" data-topic-id="decorator" data-depth="2"><span onclick="app.focusTopic('decorator')">Decorator</span></li><li class="toc-item depth-2" data-topic-id="facade" data-depth="2"><span onclick="app.focusTopic('facade')">Facade</span></li><li class="toc-item depth-2" data-topic-id="flyweight" data-depth="2"><span onclick="app.focusTopic('flyweight')">Flyweight</span></li><li class="toc-item depth-2" data-topic-id="proxy" data-depth="2"><span onclick="app.focusTopic('proxy')">Proxy</span></li><li class="toc-item depth-2" data-topic-id="data_mapper" data-depth="2"><span onclick="app.focusTopic('data_mapper')">Data Mapper</span></li><li class="toc-item depth-2" data-topic-id="object_adapter" data-depth="2"><span onclick="app.focusTopic('object_adapter')">Object Adapter</span></li><li class="toc-item depth-2" data-topic-id="class_adapter" data-depth="2"><span onclick="app.focusTopic('class_adapter')">Class Adapter</span></li></ul></li><li class="toc-item depth-1" data-topic-id="behavioral_patterns" data-depth="1"><span onclick="app.focusTopic('behavioral_patterns')">Behavioral patterns</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="chain_of_responsibility" data-depth="2"><span onclick="app.focusTopic('chain_of_responsibility')">Chain Of Responsibility</span></li><li class="toc-item depth-2" data-topic-id="command" data-depth="2"><span onclick="app.focusTopic('command')">Command</span></li><li class="toc-item depth-2" data-topic-id="observer" data-depth="2"><span onclick="app.focusTopic('observer')">Observer</span></li><li class="toc-item depth-2" data-topic-id="state" data-depth="2"><span onclick="app.focusTopic('state')">State</span></li><li class="toc-item depth-2" data-topic-id="strategy" data-depth="2"><span onclick="app.focusTopic('strategy')">Strategy</span></li><li class="toc-item depth-2" data-topic-id="template_method" data-depth="2"><span onclick="app.focusTopic('template_method')">Template Method</span></li><li class="toc-item depth-2" data-topic-id="visitor" data-depth="2"><span onclick="app.focusTopic('visitor')">Visitor</span></li><li class="toc-item depth-2" data-topic-id="interpreter" data-depth="2"><span onclick="app.focusTopic('interpreter')">Interpreter</span></li><li class="toc-item depth-2" data-topic-id="iterator" data-depth="2"><span onclick="app.focusTopic('iterator')">Iterator</span></li><li class="toc-item depth-2" data-topic-id="mediator" data-depth="2"><span onclick="app.focusTopic('mediator')">Mediator</span></li><li class="toc-item depth-2" data-topic-id="memento" data-depth="2"><span onclick="app.focusTopic('memento')">Memento</span></li></ul></li></ul></div>
             </div>
         </aside>
-
     </div>
 
-    <!-- Core Runtime Logic -->
-    <script type="module" src="../assets/js/main.js"></script>
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
 </body>
 </html>
