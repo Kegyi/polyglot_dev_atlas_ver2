@@ -1,0 +1,3 @@
+object Factorial:
+  def fact(n: Int): BigInt = if n <= 1 then 1 else (2 to n).map(BigInt(_)).product
+  @main def run(n: Int = 5) = println(fact(n))

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>principles</title>
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases or any collection open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-atlas  ">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
+            </div>
+            <div class="nav-center">
+                <div class="toggle-group view-toggles">
+                    <button id="view-single-btn" class="toggle">Single</button>
+                    <button id="view-double-btn" class="toggle">Double</button>
+                </div>
+                <button id="swap-btn" class="icon-btn">⇄</button>
+            </div>
+            <div class="nav-right">
+                <!-- Phase 3: Global Geometric Style Picker -->
+                <div class="style-picker">
+                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                </div>
+
+                <div class="palette-picker">
+                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Dev Atlas</span></a></li>
+<li class=""><a href="../atlas/design_patterns.html">Design Patterns</a></li>
+<li class="active"><a href="../atlas/principles.html">principles</a></li>
+<li class=""><a href="../atlas/workflow.html">Workflow</a></li>
+<li class="nav-item nav-collection nav-keywords"><a href="#" onclick="app.openCollection('atlas', 'keywords');return false;">Keywords <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-atlas-keywords" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'keywords');return false;">← Back</a></li><li class=""><a href="../atlas/keywords/index.html">Keywords</a></li><li class=""><a href="../atlas/keywords/cpp.html">C++ Keywords</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <h2  class="">Coding Principles</h2><p  class="">This page outlines key coding principles and best practices that are essential for writing clean, efficient, and maintainable code across different programming languages.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="single_responsibility">
+            <div class="topic-header" onclick="app.toggleTopic('single_responsibility')">
+                <h2>Single Responsibility Principle</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">A class or module should have only one reason to change, meaning it should have only one responsibility or job.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="open_closed">
+            <div class="topic-header" onclick="app.toggleTopic('open_closed')">
+                <h2>Open/Closed Principle</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Software entities (classes, modules, functions) should be open for extension but closed for modification.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="liskov_substitution">
+            <div class="topic-header" onclick="app.toggleTopic('liskov_substitution')">
+                <h2>Liskov Substitution Principle</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="interface_segregation">
+            <div class="topic-header" onclick="app.toggleTopic('interface_segregation')">
+                <h2>Interface Segregation Principle</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Clients should not be forced to depend on interfaces they do not use. Instead, many specific interfaces are better than one general interface.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="dependency_inversion">
+            <div class="topic-header" onclick="app.toggleTopic('dependency_inversion')">
+                <h2>Dependency Inversion Principle</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.</p>
+            </div>
+        </div>
+        </div>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="single_responsibility" data-depth="1"><span onclick="app.focusTopic('single_responsibility')">Single Responsibility Principle</span></li><li class="toc-item depth-1" data-topic-id="open_closed" data-depth="1"><span onclick="app.focusTopic('open_closed')">Open/Closed Principle</span></li><li class="toc-item depth-1" data-topic-id="liskov_substitution" data-depth="1"><span onclick="app.focusTopic('liskov_substitution')">Liskov Substitution Principle</span></li><li class="toc-item depth-1" data-topic-id="interface_segregation" data-depth="1"><span onclick="app.focusTopic('interface_segregation')">Interface Segregation Principle</span></li><li class="toc-item depth-1" data-topic-id="dependency_inversion" data-depth="1"><span onclick="app.focusTopic('dependency_inversion')">Dependency Inversion Principle</span></li></ul></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
+</body>
+</html>

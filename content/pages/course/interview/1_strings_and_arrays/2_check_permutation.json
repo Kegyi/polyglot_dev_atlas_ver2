@@ -1,0 +1,58 @@
+{
+    "title": "Check Permutation",
+    "description": "Given two strings, determine if one is a permutation of the other.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Check Permutation"
+        },
+        {
+            "type": "text",
+            "text": "Given two strings, determine if one is a permutation of the other."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given two strings, write a method to decide if one is a permutation of the other. A permutation is a rearrangement of letters. The string \"abc\" has the following permutations: \"abc\", \"acb\", \"bac\", \"bca\", \"cab\", and \"cba\"."
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "\"abc\" and \"bca\" -> true (permutations of each other)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"hello\" and \"oellh\" -> true (permutations of each other)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"test\" and \"tseta\" -> false (not permutations due to different character counts)"
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_01_02_check_permutation"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

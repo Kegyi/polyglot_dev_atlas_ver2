@@ -228,6 +228,192 @@ const app = {
         } catch (e) {}
     },
 
+    /**
+     * Generic collection open/close helpers. Collections are emitted by the
+     * builder for any immediate subfolder under a documentation mode (e.g.
+     * meta/showcases). The builder creates a hidden list with id
+     * `toc-collection-{mode}-{key}` and a toggle that calls these helpers.
+     */
+    openCollection: function(mode, key) {
+        try {
+            const main = document.getElementById('toc-main');
+            const shows = document.getElementById(`toc-collection-${mode}-${key}`);
+            if (!shows || !main) return;
+            // Clear any other open flags for this mode so only one collection
+            // is considered 'open' at a time. This prevents multiple lists
+            // from competing and avoids stale state when navigating.
+            try {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const k = localStorage.key(i);
+                    if (!k) continue;
+                    if (k.indexOf(`${mode}-collection-`) === 0 && k.endsWith('-open') && k !== `${mode}-collection-${key}-open`) {
+                        try { localStorage.removeItem(k); } catch (e) {}
+                    }
+                }
+            } catch (e) {}
+
+            // Mark ancestor collections as open so state persists for parents
+            try {
+                const segs = key.split('-');
+                for (let i = 1; i < segs.length; i++) {
+                    const anc = segs.slice(0, i).join('-');
+                    try { localStorage.setItem(`${mode}-collection-${anc}-open`, '1'); } catch (e) {}
+                }
+            } catch (e) {}
+
+            // Hide whichever list is currently visible (main or another collection)
+            const collections = Array.from(document.querySelectorAll('.nav-collection-list'));
+            let visible = collections.find(el => window.getComputedStyle(el).display !== 'none');
+            if (visible) {
+                visible.dataset._scroll = visible.scrollTop || 0;
+                visible.style.display = 'none';
+            } else {
+                main.dataset._scroll = main.scrollTop || 0;
+                main.style.display = 'none';
+            }
+
+            // Ensure any injected blocking style is removed for a clean replace
+            try {
+                const gen = document.querySelector('style[data-generated="collection-open-style"]');
+                if (gen) gen.remove();
+                document.documentElement.removeAttribute('data-collection-open');
+            } catch (e) {}
+
+            shows.style.display = '';
+            document.documentElement.classList.add('showcases-open');
+
+            const firstContentLink = shows.querySelector('li:not(.nav-back) a');
+            if (firstContentLink) {
+                const keyPath = key.split('-').join('/');
+                const isOnCollection = window.location.pathname.indexOf(`/${mode}/${keyPath}/`) !== -1;
+                if (!isOnCollection) {
+                    const prevKey = `${mode}-collection-${key}-prev-path`;
+                    if (!localStorage.getItem(prevKey)) {
+                        localStorage.setItem(prevKey, window.location.pathname + window.location.search + window.location.hash);
+                    }
+                    try { localStorage.setItem(`${mode}-collection-${key}-open`, '1'); } catch (e) {}
+                    // Mark that this collection was opened via navigation so Back
+                    // can return the user to the prior page instead of just closing
+                    // the submenu. This flag is only set when we performed a
+                    // navigation into the collection.
+                    try { localStorage.setItem(`${mode}-collection-${key}-opened-via-nav`, '1'); } catch (e) {}
+                    try { const toggle = document.querySelector(`.nav-item.nav-collection.nav-${key} a`); if (toggle) toggle.blur(); } catch (e) {}
+                    window.location.href = firstContentLink.getAttribute('href');
+                    return;
+                }
+            }
+
+            try { localStorage.setItem(`${mode}-collection-${key}-open`, '1'); } catch (e) {}
+            try {
+                const prevKey = `${mode}-collection-${key}-prev-path`;
+                if (!localStorage.getItem(prevKey)) {
+                    localStorage.setItem(prevKey, window.location.pathname + window.location.search + window.location.hash);
+                }
+                const active = document.querySelector('#toc li.active');
+                if (active && active.dataset && active.dataset.topicId) {
+                    localStorage.setItem(`${mode}-collection-${key}-prev-topic`, active.dataset.topicId);
+                }
+            } catch (e) {}
+        } catch (e) {}
+    },
+
+    closeCollection: function(mode, key) {
+        try {
+            const main = document.getElementById('toc-main');
+            const shows = document.getElementById(`toc-collection-${mode}-${key}`);
+            if (!shows || !main) return;
+            const prevKey = `${mode}-collection-${key}-prev-path`;
+            const prev = localStorage.getItem(prevKey);
+            if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
+                localStorage.removeItem(prevKey);
+                localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
+                localStorage.removeItem(`${mode}-collection-${key}-open`);
+                window.location.href = prev;
+                return;
+            }
+
+            // If this collection is nested, show its parent collection instead
+            // of returning immediately to the main list.
+            // Decide whether this close should navigate back to the stored
+            // previous page. Only do that when this collection was opened via
+            // navigation from another page.
+            const openedViaNavKey = `${mode}-collection-${key}-opened-via-nav`;
+            const openedViaNav = localStorage.getItem(openedViaNavKey) === '1';
+
+            // Clear the explicit open flag for this collection
+            try { localStorage.removeItem(`${mode}-collection-${key}-open`); } catch (e) {}
+
+            // If opened via navigation and we have a prev path, return to it.
+            if (openedViaNav) {
+                try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
+                if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
+                    localStorage.removeItem(prevKey);
+                    localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
+                    window.location.href = prev;
+                    return;
+                }
+            }
+
+            // Not navigating back: close this collection and show nearest parent
+            shows.style.display = 'none';
+            // Remove any injected blocking style for this collection
+            try {
+                const gen = document.querySelector('style[data-generated="collection-open-style"]');
+                if (gen) gen.remove();
+                document.documentElement.removeAttribute('data-collection-open');
+            } catch (e) {}
+
+            // Find nearest ancestor submenu by progressively truncating key
+            const segs = key.split('-');
+            while (segs.length > 0) {
+                segs.pop();
+                if (segs.length === 0) break;
+                const candidate = segs.join('-');
+                const parentList = document.getElementById(`toc-collection-${mode}-${candidate}`);
+                if (parentList) {
+                    try { localStorage.setItem(`${mode}-collection-${candidate}-open`, '1'); } catch (e) {}
+                    parentList.style.display = '';
+                    return;
+                }
+            }
+
+            // No parent found; restore main menu
+            main.style.display = '';
+            document.documentElement.classList.remove('showcases-open');
+            // If there is a global collection-open marker, remove it so the
+            // CSS rule hiding #toc-main no longer applies.
+            document.documentElement.classList.remove('collection-open');
+            const scroll = parseInt(main.dataset._scroll || 0, 10);
+            main.scrollTop = scroll;
+        } catch (e) {}
+    },
+
+    closeCollectionUI: function(mode, key) {
+        try {
+            const shows = document.getElementById(`toc-collection-${mode}-${key}`);
+            const main = document.getElementById('toc-main');
+            if (!shows || !main) return;
+            shows.style.display = 'none';
+            const parentKey = key.indexOf('-') !== -1 ? key.substring(0, key.lastIndexOf('-')) : null;
+            if (parentKey) {
+                const parentList = document.getElementById(`toc-collection-${mode}-${parentKey}`);
+                if (parentList) {
+                    parentList.style.display = '';
+                    return;
+                }
+            }
+            // Clean up any injected style
+            try {
+                const gen = document.querySelector('style[data-generated="collection-open-style"]');
+                if (gen) gen.remove();
+                document.documentElement.removeAttribute('data-collection-open');
+            } catch (e) {}
+            main.style.display = '';
+            document.documentElement.classList.remove('showcases-open');
+            document.documentElement.classList.remove('collection-open');
+        } catch (e) {}
+    },
+
     closeShowcases: function() {
         const main = document.getElementById('toc-main');
         const shows = document.getElementById('toc-showcases');
@@ -521,6 +707,22 @@ const app = {
             if (localStorage.getItem(`${mode}-showcases-open`) === '1') {
                 setTimeout(() => this.openShowcases(), 100);
             }
+            // Restore any generic collection submenus that were left open.
+            // The builder emits lists with ids like `toc-collection-{mode}-{key}`.
+            try {
+                document.querySelectorAll('[id^="toc-collection-"]').forEach(el => {
+                    const id = el.id; // toc-collection-{mode}-{key}
+                    const parts = id.split('-');
+                    // parts: ['toc','collection','{mode}','{key}'] (key may contain additional dashes)
+                    if (parts.length >= 4) {
+                        const cmode = parts[2];
+                        const ckey = parts.slice(3).join('-');
+                        if (localStorage.getItem(`${cmode}-collection-${ckey}-open`) === '1') {
+                            setTimeout(() => this.openCollection(cmode, ckey), 120);
+                        }
+                    }
+                });
+            } catch (e) {}
         } catch (e) {}
 
         if (window.location.hash) {

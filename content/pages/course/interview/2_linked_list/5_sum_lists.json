@@ -1,0 +1,50 @@
+{
+    "title": "Sum Lists",
+    "description": "Sum Lists",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Sum Lists"
+        },
+        {
+            "type": "text",
+            "text": "Sum Lists"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/02/05_sum_lists/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_02_05_sum_lists"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

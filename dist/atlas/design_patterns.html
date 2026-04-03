@@ -31,14 +31,46 @@
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
 
-            // If the user had Showcases open previously, mark root early
+            // If the user had Showcases or any collection open previously, mark root early
             try {
                 // Determine approximate mode from path for early restore
                 var path = window.location.pathname || '';
                 var modeKey = 'atlas';
                 if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
                 else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
                 if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
             } catch (e) {}
 
             // 3. Setup Syntax Highlighting CSS path
@@ -60,7 +92,7 @@
         <div class="nav-top">
             <div class="nav-left">
                 <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
-                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/intro.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
             </div>
             <div class="nav-center">
                 <div class="toggle-group view-toggles">
@@ -105,7 +137,9 @@
                 <div class="sidebar-label">Navigation</div>
                 <ul class="nav-list" id="toc-main"><li class=""><a href="../index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Dev Atlas</span></a></li>
 <li class="active"><a href="../atlas/design_patterns.html">Design Patterns</a></li>
-<li class=""><a href="../atlas/syntax.html">Basic Syntax<span class="sidebar-wrap-indent">Atlas</span></a></li></ul>
+<li class=""><a href="../atlas/principles.html">principles</a></li>
+<li class=""><a href="../atlas/workflow.html">Workflow</a></li>
+<li class="nav-item nav-collection nav-keywords"><a href="#" onclick="app.openCollection('atlas', 'keywords');return false;">Keywords <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-atlas-keywords" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'keywords');return false;">← Back</a></li><li class=""><a href="../atlas/keywords/index.html">Keywords</a></li><li class=""><a href="../atlas/keywords/cpp.html">C++ Keywords</a></li></ul>
             </div>
         </aside>
         
@@ -125,7 +159,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_abstract_factory"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/abstract_factory"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -406,7 +440,7 @@ function showScreen(factory: WidgetFactory): void {
 }
 
 showScreen(new LightFactory());
-showScreen(new DarkFactory());</code></pre></div></div>
+showScreen(new DarkFactory());</code></pre></div></div></div>
             </div>
         </div>
         
@@ -416,7 +450,7 @@ showScreen(new DarkFactory());</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_builder"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/builder"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;utility&gt;
 #include &lt;vector&gt;
@@ -651,7 +685,7 @@ const report = new ReportBuilder()
 console.log(report.title);
 for (const section of report.sections) {
   console.log(`- ${section}`);
-}</code></pre></div></div>
+}</code></pre></div></div></div>
             </div>
         </div>
         
@@ -661,7 +695,7 @@ for (const section of report.sections) {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_factory_method"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/factory_method"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -871,7 +905,7 @@ class CsvImportJob extends ImportJob {
 
 for (const job of [new JsonImportJob(), new CsvImportJob()]) {
   console.log(job.run());
-}</code></pre></div></div>
+}</code></pre></div></div></div>
             </div>
         </div>
         
@@ -881,7 +915,7 @@ for (const job of [new JsonImportJob(), new CsvImportJob()]) {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_prototype"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/prototype"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1015,7 +1049,7 @@ const template = new Report('weekly', ['ops', 'summary']);
 const copy = template.clone();
 
 console.log(template);
-console.log(copy);</code></pre></div></div>
+console.log(copy);</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1025,7 +1059,7 @@ console.log(copy);</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><div  class="note note-info "><div class="note-content">Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div></div><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_singleton"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><div  class="note note-info "><div class="note-content">Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div></div><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/singleton"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 class Config {
@@ -1132,7 +1166,7 @@ object Config:
 }
 
 Config.instance().env = 'prod';
-console.log(Config.instance().env);</code></pre></div></div>
+console.log(Config.instance().env);</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1142,7 +1176,126 @@ console.log(Config.instance().env);</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_object_pool" missing</div></div>
+                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_pool"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
+#include &lt;memory&gt;
+#include &lt;iostream&gt;
+
+class PooledObject {
+public:
+    int value;
+};
+
+class ObjectPool {
+    std::vector&lt;std::unique_ptr&lt;PooledObject&gt;&gt; pool;
+public:
+    PooledObject* acquire() {
+        if (!pool.empty()) {
+            auto p = pool.back().release(); pool.pop_back();
+            return p;
+        }
+        return new PooledObject();
+    }
+    void release(PooledObject* obj) {
+        pool.emplace_back(obj);
+    }
+};
+
+int main(){
+    ObjectPool p;
+    auto *o = p.acquire();
+    o-&gt;value = 42;
+    std::cout&lt;&lt;o-&gt;value&lt;&lt;"/n";
+    p.release(o);
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type PooledObject struct{ Value int }
+
+type ObjectPool struct{ pool chan *PooledObject }
+
+func NewObjectPool(size int) *ObjectPool {
+	return &ObjectPool{pool: make(chan *PooledObject, size)}
+}
+func (p *ObjectPool) Acquire() *PooledObject {
+	select {
+	case o := &lt;-p.pool:
+		return o
+	default:
+		return &PooledObject{}
+	}
+}
+func (p *ObjectPool) Release(o *PooledObject) {
+	select {
+	case p.pool &lt;- o:
+	default:
+	}
+}
+
+func main() {
+	p := NewObjectPool(2)
+	o := p.Acquire()
+	o.Value = 5
+	fmt.Println(o.Value)
+	p.Release(o)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class PooledObject:
+    def __init__(self):
+        self.value = None
+
+class ObjectPool:
+    def __init__(self):
+        self._pool = []
+    def acquire(self):
+        return self._pool.pop() if self._pool else PooledObject()
+    def release(self, obj):
+        self._pool.append(obj)
+
+if __name__ == '__main__':
+    p = ObjectPool()
+    o = p.acquire()
+    o.value = 1
+    print(o.value)
+    p.release(o)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
+class ObjectPool[T &lt;: PooledObject](size: Int){
+  private val pool = new scala.collection.mutable.Stack[T]
+  def acquire(factory: =&gt; T): T = if(pool.nonEmpty) pool.pop() else factory
+  def release(t: T): Unit = pool.push(t)
+}
+object Demo extends App{
+  val p = new ObjectPool[PooledObject](2)
+  val o = p.acquire(new PooledObject())
+  o.value = 3
+  println(o.value)
+  p.release(o)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
+class ObjectPool[T &lt;: PooledObject](size: Int):
+  private val pool = scala.collection.mutable.Stack.empty[T]
+  def acquire(factory: =&gt; T): T = if pool.nonEmpty then pool.pop() else factory
+  def release(t: T): Unit = pool.push(t)
+
+@main def runPool() =
+  val p = ObjectPool[PooledObject](2)
+  val o = p.acquire(PooledObject())
+  o.value = 4
+  println(o.value)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class PooledObject { value: number | null = null }
+class ObjectPool&lt;T extends PooledObject&gt; {
+  private pool: T[] = []
+  acquire(factory: () =&gt; T) { return this.pool.pop() ?? factory() }
+  release(obj: T) { this.pool.push(obj) }
+}
+
+const pool = new ObjectPool&lt;PooledObject&gt;()
+const o = pool.acquire(() =&gt; new PooledObject())
+o.value = 7
+console.log(o.value)
+pool.release(o)
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1152,7 +1305,79 @@ console.log(Config.instance().env);</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_lazy_initialization" missing</div></div>
+                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/lazy_initialization"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;memory&gt;
+#include &lt;iostream&gt;
+
+class LazySingleton {
+public:
+    static LazySingleton& instance(){
+        static LazySingleton inst;
+        return inst;
+    }
+    int value = 0;
+};
+int main(){
+    LazySingleton::instance().value = 10;
+    std::cout&lt;&lt;LazySingleton::instance().value&lt;&lt;"/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+type Lazy struct{ Value int }
+
+var (
+	inst *Lazy
+	once sync.Once
+)
+
+func Instance() *Lazy { once.Do(func() { inst = &Lazy{} }); return inst }
+func main() {
+	Instance().Value = 8
+	fmt.Println(Instance().Value)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class LazySingleton:
+    _instance = None
+    def __init__(self):
+        self.value = 0
+    @classmethod
+    def instance(cls):
+        if cls._instance is None:
+            cls._instance = LazySingleton()
+        return cls._instance
+
+if __name__ == '__main__':
+    LazySingleton.instance().value = 9
+    print(LazySingleton.instance().value)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object LazySingleton {
+  lazy val instance: LazySingleton = new LazySingleton
+}
+class LazySingleton { var value = 0 }
+object Demo extends App{
+  LazySingleton.instance.value = 1
+  println(LazySingleton.instance.value)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object LazySingleton:
+  lazy val instance = new LazySingleton
+class LazySingleton:
+  var value = 0
+@main def runLazy() =
+  LazySingleton.instance.value = 2
+  println(LazySingleton.instance.value)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class LazySingleton {
+  private static _instance: LazySingleton | null = null
+  private constructor(public value = 0){}
+  static instance(){
+    if (!this._instance) this._instance = new LazySingleton()
+    return this._instance
+  }
+}
+console.log(LazySingleton.instance().value)
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1162,7 +1387,88 @@ console.log(Config.instance().env);</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_multiton" missing</div></div>
+                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/multiton"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;map&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+class Multiton {
+    static std::map&lt;std::string, std::shared_ptr&lt;Multiton&gt;&gt; instances;
+public:
+    std::string name;
+    Multiton(std::string n):name(n){}
+    static std::shared_ptr&lt;Multiton&gt; get(const std::string &k){
+        auto it = instances.find(k);
+        if (it!=instances.end()) return it-&gt;second;
+        auto v = std::make_shared&lt;Multiton&gt;(k);
+        instances[k]=v; return v;
+    }
+};
+std::map&lt;std::string, std::shared_ptr&lt;Multiton&gt;&gt; Multiton::instances;
+int main(){
+    auto a = Multiton::get("a");
+    auto b = Multiton::get("b");
+    std::cout&lt;&lt;a-&gt;name&lt;&lt;" "&lt;&lt;b-&gt;name&lt;&lt;"/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+var instances = map[string]*Multiton{}
+
+type Multiton struct{ Key string }
+
+func Get(key string) *Multiton {
+	if v, ok := instances[key]; ok {
+		return v
+	}
+	m := &Multiton{Key: key}
+	instances[key] = m
+	return m
+}
+func main() {
+	a := Get("a")
+	b := Get("b")
+	fmt.Println(a.Key, b.Key)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Multiton:
+    _instances = {}
+    def __init__(self, key):
+        self.key = key
+    @classmethod
+    def get(cls, key):
+        if key not in cls._instances:
+            cls._instances[key] = Multiton(key)
+        return cls._instances[key]
+
+if __name__ == '__main__':
+    a = Multiton.get('a')
+    b = Multiton.get('b')
+    print(a.key, b.key)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Multiton {
+  private var instances = Map.empty[String, Multiton]
+  def get(key: String) = instances.getOrElse(key, { val m = new Multiton(key); instances += (key -&gt; m); m })
+}
+class Multiton(val key: String)
+object Demo extends App{
+  println(Multiton.get("a").key)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Multiton:
+  private var instances = Map.empty[String, Multiton]
+  def get(key: String) =
+    instances.get(key).getOrElse({ val m = Multiton(key); instances += (key -&gt; m); m })
+case class Multiton(key: String)
+@main def runMulti() = println(Multiton.get("a").key)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Multiton {
+  private static instances: Record&lt;string, Multiton&gt; = {}
+  private constructor(public key: string){}
+  static get(key: string){
+    return this.instances[key] ??= new Multiton(key)
+  }
+}
+console.log(Multiton.get('a').key, Multiton.get('b').key)
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         </div>
@@ -1182,7 +1488,7 @@ console.log(Config.instance().env);</code></pre></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_adapter"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Printer {
@@ -1326,7 +1632,7 @@ class JsonLoggerAdapter implements Printer {
 }
 
 new JsonLoggerAdapter(new JsonLogger()).print('build finished');
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1336,7 +1642,7 @@ new JsonLoggerAdapter(new JsonLogger()).print('build finished');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_bridge"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/bridge"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1522,7 +1828,7 @@ class AlertNotification {
 
 new AlertNotification(new EmailSender()).notify('CPU high');
 new AlertNotification(new SmsSender()).notify('CPU high');
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1532,7 +1838,7 @@ new AlertNotification(new SmsSender()).notify('CPU high');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_composite"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/composite"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;numeric&gt;
 #include &lt;vector&gt;
@@ -1730,7 +2036,7 @@ sub.add(new FileNode(7));
 sub.add(new FileNode(3));
 root.add(sub);
 console.log(root.totalSize());
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1740,7 +2046,7 @@ console.log(root.totalSize());
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_decorator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/decorator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1902,7 +2208,7 @@ class SmsDecorator implements Notifier {
 }
 
 new SmsDecorator(new EmailNotifier()).send('deployment done');
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -1912,7 +2218,7 @@ new SmsDecorator(new EmailNotifier()).send('deployment done');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_facade"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/facade"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Compiler {
@@ -2086,7 +2392,7 @@ class ReleaseFacade {
 }
 
 new ReleaseFacade().deploy();
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2096,7 +2402,7 @@ new ReleaseFacade().deploy();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_flyweight"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/flyweight"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 #include &lt;unordered_map&gt;
@@ -2256,7 +2562,7 @@ const factory = new StyleFactory();
 const first = factory.get('mono-12');
 const second = factory.get('mono-12');
 console.log(first === second);
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2266,7 +2572,7 @@ console.log(first === second);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_proxy"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/proxy"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 struct Image {
@@ -2437,7 +2743,7 @@ class ImageProxy {
 const proxy = new ImageProxy();
 proxy.display();
 proxy.display();
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2447,7 +2753,64 @@ proxy.display();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_data_mapper" missing</div></div>
+                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/data_mapper"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;iostream&gt;
+
+struct User { int id; std::string name; };
+
+User mapRow(const std::map&lt;std::string,std::string&gt;& row){
+    User u; u.id = std::stoi(row.at("id")); u.name = row.at("name"); return u;
+}
+int main(){
+    std::map&lt;std::string,std::string&gt; r{{"id","1"},{"name","Alice"}};
+    auto u = mapRow(r);
+    std::cout&lt;&lt;u.id&lt;&lt;" "&lt;&lt;u.name&lt;&lt;"/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type User struct {
+	ID   int
+	Name string
+}
+
+func mapRow(row map[string]string) User {
+	return User{ID: atoi(row["id"]), Name: row["name"]}
+}
+func atoi(s string) int { var v int; fmt.Sscan(s, &v); return v }
+func main() {
+	row := map[string]string{"id": "3", "name": "Carol"}
+	u := mapRow(row)
+	fmt.Println(u.ID, u.Name)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class User:
+    def __init__(self, id:int, name:str):
+        self.id = id; self.name = name
+
+def map_row(row: dict) -&gt; User:
+    return User(int(row['id']), row['name'])
+
+if __name__ == '__main__':
+    row = {'id':'2','name':'Bob'}
+    u = map_row(row)
+    print(u.id, u.name)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">case class User(id:Int,name:String)
+object Mapper{
+  def mapRow(row: Map[String,String]) = User(row("id").toInt, row("name"))
+}
+object Demo extends App{ println(Mapper.mapRow(Map("id"-&gt;"5","name"-&gt;"Eve"))) }
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">case class User(id:Int,name:String)
+object Mapper:
+  def mapRow(row: Map[String,String]) = User(row("id").toInt, row("name"))
+@main def runMapper() = println(Mapper.mapRow(Map("id"-&gt;"6","name"-&gt;"Frank")))
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Row = { [k: string]: string }
+class User { constructor(public id: number, public name: string){} }
+function mapRow(r: Row){ return new User(Number(r.id), r.name) }
+console.log(mapRow({id:'4', name:'Dana'}))
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2457,7 +2820,51 @@ proxy.display();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_object_adapter" missing</div></div>
+                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+// Object Adapter: Adapter has-a Adaptee
+class Adaptee { public: void specific() { std::cout&lt;&lt;"Adaptee specific/n"; } };
+class Target { public: virtual void request() = 0; };
+class ObjectAdapter : public Target { Adaptee a; public: void request() override { a.specific(); } };
+int main(){ ObjectAdapter a; a.request(); }
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type Adaptee struct{}
+
+func (Adaptee) Specific() { fmt.Println("Adaptee specific") }
+
+type Target interface{ Request() }
+
+type ObjectAdapter struct{ a Adaptee }
+
+func (o ObjectAdapter) Request() { o.a.Specific() }
+func main()                      { var t Target = ObjectAdapter{}; t.Request() }
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
+    def specific(self): print('Adaptee specific')
+class Target:
+    def request(self): raise NotImplementedError
+class ObjectAdapter(Target):
+    def __init__(self): self.a = Adaptee()
+    def request(self): self.a.specific()
+
+if __name__ == '__main__':
+    ObjectAdapter().request()
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+trait Target{ def request():Unit }
+class ObjectAdapter extends Target{ val a = new Adaptee(); def request() = a.specific() }
+object Demo extends App{ new ObjectAdapter().request() }
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+trait Target{ def request():Unit }
+class ObjectAdapter extends Target{ val a = Adaptee(); def request() = a.specific() }
+@main def runObjAdapter() = ObjectAdapter().request()
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
+interface Target{ request(): void }
+class ObjectAdapter implements Target{ constructor(private a=new Adaptee()){} request(){ this.a.specific() } }
+new ObjectAdapter().request()
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2467,7 +2874,52 @@ proxy.display();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "design_patterns_class_adapter" missing</div></div>
+                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/class_adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Target { public: virtual void request() = 0; };
+class Adaptee { public: void specific() { std::cout&lt;&lt;"Adaptee specific/n"; } };
+// C++ class adapter via inheritance isn't common; emulate by inheriting Adaptee and adapting
+class ClassAdapter : public Adaptee, public Target { public: void request() override { specific(); } };
+int main(){ ClassAdapter a; a.request(); }
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+// Go doesn't have class inheritance; demonstrate embedding to adapt
+
+type Adaptee struct{}
+
+func (Adaptee) Specific() { fmt.Println("Adaptee specific") }
+
+type Target interface{ Request() }
+
+type ClassAdapter struct{ Adaptee }
+
+func (c ClassAdapter) Request() { c.Specific() }
+func main()                     { var t Target = ClassAdapter{}; t.Request() }
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
+    def specific(self): print('Adaptee specific')
+class Target:
+    def request(self): raise NotImplementedError
+class ClassAdapter(Adaptee, Target):
+    def request(self): self.specific()
+
+if __name__ == '__main__':
+    ClassAdapter().request()
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+trait Target{ def request():Unit }
+class ClassAdapter extends Adaptee with Target{ def request() = specific() }
+object Demo extends App{ new ClassAdapter().request() }
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+trait Target{ def request():Unit }
+class ClassAdapter extends Adaptee with Target{ def request() = specific() }
+@main def runClassAdapter() = ClassAdapter().request()
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
+interface Target{ request(): void }
+class ClassAdapter extends Adaptee implements Target { request(){ this.specific() } }
+new ClassAdapter().request()
+export {}
+</code></pre></div></div></div>
             </div>
         </div>
         </div>
@@ -2487,7 +2939,7 @@ proxy.display();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_chain_of_responsibility"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -2824,7 +3276,7 @@ mid.setNext(high);
 low.handle(new Request(1, "Simple"));
 low.handle(new Request(2, "Normal"));
 low.handle(new Request(3, "Critical"));
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_chain_of_responsibility_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Chain of Responsibility using std::function
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Chain of Responsibility using std::function
 // The chain is a flat vector of handlers; no linked-list of subclasses required.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -2905,7 +3357,7 @@ chain: list[Handler] = [low_handler, mid_handler, high_handler]
 process(chain, Request(1, "low request"))
 process(chain, Request(2, "mid request"))
 process(chain, Request(3, "high request"))
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -2915,7 +3367,7 @@ process(chain, Request(3, "high request"))
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_command"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/command"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;vector&gt;
 
@@ -3192,7 +3644,7 @@ invoker.addCommand(new TurnOnCommand(device));
 invoker.addCommand(new TurnOffCommand(device));
 
 invoker.executeAll();
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_command_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Command using std::function
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/command_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Command using std::function
 // Replaces the command class hierarchy with a simple callable; lambdas capture context directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3277,7 +3729,7 @@ const commands: Array&lt;() =&gt; void&gt; = [
 ];
 
 commands.forEach(cmd =&gt; cmd());
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -3287,7 +3739,7 @@ commands.forEach(cmd =&gt; cmd());
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_observer"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/observer"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -3505,7 +3957,7 @@ subject.attach(obs2);
 
 subject.notify("Event 1");
 subject.notify("Event 2");
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_observer_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Observer using std::function callbacks
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/observer_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Observer using std::function callbacks
 // Removes the Observer interface; any callable (lambda, free function, member) subscribes directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3625,7 +4077,7 @@ subject.subscribe(msg =&gt; console.log(`Observer2 received: ${msg}`));
 
 subject.notify("Event 1");
 subject.notify("Event 2");
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -3635,7 +4087,7 @@ subject.notify("Event 2");
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_state"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/state"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class State {
@@ -3879,7 +4331,7 @@ ctx.request();
 
 ctx.setState(new StoppedState());
 ctx.request();
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_state_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ State using std::variant
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/state_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ State using std::variant
 // States are plain value types; transitions are just assignments.
 // No virtual dispatch, no heap allocation, exhaustive state handling enforced by the compiler.
 #include &lt;iostream&gt;
@@ -3969,7 +4421,7 @@ handle(state);
 
 state = { kind: "stopped" };
 handle(state);
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -3979,7 +4431,7 @@ handle(state);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_strategy"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/strategy"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Strategy {
@@ -4231,7 +4683,7 @@ console.log(`Subtract: ${ctx.executeStrategy(5, 3)}`);
 
 ctx.setStrategy(new MultiplyStrategy());
 console.log(`Multiply: ${ctx.executeStrategy(5, 3)}`);
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_strategy_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/strategy_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
 // No virtual dispatch, no heap allocation for small strategies.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -4351,7 +4803,7 @@ console.log("Subtract:", calc.execute(5, 3));
 
 calc.strategy = (a, b) =&gt; a * b;
 console.log("Multiply:", calc.execute(5, 3));
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -4361,7 +4813,7 @@ console.log("Multiply:", calc.execute(5, 3));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_template_method"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/template_method"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 class DataProcessor {
 public:
@@ -4633,7 +5085,7 @@ csv.process();
 
 const json = new JSONProcessor();
 json.process();
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_template_method_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/template_method_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
 // Compile-time polymorphism: no virtual dispatch, no vtable, concrete steps inlined.
 #include &lt;iostream&gt;
 
@@ -4696,7 +5148,7 @@ def json_write() -&gt; None: print("Writing processed JSON")
 
 process_data(csv_read,  csv_parse,  csv_write)
 process_data(json_read, json_parse, json_write)
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -4706,7 +5158,7 @@ process_data(json_read, json_parse, json_write)
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_visitor"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/visitor"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Visitor;
@@ -4968,7 +5420,7 @@ const visitor = new DrawVisitor();
 
 circle.accept(visitor);
 rectangle.accept(visitor);
-</code></pre></div></div><h4  class="">Modern variant of the pattern</h4><div class="code-comparison-grid" data-snippet-id="design_patterns_visitor_modern"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Visitor using std::variant + std::visit
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/visitor_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Visitor using std::variant + std::visit
 // Eliminates double-dispatch ceremony; shapes are plain value types with no base class.
 #include &lt;iostream&gt;
 #include &lt;variant&gt;
@@ -5142,7 +5594,7 @@ draw(circle);
 draw(rectangle);
 console.log(describe(circle));
 console.log(describe(rectangle));
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -5152,7 +5604,7 @@ console.log(describe(rectangle));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_interpreter"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/interpreter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;memory&gt;
 
@@ -5363,7 +5815,7 @@ const expr = new OrExpression(c1, c2);
 
 console.log(expr.interpret("cat"));
 console.log(expr.interpret("bird"));
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -5373,7 +5825,7 @@ console.log(expr.interpret("bird"));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_iterator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/iterator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -5644,7 +6096,7 @@ while (it.hasNext()) {
     result += it.next() + " ";
 }
 console.log(result);
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -5654,7 +6106,7 @@ console.log(result);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_mediator"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/mediator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Mediator {
@@ -5931,7 +6383,7 @@ room.addUsers(u1, u2);
 
 u1.send("Hello!");
 u2.send("Hi there!");
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         
@@ -5941,7 +6393,7 @@ u2.send("Hi there!");
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="code-comparison-grid" data-snippet-id="design_patterns_memento"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/memento"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
@@ -6257,7 +6709,7 @@ if (restored) {
     originator.restoreState(restored);
     console.log(`Restored: ${originator.getState()}`);
 }
-</code></pre></div></div>
+</code></pre></div></div></div>
             </div>
         </div>
         </div>

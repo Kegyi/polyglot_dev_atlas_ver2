@@ -1,0 +1,59 @@
+{
+    "title": "kth Node from End",
+    "description": "Given a linked list, find the kth node from the end of the list.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "kth Node from End"
+        },
+        {
+            "type": "text",
+            "text": "Given a linked list, find the kth node from the end of the list."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given a linked list, find the kth node from the end of the list. Return the node if it exists, otherwise return null."
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "\"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)"
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_02_02_kth_node_from_end"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+}

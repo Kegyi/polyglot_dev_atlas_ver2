@@ -1,0 +1,50 @@
+{
+    "title": "Check Balance",
+    "description": "Check Balance",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Check Balance"
+        },
+        {
+            "type": "text",
+            "text": "Check Balance"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/04/04_check_balance/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_04_04_check_balance"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

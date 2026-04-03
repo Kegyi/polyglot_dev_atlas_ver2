@@ -1,0 +1,50 @@
+{
+    "title": "Overview",
+    "description": "A collection of interview tasks focused on linked lists, covering common problems and their solutions.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Interview Tasks: Linked List"
+        },
+        {
+            "type": "text",
+            "text": "This section contains a collection of interview tasks focused on linked lists, covering common problems and their solutions."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "remove_duplicate_node",
+                    "title": "Remove Duplicate Node",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given a linked list, remove all duplicate nodes from the list."
+                        },
+                        {
+                            "type": "link",
+                            "href": "/course/interview/2_linked_list/1_remove_duplicate_node/",
+                            "text": "View Task"
+                        }
+                    ]
+                },
+                {
+                    "id": "kth_node_from_end",
+                    "title": "kth Node from End",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given a linked list, find the kth node from the end of the list."
+                        },
+                        {
+                            "type": "link",
+                            "href": "/course/interview/2_linked_list/2_kth_node_from_end/",
+                            "text": "View Task"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

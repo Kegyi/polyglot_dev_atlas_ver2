@@ -1,0 +1,15 @@
+{
+    "title": "Problems",
+    "description": "A collection of coding problems and challenges to test your skills.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Problems"
+        },
+        {
+            "type": "text",
+            "text": "This section contains a collection of coding problems and challenges to test your skills."
+        }
+    ]
+}

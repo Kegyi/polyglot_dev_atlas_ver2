@@ -1,0 +1,6 @@
+object PrimeCheck:
+  def isPrime(n: Int): Boolean =
+    if n < 2 then false
+    else if n % 2 == 0 then n == 2
+    else (3 to math.sqrt(n).toInt by 2).forall(n % _ != 0)
+  @main def run(n: Int = 97) = println(isPrime(n))

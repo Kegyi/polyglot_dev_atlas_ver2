@@ -1,0 +1,50 @@
+{
+    "title": "Volume Of Histogram",
+    "description": "Volume Of Histogram",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Volume Of Histogram"
+        },
+        {
+            "type": "text",
+            "text": "Volume Of Histogram"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/17/21_volume_of_histogram/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_17_21_volume_of_histogram"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "title": "Basics",
+    "description": "Fundamental programming concepts and techniques.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Basics"
+        },
+        {
+            "type": "text",
+            "text": "This section covers fundamental programming concepts and techniques."
+        }
+    ]
+}

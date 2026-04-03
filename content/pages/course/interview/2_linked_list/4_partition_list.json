@@ -1,0 +1,50 @@
+{
+    "title": "Partition List",
+    "description": "Partition List",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Partition List"
+        },
+        {
+            "type": "text",
+            "text": "Partition List"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/02/04_partition_list/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_02_04_partition_list"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

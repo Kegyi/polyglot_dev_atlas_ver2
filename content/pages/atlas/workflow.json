@@ -1,0 +1,15 @@
+{
+    "title": "Workflow",
+    "description": "workflow and processes for different type of programing languages.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Workflow"
+        },
+        {
+            "type": "text",
+            "text": "This page outlines the workflow and processes for different types of programming languages."
+        }
+    ]
+}

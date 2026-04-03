@@ -31,14 +31,46 @@
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
 
-            // If the user had Showcases open previously, mark root early
+            // If the user had Showcases or any collection open previously, mark root early
             try {
                 // Determine approximate mode from path for early restore
                 var path = window.location.pathname || '';
                 var modeKey = 'atlas';
                 if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
                 else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
                 if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
             } catch (e) {}
 
             // 3. Setup Syntax Highlighting CSS path
@@ -60,7 +92,7 @@
         <div class="nav-top">
             <div class="nav-left">
                 <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
-                <div class="toggle-group mode-toggles"><a href="../../index.html" class="toggle " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../course/intro.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../../meta/index.html" class="toggle active" onclick="app.prepareModeSwitch()">Meta</a></div>
+                <div class="toggle-group mode-toggles"><a href="../../index.html" class="toggle " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../course/index.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="../../meta/index.html" class="toggle active" onclick="app.prepareModeSwitch()">Meta</a></div>
             </div>
             <div class="nav-center">
                 <div class="toggle-group view-toggles">
@@ -108,11 +140,7 @@
 <li class=""><a href="../../meta/content_types.html">Content Element Library</a></li>
 <li class=""><a href="../../meta/customization.html">Styling & Customization</a></li>
 <li class=""><a href="../../meta/getting_started.html">Meta: Getting Started</a></li>
-<li class=""><a href="../../meta/page_schema.html">Page Configuration</a></li><li class="nav-item nav-showcases"><a href="#" onclick="app.openShowcases();return false;">Showcases <span class="collection-marker">collection</span></a></li></ul><ul class="nav-list nav-showcase-list" id="toc-showcases" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeShowcases();return false;">← Back</a></li><li class=""><a href="../../meta/showcases/index.html">All Showcases</a></li>
-<li class=""><a href="../../meta/showcases/showcase_gallery.html">Gallery Style Showcase</a></li>
-<li class=""><a href="../../meta/showcases/showcase_ide.html">IDE Style Showcase</a></li>
-<li class="active"><a href="../../meta/showcases/showcase_playground.html">Playground Style Showcase</a></li>
-<li class=""><a href="../../meta/showcases/showcase_reference.html">Reference Style Showcase</a></li></ul>
+<li class="nav-item nav-collection nav-showcases"><a href="#" onclick="app.openCollection('meta', 'showcases');return false;">Showcases <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-meta-showcases" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('meta', 'showcases');return false;">← Back</a></li><li class=""><a href="../../meta/showcases/index.html">All Showcases</a></li><li class=""><a href="../../meta/showcases/showcase_gallery.html">Gallery Style Showcase</a></li><li class=""><a href="../../meta/showcases/showcase_ide.html">IDE Style Showcase</a></li><li class="active"><a href="../../meta/showcases/showcase_playground.html">Playground Style Showcase</a></li><li class=""><a href="../../meta/showcases/showcase_reference.html">Reference Style Showcase</a></li></ul>
             </div>
         </aside>
         
@@ -125,7 +153,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">An exploratory style for interactive demos and small experiments.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "None" missing</div></div>
+                <p  class="">An exploratory style for interactive demos and small experiments.</p>
             </div>
         </div>
         

@@ -1,0 +1,50 @@
+{
+    "title": "Search Rotate Array",
+    "description": "Search Rotate Array",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Search Rotate Array"
+        },
+        {
+            "type": "text",
+            "text": "Search Rotate Array"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/10/03_search_rotate_array/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_10_03_search_rotate_array"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

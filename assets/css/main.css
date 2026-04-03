@@ -225,6 +225,68 @@ html[data-sidebar-density="minimal"] .toc-item[data-depth="5"] {
     padding-left: 12px;
 }
 
+/* --- Collection Toggle Styling ---
+   Make submenu-toggle items visually distinct from normal page links.
+   Target only items with the `nav-collection` marker so regular pages
+   inside submenus remain unchanged. The `.collection-marker` span is
+   empty in the generated HTML; we render a colored chevron via ::after. */
+.nav-item.nav-collection > a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-weight: 700;
+    padding-right: 6px;
+}
+
+/* Base marker: uses the active palette accent. The glyph is rendered
+   in ::after so we can change the container shape via global style. */
+.nav-item.nav-collection > a .collection-marker {
+    /* Move marker before the label */
+    order: -1;
+    margin-right: 8px;
+    width: 10px; /* roughly half of previous size */
+    height: 10px;
+    flex: 0 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    box-shadow: 0 2px 6px var(--accent-glow);
+}
+
+.nav-item.nav-collection > a .collection-marker::after {
+    content: '›';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 8px;
+    height: 8px;
+    font-size: 8px;
+    color: #ffffff;
+}
+
+/* Shape variants driven by the global geometric style */
+:root[data-global-style="sharp"] .nav-item.nav-collection > a .collection-marker {
+    border-radius: 4px; /* slightly rounded square */
+}
+
+:root[data-global-style="round"] .nav-item.nav-collection > a .collection-marker {
+    border-radius: 999px; /* circle */
+}
+
+:root[data-global-style="airy"] .nav-item.nav-collection > a .collection-marker {
+    border-radius: 6px; /* pill-like rounded rectangle */
+    width: 14px; height: 12px; flex: 0 0 14px;
+}
+
+/* Accessibility tweak: if the theme is light, slightly darken the glyph
+   boundary so the white glyph reads against very pale accents. This keeps
+   the glyph legible for most palette choices without per-color logic. */
+:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker {
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06);
+}
+
 .nav-sublist { list-style: none; padding-left: 15px; margin: 5px 0 10px 0; border-left: var(--border-w) solid var(--border); }
 
 /* Showcases collection marker (indicates this nav item opens a collection, not a page) */
@@ -234,6 +296,12 @@ html[data-sidebar-density="minimal"] .toc-item[data-depth="5"] {
 /* If the root has .showcases-open, hide the main nav list immediately to avoid flashes */
 html.showcases-open #toc-main { display: none !important; }
 html.showcases-open #toc-showcases { display: block !important; }
+
+/* Generic collection open marker (used for any immediate subfolder collection)
+    When set, hide the main nav immediately to avoid flashing it before JS
+    restores the collection submenu. The specific submenu will be shown by
+    JS once the DOM is ready. */
+html.collection-open #toc-main { display: none !important; }
 
 /* Prevent the Back link from showing a strong default focus ring (avoid yellow border) */
 .nav-item.nav-back a:focus { outline: none; box-shadow: none; }

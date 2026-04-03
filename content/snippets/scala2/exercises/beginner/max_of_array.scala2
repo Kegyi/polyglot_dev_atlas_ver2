@@ -1,0 +1,6 @@
+object MaxOfArray {
+  def main(args: Array[String]): Unit = {
+    val arr = if (args.nonEmpty) args.map(_.toInt) else Array(1,2,3,4,5)
+    println(arr.max)
+  }
+}

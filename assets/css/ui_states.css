@@ -185,3 +185,16 @@ html[data-selection-mode="double"][data-secondary="scala3"] .code-block[data-lan
         margin-bottom: 10px;
     }
 }
+
+/* --- Collapsible code wrapper --- */
+.collapsible-code { border: none; margin: 18px 0; }
+.collapsible-code .collapsible-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--panel); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px;
+    margin-bottom: 8px; cursor: pointer;
+}
+.collapsible-code .collapsible-header .code-label { font-weight: 700; color: var(--text); }
+.collapsible-code .collapsible-header .collapse-toggle { background: transparent; border: none; font-size: 14px; cursor: pointer; color: var(--text-dim); }
+.collapsible-code.is-collapsed .code-comparison-grid { display: none !important; }
+.collapsible-code.is-collapsed .collapsible-header .collapse-toggle { transform: rotate(0deg); }
+.collapsible-code .collapsible-header .collapse-toggle[aria-expanded="true"] { transform: rotate(90deg); }

@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises</title>
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases or any collection open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-course  ">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
+                <div class="toggle-group mode-toggles"><a href="../index.html" class="toggle " onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="toggle active" onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
+            </div>
+            <div class="nav-center">
+                <div class="toggle-group view-toggles">
+                    <button id="view-single-btn" class="toggle">Single</button>
+                    <button id="view-double-btn" class="toggle">Double</button>
+                </div>
+                <button id="swap-btn" class="icon-btn">⇄</button>
+            </div>
+            <div class="nav-right">
+                <!-- Phase 3: Global Geometric Style Picker -->
+                <div class="style-picker">
+                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                </div>
+
+                <div class="palette-picker">
+                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../course/index.html">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li>
+<li class=""><a href="../course/basics.html">Basics</a></li>
+<li class="active"><a href="../course/exercieses.html">Exercises</a></li>
+<li class=""><a href="../course/problems.html">Problems</a></li>
+<li class="nav-item nav-collection nav-interview"><a href="#" onclick="app.openCollection('course', 'interview');return false;">Interview <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview');return false;">← Back</a></li><li class="nav-item nav-collection nav-interview-1_strings_and_arrays"><a href="#" onclick="app.openCollection('course', 'interview-1_strings_and_arrays');return false;">1 strings and arrays <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-2_linked_list"><a href="#" onclick="app.openCollection('course', 'interview-2_linked_list');return false;">2 linked list <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-3_stacks_and_queues"><a href="#" onclick="app.openCollection('course', 'interview-3_stacks_and_queues');return false;">3 stacks and queues <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-4_trees_and_graphs"><a href="#" onclick="app.openCollection('course', 'interview-4_trees_and_graphs');return false;">4 trees and graphs <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-5_bit_manipulation"><a href="#" onclick="app.openCollection('course', 'interview-5_bit_manipulation');return false;">5 bit manipulation <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-8_recursion_dynamic_programming"><a href="#" onclick="app.openCollection('course', 'interview-8_recursion_dynamic_programming');return false;">8 recursion dynamic programming <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-10_sorting_and_searching"><a href="#" onclick="app.openCollection('course', 'interview-10_sorting_and_searching');return false;">10 sorting and searching <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-16_moderate"><a href="#" onclick="app.openCollection('course', 'interview-16_moderate');return false;">16 moderate <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-17_hard"><a href="#" onclick="app.openCollection('course', 'interview-17_hard');return false;">17 hard <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-1_strings_and_arrays" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-1_strings_and_arrays');return false;">← Back</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/index.html">Overview</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/1_is_unique.html">Is Unique</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/2_check_permutation.html">Check Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/3_string_to_url.html">String To Url</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/4_palindrome_permutation.html">Palindrome Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/5_one_away.html">One Away</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/6_compress_string.html">Compress String</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/7_rotate_matrix.html">Rotate Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/8_zero_matrix.html">Zero Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/9_string_rotation.html">String Rotation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-2_linked_list" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-2_linked_list');return false;">← Back</a></li><li class=""><a href="../course/interview/2_linked_list/index.html">Overview</a></li><li class=""><a href="../course/interview/2_linked_list/1_remove_duplicate_node.html">Remove Duplicate Node</a></li><li class=""><a href="../course/interview/2_linked_list/2_kth_node_from_end.html">kth Node from End</a></li><li class=""><a href="../course/interview/2_linked_list/3_delete_middle_node.html">Delete Middle Node</a></li><li class=""><a href="../course/interview/2_linked_list/4_partition_list.html">Partition List</a></li><li class=""><a href="../course/interview/2_linked_list/5_sum_lists.html">Sum Lists</a></li><li class=""><a href="../course/interview/2_linked_list/6_palindrome_linked_list.html">Palindrome Linked List</a></li><li class=""><a href="../course/interview/2_linked_list/7_intersection_of_two_linked_lists.html">Intersection Of Two Linked<span class="sidebar-wrap-indent">Lists</span></a></li><li class=""><a href="../course/interview/2_linked_list/8_linked_list_cycle.html">Linked List Cycle</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-3_stacks_and_queues" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-3_stacks_and_queues');return false;">← Back</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/1_three_in_one.html">Three In One</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/2_min_stack.html">Min Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/3_stack_of_plates.html">Stack Of Plates</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/4_queue_via_stacks.html">Queue Via Stacks</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/5_sort_stack.html">Sort Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/6_animal_shelter.html">Animal Shelter</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-4_trees_and_graphs" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-4_trees_and_graphs');return false;">← Back</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/1_route_between_nodes.html">Route Between Nodes</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/2_minimum_height_tree.html">Minimum Height Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/3_list_of_depth.html">List Of Depth</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/4_check_balance.html">Check Balance</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/5_legal_binary_search_tree.html">Legal Binary Search Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/6_successor.html">Successor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/8_first_common_ancestor.html">First Common Ancestor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/9_bst_sequences.html">Bst Sequences</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/10_check_subtree.html">Check Subtree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/12_paths_with_sum.html">Paths With Sum</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-5_bit_manipulation" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-5_bit_manipulation');return false;">← Back</a></li><li class=""><a href="../course/interview/5_bit_manipulation/1_insert.html">Insert</a></li><li class=""><a href="../course/interview/5_bit_manipulation/2_binary_number_to_string.html">Binary Number To String</a></li><li class=""><a href="../course/interview/5_bit_manipulation/3_flip_bit_to_win.html">Flip Bit To Win</a></li><li class=""><a href="../course/interview/5_bit_manipulation/4_closed_number.html">Closed Number</a></li><li class=""><a href="../course/interview/5_bit_manipulation/6_number_of_1.html">Number Of 1</a></li><li class=""><a href="../course/interview/5_bit_manipulation/7_exchange.html">Exchange</a></li><li class=""><a href="../course/interview/5_bit_manipulation/8_draw_line.html">Draw Line</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-8_recursion_dynamic_programming" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-8_recursion_dynamic_programming');return false;">← Back</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/1_three_steps.html">Three Steps</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/2_robot_in_a_grid.html">Robot In A Grid</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/3_magic_index.html">Magic Index</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/4_power_set.html">Power Set</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/6_hanota.html">Hanota</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/7_permutation_i.html">Permutation I</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/8_permutation_ii.html">Permutation Ii</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/9_bracket.html">Bracket</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/10_color_fill.html">Color Fill</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/11_coin.html">Coin</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/12_eight_queens.html">Eight Queens</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/13_pile_box.html">Pile Box</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/14_boolean_evaluation.html">Boolean Evaluation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-10_sorting_and_searching" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-10_sorting_and_searching');return false;">← Back</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/1_sorted_merge.html">Sorted Merge</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/2_group_anagrams.html">Group Anagrams</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/3_search_rotate_array.html">Search Rotate Array</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/5_sparse_array_search.html">Sparse Array Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/9_sorted_matrix_search.html">Sorted Matrix Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/11_peaks_and_valleys.html">Peaks And Valleys</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-16_moderate" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-16_moderate');return false;">← Back</a></li><li class=""><a href="../course/interview/16_moderate/1_swap_numbers.html">Swap Numbers</a></li><li class=""><a href="../course/interview/16_moderate/2_words_frequency.html">Words Frequency</a></li><li class=""><a href="../course/interview/16_moderate/3_intersection.html">Intersection</a></li><li class=""><a href="../course/interview/16_moderate/4_tic_tac_toe.html">Tic Tac Toe</a></li><li class=""><a href="../course/interview/16_moderate/5_factorial_zeros.html">Factorial Zeros</a></li><li class=""><a href="../course/interview/16_moderate/6_smallest_difference.html">Smallest Difference</a></li><li class=""><a href="../course/interview/16_moderate/7_maximum.html">Maximum</a></li><li class=""><a href="../course/interview/16_moderate/8_english_int.html">English Int</a></li><li class=""><a href="../course/interview/16_moderate/9_operations.html">Operations</a></li><li class=""><a href="../course/interview/16_moderate/10_living_people.html">Living People</a></li><li class=""><a href="../course/interview/16_moderate/11_diving_board.html">Diving Board</a></li><li class=""><a href="../course/interview/16_moderate/13_bisect_squares.html">Bisect Squares</a></li><li class=""><a href="../course/interview/16_moderate/14_best_line.html">Best Line</a></li><li class=""><a href="../course/interview/16_moderate/15_master_mind.html">Master Mind</a></li><li class=""><a href="../course/interview/16_moderate/16_sub_sort.html">Sub Sort</a></li><li class=""><a href="../course/interview/16_moderate/17_contiguous_sequence.html">Contiguous Sequence</a></li><li class=""><a href="../course/interview/16_moderate/18_pattern_matching.html">Pattern Matching</a></li><li class=""><a href="../course/interview/16_moderate/19_pond_sizes.html">Pond Sizes</a></li><li class=""><a href="../course/interview/16_moderate/20_t9.html">T9</a></li><li class=""><a href="../course/interview/16_moderate/21_sum_swap.html">Sum Swap</a></li><li class=""><a href="../course/interview/16_moderate/22_langtons_ant.html">Langtons Ant</a></li><li class=""><a href="../course/interview/16_moderate/24_pairs_with_sum.html">Pairs With Sum</a></li><li class=""><a href="../course/interview/16_moderate/25_lru_cache.html">Lru Cache</a></li><li class=""><a href="../course/interview/16_moderate/26_calculator.html">Calculator</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-17_hard" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-17_hard');return false;">← Back</a></li><li class=""><a href="../course/interview/17_hard/1_add_without_plus.html">Add Without Plus</a></li><li class=""><a href="../course/interview/17_hard/4_missing_number.html">Missing Number</a></li><li class=""><a href="../course/interview/17_hard/5_find_longest_subarray.html">Find Longest Subarray</a></li><li class=""><a href="../course/interview/17_hard/6_number_of_2s_in_range.html">Number Of 2S In Range</a></li><li class=""><a href="../course/interview/17_hard/7_baby_names.html">Baby Names</a></li><li class=""><a href="../course/interview/17_hard/8_circus_tower.html">Circus Tower</a></li><li class=""><a href="../course/interview/17_hard/9_get_kth_magic_number.html">Get Kth Magic Number</a></li><li class=""><a href="../course/interview/17_hard/10_find_majority_element.html">Find Majority Element</a></li><li class=""><a href="../course/interview/17_hard/11_find_closest.html">Find Closest</a></li><li class=""><a href="../course/interview/17_hard/12_binode.html">Binode</a></li><li class=""><a href="../course/interview/17_hard/13_re_space.html">Re Space</a></li><li class=""><a href="../course/interview/17_hard/14_smallest_k.html">Smallest K</a></li><li class=""><a href="../course/interview/17_hard/15_longest_word.html">Longest Word</a></li><li class=""><a href="../course/interview/17_hard/16_the_masseuse.html">The Masseuse</a></li><li class=""><a href="../course/interview/17_hard/17_multi_search.html">Multi Search</a></li><li class=""><a href="../course/interview/17_hard/18_shortest_supersequence.html">Shortest Supersequence</a></li><li class=""><a href="../course/interview/17_hard/19_missing_two.html">Missing Two</a></li><li class=""><a href="../course/interview/17_hard/20_continuous_median.html">Continuous Median</a></li><li class=""><a href="../course/interview/17_hard/21_volume_of_histogram.html">Volume Of Histogram</a></li><li class=""><a href="../course/interview/17_hard/22_word_transformer.html">Word Transformer</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <h2  class="">Exercises</h2><p  class="">This section contains practice problems and coding exercises to reinforce learning.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="beginner_exercises">
+            <div class="topic-header" onclick="app.toggleTopic('beginner_exercises')">
+                <h2>Beginner Exercises</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">A set of exercises designed for beginners to practice basic programming concepts.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="hello_world">
+            <div class="topic-header" onclick="app.toggleTopic('hello_world')">
+                <h3>Hello World</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that prints 'Hello, World!' to the console.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/hello_world"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello, World!/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, World!")
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">print("Hello, World!")
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Main extends App {
+  println("Hello, World!")
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def hello(): Unit =
+  println("Hello, World!")
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">console.log("Hello, World!");
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="sum_of_numbers">
+            <div class="topic-header" onclick="app.toggleTopic('sum_of_numbers')">
+                <h3>Sum of Numbers</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that calculates the sum of the first n natural numbers.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/sum_of_numbers"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+long long sum_n(long long n) {
+    return n * (n + 1) / 2;
+}
+
+int main() {
+    long long n;
+    // Example: input a number, prints the sum of 1..n
+    if (!(cin &gt;&gt; n)) n = 10;
+    cout &lt;&lt; sum_n(n) &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+)
+
+func sumN(n int64) int64 {
+	return n * (n + 1) / 2
+}
+
+func main() {
+	var n int64
+	if _, err := fmt.Scan(&n); err != nil {
+		n = 10
+	}
+	fmt.Println(sumN(n))
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def sum_n(n: int) -&gt; int:
+    return n * (n + 1) // 2
+
+if __name__ == '__main__':
+    try:
+        n = int(input().strip())
+    except Exception:
+        n = 10
+    print(sum_n(n))
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object SumOfNumbers {
+  def sumN(n: Int): Int = n * (n + 1) / 2
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 10
+    println(sumN(n))
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def sumOfNumbers(n: Int = 10): Unit =
+  println(n * (n + 1) / 2)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function sumN(n: number): number {
+  return (n * (n + 1)) / 2;
+}
+
+const fs = require('fs');
+const input = fs.readFileSync(0, 'utf8').trim().split(//s+/);
+const n = input.length ? Number(input[0]) : 10;
+console.log(sumN(n));
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="factorial">
+            <div class="topic-header" onclick="app.toggleTopic('factorial')">
+                <h3>Factorial Calculation</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that calculates the factorial of a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/factorial"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+long long factorial(int n) {
+    long long r = 1;
+    for (int i = 2; i &lt;= n; ++i) r *= i;
+    return r;
+}
+
+int main() {
+    int n;
+    if (!(cin &gt;&gt; n)) n = 5;
+    cout &lt;&lt; factorial(n) &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+)
+
+func factorial(n int64) int64 {
+	var r int64 = 1
+	for i := int64(2); i &lt;= n; i++ {
+		r *= i
+	}
+	return r
+}
+
+func main() {
+	var n int64
+	if _, err := fmt.Scan(&n); err != nil {
+		n = 5
+	}
+	fmt.Println(factorial(n))
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def factorial(n: int) -&gt; int:
+    r = 1
+    for i in range(2, n+1):
+        r *= i
+    return r
+
+if __name__ == '__main__':
+    try:
+        n = int(input().strip())
+    except Exception:
+        n = 5
+    print(factorial(n))
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Factorial {
+  def fact(n: Int): BigInt = if (n &lt;= 1) 1 else (2 to n).map(BigInt(_)).product
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 5
+    println(fact(n))
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Factorial:
+  def fact(n: Int): BigInt = if n &lt;= 1 then 1 else (2 to n).map(BigInt(_)).product
+  @main def run(n: Int = 5) = println(fact(n))
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function factorial(n: number): number {
+  let r = 1;
+  for (let i = 2; i &lt;= n; i++) r *= i;
+  return r;
+}
+
+const fs = require('fs');
+const input = fs.readFileSync(0, 'utf8').trim().split(//s+/);
+const n = input.length ? Number(input[0]) : 5;
+console.log(factorial(n));
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="prime_check">
+            <div class="topic-header" onclick="app.toggleTopic('prime_check')">
+                <h3>Prime Number Check</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that checks if a given number is prime.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/prime_check"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+bool is_prime(long long n) {
+    if (n &lt; 2) return false;
+    if (n % 2 == 0) return n == 2;
+    for (long long i = 3; i * i &lt;= n; i += 2) if (n % i == 0) return false;
+    return true;
+}
+
+int main() {
+    long long n;
+    if (!(cin &gt;&gt; n)) n = 97;
+    cout &lt;&lt; (is_prime(n) ? "true" : "false") &lt;&lt; "/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+)
+
+func isPrime(n int64) bool {
+	if n &lt; 2 {
+		return false
+	}
+	if n%2 == 0 {
+		return n == 2
+	}
+	for i := int64(3); i*i &lt;= n; i += 2 {
+		if n%i == 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func main() {
+	var n int64
+	if _, err := fmt.Scan(&n); err != nil {
+		n = 97
+	}
+	fmt.Println(isPrime(n))
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import math
+
+def is_prime(n: int) -&gt; bool:
+    if n &lt; 2:
+        return False
+    if n % 2 == 0:
+        return n == 2
+    i = 3
+    while i * i &lt;= n:
+        if n % i == 0:
+            return False
+        i += 2
+    return True
+
+if __name__ == '__main__':
+    try:
+        n = int(input().strip())
+    except Exception:
+        n = 97
+    print(str(is_prime(n)).lower())
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object PrimeCheck {
+  def isPrime(n: Int): Boolean = {
+    if (n &lt; 2) return false
+    if (n % 2 == 0) return n == 2
+    var i = 3
+    while (i * i &lt;= n) {
+      if (n % i == 0) return false
+      i += 2
+    }
+    true
+  }
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 97
+    println(isPrime(n))
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object PrimeCheck:
+  def isPrime(n: Int): Boolean =
+    if n &lt; 2 then false
+    else if n % 2 == 0 then n == 2
+    else (3 to math.sqrt(n).toInt by 2).forall(n % _ != 0)
+  @main def run(n: Int = 97) = println(isPrime(n))
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function isPrime(n: number): boolean {
+  if (n &lt; 2) return false;
+  if (n % 2 === 0) return n === 2;
+  for (let i = 3; i * i &lt;= n; i += 2) if (n % i === 0) return false;
+  return true;
+}
+
+const fs = require('fs');
+const input = fs.readFileSync(0, 'utf8').trim().split(//s+/);
+const n = input.length ? Number(input[0]) : 97;
+console.log(isPrime(n));
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="max_of_array">
+            <div class="topic-header" onclick="app.toggleTopic('max_of_array')">
+                <h3>Maximum of an Array</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that finds the maximum element in an array.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/max_of_array"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;limits&gt;
+using namespace std;
+
+int main() {
+    int n;
+    if (!(cin &gt;&gt; n)) n = 5;
+    vector&lt;long long&gt; a(n);
+    for (int i = 0; i &lt; n; ++i) {
+        if (!(cin &gt;&gt; a[i])) a[i] = i;
+    }
+    long long mx = numeric_limits&lt;long long&gt;::min();
+    for (auto v : a) mx = max(mx, v);
+    cout &lt;&lt; mx &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var n int
+	if _, err := fmt.Scan(&n); err != nil {
+		n = 5
+	}
+	arr := make([]int64, n)
+	for i := 0; i &lt; n; i++ {
+		if _, err := fmt.Scan(&arr[i]); err != nil {
+			arr[i] = int64(i)
+		}
+	}
+	var mx int64 = arr[0]
+	for _, v := range arr {
+		if v &gt; mx {
+			mx = v
+		}
+	}
+	fmt.Println(mx)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import sys
+
+def max_of_array(arr):
+    return max(arr) if arr else None
+
+if __name__ == '__main__':
+    try:
+        parts = sys.stdin.read().strip().split()
+        if parts:
+            n = int(parts[0]); vals = list(map(int, parts[1:1+n]))
+        else:
+            n = 5; vals = [1,2,3,4,5]
+    except Exception:
+        n = 5; vals = [1,2,3,4,5]
+    print(max_of_array(vals))
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object MaxOfArray {
+  def main(args: Array[String]): Unit = {
+    val arr = if (args.nonEmpty) args.map(_.toInt) else Array(1,2,3,4,5)
+    println(arr.max)
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def maxOfArray(args: String*): Unit =
+  val arr = if args.nonEmpty then args.map(_.toInt).toArray else Array(1,2,3,4,5)
+  println(arr.max)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const fs = require('fs');
+const input = fs.readFileSync(0, 'utf8').trim().split(//s+/);
+let idx = 0;
+let n = input.length ? Number(input[idx++]) : 5;
+const arr = [];
+for (let i = 0; i &lt; n; i++) arr.push(input.length &gt; idx ? Number(input[idx++]) : i+1);
+console.log(Math.max(...arr));
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="even_odd">
+            <div class="topic-header" onclick="app.toggleTopic('even_odd')">
+                <h3>Even-Odd Check</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Determine if a number is even or odd.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/even_odd"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    int n;
+    std::cout &lt;&lt; "Enter a number: ";
+    std::cin &gt;&gt; n;
+    
+    if (n % 2 == 0)
+        std::cout &lt;&lt; n &lt;&lt; " is even/n";
+    else
+        std::cout &lt;&lt; n &lt;&lt; " is odd/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var n int
+	fmt.Print("Enter a number: ")
+	fmt.Scan(&n)
+
+	if n%2 == 0 {
+		fmt.Printf("%d is even/n", n)
+	} else {
+		fmt.Printf("%d is odd/n", n)
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter a number: "))
+if n % 2 == 0:
+    print(f"{n} is even")
+else:
+    print(f"{n} is odd")
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+if (n % 2 == 0) println(s"$n is even")
+else println(s"$n is odd")
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+if n % 2 == 0 then println(s"$n is even")
+else println(s"$n is odd")
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">import * as readline from "readline";
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+rl.question("Enter a number: ", (input) =&gt; {
+  const n = parseInt(input);
+  console.log(n % 2 === 0 ? `${n} is even` : `${n} is odd`);
+  rl.close();
+});
+import * as readline from "readline";
+
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+rl.question("Enter a number: ", (input) =&gt; {
+  const n = parseInt(input);
+  console.log(n % 2 === 0 ? `${n} is even` : `${n} is odd`);
+  rl.close();
+});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="fizz_buzz">
+            <div class="topic-header" onclick="app.toggleTopic('fizz_buzz')">
+                <h3>FizzBuzz</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Print numbers from 1 to n. For multiples of 3, print 'Fizz' instead of the number, and for multiples of 5, print 'Buzz'. For numbers which are multiples of both 3 and 5, print 'FizzBuzz'.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/fizzbuzz"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    for (int i = 1; i &lt;= 100; ++i) {
+        if (i % 15 == 0) std::cout &lt;&lt; "FizzBuzz/n";
+        else if (i % 3 == 0) std::cout &lt;&lt; "Fizz/n";
+        else if (i % 5 == 0) std::cout &lt;&lt; "Buzz/n";
+        else std::cout &lt;&lt; i &lt;&lt; "/n";
+    }
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	for i := 1; i &lt;= 100; i++ {
+		switch {
+		case i%15 == 0:
+			fmt.Println("FizzBuzz")
+		case i%3 == 0:
+			fmt.Println("Fizz")
+		case i%5 == 0:
+			fmt.Println("Buzz")
+		default:
+			fmt.Println(i)
+		}
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">for i in range(1, 101):
+    if i % 15 == 0: print("FizzBuzz")
+    elif i % 3 == 0: print("Fizz")
+    elif i % 5 == 0: print("Buzz")
+    else: print(i)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
+  if (i % 15 == 0) println("FizzBuzz")
+  else if (i % 3 == 0) println("Fizz")
+  else if (i % 5 == 0) println("Buzz")
+  else println(i)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
+  if i % 15 == 0 then println("FizzBuzz")
+  else if i % 3 == 0 then println("Fizz")
+  else if i % 5 == 0 then println("Buzz")
+  else println(i)
+}
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">for (let i = 1; i &lt;= 100; i++) {
+  if (i % 15 === 0) console.log("FizzBuzz");
+  else if (i % 3 === 0) console.log("Fizz");
+  else if (i % 5 === 0) console.log("Buzz");
+  else console.log(i);
+}
+for (let i = 1; i &lt;= 100; i++) {
+  if (i % 15 === 0) console.log("FizzBuzz");
+  else if (i % 3 === 0) console.log("Fizz");
+  else if (i % 5 === 0) console.log("Buzz");
+  else console.log(i);
+}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="intermediate_exercises">
+            <div class="topic-header" onclick="app.toggleTopic('intermediate_exercises')">
+                <h2>Intermediate Exercises</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">A set of exercises designed for intermediate learners to practice more complex programming concepts.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="reverse_string">
+            <div class="topic-header" onclick="app.toggleTopic('reverse_string')">
+                <h3>Reverse a String</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that reverses a given string.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/reverse_string" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="binary_search">
+            <div class="topic-header" onclick="app.toggleTopic('binary_search')">
+                <h3>Binary Search</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement the binary search algorithm to find the index of a target value in a sorted array.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/binary_search" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="merge_sort">
+            <div class="topic-header" onclick="app.toggleTopic('merge_sort')">
+                <h3>Merge Sort</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement the merge sort algorithm to sort an array.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/merge_sort" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="anagram_check">
+            <div class="topic-header" onclick="app.toggleTopic('anagram_check')">
+                <h3>Anagram Check</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Write a program that checks if two strings are anagrams of each other.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/anagram_check" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="stack_implementation">
+            <div class="topic-header" onclick="app.toggleTopic('stack_implementation')">
+                <h3>Stack Implementation</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement a stack with basic operations such as push, pop, and peek.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/stack_implementation" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="queue_implementation">
+            <div class="topic-header" onclick="app.toggleTopic('queue_implementation')">
+                <h3>Queue Implementation</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement a queue with basic operations such as enqueue, dequeue, and peek.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/queue_implementation" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="binary_tree_traversal">
+            <div class="topic-header" onclick="app.toggleTopic('binary_tree_traversal')">
+                <h3>Binary Tree Traversal</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement in-order, pre-order, and post-order traversal of a binary tree.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/binary_tree_traversal" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer')">
+                <h3>Divide and Conquer: Quick Sort</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement the quick sort algorithm using the divide and conquer approach.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/quick_sort" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="greedy_algorithm_huffman">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_huffman')">
+                <h3>Greedy Algorithm: Huffman Coding</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement Huffman coding for data compression using a greedy algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/huffman_coding" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="backtracking_sudoku">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_sudoku')">
+                <h3>Backtracking: Sudoku Solver</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Solve a Sudoku puzzle using backtracking.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/sudoku_solver" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="dynamic_programming_longest_common_subsequence">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_longest_common_subsequence')">
+                <h3>Dynamic Programming: Longest Common Subsequence</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find the longest common subsequence of two strings using dynamic programming.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/longest_common_subsequence" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer_closest_pair">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_closest_pair')">
+                <h3>Divide and Conquer: Closest Pair of Points</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find the closest pair of points in a 2D plane using a divide and conquer algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/closest_pair_of_points" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="greedy_algorithm_kruskal">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_kruskal')">
+                <h3>Greedy Algorithm: Kruskal's Algorithm</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement Kruskal's algorithm to find the minimum spanning tree of a graph.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/kruskal_algorithm" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="backtracking_permutations">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_permutations')">
+                <h3>Backtracking: Permutations of a String</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Generate all permutations of a given string using backtracking.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/string_permutations" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="dynamic_programming_coin_change">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_coin_change')">
+                <h3>Dynamic Programming: Coin Change Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Determine the number of ways to make change for a given amount using a set of coin denominations.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/coin_change_problem" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer_matrix_multiply">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_matrix_multiply')">
+                <h3>Divide and Conquer: Matrix Multiplication</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement matrix multiplication using the divide and conquer approach.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/matrix_multiply" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="backtracking_combination_sum">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_combination_sum')">
+                <h3>Backtracking: Combination Sum</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find all unique combinations of numbers that sum up to a target value using backtracking.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/combination_sum" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="dynamic_programming_edit_distance">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_edit_distance')">
+                <h3>Dynamic Programming: Edit Distance</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Calculate the edit distance (Levenshtein distance) between two strings using dynamic programming.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/edit_distance" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer_count_inversions">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_count_inversions')">
+                <h3>Divide and Conquer: Count Inversions in an Array</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Count the number of inversions in an array using a divide and conquer algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/count_inversions" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="greedy_algorithm_job_scheduling">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_job_scheduling')">
+                <h3>Greedy Algorithm: Job Scheduling Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Schedule jobs to maximize profit using a greedy algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/job_scheduling_problem" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="backtracking_subset_sum">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_subset_sum')">
+                <h3>Backtracking: Subset Sum Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Determine if there is a subset of a given set of numbers that sums up to a target value using backtracking.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/subset_sum_problem" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="dynamic_programming_longest_increasing_subsequence">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_longest_increasing_subsequence')">
+                <h3>Dynamic Programming: Longest Increasing Subsequence</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find the length of the longest increasing subsequence in an array using dynamic programming.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/longest_increasing_subsequence" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer_count_occurrences">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_count_occurrences')">
+                <h3>Divide and Conquer: Count Occurrences in a Sorted Array</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Count the number of occurrences of a target value in a sorted array using a divide and conquer algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/count_occurrences" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="greedy_algorithm_fractional_knapsack">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_fractional_knapsack')">
+                <h3>Greedy Algorithm: Fractional Knapsack Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Solve the fractional knapsack problem using a greedy algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/fractional_knapsack_problem" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="dynamic_programming_palindrome_partitioning">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_palindrome_partitioning')">
+                <h3>Dynamic Programming: Palindrome Partitioning</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Partition a string into all possible palindrome partitions using dynamic programming.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/palindrome_partitioning" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="divide_and_conquer_majority_element">
+            <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_majority_element')">
+                <h3>Divide and Conquer: Majority Element</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find the majority element in an array using a divide and conquer algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/majority_element" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="greedy_algorithm_huffman_coding">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_huffman_coding')">
+                <h3>Greedy Algorithm: Huffman Coding</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement Huffman coding for data compression using a greedy algorithm.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/huffman_coding" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="backtracking_word_search">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_word_search')">
+                <h3>Backtracking: Word Search</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Determine if a given word exists in a 2D grid of characters using backtracking.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/word_search" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="linked_list">
+            <div class="topic-header" onclick="app.toggleTopic('linked_list')">
+                <h3>Linked List Implementation</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement a singly linked list with basic operations such as insertion, deletion, and traversal.</p><div class="note note-error"><div class="note-content"><span class="snippet-error">Snippet Error:</span> "exercises/intermediate/linked_list" missing</div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="array_reverse">
+            <div class="topic-header" onclick="app.toggleTopic('array_reverse')">
+                <h3>Array Reverse</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Reverse an array in place.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/array_reverse"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::vector&lt;int&gt; arr = {1, 2, 3, 4, 5};
+    std::reverse(arr.begin(), arr.end());
+    
+    for (int x : arr) {
+        std::cout &lt;&lt; x &lt;&lt; " ";
+    }
+    std::cout &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	arr := []int{1, 2, 3, 4, 5}
+	for i, j := 0, len(arr)-1; i &lt; j; i, j = i+1, j-1 {
+		arr[i], arr[j] = arr[j], arr[i]
+	}
+	fmt.Println(arr)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">arr = [1, 2, 3, 4, 5]
+arr.reverse()  # or arr = arr[::-1]
+print(arr)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
+val reversed = arr.reverse
+println(reversed)
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
+val reversed = arr.reverse
+println(reversed)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const arr = [1, 2, 3, 4, 5];
+arr.reverse();
+console.log(arr);
+const arr = [1, 2, 3, 4, 5];
+arr.reverse();
+console.log(arr);
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="fibonacci">
+            <div class="topic-header" onclick="app.toggleTopic('fibonacci')">
+                <h3>Fibonacci Sequence</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Generate the Fibonacci sequence up to a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/fibonacci"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    int n;
+    std::cout &lt;&lt; "Enter number of terms: ";
+    std::cin &gt;&gt; n;
+    
+    long long a = 0, b = 1;
+    for (int i = 0; i &lt; n; ++i) {
+        std::cout &lt;&lt; a &lt;&lt; " ";
+        long long temp = a + b;
+        a = b;
+        b = temp;
+    }
+    std::cout &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	var n int
+	fmt.Print("Enter number of terms: ")
+	fmt.Scan(&n)
+	a, b := 0, 1
+	for i := 0; i &lt; n; i++ {
+		fmt.Print(a, " ")
+		a, b = b, a+b
+	}
+	fmt.Println()
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter number of terms: "))
+a, b = 0, 1
+for _ in range(n):
+    print(a, end=" ")
+    a, b = b, a + b
+print()
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+var a = 0L
+var b = 1L
+for (_ &lt;- 0 until n) {
+  print(a + " ")
+  val temp = a + b
+  a = b
+  b = temp
+}
+println()
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+var a = 0L
+var b = 1L
+for _ &lt;- 0 until n do
+  print(a + " ")
+  val temp = a + b
+  a = b
+  b = temp
+println()
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const n = parseInt(process.argv[2] || "10");
+let a = 0, b = 1;
+for (let i = 0; i &lt; n; i++) {
+  process.stdout.write(a + " ");
+  [a, b] = [b, a + b];
+}
+console.log();
+const n = parseInt(process.argv[2] || "10");
+let a = 0, b = 1;
+for (let i = 0; i &lt; n; i++) {
+  process.stdout.write(a + " ");
+  [a, b] = [b, a + b];
+}
+console.log();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="palindrome">
+            <div class="topic-header" onclick="app.toggleTopic('palindrome')">
+                <h3>Palindrome Check</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Check if a string is a palindrome.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/palindrome"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cctype&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main() {
+    std::string s = "A man, a plan, a canal: Panama";
+    std::string cleaned;
+    for (char c : s) {
+        if (std::isalnum(static_cast&lt;unsigned char&gt;(c))) {
+            cleaned += std::tolower(static_cast&lt;unsigned char&gt;(c));
+        }
+    }
+    
+    bool isPalin = std::string(cleaned.rbegin(), cleaned.rend()) == cleaned;
+    std::cout &lt;&lt; (isPalin ? "Palindrome" : "Not a palindrome") &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"regexp"
+	"strings"
+)
+
+func main() {
+	s := "A man, a plan, a canal: Panama"
+	re := regexp.MustCompile(`[^a-zA-Z0-9]`)
+	cleaned := strings.ToLower(re.ReplaceAllString(s, ""))
+
+	rev := ""
+	for _, c := range cleaned {
+		rev = string(c) + rev
+	}
+
+	if cleaned == rev {
+		fmt.Println("Palindrome")
+	} else {
+		fmt.Println("Not a palindrome")
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">s = "A man, a plan, a canal: Panama"
+cleaned = "".join(c.lower() for c in s if c.isalnum())
+is_palin = cleaned == cleaned[::-1]
+print("Palindrome" if is_palin else "Not a palindrome")
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
+val cleaned = s.filter(_.isLetterOrDigit).toLowerCase
+val isPalin = cleaned == cleaned.reverse
+println(if (isPalin) "Palindrome" else "Not a palindrome")
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
+val cleaned = s.filter(_.isLetterOrDigit).toLowerCase
+val isPalin = cleaned == cleaned.reverse
+println(if isPalin then "Palindrome" else "Not a palindrome")
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const s = "A man, a plan, a canal: Panama";
+const cleaned = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+const isPalin = cleaned === cleaned.split("").reverse().join("");
+console.log(isPalin ? "Palindrome" : "Not a palindrome");
+function isPalindrome(s: string): boolean {
+  const cleaned = s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return cleaned === cleaned.split("").reverse().join("");
+}
+
+console.log(isPalindrome("A man, a plan, a canal: Panama"));
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="advanced_exercises">
+            <div class="topic-header" onclick="app.toggleTopic('advanced_exercises')">
+                <h2>Advanced Exercises</h2>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section text_style  " id="graph_traversal">
+            <div class="topic-header" onclick="app.toggleTopic('graph_traversal')">
+                <h3>Graph Traversal: Depth-First Search and Breadth-First Search</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement depth-first search (DFS) and breadth-first search (BFS) algorithms for graph traversal.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/graph_traversal"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int main(){
+    vector&lt;vector&lt;int&gt;&gt; g = {{1,2},{0,3},{0,3},{1,2}}; // simple graph
+    // BFS
+    vector&lt;int&gt; vis(4); queue&lt;int&gt;q; q.push(0); vis[0]=1;
+    cout&lt;&lt;"BFS:";
+    while(!q.empty()){int u=q.front();q.pop(); cout&lt;&lt;" "&lt;&lt;u; for(int v:g[u]) if(!vis[v]){vis[v]=1; q.push(v);} }
+    cout&lt;&lt;"/n";
+    // DFS
+    vector&lt;int&gt; seen(4); function&lt;void(int)&gt; dfs=[&](int u){ seen[u]=1; cout&lt;&lt;u&lt;&lt;" "; for(int v:g[u]) if(!seen[v]) dfs(v); };
+    cout&lt;&lt;"DFS: "; dfs(0); cout&lt;&lt;"/n"; }
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	g := [][]int{{1, 2}, {0, 3}, {0, 3}, {1, 2}}
+	// BFS
+	q := []int{0}
+	seen := map[int]bool{0: true}
+	fmt.Print("BFS:")
+	for len(q) &gt; 0 {
+		u := q[0]
+		q = q[1:]
+		fmt.Print(" ", u)
+		for _, v := range g[u] {
+			if !seen[v] {
+				seen[v] = true
+				q = append(q, v)
+			}
+		}
+	}
+	fmt.Println()
+	// DFS
+	fmt.Print("DFS: ")
+	seen = map[int]bool{}
+	var dfs func(int)
+	dfs = func(u int) {
+		seen[u] = true
+		fmt.Print(u, " ")
+		for _, v := range g[u] {
+			if !seen[v] {
+				dfs(v)
+			}
+		}
+	}
+	dfs(0)
+	fmt.Println()
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
+
+g = {0:[1,2],1:[0,3],2:[0,3],3:[1,2]}
+print('BFS:', end=' ')
+q=deque([0]); seen={0}
+while q:
+    u=q.popleft(); print(u, end=' ')
+    for v in g[u]:
+        if v not in seen: seen.add(v); q.append(v)
+print('/nDFS:', end=' ')
+seen=set()
+import sys
+sys.setrecursionlimit(10000)
+def dfs(u):
+    seen.add(u); print(u, end=' ')
+    for v in g[u]:
+        if v not in seen: dfs(v)
+
+dfs(0)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object GraphTraversal extends App{
+  val g = Array(Array(1,2),Array(0,3),Array(0,3),Array(1,2))
+  println("BFS:")
+  import scala.collection.mutable.Queue
+  val q = Queue(0); val seen = scala.collection.mutable.Set(0)
+  while(q.nonEmpty){ val u=q.dequeue(); print(u+" "); for(v&lt;-g(u)) if(!seen(v)){ seen += v; q.enqueue(v) } }
+  println();
+  print("DFS: "); val s = scala.collection.mutable.Set[Int]()
+  def dfs(u:Int):Unit={ s += u; print(u+" "); for(v&lt;-g(u)) if(!s(v)) dfs(v) }
+  dfs(0); println();
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runGraph() =
+  val g = Array(Array(1,2),Array(0,3),Array(0,3),Array(1,2))
+  print("BFS:")
+  import scala.collection.mutable.Queue
+  val q = Queue(0); val seen = scala.collection.mutable.Set(0)
+  while q.nonEmpty do val u = q.dequeue(); print(s" $u"); for v &lt;- g(u) do if !seen(v) then seen += v; q.enqueue(v)
+  println()
+  print("DFS:"); val s = scala.collection.mutable.Set[Int]()
+  def dfs(u:Int):Unit = { s += u; print(s" $u"); for v &lt;- g(u) do if !s(v) then dfs(v) }
+  dfs(0); println()
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const g: number[][] = [[1,2],[0,3],[0,3],[1,2]]
+console.log('BFS:');
+{
+  const q = [0]; const seen = new Set([0]);
+  while(q.length){ const u = q.shift()!; process.stdout.write(' '+u); for(const v of g[u]) if(!seen.has(v)){ seen.add(v); q.push(v); } }
+  console.log();
+}
+console.log('DFS:');
+{ const seen = new Set&lt;number&gt;(); function dfs(u:number){ seen.add(u); process.stdout.write(' '+u); for(const v of g[u]) if(!seen.has(v)) dfs(v); } dfs(0); console.log(); }
+export {}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="dijkstra_algorithm">
+            <div class="topic-header" onclick="app.toggleTopic('dijkstra_algorithm')">
+                <h3>Dijkstra's Algorithm for Shortest Path</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Implement Dijkstra's algorithm to find the shortest path in a weighted graph.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/dijkstra_algorithm"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int main(){
+    int n=5; vector&lt;vector&lt;pair&lt;int,int&gt;&gt;&gt; g(n);
+    g[0].push_back({1,10}); g[0].push_back({2,3}); g[2].push_back({1,1}); g[1].push_back({3,2}); g[2].push_back({3,8});
+    const long long INF=1e18; vector&lt;long long&gt; d(n,INF); d[0]=0; priority_queue&lt;pair&lt;long long,int&gt;,vector&lt;pair&lt;long long,int&gt;&gt;,greater&lt;pair&lt;long long,int&gt;&gt;&gt;pq; pq.push({0,0});
+    while(!pq.empty()){ auto [dist,u]=pq.top(); pq.pop(); if(dist!=d[u]) continue; for(auto [v,w]:g[u]) if(d[v]&gt;d[u]+w){ d[v]=d[u]+w; pq.push({d[v],v}); } }
+    for(int i=0;i&lt;n;i++) cout&lt;&lt;"dist["&lt;&lt;i&lt;&lt;"]="&lt;&lt;d[i]&lt;&lt;"/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"container/heap"
+	"fmt"
+)
+
+type Item struct {
+	v int
+	d int
+}
+type PQ []Item
+
+func (p PQ) Len() int            { return len(p) }
+func (p PQ) Less(i, j int) bool  { return p[i].d &lt; p[j].d }
+func (p PQ) Swap(i, j int)       { p[i], p[j] = p[j], p[i] }
+func (p *PQ) Push(x interface{}) { *p = append(*p, x.(Item)) }
+func (p *PQ) Pop() interface{}   { old := *p; n := len(old); x := old[n-1]; *p = old[:n-1]; return x }
+
+func dijkstra(src int, g map[int][][]int) map[int]int {
+	INF := 1 &lt;&lt; 30
+	dist := map[int]int{}
+	for k := range g {
+		dist[k] = INF
+	}
+	dist[src] = 0
+	pq := &PQ{{v: src, d: 0}}
+	heap.Init(pq)
+	for pq.Len() &gt; 0 {
+		it := heap.Pop(pq).(Item)
+		if it.d != dist[it.v] {
+			continue
+		}
+		for _, e := range g[it.v] {
+			v := e[0]
+			w := e[1]
+			if dist[v] &gt; it.d+w {
+				dist[v] = it.d + w
+				heap.Push(pq, Item{v: v, d: dist[v]})
+			}
+		}
+	}
+	return dist
+}
+func main() {
+	g := map[int][][]int{0: {{1, 10}, {2, 3}}, 1: {{3, 2}}, 2: {{1, 1}, {3, 8}}, 3: {}}
+	fmt.Println(dijkstra(0, g))
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import heapq
+
+g = {0:[(1,10),(2,3)], 1:[(3,2)], 2:[(1,1),(3,8)], 3:[]}
+INF=10**9
+
+def dijkstra(src):
+    dist = {v:INF for v in g}
+    dist[src]=0; pq=[(0,src)]
+    while pq:
+        d,u = heapq.heappop(pq)
+        if d!=dist[u]: continue
+        for v,w in g[u]:
+            if dist[v]&gt;d+w:
+                dist[v]=d+w; heapq.heappush(pq,(dist[v],v))
+    return dist
+
+print(dijkstra(0))
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Dijkstra extends App{
+  val g = Map(0-&gt;List((1,10),(2,3)),1-&gt;List((3,2)),2-&gt;List((1,1),(3,8)),3-&gt;List())
+  import scala.collection.mutable.PriorityQueue
+  implicit val ord = Ordering.by[(Int,Int),Int](-_._2)
+  def dijkstra(src:Int) ={
+    val dist = scala.collection.mutable.Map(g.keys.toSeq.map(k=&gt;k-&gt;Int.MaxValue):_*); dist(src)=0
+    val pq = PriorityQueue((src,0))
+    while(pq.nonEmpty){ val (u,du)=pq.dequeue(); if(du==dist(u)) for((v,w)&lt;-g(u)) if(dist(v)&gt;du+w){ dist(v)=du+w; pq.enqueue((v,dist(v))) } }
+    dist
+  }
+  println(dijkstra(0))
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runDijkstra() =
+  val g = Map(0-&gt;List((1,10),(2,3)),1-&gt;List((3,2)),2-&gt;List((1,1),(3,8)),3-&gt;List())
+  import scala.collection.mutable.PriorityQueue
+  given ord: Ordering[(Int,Int)] = Ordering.by(-_._2)
+  def dijkstra(src:Int) =
+    val dist = scala.collection.mutable.Map(g.keys.toSeq.map(k=&gt;k-&gt;Int.MaxValue):_*)
+    dist(src)=0
+    val pq = PriorityQueue((src,0))
+    while pq.nonEmpty do
+      val (u,du) = pq.dequeue()
+      if du==dist(u) then for ( (v,w) &lt;- g(u) ) if dist(v) &gt; du + w then dist(v)=du+w; pq.enqueue((v,dist(v)))
+    dist
+  println(dijkstra(0))
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Edge = [number,number]
+const g: Record&lt;number,Edge[]&gt; = {0:[[1,10],[2,3]],1:[[3,2]],2:[[1,1],[3,8]],3:[]}
+const INF = 1e9
+function dijkstra(src:number){ const dist = new Map&lt;number,number&gt;(); for(const k in g) dist.set(Number(k), INF); dist.set(src,0);
+  const pq: [number,number][] = [[0,src]]
+  while(pq.length){ pq.sort((a,b)=&gt;a[0]-b[0]); const [d,u]=pq.shift()!; if(d!==dist.get(u)) continue; for(const [v,w] of g[u]) if((dist.get(v)??INF) &gt; d + w){ dist.set(v,d+w); pq.push([d+w,v]); } }
+  return Object.fromEntries(dist)
+}
+console.log(dijkstra(0))
+export {}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="dynamic_programming_knapsack">
+            <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_knapsack')">
+                <h3>Dynamic Programming: Knapsack Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Solve the 0/1 knapsack problem using dynamic programming.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/knapsack_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;int main(){
+    vector&lt;int&gt; wt={3,4,5}, val={30,50,60}; int W=8, n=wt.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n+1, vector&lt;int&gt;(W+1));
+    for(int i=1;i&lt;=n;i++) for(int w=0;w&lt;=W;w++) dp[i][w]=dp[i-1][w];
+    for(int i=1;i&lt;=n;i++) for(int w=wt[i-1];w&lt;=W;w++) dp[i][w]=max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1]);
+    cout&lt;&lt;dp[n][W]&lt;&lt;"/n";
+}
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	wt := []int{3, 4, 5}
+	val := []int{30, 50, 60}
+	W := 8
+	n := len(wt)
+	dp := make([][]int, n+1)
+	for i := 0; i &lt;= n; i++ {
+		dp[i] = make([]int, W+1)
+	}
+	for i := 1; i &lt;= n; i++ {
+		for w := 0; w &lt;= W; w++ {
+			dp[i][w] = dp[i-1][w]
+			if w &gt;= wt[i-1] {
+				if cand := dp[i-1][w-wt[i-1]] + val[i-1]; cand &gt; dp[i][w] {
+					dp[i][w] = cand
+				}
+			}
+		}
+	}
+	fmt.Println(dp[n][W])
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">wt=[3,4,5]
+val=[30,50,60]
+W=8
+n=len(wt)
+dp=[[0]*(W+1) for _ in range(n+1)]
+for i in range(1,n+1):
+    for w in range(W+1):
+        dp[i][w]=dp[i-1][w]
+        if w&gt;=wt[i-1]: dp[i][w]=max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1])
+print(dp[n][W])
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Knapsack extends App{
+  val wt = Array(3,4,5); val v = Array(30,50,60); val W=8; val n=wt.length
+  val dp = Array.fill(n+1, W+1)(0)
+  for(i&lt;-1+1 to n) for(w&lt;-0 to W){ dp(i)(w)=dp(i-1)(w); if(w&gt;=wt(i-1)) dp(i)(w)=math.max(dp(i)(w), dp(i-1)(w-wt(i-1))+v(i-1)) }
+  println(dp(n)(W))
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runKnapsack() =
+  val wt = Array(3,4,5); val v = Array(30,50,60); val W=8; val n=wt.length
+  val dp = Array.fill(n+1, W+1)(0)
+  for i &lt;- 1 to n do for w &lt;- 0 to W do dp(i)(w) = math.max(dp(i)(w), if w&gt;=wt(i-1) then dp(i-1)(w-wt(i-1))+v(i-1) else dp(i-1)(w))
+  println(dp(n)(W))
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const wt = [3,4,5], val=[30,50,60], W=8
+const n=wt.length
+const dp: number[][] = Array.from({length:n+1},()=&gt;Array(W+1).fill(0))
+for(let i=1;i&lt;=n;i++) for(let w=0; w&lt;=W; w++){ dp[i][w]=dp[i-1][w]; if(w&gt;=wt[i-1]) dp[i][w]=Math.max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1]) }
+console.log(dp[n][W])
+export {}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="backtracking_n_queens">
+            <div class="topic-header" onclick="app.toggleTopic('backtracking_n_queens')">
+                <h3>Backtracking: N-Queens Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Solve the N-Queens problem using backtracking.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/n_queens_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int N=8; vector&lt;int&gt; col;
+bool ok(int r,int c){ for(int i=0;i&lt;r;i++) if(col[i]==c||abs(col[i]-c)==r-i) return false; return true; }
+void solve(int r){ if(r==N){ for(int i=0;i&lt;N;i++) cout&lt;&lt;col[i]&lt;&lt;" "; cout&lt;&lt;"/n"; exit(0);} for(int c=0;c&lt;N;c++) if(ok(r,c)){ col[r]=c; solve(r+1); }}
+int main(){ col.assign(N,0); solve(0); }
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+import "fmt"
+var N=8
+var cols = make([]int, N)
+func ok(r,c int) bool{ for i:=0;i&lt;r;i++{ if cols[i]==c || abs(cols[i]-c)==r-i { return false } } return true }
+func abs(x int) int{ if x&lt;0 { return -x }; return x }
+func solve(r int) bool{ if r==N { fmt.Println(cols); return true }; for c:=0;c&lt;N;c++{ if ok(r,c){ cols[r]=c; if solve(r+1){ return true } } } return false }
+func main(){ solve(0) }
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">N=8
+cols=[0]*N
+
+def ok(r,c):
+    for i in range(r):
+        if cols[i]==c or abs(cols[i]-c)==r-i: return False
+    return True
+
+def solve(r):
+    if r==N:
+        print(cols); return True
+    for c in range(N):
+        if ok(r,c):
+            cols[r]=c
+            if solve(r+1): return True
+    return False
+
+if __name__=='__main__': solve(0)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object NQueens extends App{
+  val N=8; val cols = Array.fill(N)(0)
+  def ok(r:Int,c:Int)= (0 until r).forall(i=&gt; cols(i)!=c && math.abs(cols(i)-c)!=r-i)
+  def solve(r:Int):Boolean = if(r==N){ println(cols.mkString(",")); true } else { for(c&lt;-0 until N) if(ok(r,c)){ cols(r)=c; if(solve(r+1)) return true }; false }
+  solve(0)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runNQueens() =
+  val N = 8
+  val cols = Array.fill(N)(0)
+  def ok(r:Int,c:Int) = (0 until r).forall(i =&gt; cols(i)!=c && math.abs(cols(i)-c)!=r-i)
+  def solve(r:Int):Boolean =
+    if r==N then println(cols.mkString(",")); true
+    else
+      for c &lt;- 0 until N do
+        if ok(r,c) then cols(r)=c; if solve(r+1) then return true
+      false
+  solve(0)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const N = 8
+const cols = new Array&lt;number&gt;(N).fill(0)
+function ok(r:number,c:number){ for(let i=0;i&lt;r;i++) if(cols[i]===c || Math.abs(cols[i]-c)===r-i) return false; return true }
+function solve(r=0): boolean{ if(r===N){ console.log(cols); return true } for(let c=0;c&lt;N;c++){ if(ok(r,c)){ cols[r]=c; if(solve(r+1)) return true } } return false }
+solve(); export {}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="greedy_algorithm_activity_selection">
+            <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_activity_selection')">
+                <h3>Greedy Algorithm: Activity Selection Problem</h3>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Solve the activity selection problem using a greedy algorithm.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/activity_selection_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;int main(){ vector&lt;pair&lt;int,int&gt;&gt; acts={{1,4},{3,5},{0,6},{5,7},{8,9},{5,9}}; sort(acts.begin(), acts.end(), [](auto &a, auto &b){ return a.second &lt; b.second; }); int last= -1; cout&lt;&lt;"Selected:"; for(auto &p:acts) if(p.first&gt;last){ cout&lt;&lt;" ("&lt;&lt;p.first&lt;&lt;","&lt;&lt;p.second&lt;&lt;")"; last=p.second; } cout&lt;&lt;"/n"; }
+</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	acts := [][2]int{{1, 4}, {3, 5}, {0, 6}, {5, 7}, {8, 9}, {5, 9}}
+	// sort by end (simple bubble for brevity)
+	for i := 0; i &lt; len(acts); i++ {
+		for j := i + 1; j &lt; len(acts); j++ {
+			if acts[j][1] &lt; acts[i][1] {
+				acts[i], acts[j] = acts[j], acts[i]
+			}
+		}
+	}
+	last := -1
+	res := [][2]int{}
+	for _, a := range acts {
+		if a[0] &gt; last {
+			res = append(res, a)
+			last = a[1]
+		}
+	}
+	fmt.Println("Selected", res)
+}
+</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">acts=[(1,4),(3,5),(0,6),(5,7),(8,9),(5,9)]
+acts.sort(key=lambda x:x[1])
+res=[]; last=-1
+for s,e in acts:
+    if s&gt;last: res.append((s,e)); last=e
+print('Selected',res)
+</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object ActivitySelection extends App{
+  val acts = Array((1,4),(3,5),(0,6),(5,7),(8,9),(5,9))
+  val sorted = acts.sortBy(_._2)
+  var last = -1; val res = scala.collection.mutable.ArrayBuffer[(Int,Int)]()
+  for((s,e) &lt;- sorted) if(s&gt;last){ res += ((s,e)); last = e }
+  println("Selected " + res)
+}
+</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runActivity() =
+  val acts = Array((1,4),(3,5),(0,6),(5,7),(8,9),(5,9))
+  val sorted = acts.sortBy(_._2)
+  var last = -1
+  val res = scala.collection.mutable.ArrayBuffer.empty[(Int,Int)]
+  for ((s,e) &lt;- sorted) if s &gt; last then res += ((s,e)); last = e
+  println("Selected " + res)
+</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const acts: [number,number][] = [[1,4],[3,5],[0,6],[5,7],[8,9],[5,9]]
+acts.sort((a,b)=&gt;a[1]-b[1])
+const res: [number,number][] = []
+let last=-1
+for(const [s,e] of acts) if(s&gt;last){ res.push([s,e]); last=e }
+console.log('Selected', res)
+export {}
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="beginner_exercises" data-depth="1"><span onclick="app.focusTopic('beginner_exercises')">Beginner Exercises</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="hello_world" data-depth="2"><span onclick="app.focusTopic('hello_world')">Hello World</span></li><li class="toc-item depth-2" data-topic-id="sum_of_numbers" data-depth="2"><span onclick="app.focusTopic('sum_of_numbers')">Sum of Numbers</span></li><li class="toc-item depth-2" data-topic-id="factorial" data-depth="2"><span onclick="app.focusTopic('factorial')">Factorial Calculation</span></li><li class="toc-item depth-2" data-topic-id="prime_check" data-depth="2"><span onclick="app.focusTopic('prime_check')">Prime Number Check</span></li><li class="toc-item depth-2" data-topic-id="max_of_array" data-depth="2"><span onclick="app.focusTopic('max_of_array')">Maximum of an Array</span></li><li class="toc-item depth-2" data-topic-id="even_odd" data-depth="2"><span onclick="app.focusTopic('even_odd')">Even-Odd Check</span></li><li class="toc-item depth-2" data-topic-id="fizz_buzz" data-depth="2"><span onclick="app.focusTopic('fizz_buzz')">FizzBuzz</span></li></ul></li><li class="toc-item depth-1" data-topic-id="intermediate_exercises" data-depth="1"><span onclick="app.focusTopic('intermediate_exercises')">Intermediate Exercises</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="reverse_string" data-depth="2"><span onclick="app.focusTopic('reverse_string')">Reverse a String</span></li><li class="toc-item depth-2" data-topic-id="binary_search" data-depth="2"><span onclick="app.focusTopic('binary_search')">Binary Search</span></li><li class="toc-item depth-2" data-topic-id="merge_sort" data-depth="2"><span onclick="app.focusTopic('merge_sort')">Merge Sort</span></li><li class="toc-item depth-2" data-topic-id="anagram_check" data-depth="2"><span onclick="app.focusTopic('anagram_check')">Anagram Check</span></li><li class="toc-item depth-2" data-topic-id="stack_implementation" data-depth="2"><span onclick="app.focusTopic('stack_implementation')">Stack Implementation</span></li><li class="toc-item depth-2" data-topic-id="queue_implementation" data-depth="2"><span onclick="app.focusTopic('queue_implementation')">Queue Implementation</span></li><li class="toc-item depth-2" data-topic-id="binary_tree_traversal" data-depth="2"><span onclick="app.focusTopic('binary_tree_traversal')">Binary Tree Traversal</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer')">Divide and Conquer: Quick Sort</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_huffman" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_huffman')">Greedy Algorithm: Huffman Coding</span></li><li class="toc-item depth-2" data-topic-id="backtracking_sudoku" data-depth="2"><span onclick="app.focusTopic('backtracking_sudoku')">Backtracking: Sudoku Solver</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_longest_common_subsequence" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_longest_common_subsequence')">Dynamic Programming: Longest Common Subsequence</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer_closest_pair" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer_closest_pair')">Divide and Conquer: Closest Pair of Points</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_kruskal" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_kruskal')">Greedy Algorithm: Kruskal's Algorithm</span></li><li class="toc-item depth-2" data-topic-id="backtracking_permutations" data-depth="2"><span onclick="app.focusTopic('backtracking_permutations')">Backtracking: Permutations of a String</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_coin_change" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_coin_change')">Dynamic Programming: Coin Change Problem</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer_matrix_multiply" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer_matrix_multiply')">Divide and Conquer: Matrix Multiplication</span></li><li class="toc-item depth-2" data-topic-id="backtracking_combination_sum" data-depth="2"><span onclick="app.focusTopic('backtracking_combination_sum')">Backtracking: Combination Sum</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_edit_distance" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_edit_distance')">Dynamic Programming: Edit Distance</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer_count_inversions" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer_count_inversions')">Divide and Conquer: Count Inversions in an Array</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_job_scheduling" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_job_scheduling')">Greedy Algorithm: Job Scheduling Problem</span></li><li class="toc-item depth-2" data-topic-id="backtracking_subset_sum" data-depth="2"><span onclick="app.focusTopic('backtracking_subset_sum')">Backtracking: Subset Sum Problem</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_longest_increasing_subsequence" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_longest_increasing_subsequence')">Dynamic Programming: Longest Increasing Subsequence</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer_count_occurrences" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer_count_occurrences')">Divide and Conquer: Count Occurrences in a Sorted Array</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_fractional_knapsack" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_fractional_knapsack')">Greedy Algorithm: Fractional Knapsack Problem</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_palindrome_partitioning" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_palindrome_partitioning')">Dynamic Programming: Palindrome Partitioning</span></li><li class="toc-item depth-2" data-topic-id="divide_and_conquer_majority_element" data-depth="2"><span onclick="app.focusTopic('divide_and_conquer_majority_element')">Divide and Conquer: Majority Element</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_huffman_coding" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_huffman_coding')">Greedy Algorithm: Huffman Coding</span></li><li class="toc-item depth-2" data-topic-id="backtracking_word_search" data-depth="2"><span onclick="app.focusTopic('backtracking_word_search')">Backtracking: Word Search</span></li><li class="toc-item depth-2" data-topic-id="linked_list" data-depth="2"><span onclick="app.focusTopic('linked_list')">Linked List Implementation</span></li><li class="toc-item depth-2" data-topic-id="array_reverse" data-depth="2"><span onclick="app.focusTopic('array_reverse')">Array Reverse</span></li><li class="toc-item depth-2" data-topic-id="fibonacci" data-depth="2"><span onclick="app.focusTopic('fibonacci')">Fibonacci Sequence</span></li><li class="toc-item depth-2" data-topic-id="palindrome" data-depth="2"><span onclick="app.focusTopic('palindrome')">Palindrome Check</span></li></ul></li><li class="toc-item depth-1" data-topic-id="advanced_exercises" data-depth="1"><span onclick="app.focusTopic('advanced_exercises')">Advanced Exercises</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="graph_traversal" data-depth="2"><span onclick="app.focusTopic('graph_traversal')">Graph Traversal: Depth-First Search and Breadth-First Search</span></li><li class="toc-item depth-2" data-topic-id="dijkstra_algorithm" data-depth="2"><span onclick="app.focusTopic('dijkstra_algorithm')">Dijkstra's Algorithm for Shortest Path</span></li><li class="toc-item depth-2" data-topic-id="dynamic_programming_knapsack" data-depth="2"><span onclick="app.focusTopic('dynamic_programming_knapsack')">Dynamic Programming: Knapsack Problem</span></li><li class="toc-item depth-2" data-topic-id="backtracking_n_queens" data-depth="2"><span onclick="app.focusTopic('backtracking_n_queens')">Backtracking: N-Queens Problem</span></li><li class="toc-item depth-2" data-topic-id="greedy_algorithm_activity_selection" data-depth="2"><span onclick="app.focusTopic('greedy_algorithm_activity_selection')">Greedy Algorithm: Activity Selection Problem</span></li></ul></li></ul></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
+</body>
+</html>

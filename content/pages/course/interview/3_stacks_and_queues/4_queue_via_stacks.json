@@ -1,0 +1,50 @@
+{
+    "title": "Queue Via Stacks",
+    "description": "Queue Via Stacks",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Queue Via Stacks"
+        },
+        {
+            "type": "text",
+            "text": "Queue Via Stacks"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/03/04_queue_via_stacks/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_03_04_queue_via_stacks"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

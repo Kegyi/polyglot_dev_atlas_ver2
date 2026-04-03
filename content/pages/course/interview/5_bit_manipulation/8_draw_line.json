@@ -1,0 +1,50 @@
+{
+    "title": "Draw Line",
+    "description": "Draw Line",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Draw Line"
+        },
+        {
+            "type": "text",
+            "text": "Draw Line"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/05/08_draw_line/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_05_08_draw_line"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

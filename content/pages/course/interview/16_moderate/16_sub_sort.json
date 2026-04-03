@@ -1,0 +1,50 @@
+{
+    "title": "Sub Sort",
+    "description": "Sub Sort",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Sub Sort"
+        },
+        {
+            "type": "text",
+            "text": "Sub Sort"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/16/16_sub_sort/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_16_16_sub_sort"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

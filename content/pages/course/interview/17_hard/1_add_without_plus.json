@@ -1,0 +1,50 @@
+{
+    "title": "Add Without Plus",
+    "description": "Add Without Plus",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Add Without Plus"
+        },
+        {
+            "type": "text",
+            "text": "Add Without Plus"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/17/01_add_without_plus/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_17_01_add_without_plus"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "title": "Is Unique",
+    "description": "Determine if a string has all unique characters.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Is Unique"
+        },
+        {
+            "type": "text",
+            "text": "Determine if a string has all unique characters."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given a string, determine if it contains all unique characters. Return true if all characters are unique, and false otherwise."
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "\"abcde\" -> true (all characters are unique)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"hello\" -> false (character 'l' is repeated)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"\" -> true (empty string has no repeated characters)"
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_01_01_is_unique"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

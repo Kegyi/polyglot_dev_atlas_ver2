@@ -159,3 +159,14 @@ problems\grid_shortest_path\scala2.scala,problems_grid_shortest_path.scala
 problems\matrix_mul\scala2.scala,problems_matrix_mul.scala
 problems\top_k_frequent\scala2.scala,problems_top_k_frequent.scala
 problems\word_count\scala2.scala,problems_word_count.scala
+"exercises/intermediate/array_reverse.scala2","exercises_array_reverse.scala2"
+"exercises/beginner/even_odd.scala2","exercises_even_odd.scala2"
+"exercises/intermediate/fibonacci.scala2","exercises_fibonacci.scala2"
+"exercises/beginner/fizzbuzz.scala2","exercises_fizzbuzz.scala2"
+"exercises/beginner/hello_world.scala2","exercises_hello_world.scala2"
+"exercises/intermediate/palindrome.scala2","exercises_palindrome.scala2"
+"exercises/advanced/parallel_aggregator.scala2","exercises_parallel_aggregator.scala2"
+"exercises/advanced/stream_processor.scala2","exercises_stream_processor.scala2"
+"exercises/intermediate/temperature_converter.scala2","exercises_temperature_converter.scala2"
+"exercises/advanced/tree_traversal.scala2","exercises_tree_traversal.scala2"
+"exercises/intermediate/word_frequency.scala2","exercises_word_frequency.scala2"

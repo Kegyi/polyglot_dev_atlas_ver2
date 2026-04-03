@@ -1,0 +1,50 @@
+{
+    "title": "Overview",
+    "description": "A collection of interview tasks focused on strings and arrays, covering common problems and their solutions.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Interview Tasks: Strings and Arrays"
+        },
+        {
+            "type": "text",
+            "text": "This section contains a collection of interview tasks focused on strings and arrays, covering common problems and their solutions."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "is_unique",
+                    "title": "Is Unique",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Determine if a string has all unique characters."
+                        },
+                        {
+                            "type": "link",
+                            "href": "/course/interview/1_strings_and_arrays/1_is_unique/",
+                            "text": "View Task"
+                        }
+                    ]
+                },
+                {
+                    "id": "check_permutation",
+                    "title": "Check Permutation",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given two strings, determine if one is a permutation of the other."
+                        },
+                        {
+                            "type": "link",
+                            "href": "/course/interview/1_strings_and_arrays/2_check_permutation/",
+                            "text": "View Task"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

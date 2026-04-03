@@ -1,0 +1,2 @@
+@main def sumOfNumbers(n: Int = 10): Unit =
+  println(n * (n + 1) / 2)

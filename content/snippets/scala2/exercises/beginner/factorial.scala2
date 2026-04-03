@@ -1,0 +1,7 @@
+object Factorial {
+  def fact(n: Int): BigInt = if (n <= 1) 1 else (2 to n).map(BigInt(_)).product
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 5
+    println(fact(n))
+  }
+}

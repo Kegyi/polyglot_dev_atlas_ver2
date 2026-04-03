@@ -1,0 +1,50 @@
+{
+    "title": "Check Subtree",
+    "description": "Check Subtree",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Check Subtree"
+        },
+        {
+            "type": "text",
+            "text": "Check Subtree"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/04/10_check_subtree/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_04_10_check_subtree"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

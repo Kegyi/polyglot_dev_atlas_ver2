@@ -1,0 +1,16 @@
+object PrimeCheck {
+  def isPrime(n: Int): Boolean = {
+    if (n < 2) return false
+    if (n % 2 == 0) return n == 2
+    var i = 3
+    while (i * i <= n) {
+      if (n % i == 0) return false
+      i += 2
+    }
+    true
+  }
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 97
+    println(isPrime(n))
+  }
+}

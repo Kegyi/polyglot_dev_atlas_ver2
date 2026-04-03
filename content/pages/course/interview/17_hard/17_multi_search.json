@@ -1,0 +1,50 @@
+{
+    "title": "Multi Search",
+    "description": "Multi Search",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Multi Search"
+        },
+        {
+            "type": "text",
+            "text": "Multi Search"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/17/17_multi_search/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_17_17_multi_search"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

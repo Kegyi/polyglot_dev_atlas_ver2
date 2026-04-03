@@ -57,6 +57,7 @@ function initSelectionEngine() {
     // 3. Attach Event Listeners
     setupGlobalEvents();
     setupLanguageButtonEvents(langBtns);
+    setupCollapsibleCodeToggles();
     
     // 4. Initial Sync (Sets Root Attributes for CSS logic)
     updateUI();
@@ -216,5 +217,34 @@ function refreshContentBlocks() {
                 block.style.order = isPrimary ? "1" : "2";
             }
         });
+    });
+}
+
+/**
+ * Setup collapse toggles for code blocks emitted by the builder.
+ * Uses event delegation to toggle `.is-collapsed` on the wrapper.
+ */
+function setupCollapsibleCodeToggles() {
+    document.addEventListener('click', (e) => {
+        // Primary: clicks directly on the small toggle button
+        const btn = e.target.closest('.collapse-toggle');
+        if (btn) {
+            const wrapper = btn.closest('.collapsible-code');
+            if (!wrapper) return;
+            const isCollapsed = wrapper.classList.toggle('is-collapsed');
+            btn.setAttribute('aria-expanded', String(!isCollapsed));
+            return;
+        }
+
+        // Secondary: clicks on the header (outside the button) should also toggle
+        const header = e.target.closest('.collapsible-header');
+        if (header) {
+            const wrapper = header.closest('.collapsible-code');
+            if (!wrapper) return;
+            const isCollapsed = wrapper.classList.toggle('is-collapsed');
+            // Sync aria-expanded on any toggle button inside the header
+            const innerBtn = header.querySelector('.collapse-toggle');
+            if (innerBtn) innerBtn.setAttribute('aria-expanded', String(!isCollapsed));
+        }
     });
 }

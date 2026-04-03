@@ -1,0 +1,7 @@
+object SumOfNumbers {
+  def sumN(n: Int): Int = n * (n + 1) / 2
+  def main(args: Array[String]): Unit = {
+    val n = if (args.nonEmpty) args(0).toInt else 10
+    println(sumN(n))
+  }
+}

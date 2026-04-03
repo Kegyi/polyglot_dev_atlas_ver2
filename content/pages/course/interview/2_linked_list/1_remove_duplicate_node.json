@@ -1,0 +1,58 @@
+{
+    "title": "Remove Duplicate Node",
+    "description": "Given a linked list, remove all duplicate nodes from the list.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Remove Duplicate Node"
+        },
+        {
+            "type": "text",
+            "text": "Given a linked list, remove all duplicate nodes from the list."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Given a linked list, remove all duplicate nodes from the list. Return the head of the modified linked list."
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "\"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance)"
+                        },
+                        {
+                            "type": "text",
+                            "text": "\"\" -> \"\" (empty list remains unchanged)"
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_02_01_remove_duplicate_node"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

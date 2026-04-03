@@ -1,0 +1,67 @@
+{
+    "title": "Course Mode | Learning Pathways",
+    "description": "Step-by-step guided roadmaps to master programming concepts across multiple languages simultaneously.",
+    "template": "base.html",
+    "body_class": "course-view",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Welcome to Course Mode"
+        },
+        {
+            "type": "h2",
+            "text": "The Guided Learning Experience"
+        },
+        {
+            "type": "text",
+            "text": "Unlike the Atlas, which serves as a quick reference for syntax, Course Mode is designed for deep, structured learning. Here, we break down complex computer science topics into digestible lessons that demonstrate how fundamental logic remains consistent across different programming environments."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "how-it-works",
+                    "title": "How Pathways Work",
+                    "content": [
+                        {
+                            "type": "title",
+                            "text": "Concept-First Education"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Each course follows a 'Concept-First' approach. Instead of merely memorizing keywords, you learn a core concept—such as Memory Management or Concurrency—and immediately see how that concept is implemented in the languages you have selected in the selector bar."
+                        },
+                        {
+                            "type": "title",
+                            "text": "Progressive Difficulty"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Lessons are arranged in the left sidebar from fundamental to advanced. We recommend following the sequence to build a solid mental model of how software works under the hood."
+                        }
+                    ]
+                },
+                {
+                    "id": "available_pathways",
+                    "title": "Available Pathways",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Currently, the following pathways are available for exploration:"
+                        },
+                        {
+                            "type": "list",
+                            "ordered": false,
+                            "items": [
+                                "<b>The Foundations:</b> Data types, variables, and control flow.",
+                                "<b>Systems Thinking:</b> Memory allocation, pointers, and performance.",
+                                "<b>Object Orientation:</b> Classes, inheritance, and polymorphism across languages."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

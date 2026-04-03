@@ -42,14 +42,16 @@ class AtlasBuilder:
 
     # --- RECURSIVE SCHEMA RENDERER ---
 
-    def render_content(self, content_list, depth=2, inherited_style=""):
-        """Recursively renders content. Inherits styles and increments depth for smart titles."""
+    def render_content(self, content_list, depth=2, inherited_style="", context=None):
+        """Recursively renders content. Inherits styles and increments depth for smart titles.
+        `context` is an optional dict (e.g. page-level defaults) passed through to items.
+        """
         html = ""
         for item in content_list:
-            html += self.render_item(item, depth, inherited_style)
+            html += self.render_item(item, depth, inherited_style, context=context)
         return html
 
-    def render_item(self, item, depth=2, inherited_style=""):
+    def render_item(self, item, depth=2, inherited_style="", context=None):
         itype = item.get("type")
         custom_class = item.get("class", "")
         item_id = item.get("id", "")
@@ -76,7 +78,25 @@ class AtlasBuilder:
             return f'<div {id_attr} class="note note-{variant} {custom_class}"><div class="note-content">{content_html}</div></div>'
 
         elif itype == "code":
-            return self.assemble_code_comparison(item.get("name"))
+            # Accept either `name` (legacy) or `path`/`snippet_path` (preferred)
+            snippet_ref = item.get("path") or item.get("snippet_path") or item.get("name")
+            # New optional fields: `is_collapse` (bool) - make block collapsible and collapsed by default
+            # and `label` / `display_name` / `code_name` used as a visible title even when collapsed.
+            explicit_collapse = item.get("is_collapse") if "is_collapse" in item else None
+            display_name = item.get("label") or item.get("display_name") or item.get("code_name") or item.get("title")
+
+            # Pull page-level defaults from context (generic, reusable across pages)
+            page_code_defaults = (context or {}).get('code_defaults', {}) if context is not None else {}
+
+            if not display_name:
+                display_name = page_code_defaults.get('display_name')
+
+            if explicit_collapse is not None:
+                is_collapse = bool(explicit_collapse)
+            else:
+                is_collapse = bool(page_code_defaults.get('is_collapse', False))
+
+            return self.assemble_code_comparison(snippet_ref, is_collapse=is_collapse, display_name=display_name)
 
         elif itype == "image":
             alt = item.get("alt", "")
@@ -91,12 +111,12 @@ class AtlasBuilder:
         elif itype == "blocks":
             block_html = ""
             for block in item.get("blocks", []):
-                block_html += self.render_block(block, depth, inherited_style)
+                block_html += self.render_block(block, depth, inherited_style, context=context)
             return f'<div {id_attr} class="blocks-container {custom_class}">{block_html}</div>'
 
         return f"<!-- Unknown item type: {itype} -->"
 
-    def render_block(self, block_data, depth=2, inherited_style=""):
+    def render_block(self, block_data, depth=2, inherited_style="", context=None):
         """Renders a collapsible block with inheritance and depth-based visibility logic."""
         bid = block_data.get("id", "topic-unknown")
         title = block_data.get("title", "Untitled Topic")
@@ -130,7 +150,7 @@ class AtlasBuilder:
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body {body_class}">
-                {self.render_content(block_data.get("content", []), depth + 1, current_style)}
+                {self.render_content(block_data.get("content", []), depth + 1, current_style, context=context)}
             </div>
         </div>
         '''
@@ -138,33 +158,134 @@ class AtlasBuilder:
 
     # --- ASSEMBLERS (PHASE 2: Depth-Tagged Sidebars) ---
 
-    def assemble_code_comparison(self, snippet_id):
+    def assemble_code_comparison(self, snippet_id, is_collapse=False, display_name=None):
         snippet_root = os.path.join(self.content_dir, "snippets")
-        html = f'<div class="code-comparison-grid" data-snippet-id="{snippet_id}">'
+        # Prepare wrapper: optional collapsed state and header label
+        wrapper_classes = "collapsible-code"
+        if is_collapse:
+            wrapper_classes += " is-collapsed"
+        header_html = ""
+        if display_name:
+            header_html = (f'<div class="collapsible-header">'
+                           f'<div class="code-label">{display_name}</div>'
+                           f'<button class="collapse-toggle" aria-expanded="{str(not is_collapse).lower()}">▸</button>'
+                           f'</div>')
+
+        html = f'<div class="{wrapper_classes}" data-snippet-id="{snippet_id}">{header_html}<div class="code-comparison-grid">'
         found_any = False
-        
+
         hljs_map = {"scala2": "scala", "scala3": "scala", "typescript": "ts"}
+
+        if not snippet_id:
+            # No snippet reference provided in the page JSON
+            self._log_warning(f"Snippet reference missing for a code block.")
+            return ''
+
+        # Accept a few legacy naming patterns by mapping them to the
+        # new nested layout candidates we expect under snippets/{lang}/...
+        def make_candidates(sid):
+            c = [sid]
+            if sid.startswith('design_patterns_'):
+                c.append('design_patterns/' + sid[len('design_patterns_'):])
+            if sid.startswith('exercise_'):
+                c.append('exercises/' + sid[len('exercise_'):])
+            if sid.startswith('exercises_'):
+                c.append('exercises/' + sid[len('exercises_'):])
+            if sid.startswith('language_basics_'):
+                c.append('language_basics/' + sid[len('language_basics_'):])
+            if sid.startswith('problems_'):
+                c.append('problems/' + sid[len('problems_'):])
+            # interview_lcci_01_02_name -> interview_lcci/01/02_name
+            if sid.startswith('interview_lcci_'):
+                parts = sid.split('_')
+                if len(parts) >= 4:
+                    chapter = parts[2]
+                    rest = '_'.join(parts[3:])
+                    c.append(f'interview_lcci/{chapter}/{rest}')
+            # Generic fallbacks for common snippet group folders
+            for fallback in ('exercises', 'problems', 'language_basics', 'design_patterns'):
+                cand = f"{fallback}/{sid}"
+                if cand not in c:
+                    c.append(cand)
+            return c
+
+        candidates_root_names = make_candidates(snippet_id)
 
         if os.path.exists(snippet_root):
             for lang_dir in sorted(os.listdir(snippet_root)):
                 dir_path = os.path.join(snippet_root, lang_dir)
                 if not os.path.isdir(dir_path): continue
-                target = next((f for f in os.listdir(dir_path) if f.startswith(f"{snippet_id}.")), None)
-                if target:
-                    found_any = True
-                    raw_code = self._read_file(os.path.join(dir_path, target))
-                    escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
-                    hljs_lang = hljs_map.get(lang_dir, lang_dir)
-                    html += (f'<div class="code-block" data-lang="{lang_dir}">'
-                             f'<div class="block-header-tag">{lang_dir.upper()}</div>'
-                             f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
+                for cand in candidates_root_names:
+                    # If candidate references nested path parts (a/b/c), interpret
+                    # all but the last as directories and the last as filename root.
+                    if '/' in cand:
+                        parts = cand.split('/')
+                        base_dir = os.path.join(dir_path, *parts[:-1])
+                        filename_root = parts[-1]
+                        if os.path.isdir(base_dir):
+                            for fname in sorted(os.listdir(base_dir)):
+                                if not (fname == filename_root or fname.startswith(filename_root + '.')):
+                                    continue
+                                fpath = os.path.join(base_dir, fname)
+                                if not os.path.isfile(fpath):
+                                    continue
+                                found_any = True
+                                raw_code = self._read_file(fpath)
+                                escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
+                                hljs_lang = hljs_map.get(lang_dir, lang_dir)
+                                html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                         f'<div class="block-header-tag">{lang_dir.upper()}</div>'
+                                         f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
+                            if found_any: break
+                        # else continue to other candidate handling
+                    else:
+                        # Prefer nested directory
+                        nested_dir = os.path.join(dir_path, cand)
+                        if os.path.isdir(nested_dir):
+                            for fname in sorted(os.listdir(nested_dir)):
+                                fpath = os.path.join(nested_dir, fname)
+                                if not os.path.isfile(fpath):
+                                    continue
+                                found_any = True
+                                raw_code = self._read_file(fpath)
+                                escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
+                                hljs_lang = hljs_map.get(lang_dir, lang_dir)
+                                html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                         f'<div class="block-header-tag">{lang_dir.upper()}</div>'
+                                         f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
+                            if found_any: break
+
+                    # Direct file under language folder
+                    file_candidate = os.path.join(dir_path, cand)
+                    if os.path.isfile(file_candidate):
+                        found_any = True
+                        raw_code = self._read_file(file_candidate)
+                        escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
+                        hljs_lang = hljs_map.get(lang_dir, lang_dir)
+                        html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                 f'<div class="block-header-tag">{lang_dir.upper()}</div>'
+                                 f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
+                        break
+
+                    # Fallback legacy flat file name
+                    target = next((f for f in os.listdir(dir_path) if f.startswith(f"{cand}.")), None)
+                    if target:
+                        found_any = True
+                        raw_code = self._read_file(os.path.join(dir_path, target))
+                        escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
+                        hljs_lang = hljs_map.get(lang_dir, lang_dir)
+                        html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                 f'<div class="block-header-tag">{lang_dir.upper()}</div>'
+                                 f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
+                        break
         
         if not found_any:
             self._log_warning(f"Snippet '{snippet_id}' not found.")
             # Emphasize the label so it stands out visually inside the note.
             content_html = f"<span class=\"snippet-error\">Snippet Error:</span> \"{snippet_id}\" missing"
             return f'<div class="note note-error"><div class="note-content">{content_html}</div></div>'
-        return html + '</div>'
+        # close inner grid and wrapper
+        return html + '</div></div>'
 
     def assemble_navigation(self, current_page_url, prefix, active_mode):
         # Primary nav and a hidden showcases list. The JS toggles between them.
@@ -197,52 +318,170 @@ class AtlasBuilder:
 
             return title
 
-        main_items = []
-        showcase_entries = []
-        # Detect showcase collection pages intentionally placed under
-        # content/pages/meta/showcases/ (rel_path == 'meta/showcases').
-        # Also accept files named with the 'showcase_' prefix. We collect
-        # them with a priority so an intro/index in the subdir can appear
-        # first when the submenu opens.
+        # Build a hierarchical tree of folders (children) and pages. This
+        # allows emitting nested collection toggles / submenus recursively.
+        def make_node():
+            return { 'pages': [], 'children': {} }
+
+        root = make_node()
+
         for p in self.site_registry.get(active_mode, []):
-            # Mark active when the page URL exactly matches the currently
-            # rendered page URL. This avoids collisions where multiple pages
-            # share the same filename (e.g., index) but live in different
-            # directories such as `meta/` and `meta/showcases/`.
             active = "active" if p.get('url') == current_page_url else ""
             safe_title = format_title_for_sidebar(p.get('title', ''))
             item_html = f'<li class="{active}"><a href="{prefix}{p["url"]}">{safe_title}</a></li>'
+
             rel = p.get('rel_path', '').replace('\\', '/')
-            if rel == 'meta/showcases':
-                # Highest priority: explicit showcases subdir items (index will be first)
-                showcase_entries.append((0, item_html))
-            elif p.get('id', '').startswith('showcase_'):
-                showcase_entries.append((1, item_html))
+            parts = rel.split('/') if rel else []
+            # If page is under the same mode, the remaining parts after the
+            # mode identify nested folders. e.g., meta/showcases/gallery -> ['showcases','gallery']
+            if parts and parts[0] == active_mode:
+                remaining = parts[1:]
             else:
-                main_items.append(item_html)
+                remaining = []
 
-        # Sort showcase entries by priority so the intro/index (priority 0)
-        # from the subdir appears before the other showcase pages.
-        showcase_items = [h for _, h in sorted(showcase_entries, key=lambda x: x[0])]
+            node = root
+            if remaining:
+                for seg in remaining:
+                    node = node['children'].setdefault(seg, make_node())
+                node['pages'].append((p, item_html))
+            else:
+                node['pages'].append((p, item_html))
 
-        # Main navigation (index and primary pages first). Showcases is a
-        # secondary collection marker appended so index.html remains top.
+        # Helper to render a node's pages and subfolders recursively. The
+        # path_parts list contains the folder path parts used to construct
+        # a unique DOM id for nested submenus.
+        def render_node(node, path_parts=None, depth=0):
+            if path_parts is None: path_parts = []
+            html_parts = []
+
+            # Sorting helper: numeric-prefixed names come first and are
+            # ordered by their leading integer, then by the remainder.
+            def nav_sort_key_name(name):
+                m = re.match(r'^(\d+)[_\- ]?(.*)$', name)
+                if m:
+                    num = int(m.group(1))
+                    rest = m.group(2) or ''
+                    return (0, num, rest.lower())
+                return (1, name.lower())
+
+            # Render pages at this level using this precedence:
+            # 1) `index` page (if present)
+            # 2) pages listed in `index` page's `page_list` (if provided)
+            # 3) numeric-prefixed pages sorted by leading number
+            # 4) remaining pages alphabetically
+            pages = list(node['pages'])
+            ordered_pages = []
+
+            # 1) index page
+            index_entry = next(((p, h) for p, h in pages if p.get('id') == 'index'), None)
+            index_page_ids = []
+            if index_entry:
+                ordered_pages.append(index_entry)
+                # Attempt to read page_list from index JSON to get explicit ordering
+                try:
+                    idx_data = self._load_json(index_entry[0].get('path', ''), required=False) or {}
+                    pl = idx_data.get('page_list', [])
+                    if isinstance(pl, list):
+                        # Normalize to string ids
+                        index_page_ids = [str(x) for x in pl]
+                except Exception:
+                    index_page_ids = []
+
+            # 2) pages from index.page_list (in order)
+            if index_page_ids:
+                for pid in index_page_ids:
+                    match = next(((p, h) for p, h in pages if p.get('id') == pid and (p, h) not in ordered_pages), None)
+                    if match:
+                        ordered_pages.append(match)
+
+            # 3 & 4) remaining pages sorted by numeric-aware key
+            remaining = [ph for ph in pages if ph not in ordered_pages]
+            remaining_sorted = sorted(remaining, key=lambda pi: nav_sort_key_name(pi[0].get('id', pi[0].get('title', ''))))
+            ordered_pages.extend(remaining_sorted)
+
+            for p, item_html in ordered_pages:
+                html_parts.append(item_html)
+
+            # Render child folders as collection toggles
+            for child_key in sorted(node['children'].keys(), key=nav_sort_key_name):
+                safe_child = re.sub(r'[^a-zA-Z0-9_-]', '-', child_key)
+                label = child_key.replace('_', ' ').capitalize()
+                # Build full path key for nested identification
+                full_parts = (path_parts + [child_key])
+                safe_full = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in full_parts])
+                # Toggle item
+                # Emit a collection toggle. The span `.collection-marker` is
+                # intentionally left empty so CSS can render a colored arrow
+                # marker purely via ::after. This keeps the HTML semantic and
+                # allows accessible labels on the anchor if needed.
+                html_parts.append(f'<li class="nav-item nav-collection nav-{safe_full}"><a href="#" onclick="app.openCollection(\'{active_mode}\', \'{safe_full}\');return false;">{label} <span class="collection-marker" aria-hidden="true"></span></a></li>')
+
+            return '\n'.join(html_parts)
+
+        # Render root main list
         nav_html += '<ul class="nav-list" id="toc-main">'
-        nav_html += '\n'.join(main_items)
-        # Only render the Showcases collection for the Meta documentation mode.
-        if active_mode == 'meta' and showcase_items:
-            # Showcases toggle is visible but marked as a collection.
-            nav_html += '<li class="nav-item nav-showcases"><a href="#" onclick="app.openShowcases();return false;">Showcases <span class="collection-marker">collection</span></a></li>'
+        nav_html += render_node(root, [])
         nav_html += '</ul>'
 
-        # Hidden showcases list (JS will reveal it) - only for Meta mode
-        if active_mode == 'meta' and showcase_items:
-            nav_html += '<ul class="nav-list nav-showcase-list" id="toc-showcases" style="display:none">'
-            # back control
-            nav_html += '<li class="nav-item nav-back"><a href="#" onclick="app.closeShowcases();return false;">← Back</a></li>'
-            # group label and group name for clarity
-            nav_html += '\n'.join(showcase_items)
-            nav_html += '</ul>'
+        # Emit submenus recursively
+        def emit_submenus(node, path_parts=None):
+            nonlocal nav_html
+            if path_parts is None: path_parts = []
+            # Reuse numeric-aware key from render_node
+            def nav_sort_key_name(name):
+                m = re.match(r'^(\d+)[_\- ]?(.*)$', name)
+                if m:
+                    num = int(m.group(1))
+                    rest = m.group(2) or ''
+                    return (0, num, rest.lower())
+                return (1, name.lower())
+
+            for child_key, child_node in sorted(node['children'].items(), key=lambda kv: nav_sort_key_name(kv[0])):
+                safe_full = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in (path_parts + [child_key])])
+                list_id = f'toc-collection-{active_mode}-{safe_full}'
+                nav_html_local = f'<ul class="nav-list nav-collection-list" id="{list_id}" style="display:none">'
+                nav_html_local += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{safe_full}\');return false;">← Back</a></li>'
+                # Render pages at this child level honoring index -> page_list -> numeric ordering
+                pages = list(child_node['pages'])
+                ordered_pages = []
+                index_entry = next(((p, h) for p, h in pages if p.get('id') == 'index'), None)
+                index_page_ids = []
+                if index_entry:
+                    ordered_pages.append(index_entry)
+                    try:
+                        idx_data = self._load_json(index_entry[0].get('path', ''), required=False) or {}
+                        pl = idx_data.get('page_list', [])
+                        if isinstance(pl, list):
+                            index_page_ids = [str(x) for x in pl]
+                    except Exception:
+                        index_page_ids = []
+
+                if index_page_ids:
+                    for pid in index_page_ids:
+                        match = next(((p, h) for p, h in pages if p.get('id') == pid and (p, h) not in ordered_pages), None)
+                        if match:
+                            ordered_pages.append(match)
+
+                remaining = [ph for ph in pages if ph not in ordered_pages]
+                remaining_sorted = sorted(remaining, key=lambda pi: nav_sort_key_name(pi[0].get('id', pi[0].get('title', ''))))
+                ordered_pages.extend(remaining_sorted)
+
+                for p, item_html in ordered_pages:
+                    nav_html_local += item_html
+                # Also include toggles for grandchildren (rendered as items)
+                for gc_key in sorted(child_node['children'].keys(), key=nav_sort_key_name):
+                    safe_gc = re.sub(r'[^a-zA-Z0-9_-]', '-', gc_key)
+                    gc_full = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in (path_parts + [child_key, gc_key])])
+                    label = gc_key.replace('_', ' ').capitalize()
+                    nav_html_local += f'<li class="nav-item nav-collection nav-{gc_full}"><a href="#" onclick="app.openCollection(\'{active_mode}\', \'{gc_full}\');return false;">{label} <span class="collection-marker" aria-hidden="true"></span></a></li>'
+
+                nav_html_local += '</ul>'
+                # Append to main nav_html
+                nav_html += nav_html_local
+                # Recurse into grandchildren
+                emit_submenus(child_node, path_parts + [child_key])
+
+        emit_submenus(root, [])
 
         return nav_html
 
@@ -299,7 +538,7 @@ class AtlasBuilder:
     def assemble_mode_switcher(self, active_mode, prefix):
         html = '<div class="toggle-group mode-toggles">'
         # Add the new Meta mode (framework documentation) to the switcher
-        targets = {"atlas": "index.html", "course": "course/intro.html", "meta": "meta/index.html"}
+        targets = {"atlas": "index.html", "course": "course/index.html", "meta": "meta/index.html"}
         for m in ["atlas", "course", "meta"]:
             active = "active" if m == active_mode else ""
             target_url = prefix + targets.get(m, "index.html")
@@ -329,7 +568,9 @@ class AtlasBuilder:
         if not template: return
 
         # Render Content with depth tracking (2 = Level 1)
-        page_html = self.render_content(data.get("content", []), depth=2, inherited_style=page_preset_style)
+        # Pass page-level `code_defaults` in context so code rendering remains generic.
+        page_code_defaults = data.get('code_defaults', {})
+        page_html = self.render_content(data.get("content", []), depth=2, inherited_style=page_preset_style, context={'code_defaults': page_code_defaults})
 
         # Normalize asset paths produced inside content HTML:
         # - convert backslashes to forward slashes
@@ -405,7 +646,7 @@ class AtlasBuilder:
             self.site_registry[mode] = ordered
 
         prioritize_mode('atlas', ['index'])
-        prioritize_mode('course', ['intro'])
+        prioritize_mode('course', ['index'])
         prioritize_mode('meta', ['index'])
 
         for mk in sorted(self.site_registry.keys()):

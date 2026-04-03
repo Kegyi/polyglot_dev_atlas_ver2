@@ -1,0 +1,70 @@
+{
+    "title": "principles",
+    "description": "Coding principles and best practices for writing clean, efficient, and maintainable code across different programming languages.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Coding Principles"
+        },
+        {
+            "type": "text",
+            "text": "This page outlines key coding principles and best practices that are essential for writing clean, efficient, and maintainable code across different programming languages."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "single_responsibility",
+                    "title": "Single Responsibility Principle",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "A class or module should have only one reason to change, meaning it should have only one responsibility or job."
+                        }
+                    ]
+                },
+                {
+                    "id": "open_closed",
+                    "title": "Open/Closed Principle",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Software entities (classes, modules, functions) should be open for extension but closed for modification."
+                        }
+                    ]
+                },
+                {
+                    "id": "liskov_substitution",
+                    "title": "Liskov Substitution Principle",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program."
+                        }
+                    ]
+                },
+                {
+                    "id": "interface_segregation",
+                    "title": "Interface Segregation Principle",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Clients should not be forced to depend on interfaces they do not use. Instead, many specific interfaces are better than one general interface."
+                        }
+                    ]
+                },
+                {
+                    "id": "dependency_inversion",
+                    "title": "Dependency Inversion Principle",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

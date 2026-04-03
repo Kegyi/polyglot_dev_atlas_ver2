@@ -18,7 +18,7 @@
                 {
                     "id": "creational_patterns",
                     "title": "Creational patterns",
-                    "style": "text_style", 
+                    "style": "text_style",
                     "content": [
                         {
                             "type": "blocks",
@@ -27,73 +27,148 @@
                                     "id": "abstract_factory",
                                     "title": "Abstract Factory",
                                     "content": [
-                                        { "type": "text", "text": "Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_abstract_factory" }
+                                        {
+                                            "type": "text",
+                                            "text": "Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/abstract_factory"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "builder",
                                     "title": "Builder",
                                     "content": [
-                                        { "type": "text", "text": "Step-by-step construction of complex objects using a fluent interface." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_builder" }
+                                        {
+                                            "type": "text",
+                                            "text": "Step-by-step construction of complex objects using a fluent interface."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/builder"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "factory_method",
                                     "title": "Factory Method",
                                     "content": [
-                                        { "type": "text", "text": "Define an interface for creating objects but let subclasses decide which class to instantiate." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_factory_method" }
+                                        {
+                                            "type": "text",
+                                            "text": "Define an interface for creating objects but let subclasses decide which class to instantiate."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/factory_method"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "prototype",
                                     "title": "Prototype",
                                     "content": [
-                                        { "type": "text", "text": "Create new objects by copying a prototypical instance, useful for runtime-configurable object creation." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_prototype" }
+                                        {
+                                            "type": "text",
+                                            "text": "Create new objects by copying a prototypical instance, useful for runtime-configurable object creation."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/prototype"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "singleton",
                                     "title": "Singleton",
                                     "content": [
-                                        { "type": "text", "text": "Ensure a class has only one instance and provide a global point of access." },
-                                        { "type": "note", "text": "Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_singleton" }
+                                        {
+                                            "type": "text",
+                                            "text": "Ensure a class has only one instance and provide a global point of access."
+                                        },
+                                        {
+                                            "type": "note",
+                                            "text": "Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/singleton"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "object_pool",
                                     "title": "Object Pool",
                                     "content": [
-                                        { "type": "text", "text": "Manage a pool of reusable objects to improve performance and resource utilization." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_object_pool" }
+                                        {
+                                            "type": "text",
+                                            "text": "Manage a pool of reusable objects to improve performance and resource utilization."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/object_pool"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "lazy_initialization",
                                     "title": "Lazy Initialization",
                                     "content": [
-                                        { "type": "text", "text": "Delay the creation of an object until it is needed, improving startup performance and resource usage." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_lazy_initialization" }
+                                        {
+                                            "type": "text",
+                                            "text": "Delay the creation of an object until it is needed, improving startup performance and resource usage."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/lazy_initialization"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "multiton",
                                     "title": "Multiton",
                                     "content": [
-                                        { "type": "text", "text": "Ensure a class has only a limited number of instances and provide a global point of access to them." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_multiton" }
+                                        {
+                                            "type": "text",
+                                            "text": "Ensure a class has only a limited number of instances and provide a global point of access to them."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/multiton"
+                                        }
                                     ]
                                 }
                             ]
@@ -103,7 +178,7 @@
                 {
                     "id": "structural_patterns",
                     "title": "Structural patterns",
-                    "style": "text_style", 
+                    "style": "text_style",
                     "content": [
                         {
                             "type": "blocks",
@@ -112,91 +187,184 @@
                                     "id": "adapter",
                                     "title": "Adapter",
                                     "content": [
-                                        { "type": "text", "text": "Maps one interface to another, enabling integration of incompatible APIs." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_adapter" }
+                                        {
+                                            "type": "text",
+                                            "text": "Maps one interface to another, enabling integration of incompatible APIs."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/adapter"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "bridge",
                                     "title": "Bridge",
                                     "content": [
-                                        { "type": "text", "text": "Decouples an abstraction from its implementation so they can vary independently." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_bridge" }
+                                        {
+                                            "type": "text",
+                                            "text": "Decouples an abstraction from its implementation so they can vary independently."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/bridge"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "composite",
                                     "title": "Composite",
                                     "content": [
-                                        { "type": "text", "text": "Compose objects into tree structures to represent part-whole hierarchies." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_composite" }
+                                        {
+                                            "type": "text",
+                                            "text": "Compose objects into tree structures to represent part-whole hierarchies."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/composite"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "decorator",
                                     "title": "Decorator",
                                     "content": [
-                                        { "type": "text", "text": "Attach additional responsibilities to objects dynamically via lightweight wrappers." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_decorator" }
+                                        {
+                                            "type": "text",
+                                            "text": "Attach additional responsibilities to objects dynamically via lightweight wrappers."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/decorator"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "facade",
                                     "title": "Facade",
                                     "content": [
-                                        { "type": "text", "text": "Provide a simplified interface to a complex subsystem." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_facade" }
+                                        {
+                                            "type": "text",
+                                            "text": "Provide a simplified interface to a complex subsystem."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/facade"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "flyweight",
                                     "title": "Flyweight",
                                     "content": [
-                                        { "type": "text", "text": "Use sharing to support large numbers of fine-grained objects efficiently." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_flyweight" }
+                                        {
+                                            "type": "text",
+                                            "text": "Use sharing to support large numbers of fine-grained objects efficiently."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/flyweight"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "proxy",
                                     "title": "Proxy",
                                     "content": [
-                                        { "type": "text", "text": "Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern" },
-                                        { "type": "text", "text": "Provide a surrogate or placeholder to control access to another object." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_proxy" }
+                                        {
+                                            "type": "text",
+                                            "text": "Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern"
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Provide a surrogate or placeholder to control access to another object."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/proxy"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "data_mapper",
                                     "title": "Data Mapper",
                                     "content": [
-                                        { "type": "text", "text": "Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_data_mapper" }
+                                        {
+                                            "type": "text",
+                                            "text": "Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/data_mapper"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "object_adapter",
                                     "title": "Object Adapter",
                                     "content": [
-                                        { "type": "text", "text": "Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_object_adapter" }
+                                        {
+                                            "type": "text",
+                                            "text": "Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/object_adapter"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "class_adapter",
                                     "title": "Class Adapter",
                                     "content": [
-                                        { "type": "text", "text": "Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_class_adapter" }
+                                        {
+                                            "type": "text",
+                                            "text": "Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/class_adapter"
+                                        }
                                     ]
                                 }
                             ]
@@ -206,7 +374,7 @@
                 {
                     "id": "behavioral_patterns",
                     "title": "Behavioral patterns",
-                    "style": "text_style", 
+                    "style": "text_style",
                     "content": [
                         {
                             "type": "blocks",
@@ -215,113 +383,254 @@
                                     "id": "chain_of_responsibility",
                                     "title": "Chain Of Responsibility",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_chain_of_responsibility" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_chain_of_responsibility_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/chain_of_responsibility"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/chain_of_responsibility_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "command",
                                     "title": "Command",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_command" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_command_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/command"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/command_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "observer",
                                     "title": "Observer",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_observer" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_observer_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/observer"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/observer_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "state",
                                     "title": "State",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_state" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_state_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/state"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/state_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "strategy",
                                     "title": "Strategy",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_strategy" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_strategy_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/strategy"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/strategy_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "template_method",
                                     "title": "Template Method",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_template_method" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_template_method_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/template_method"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/template_method_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "visitor",
                                     "title": "Visitor",
                                     "content": [
-                                        { "type": "text", "text": "Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_visitor" },
-                                        { "type": "title", "text": "Modern variant of the pattern" },
-                                        { "type": "code", "name": "design_patterns_visitor_modern" }
+                                        {
+                                            "type": "text",
+                                            "text": "Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/visitor"
+                                        },
+                                        {
+                                            "type": "title",
+                                            "text": "Modern variant of the pattern"
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/visitor_modern"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "interpreter",
                                     "title": "Interpreter",
                                     "content": [
-                                        { "type": "text", "text": "Represent and evaluate a grammar or expression language with object-oriented structures." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_interpreter" }
+                                        {
+                                            "type": "text",
+                                            "text": "Represent and evaluate a grammar or expression language with object-oriented structures."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/interpreter"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "iterator",
                                     "title": "Iterator",
                                     "content": [
-                                        { "type": "text", "text": "Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_iterator" }
+                                        {
+                                            "type": "text",
+                                            "text": "Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/iterator"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "mediator",
                                     "title": "Mediator",
                                     "content": [
-                                        { "type": "text", "text": "Define an object that encapsulates how a set of objects interact, promoting loose coupling." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_mediator" }
+                                        {
+                                            "type": "text",
+                                            "text": "Define an object that encapsulates how a set of objects interact, promoting loose coupling."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/mediator"
+                                        }
                                     ]
                                 },
                                 {
                                     "id": "memento",
                                     "title": "Memento",
                                     "content": [
-                                        { "type": "text", "text": "Capture and externalize an object's internal state so it can be restored later, without violating encapsulation." },
-                                        { "type": "text", "text": "Example implementation across language variants." },
-                                        { "type": "code", "name": "design_patterns_memento" }
+                                        {
+                                            "type": "text",
+                                            "text": "Capture and externalize an object's internal state so it can be restored later, without violating encapsulation."
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "Example implementation across language variants."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "design_patterns/memento"
+                                        }
                                     ]
                                 }
                             ]

@@ -1,0 +1,50 @@
+{
+    "title": "Pattern Matching",
+    "description": "Pattern Matching",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Pattern Matching"
+        },
+        {
+            "type": "text",
+            "text": "Pattern Matching"
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_statement",
+                    "title": "Problem Statement",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See legacy docs: /legacy_content/docs/lcci/16/18_pattern_matching/README.md"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_cases",
+                    "title": "Example Cases",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See example cases in the docs."
+                        }
+                    ]
+                },
+                {
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_16_18_pattern_matching"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
