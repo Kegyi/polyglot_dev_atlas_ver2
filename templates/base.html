@@ -15,6 +15,7 @@
             const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
             const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
             const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            const savedFilterLangs = localStorage.getItem('atlas-filter-langs') || '';
             
             // Phase 3: Global Design Style (Sharp, Round, Airy)
             const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
@@ -27,6 +28,7 @@
             doc.setAttribute('data-selection-mode', savedSelectionMode);
             doc.setAttribute('data-primary', savedPrimary);
             doc.setAttribute('data-secondary', savedSecondary);
+            doc.setAttribute('data-filter-langs', savedFilterLangs);
             
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
@@ -131,6 +133,21 @@
             <div class="lang-selector-list">
                 {{ language_selection_buttons }}
             </div>
+            <div class="filter-tools">
+                <div class="polyglot-filter">
+                    <button id="polyglot-filter-toggle" class="mini-toggle" type="button">Filter: All</button>
+                    <div id="polyglot-filter-panel" class="polyglot-filter-panel" hidden>
+                        <div class="polyglot-filter-header">
+                            <strong>Polyglot Filter</strong>
+                            <div class="polyglot-filter-actions">
+                                <button id="polyglot-filter-current" type="button">Use Current</button>
+                                <button id="polyglot-filter-all" type="button">All</button>
+                            </div>
+                        </div>
+                        <div id="polyglot-filter-options" class="polyglot-filter-options"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -175,6 +192,7 @@
     <!-- App Logic & Selection Engine -->
     <script src="{{ asset_prefix }}assets/js/app.js"></script>
     <script src="{{ asset_prefix }}assets/js/selection_engine.js"></script>
+    <script src="{{ asset_prefix }}assets/js/polyglot_filter.js"></script>
     <script src="{{ asset_prefix }}assets/js/content_renderers.js"></script>
     <script src="{{ asset_prefix }}assets/js/search_ui.js"></script>
 </body>

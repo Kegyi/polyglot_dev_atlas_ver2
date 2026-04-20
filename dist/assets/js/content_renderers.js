@@ -197,4 +197,7 @@
     document.addEventListener('atlas:selection-updated', () => {
         alignFragmentGroups();
     });
+    document.addEventListener('atlas:filter-updated', () => {
+        alignFragmentGroups();
+    });
 })();

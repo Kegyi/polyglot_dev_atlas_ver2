@@ -255,6 +255,86 @@ html.collection-open #toc-main { display: none !important; }
     width: 42vw;
 }
 
+.filter-tools {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.polyglot-filter {
+    position: relative;
+}
+
+.polyglot-filter-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    width: min(340px, 88vw);
+    background: var(--panel);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 10px;
+    z-index: 31;
+}
+
+.polyglot-filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.polyglot-filter-actions {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.polyglot-filter-actions button {
+    border: var(--border-w) solid var(--border);
+    background: transparent;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    cursor: pointer;
+}
+
+.polyglot-filter-actions button:hover {
+    border-color: var(--accent);
+}
+
+.polyglot-filter-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.polyglot-filter-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: var(--border-w) solid var(--border);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+}
+
+.polyglot-filter-option input {
+    margin: 0;
+}
+
+.lang-btn.filter-muted {
+    opacity: 0.45;
+    filter: saturate(0.6);
+}
+
+.code-block.is-filtered-out {
+    display: none !important;
+}
+
 #atlas-search-input {
     width: 100%;
     border: var(--border-w) solid var(--border);
@@ -466,6 +546,11 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
     .atlas-search {
         min-width: 180px;
         width: 34vw;
+    }
+
+    .polyglot-filter-panel {
+        right: auto;
+        left: 0;
     }
 }
 
