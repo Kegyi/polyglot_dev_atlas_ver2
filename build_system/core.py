@@ -100,6 +100,16 @@ class AtlasBuilder:
                         merged = ref_data.copy()
                         merged.update({k: v for k, v in item.items() if k != '$ref'})
                         item = merged
+                    elif ref_data and isinstance(ref_data, str):
+                        # Support simple scalar injections for common cases.
+                        if item.get('type') == 'image' and not item.get('src'):
+                            item['src'] = ref_data
+                        elif item.get('type') == 'text' and not item.get('text'):
+                            item['text'] = ref_data
+                        elif item.get('type') == 'note' and not item.get('text'):
+                            item['text'] = ref_data
+                    else:
+                        self._log_warning(f"Unresolved $ref '{item.get('$ref')}' in {page_path}")
                 
                 # Recursively process nested content
                 if 'content' in item and isinstance(item['content'], list):
@@ -114,6 +124,94 @@ class AtlasBuilder:
                 processed.append(item)
         
         return processed
+
+    def _iter_content_items(self, content_list):
+        """Depth-first traversal of content items for lightweight validation."""
+        if not isinstance(content_list, list):
+            return
+        for item in content_list:
+            if not isinstance(item, dict):
+                continue
+            yield item
+            if isinstance(item.get('content'), list):
+                for sub in self._iter_content_items(item.get('content')):
+                    yield sub
+            if isinstance(item.get('blocks'), list):
+                for block in item.get('blocks'):
+                    if isinstance(block, dict):
+                        block_content = block.get('content', [])
+                        for sub in self._iter_content_items(block_content):
+                            yield sub
+
+    def _validate_page_schema_sanity(self, page_data, page_path):
+        """Lightweight Phase 3 validation without external runtime dependency."""
+        if not isinstance(page_data, dict):
+            self._log_warning(f"Invalid page root (not an object): {page_path}")
+            return False
+
+        ok = True
+
+        if not isinstance(page_data.get('title'), str) or not page_data.get('title', '').strip():
+            self._log_warning(f"Missing or invalid 'title' in {page_path}")
+            ok = False
+
+        if 'content' in page_data and not isinstance(page_data.get('content'), list):
+            self._log_warning(f"Invalid 'content' (must be array) in {page_path}")
+            ok = False
+
+        for item in self._iter_content_items(page_data.get('content', [])):
+            if 'type' not in item or not isinstance(item.get('type'), str):
+                self._log_warning(f"Content item missing valid 'type' in {page_path}")
+                ok = False
+
+        # Validate referenced extra assets exist in source assets folders.
+        for asset in page_data.get('extra_assets', []):
+            if not isinstance(asset, str) or not asset.strip():
+                self._log_warning(f"Invalid extra_assets entry in {page_path}")
+                ok = False
+                continue
+            normalized = asset.replace('\\', '/').lstrip('./')
+            ext = os.path.splitext(normalized)[1].lower()
+            folder = 'css' if ext == '.css' else 'js' if ext == '.js' else ''
+            if not folder:
+                self._log_warning(f"Unsupported extra asset type '{asset}' in {page_path}")
+                ok = False
+                continue
+            if normalized.startswith('assets/'):
+                asset_path = os.path.join(self.base_dir, normalized.replace('/', os.sep))
+            elif normalized.startswith('css/') or normalized.startswith('js/'):
+                asset_path = os.path.join(self.assets_dir, normalized.replace('/', os.sep))
+            else:
+                asset_path = os.path.join(self.assets_dir, folder, normalized.replace('/', os.sep))
+            if not os.path.exists(asset_path):
+                self._log_warning(f"Missing extra asset '{asset}' referenced by {page_path}")
+                ok = False
+
+        return ok
+
+    def _validate_generated_internal_links(self):
+        """Build-time check for broken internal href/src links in generated HTML."""
+        attr_re = re.compile(r'(?:href|src)="([^"]+)"')
+        skipped_prefixes = ('http://', 'https://', 'mailto:', 'tel:', 'javascript:', 'data:', '#', '//')
+
+        for root, _, files in os.walk(self.dist_dir):
+            for name in files:
+                if not name.endswith('.html'):
+                    continue
+                html_path = os.path.join(root, name)
+                html = self._read_file(html_path)
+                if not html:
+                    continue
+                for raw in attr_re.findall(html):
+                    if not raw or raw.startswith(skipped_prefixes):
+                        continue
+                    rel = raw.split('#', 1)[0].split('?', 1)[0]
+                    if not rel:
+                        continue
+                    target = os.path.normpath(os.path.join(root, rel.replace('/', os.sep)))
+                    if not os.path.exists(target):
+                        short_html = os.path.relpath(html_path, self.base_dir).replace('\\', '/')
+                        self._log_warning(f"Broken internal link in {short_html}: {raw}")
 
     def _log_warning(self, message):
         print(f"WARNING: {message}")
@@ -691,8 +789,10 @@ class AtlasBuilder:
     def _generate_bundled_css(self):
         """Inline @import rules from workspace `assets/css/main.css` and
         emit a bundled `main.css` into the dist folder. Also ensure
-        `ui_states.css` is present and move other css files into
-        `assets/css/custom/` inside the dist to denote page-scoped styles.
+        `ui_states.css` is present.
+
+        Keep page-scoped css files in `assets/css/` so existing page
+        `extra_assets` links remain valid.
         """
         import re
 
@@ -751,23 +851,8 @@ class AtlasBuilder:
             # Create an empty placeholder so templates can reference it safely
             open(ui_dest, 'a').close()
 
-        # Move other CSS files into `custom/` inside dist assets/css so they are
-        # clearly page-scoped and not part of the global bundle.
-        custom_dir = os.path.join(dist_css_dir, 'custom')
-        os.makedirs(custom_dir, exist_ok=True)
-
-        for entry in os.listdir(dist_css_dir):
-            src_path = os.path.join(dist_css_dir, entry)
-            # Skip directories we want to keep and the bundled files
-            if entry in ('modules', 'custom', 'main.css', 'ui_states.css'):
-                continue
-            # Move files and folders into custom
-            try:
-                target_path = os.path.join(custom_dir, entry)
-                shutil.move(src_path, target_path)
-            except Exception as e:
-                # Non-fatal: log and continue
-                self._log_warning(f"Failed to relocate CSS asset {entry}: {e}")
+        # Intentionally avoid relocating other CSS files because page
+        # metadata can reference them directly via `extra_assets`.
 
     def assemble_mode_switcher(self, active_mode, prefix):
         html = '<div class="toggle-group mode-toggles">'
@@ -835,7 +920,22 @@ class AtlasBuilder:
         # Extra Assets
         extras = []
         for a in data.get('extra_assets', []):
-            tag = f'<link rel="stylesheet" href="{prefix}assets/css/{a}">' if a.endswith('.css') else f'<script src="{prefix}assets/js/{a}"></script>'
+            normalized = str(a).replace('\\', '/').lstrip('./')
+            if normalized.startswith('assets/'):
+                target = normalized
+            elif normalized.startswith('css/') or normalized.startswith('js/'):
+                target = f'assets/{normalized}'
+            elif normalized.endswith('.css'):
+                target = f'assets/css/{normalized}'
+            elif normalized.endswith('.js'):
+                target = f'assets/js/{normalized}'
+            else:
+                target = f'assets/{normalized}'
+
+            if normalized.endswith('.css'):
+                tag = f'<link rel="stylesheet" href="{prefix}{target}">'
+            else:
+                tag = f'<script src="{prefix}{target}"></script>'
             extras.append(tag)
         output = output.replace("{{ extra_assets }}", "\n".join(extras))
 
@@ -862,6 +962,7 @@ class AtlasBuilder:
                     p_id = f.replace('.json', '')
                     p_path = os.path.join(root, f)
                     p_data = self._load_json(p_path)
+                    self._validate_page_schema_sanity(p_data, p_path)
                     self.site_registry[mode].append({
                         "id": p_id, "title": p_data.get("title", p_id),
                         "url": os.path.join(rel, p_id + ".html").replace("\\", "/"),
@@ -904,6 +1005,9 @@ class AtlasBuilder:
         locales_src = os.path.join(self.content_dir, "locales")
         if os.path.exists(locales_src):
             shutil.copytree(locales_src, os.path.join(self.dist_dir, "content", "locales"))
+
+        # Phase 3: Generated-site integrity check for broken local links.
+        self._validate_generated_internal_links()
 
         print("-" * 30)
         if self.warnings:

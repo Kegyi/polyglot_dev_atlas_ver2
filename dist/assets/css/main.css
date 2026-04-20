@@ -305,7 +305,7 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 
 .snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }
 
-/* Inlined: modules/phase2.css */
+/* Inlined: modules/content_blocks.css */
 
 /* Phase 2: Generic component rendering and comparison helpers */
 
