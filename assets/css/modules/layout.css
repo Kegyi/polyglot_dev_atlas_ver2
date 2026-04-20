@@ -1,0 +1,27 @@
+/* --- MODULE: layout.css --- */
+/* Reset & App Shell + Core layout rules */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; height: 100vh;
+    display: flex; flex-direction: column; overflow: hidden; 
+    background-color: var(--bg); color: var(--text);
+    transition: background-color var(--transition), color var(--transition);
+}
+
+/* --- NAVBAR container placeholder (visual layout handled in nav module) --- */
+#container { display: flex; flex: 1; overflow: hidden; }
+
+/* Focus Mode */
+[data-view-mode="focused"] .topic-section:not(.active):not(.parent-active) {
+    display: none !important;
+}
+
+[data-view-mode="focused"] .topic-section.active .topic-section {
+    display: block !important;
+}
+
+/* Auto-hide Sidebar */
+.no-topics #sidebar-right {
+    display: none !important;
+}

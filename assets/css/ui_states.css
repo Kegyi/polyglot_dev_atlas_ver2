@@ -9,6 +9,8 @@
     gap: 8px;
     flex-wrap: wrap;
     align-items: center;
+    /* Keep some space below the selector so highlighted borders don't overlap content */
+    margin-bottom: 12px;
 }
 
 .lang-btn {
@@ -23,6 +25,7 @@
     opacity: 0.4;
     transition: all 0.2s ease;
     user-select: none;
+    box-sizing: border-box; /* ensure border doesn't change button size */
 }
 
 .lang-btn:hover {

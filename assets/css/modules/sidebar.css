@@ -1,0 +1,79 @@
+/* --- MODULE: sidebar.css --- */
+/* Sidebars, density controls, and collection toggle styles */
+aside {
+    background: var(--panel); position: relative; height: 100%;
+    transition: width var(--transition); flex-shrink: 0;
+}
+#sidebar-left { width: var(--sidebar-w); border-right: var(--border-w) solid var(--border); }
+#sidebar-right { width: var(--sidebar-w); border-left: var(--border-w) solid var(--border); }
+aside.collapsed { width: 40px !important; }
+
+.sidebar-handle {
+    position: absolute; top: 0; bottom: 0; width: 40px;
+    background: rgba(0, 0, 0, 0.05); display: flex; align-items: center;
+    justify-content: center; cursor: pointer; color: var(--accent);
+    font-weight: bold; z-index: 100; transition: background 0.2s;
+}
+
+#sidebar-left .sidebar-handle { right: 0; border-left: var(--border-w) solid var(--border); }
+#sidebar-right .sidebar-handle { left: 0; border-right: var(--border-w) solid var(--border); }
+
+.sidebar-content {
+    width: var(--sidebar-w); opacity: 1; transition: opacity 0.2s;
+    overflow-y: auto; height: 100%;
+}
+.sidebar-content { /* make room for the sidebar handle to avoid overlap */
+    /* left/right padding: ensure content doesn't sit under the 40px handle */
+}
+
+/* Restore the previous per-sidebar content padding so the handle and
+   top/side spacing are preserved (50px reserves space for the handle). */
+#sidebar-left .sidebar-content { padding: var(--pad) 50px var(--pad) var(--pad); }
+#sidebar-right .sidebar-content { padding: var(--pad) var(--pad) var(--pad) 50px; }
+.collapsed .sidebar-content { opacity: 0; pointer-events: none; }
+
+.sidebar-header-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+    gap: 10px;
+}
+
+.sidebar-label { 
+    font-size: 0.7rem; 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    color: var(--text-dim); 
+    letter-spacing: 1.5px; 
+    white-space: nowrap;
+}
+
+.density-controls { display: flex; gap: 4px; flex-shrink: 0; }
+
+.mini-toggle { 
+    background: var(--bg); 
+    border: var(--border-w) solid var(--border); 
+    color: var(--accent); 
+    font-size: 0.65rem; 
+    padding: 3px 8px; 
+    border-radius: calc(var(--radius) / 2); 
+    cursor: pointer; 
+    font-weight: bold; 
+    min-width: 65px; 
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.mini-toggle:hover { border-color: var(--accent); background: var(--accent-glow); }
+
+/* Density Hiding Logic */
+html[data-sidebar-density="minimal"] .toc-item[data-depth="2"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="3"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="4"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="5"] {
+    display: none !important;
+}

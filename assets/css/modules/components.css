@@ -1,0 +1,61 @@
+/* --- MODULE: components.css --- */
+/* Main content, topics, notes, UI components and small utilities */
+#content { flex: 1; overflow-y: auto; padding: var(--pad); scroll-behavior: smooth; background: var(--bg); }
+.content-wrapper { width: 100%; margin: 0; }
+
+h1 { font-size: 2.4rem; margin-bottom: 1.5rem; color: var(--text); }
+p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
+
+.topic-section {
+    margin-bottom: var(--pad);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all var(--transition);
+}
+
+.topic-header { padding: 15px 20px; background: rgba(0, 0, 0, 0.1); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.topic-body { padding: var(--pad); transition: padding 0.3s; }
+.topic-body.collapsed { display: none !important; }
+
+.topic-section.text_style { border: none; background: transparent; border-radius: 0; box-shadow: none; margin-bottom: calc(var(--pad) * 1.5); }
+.topic-section.text_style > .topic-header { background: transparent; padding: 0; margin-bottom: 10px; border-bottom: var(--border-w) solid var(--border); }
+.topic-section.text_style > .topic-body { padding: 15px 0 0 0; }
+.topic-body .topic-section { margin-left: 15px; margin-top: 20px; }
+
+.note { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; margin: 12px 0; font-size: 0.95rem; line-height: 1.4; }
+.note::before { flex: 0 0 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; }
+.note-info { background: rgba(59,130,246,0.06); color: var(--text); }
+.note-info::before { content: 'i'; background: #3b82f6; color: white; }
+.note-warning { background: rgba(245,158,11,0.06); color: var(--text); }
+.note-warning::before { content: '!'; background: #f59e0b; color: #1a1a1a; }
+.note-error { background: rgba(239,68,68,0.06); color: var(--text); }
+.note-error::before { content: '✕'; background: #ef4444; color: white; }
+.note table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; }
+.note table th, .note table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
+.note pre { background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; overflow: auto; margin: 8px 0; }
+.note code { white-space: pre-wrap; word-break: break-word; }
+.note .note-content { display: block; width: 100%; }
+
+.icon-btn { background: transparent; border: var(--border-w) solid var(--border); color: var(--accent) !important; cursor: pointer; width: 34px; height: 34px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; }
+
+.toggle-group { background: var(--bg); border: var(--border-w) solid var(--border); padding: 3px; border-radius: var(--radius); }
+.toggle { border-radius: calc(var(--radius) - 2px); }
+.palette-picker, .style-picker { display: flex; gap: 8px; align-items: center; }
+.color-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
+.style-dot { min-width: 40px; min-height: 40px; border-radius: 8px; cursor: pointer; transition: 0.15s; background: transparent; color: var(--text-dim); border: none; font-size: 1.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 6px; }
+.style-dot:hover { color: var(--accent); transform: scale(1.2); }
+
+@keyframes highlightFlash { 0% { background-color: var(--accent-glow); } 100% { background-color: transparent; } }
+.highlight-flash { animation: highlightFlash 2s ease-out; }
+.arrow { color: var(--accent); transition: transform 0.3s; font-weight: bold; }
+.is-collapsed .arrow { transform: rotate(180deg); }
+
+/* Scrollbar tweaks */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }

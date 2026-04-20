@@ -1,4 +1,5 @@
-/* --- 1. THEME & PALETTE SYSTEM --- */
+/* --- MODULE: variables.css --- */
+/* Theme & Palette System + Geometric design variables */
 :root {
     --sidebar-w: 260px;
     --nav-h: 100px;
@@ -24,16 +25,27 @@
     --bg: #ffffff; --panel: #f4f4f5; --border: #e4e4e7; --text: #09090b; --text-dim: #71717a; --code-bg: #f8fafc;
 }
 
-/* --- PHASE 3: GEOMETRIC DESIGN SYSTEM --- */
-
+/* --- GEOMETRIC DESIGN SYSTEM --- */
 /* SHARP Style: Technical, IDE-like */
-.note table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; }
-/* --- remainder unchanged --- */
+:root[data-global-style="sharp"] {
+    --radius: 0px;
+    --pad: 15px;
+    --border-w: 1px;
+    --shadow: none;
+}
 
-/* Aggregated CSS entrypoint — load modules below. */
-@import "modules/variables.css";
-@import "modules/layout.css";
-@import "modules/nav.css";
-@import "modules/sidebar.css";
-@import "modules/collections.css";
-@import "modules/components.css";
+/* ROUND Style: Modern, Friendly (Default) */
+:root[data-global-style="round"] {
+    --radius: 12px;
+    --pad: 25px;
+    --border-w: 1px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* AIRY Style: Spacious, Clean */
+:root[data-global-style="airy"] {
+    --radius: 24px;
+    --pad: 40px;
+    --border-w: 2px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

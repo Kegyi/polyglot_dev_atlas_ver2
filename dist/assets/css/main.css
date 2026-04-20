@@ -1,3 +1,313 @@
+/* Inlined: modules/variables.css */
+
+/* --- MODULE: variables.css --- */
+/* Theme & Palette System + Geometric design variables */
+:root {
+    --sidebar-w: 260px;
+    --nav-h: 100px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Palettes - Tied to the data-palette attribute */
+:root[data-palette="zinc"]   { --accent: #71717a; --accent-glow: rgba(113, 113, 122, 0.15); }
+:root[data-palette="red"]    { --accent: #ef4444; --accent-glow: rgba(239,68,68,0.15); }
+:root[data-palette="orange"] { --accent: #fb923c; --accent-glow: rgba(251,146,60,0.12); }
+:root[data-palette="yellow"] { --accent: #f59e0b; --accent-glow: rgba(245,158,11,0.12); }
+:root[data-palette="green"]  { --accent: #10b981; --accent-glow: rgba(16,185,129,0.12); }
+:root[data-palette="ocean"]  { --accent: #38bdf8; --accent-glow: rgba(56, 189, 248, 0.15); }
+:root[data-palette="blue"]   { --accent: #3b82f6; --accent-glow: rgba(59,130,246,0.12); }
+:root[data-palette="indigo"] { --accent: #6366f1; --accent-glow: rgba(99,102,241,0.12); }
+:root[data-palette="violet"] { --accent: #8b5cf6; --accent-glow: rgba(139,92,246,0.12); }
+
+/* Themes - Tied to the data-theme attribute */
+:root[data-theme="dark"] {
+    --bg: #09090b; --panel: #18181b; --border: #27272a; --text: #fafafa; --text-dim: #a1a1aa; --code-bg: #000000;
+}
+:root[data-theme="light"] {
+    --bg: #ffffff; --panel: #f4f4f5; --border: #e4e4e7; --text: #09090b; --text-dim: #71717a; --code-bg: #f8fafc;
+}
+
+/* --- GEOMETRIC DESIGN SYSTEM --- */
+/* SHARP Style: Technical, IDE-like */
+:root[data-global-style="sharp"] {
+    --radius: 0px;
+    --pad: 15px;
+    --border-w: 1px;
+    --shadow: none;
+}
+
+/* ROUND Style: Modern, Friendly (Default) */
+:root[data-global-style="round"] {
+    --radius: 12px;
+    --pad: 25px;
+    --border-w: 1px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* AIRY Style: Spacious, Clean */
+:root[data-global-style="airy"] {
+    --radius: 24px;
+    --pad: 40px;
+    --border-w: 2px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Inlined: modules/layout.css */
+
+/* --- MODULE: layout.css --- */
+/* Reset & App Shell + Core layout rules */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; height: 100vh;
+    display: flex; flex-direction: column; overflow: hidden; 
+    background-color: var(--bg); color: var(--text);
+    transition: background-color var(--transition), color var(--transition);
+}
+
+/* --- NAVBAR container placeholder (visual layout handled in nav module) --- */
+#container { display: flex; flex: 1; overflow: hidden; }
+
+/* Focus Mode */
+[data-view-mode="focused"] .topic-section:not(.active):not(.parent-active) {
+    display: none !important;
+}
+
+[data-view-mode="focused"] .topic-section.active .topic-section {
+    display: block !important;
+}
+
+/* Auto-hide Sidebar */
+.no-topics #sidebar-right {
+    display: none !important;
+}
+
+/* Inlined: modules/nav.css */
+
+/* --- MODULE: nav.css --- */
+/* Navbar and primary navigation styling */
+#navbar {
+    height: var(--nav-h); background: var(--panel); border-bottom: var(--border-w) solid var(--border);
+    display: flex; flex-direction: column; flex-shrink: 0; z-index: 1000;
+}
+.nav-top, .nav-bottom { display: flex; align-items: center; padding: 10px 20px; flex: 1; }
+.nav-top { justify-content: space-between; border-bottom: 1px solid rgba(128, 128, 128, 0.1); }
+.nav-left, .nav-center, .nav-right { display: flex; align-items: center; gap: 15px; }
+.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
+.logo .accent { color: var(--accent); }
+
+.nav-list { list-style: none; padding: 0; margin: 0; }
+.nav-list li { margin-bottom: 4px; position: relative; }
+
+.nav-list a, .toc-item span {
+    text-decoration: none; color: var(--text-dim); font-size: 0.9rem; display: block;
+    padding: 6px 10px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
+    white-space: normal; overflow: visible; text-overflow: clip;
+    padding-left: 12px;
+    text-indent: -12px;
+    line-height: 1.25;
+}
+
+.sidebar-wrap-indent { display:block; padding-left: 16px; }
+
+.nav-list a:hover, .toc-item span:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.nav-list .active > a, .nav-list li.active > span { color: var(--accent); font-weight: bold; background: var(--accent-glow); }
+
+/* Inlined: modules/sidebar.css */
+
+/* --- MODULE: sidebar.css --- */
+/* Sidebars, density controls, and collection toggle styles */
+aside {
+    background: var(--panel); position: relative; height: 100%;
+    transition: width var(--transition); flex-shrink: 0;
+}
+#sidebar-left { width: var(--sidebar-w); border-right: var(--border-w) solid var(--border); }
+#sidebar-right { width: var(--sidebar-w); border-left: var(--border-w) solid var(--border); }
+aside.collapsed { width: 40px !important; }
+
+.sidebar-handle {
+    position: absolute; top: 0; bottom: 0; width: 40px;
+    background: rgba(0, 0, 0, 0.05); display: flex; align-items: center;
+    justify-content: center; cursor: pointer; color: var(--accent);
+    font-weight: bold; z-index: 100; transition: background 0.2s;
+}
+
+#sidebar-left .sidebar-handle { right: 0; border-left: var(--border-w) solid var(--border); }
+#sidebar-right .sidebar-handle { left: 0; border-right: var(--border-w) solid var(--border); }
+
+.sidebar-content {
+    width: var(--sidebar-w); opacity: 1; transition: opacity 0.2s;
+    overflow-y: auto; height: 100%;
+}
+.sidebar-content { /* make room for the sidebar handle to avoid overlap */
+    /* left/right padding: ensure content doesn't sit under the 40px handle */
+}
+
+/* Restore the previous per-sidebar content padding so the handle and
+   top/side spacing are preserved (50px reserves space for the handle). */
+#sidebar-left .sidebar-content { padding: var(--pad) 50px var(--pad) var(--pad); }
+#sidebar-right .sidebar-content { padding: var(--pad) var(--pad) var(--pad) 50px; }
+.collapsed .sidebar-content { opacity: 0; pointer-events: none; }
+
+.sidebar-header-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+    gap: 10px;
+}
+
+.sidebar-label { 
+    font-size: 0.7rem; 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    color: var(--text-dim); 
+    letter-spacing: 1.5px; 
+    white-space: nowrap;
+}
+
+.density-controls { display: flex; gap: 4px; flex-shrink: 0; }
+
+.mini-toggle { 
+    background: var(--bg); 
+    border: var(--border-w) solid var(--border); 
+    color: var(--accent); 
+    font-size: 0.65rem; 
+    padding: 3px 8px; 
+    border-radius: calc(var(--radius) / 2); 
+    cursor: pointer; 
+    font-weight: bold; 
+    min-width: 65px; 
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.mini-toggle:hover { border-color: var(--accent); background: var(--accent-glow); }
+
+/* Density Hiding Logic */
+html[data-sidebar-density="minimal"] .toc-item[data-depth="2"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="3"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="4"],
+html[data-sidebar-density="minimal"] .toc-item[data-depth="5"] {
+    display: none !important;
+}
+
+/* Inlined: modules/collections.css */
+
+/* --- MODULE: collections.css --- */
+/* Sublist, collection toggles and showcase specific tweaks */
+.nav-list.nav-showcase-list .active > a, .nav-list.nav-showcase-list li.active > span {
+    background: transparent;
+    color: var(--accent);
+    font-weight: 700;
+    border-left: none;
+    padding-left: 12px;
+}
+
+.nav-list.nav-showcase-list li > a,
+.nav-list.nav-showcase-list li > span { display: block; padding-left: 12px; }
+
+.nav-item.nav-collection > a {
+    display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-weight: 700; padding-right: 6px;
+}
+
+.nav-item.nav-collection > a .collection-marker {
+    order: -1; margin-right: 8px; width: 10px; height: 10px; flex: 0 0 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--accent); box-shadow: 0 2px 6px var(--accent-glow);
+}
+
+.nav-item.nav-collection > a .collection-marker::after { content: '›'; display: inline-flex; align-items: center; justify-content: center; width: 8px; height: 8px; font-size: 8px; color: #ffffff; }
+
+:root[data-global-style="sharp"] .nav-item.nav-collection > a .collection-marker { border-radius: 4px; }
+:root[data-global-style="round"] .nav-item.nav-collection > a .collection-marker { border-radius: 999px; }
+:root[data-global-style="airy"] .nav-item.nav-collection > a .collection-marker { border-radius: 6px; width: 14px; height: 12px; flex: 0 0 14px; }
+
+:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06); }
+
+.nav-sublist { list-style: none; padding-left: 15px; margin: 5px 0 10px 0; border-left: var(--border-w) solid var(--border); }
+
+.nav-item.nav-showcases .collection-marker { color: var(--text-dim); font-size: 0.72rem; margin-left: 6px; font-weight: 600; }
+.nav-item.nav-showcases .collection-marker::before { content: '›'; margin-right: 6px; color: var(--text-dim); }
+
+html.showcases-open #toc-main { display: none !important; }
+html.showcases-open #toc-showcases { display: block !important; }
+
+html.collection-open #toc-main { display: none !important; }
+
+.nav-item.nav-back a:focus { outline: none; box-shadow: none; }
+.nav-list a:focus { outline: none; box-shadow: none; }
+.nav-list a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.nav-list.nav-showcase-list a:focus-visible { outline: none; box-shadow: none; }
+
+/* Inlined: modules/components.css */
+
+/* --- MODULE: components.css --- */
+/* Main content, topics, notes, UI components and small utilities */
+#content { flex: 1; overflow-y: auto; padding: var(--pad); scroll-behavior: smooth; background: var(--bg); }
+.content-wrapper { width: 100%; margin: 0; }
+
+h1 { font-size: 2.4rem; margin-bottom: 1.5rem; color: var(--text); }
+p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
+
+.topic-section {
+    margin-bottom: var(--pad);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all var(--transition);
+}
+
+.topic-header { padding: 15px 20px; background: rgba(0, 0, 0, 0.1); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.topic-body { padding: var(--pad); transition: padding 0.3s; }
+.topic-body.collapsed { display: none !important; }
+
+.topic-section.text_style { border: none; background: transparent; border-radius: 0; box-shadow: none; margin-bottom: calc(var(--pad) * 1.5); }
+.topic-section.text_style > .topic-header { background: transparent; padding: 0; margin-bottom: 10px; border-bottom: var(--border-w) solid var(--border); }
+.topic-section.text_style > .topic-body { padding: 15px 0 0 0; }
+.topic-body .topic-section { margin-left: 15px; margin-top: 20px; }
+
+.note { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; margin: 12px 0; font-size: 0.95rem; line-height: 1.4; }
+.note::before { flex: 0 0 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; }
+.note-info { background: rgba(59,130,246,0.06); color: var(--text); }
+.note-info::before { content: 'i'; background: #3b82f6; color: white; }
+.note-warning { background: rgba(245,158,11,0.06); color: var(--text); }
+.note-warning::before { content: '!'; background: #f59e0b; color: #1a1a1a; }
+.note-error { background: rgba(239,68,68,0.06); color: var(--text); }
+.note-error::before { content: '✕'; background: #ef4444; color: white; }
+.note table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; }
+.note table th, .note table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
+.note pre { background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; overflow: auto; margin: 8px 0; }
+.note code { white-space: pre-wrap; word-break: break-word; }
+.note .note-content { display: block; width: 100%; }
+
+.icon-btn { background: transparent; border: var(--border-w) solid var(--border); color: var(--accent) !important; cursor: pointer; width: 34px; height: 34px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; }
+
+.toggle-group { background: var(--bg); border: var(--border-w) solid var(--border); padding: 3px; border-radius: var(--radius); }
+.toggle { border-radius: calc(var(--radius) - 2px); }
+.palette-picker, .style-picker { display: flex; gap: 8px; align-items: center; }
+.color-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
+.style-dot { min-width: 40px; min-height: 40px; border-radius: 8px; cursor: pointer; transition: 0.15s; background: transparent; color: var(--text-dim); border: none; font-size: 1.1rem; display: inline-flex; align-items: center; justify-content: center; padding: 6px; }
+.style-dot:hover { color: var(--accent); transform: scale(1.2); }
+
+@keyframes highlightFlash { 0% { background-color: var(--accent-glow); } 100% { background-color: transparent; } }
+.highlight-flash { animation: highlightFlash 2s ease-out; }
+.arrow { color: var(--accent); transition: transform 0.3s; font-weight: bold; }
+.is-collapsed .arrow { transform: rotate(180deg); }
+
+/* Scrollbar tweaks */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }
+
+
+/* main.css remaining content */
+
 /* --- 1. THEME & PALETTE SYSTEM --- */
 :root {
     --sidebar-w: 260px;
@@ -27,421 +337,7 @@
 /* --- PHASE 3: GEOMETRIC DESIGN SYSTEM --- */
 
 /* SHARP Style: Technical, IDE-like */
-:root[data-global-style="sharp"] {
-    --radius: 0px;
-    --pad: 15px;
-    --border-w: 1px;
-    --shadow: none;
-}
-
-/* ROUND Style: Modern, Friendly (Default) */
-:root[data-global-style="round"] {
-    --radius: 12px;
-    --pad: 25px;
-    --border-w: 1px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-/* AIRY Style: Spacious, Clean */
-:root[data-global-style="airy"] {
-    --radius: 24px;
-    --pad: 40px;
-    --border-w: 2px;
-    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* --- 2. RESET & APP SHELL --- */
-* { box-sizing: border-box; }
-
-body {
-    margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; height: 100vh;
-    display: flex; flex-direction: column; overflow: hidden; 
-    background-color: var(--bg); color: var(--text);
-    transition: background-color var(--transition), color var(--transition);
-}
-
-/* --- 3. NAVBAR --- */
-#navbar {
-    height: var(--nav-h); background: var(--panel); border-bottom: var(--border-w) solid var(--border);
-    display: flex; flex-direction: column; flex-shrink: 0; z-index: 1000;
-}
-.nav-top, .nav-bottom { display: flex; align-items: center; padding: 0 20px; flex: 1; }
-.nav-top { justify-content: space-between; border-bottom: 1px solid rgba(128, 128, 128, 0.1); }
-.nav-left, .nav-center, .nav-right { display: flex; align-items: center; gap: 15px; }
-.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
-.logo .accent { color: var(--accent); }
-
-/* --- 4. NAVIGATION & PERSISTENCE LOGIC --- */
-#container { display: flex; flex: 1; overflow: hidden; }
-
-/* Focus Mode */
-[data-view-mode="focused"] .topic-section:not(.active):not(.parent-active) {
-    display: none !important;
-}
-
-/* Ensure that when a topic is active in focused mode, its nested sub-topics remain visible */
-[data-view-mode="focused"] .topic-section.active .topic-section {
-    display: block !important;
-}
-
-/* Auto-hide Sidebar */
-.no-topics #sidebar-right {
-    display: none !important;
-}
-
-/* --- 5. SIDEBARS (Collapsible) --- */
-aside {
-    background: var(--panel); position: relative; height: 100%;
-    transition: width var(--transition); flex-shrink: 0;
-}
-#sidebar-left { width: var(--sidebar-w); border-right: var(--border-w) solid var(--border); }
-#sidebar-right { width: var(--sidebar-w); border-left: var(--border-w) solid var(--border); }
-aside.collapsed { width: 40px !important; }
-
-.sidebar-handle {
-    position: absolute; top: 0; bottom: 0; width: 40px;
-    background: rgba(0, 0, 0, 0.05); display: flex; align-items: center;
-    justify-content: center; cursor: pointer; color: var(--accent);
-    font-weight: bold; z-index: 100; transition: background 0.2s;
-}
-
-#sidebar-left .sidebar-handle { right: 0; border-left: var(--border-w) solid var(--border); }
-#sidebar-right .sidebar-handle { left: 0; border-right: var(--border-w) solid var(--border); }
-
-/* Content Padding */
-#sidebar-left .sidebar-content { padding: var(--pad) 50px var(--pad) var(--pad); }
-#sidebar-right .sidebar-content { padding: var(--pad) var(--pad) var(--pad) 50px; }
-
-.sidebar-content {
-    width: var(--sidebar-w); opacity: 1; transition: opacity 0.2s;
-    overflow-y: auto; height: 100%;
-}
-.collapsed .sidebar-content { opacity: 0; pointer-events: none; }
-
-/* --- 6. SIDEBAR UI & DENSITY --- */
-.sidebar-header-row { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 20px; 
-    gap: 10px;
-}
-
-.sidebar-label { 
-    font-size: 0.7rem; 
-    font-weight: 900; 
-    text-transform: uppercase; 
-    color: var(--text-dim); 
-    letter-spacing: 1.5px; 
-    white-space: nowrap;
-}
-
-.density-controls {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-}
-
-/* FIX: Prevent jumpy layout by setting a fixed minimum width for toggles */
-.mini-toggle { 
-    background: var(--bg); 
-    border: var(--border-w) solid var(--border); 
-    color: var(--accent); 
-    font-size: 0.65rem; 
-    padding: 3px 8px; 
-    border-radius: calc(var(--radius) / 2); 
-    cursor: pointer; 
-    font-weight: bold; 
-    min-width: 65px; /* Sized for 'Detailed' or 'Focus' */
-    text-align: center;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s;
-}
-
-.mini-toggle:hover {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-}
-
-/* Density Hiding Logic */
-html[data-sidebar-density="minimal"] .toc-item[data-depth="2"],
-html[data-sidebar-density="minimal"] .toc-item[data-depth="3"],
-html[data-sidebar-density="minimal"] .toc-item[data-depth="4"],
-html[data-sidebar-density="minimal"] .toc-item[data-depth="5"] {
-    display: none !important;
-}
-
-.nav-list { list-style: none; padding: 0; margin: 0; }
-.nav-list li { margin-bottom: 4px; position: relative; }
-
-.nav-list a, .toc-item span {
-    text-decoration: none; color: var(--text-dim); font-size: 0.9rem; display: block;
-    padding: 6px 10px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
-    /* Allow multi-line titles and apply a hanging-indent so wrapped lines are indented */
-    white-space: normal; overflow: visible; text-overflow: clip;
-    /* Hanging indent: first line starts at left edge, following lines indented */
-    padding-left: 12px;
-    text-indent: -12px;
-    line-height: 1.25;
-}
-
-/* Slightly increase indent for wrapped sidebar lines for visual alignment */
-.sidebar-wrap-indent { display:block; padding-left: 16px; }
-/* Icon sizing for geometric icons injected as SVG */
-/* Clear, visible icon sizes for geometric design */
-.icon-btn svg { width: 24px; height: 24px; display: block; }
-.style-dot svg { width: 20px; height: 20px; display: block; }
-.style-dot { padding: 8px; }
-
-
-/* Highlight the assembler label for missing snippets so it reads as a danger */
-.snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }
-.nav-list a:hover, .toc-item span:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-.nav-list .active > a, .nav-list li.active > span { color: var(--accent); font-weight: bold; background: var(--accent-glow); }
-
-/* ------------ sublist style from here -------------- */
-
-/* Remove the yellow-ish background for active items inside the Showcases
-   submenu so the page name does not get a persistent colored block. Keep
-   accent color for text and a subtle left border for emphasis instead. */
-.nav-list.nav-showcase-list .active > a, .nav-list.nav-showcase-list li.active > span {
-    background: transparent;
-    color: var(--accent);
-    font-weight: 700;
-    /* remove left border and extra padding for a cleaner submenu look */
-    border-left: none;
-    /* match main nav indentation */
-    padding-left: 12px;
-}
-
-/* Ensure submenu items align with main nav indentation. Provide the
-   same left padding used elsewhere so the selected label doesn't
-   appear unindented compared to other entries. */
-.nav-list.nav-showcase-list li > a,
-.nav-list.nav-showcase-list li > span {
-    display: block;
-    padding-left: 12px;
-}
-
-/* --- Collection Toggle Styling ---
-   Make submenu-toggle items visually distinct from normal page links.
-   Target only items with the `nav-collection` marker so regular pages
-   inside submenus remain unchanged. The `.collection-marker` span is
-   empty in the generated HTML; we render a colored chevron via ::after. */
-.nav-item.nav-collection > a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-dim);
-    font-weight: 700;
-    padding-right: 6px;
-}
-
-/* Base marker: uses the active palette accent. The glyph is rendered
-   in ::after so we can change the container shape via global style. */
-.nav-item.nav-collection > a .collection-marker {
-    /* Move marker before the label */
-    order: -1;
-    margin-right: 8px;
-    width: 10px; /* roughly half of previous size */
-    height: 10px;
-    flex: 0 0 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--accent);
-    box-shadow: 0 2px 6px var(--accent-glow);
-}
-
-.nav-item.nav-collection > a .collection-marker::after {
-    content: '›';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 8px;
-    height: 8px;
-    font-size: 8px;
-    color: #ffffff;
-}
-
-/* Shape variants driven by the global geometric style */
-:root[data-global-style="sharp"] .nav-item.nav-collection > a .collection-marker {
-    border-radius: 4px; /* slightly rounded square */
-}
-
-:root[data-global-style="round"] .nav-item.nav-collection > a .collection-marker {
-    border-radius: 999px; /* circle */
-}
-
-:root[data-global-style="airy"] .nav-item.nav-collection > a .collection-marker {
-    border-radius: 6px; /* pill-like rounded rectangle */
-    width: 14px; height: 12px; flex: 0 0 14px;
-}
-
-/* Accessibility tweak: if the theme is light, slightly darken the glyph
-   boundary so the white glyph reads against very pale accents. This keeps
-   the glyph legible for most palette choices without per-color logic. */
-:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker {
-    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06);
-}
-
-.nav-sublist { list-style: none; padding-left: 15px; margin: 5px 0 10px 0; border-left: var(--border-w) solid var(--border); }
-
-/* Showcases collection marker (indicates this nav item opens a collection, not a page) */
-.nav-item.nav-showcases .collection-marker { color: var(--text-dim); font-size: 0.72rem; margin-left: 6px; font-weight: 600; }
-.nav-item.nav-showcases .collection-marker::before { content: '›'; margin-right: 6px; color: var(--text-dim); }
-
-/* If the root has .showcases-open, hide the main nav list immediately to avoid flashes */
-html.showcases-open #toc-main { display: none !important; }
-html.showcases-open #toc-showcases { display: block !important; }
-
-/* Generic collection open marker (used for any immediate subfolder collection)
-    When set, hide the main nav immediately to avoid flashing it before JS
-    restores the collection submenu. The specific submenu will be shown by
-    JS once the DOM is ready. */
-html.collection-open #toc-main { display: none !important; }
-
-/* Prevent the Back link from showing a strong default focus ring (avoid yellow border) */
-.nav-item.nav-back a:focus { outline: none; box-shadow: none; }
-
-/* Prefer using :focus-visible so mouse clicks don't leave a persistent
-   focus ring while keyboard navigation still shows focus for accessibility.
-   This prevents the yellow browser focus ring on click. */
-.nav-list a:focus { outline: none; box-shadow: none; }
-.nav-list a:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
-}
-
-/* Disable focus-visible outline specifically for the showcases submenu
-   so click or focus doesn't show an extra border for that list. Keyboard
-   users still get focus outlines elsewhere. */
-.nav-list.nav-showcase-list a:focus-visible { outline: none; box-shadow: none; }
-
-/* ------------ sublist style until here -------------- */
-
-/* --- 7. MAIN CONTENT AREA --- */
-#content { flex: 1; overflow-y: auto; padding: var(--pad); scroll-behavior: smooth; background: var(--bg); }
-.content-wrapper { width: 100%; margin: 0; }
-
-h1 { font-size: 2.4rem; margin-bottom: 1.5rem; color: var(--text); }
-p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
-
-/* --- 8. TOPIC SECTIONS --- */
-.topic-section {
-    margin-bottom: var(--pad);
-    border: var(--border-w) solid var(--border);
-    border-radius: var(--radius);
-    background: var(--panel);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: all var(--transition);
-}
-
-.topic-header {
-    padding: 15px 20px;
-    background: rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.topic-body { padding: var(--pad); transition: padding 0.3s; }
-.topic-body.collapsed { display: none !important; }
-
-/* custom styles */
-.topic-section.text_style {
-    border: none; background: transparent; border-radius: 0; box-shadow: none;
-    margin-bottom: calc(var(--pad) * 1.5);
-}
-.topic-section.text_style > .topic-header {
-    background: transparent; padding: 0; margin-bottom: 10px;
-    border-bottom: var(--border-w) solid var(--border);
-}
-.topic-section.text_style > .topic-body { padding: 15px 0 0 0; }
-
-.topic-body .topic-section { margin-left: 15px; margin-top: 20px; }
-
-/* --- NOTES / CALLOUTS --- */
-.note {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin: 12px 0;
-    font-size: 0.95rem;
-    line-height: 1.4;
-}
-.note::before {
-    flex: 0 0 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-weight: 800;
-}
-.note-info {
-    background: rgba(59,130,246,0.06);
-    color: var(--text);
-}
-.note-info::before { content: 'i'; background: #3b82f6; color: white; }
-.note-warning {
-    background: rgba(245,158,11,0.06);
-    color: var(--text);
-}
-.note-warning::before { content: '!'; background: #f59e0b; color: #1a1a1a; }
-.note-error {
-    background: rgba(239,68,68,0.06);
-    color: var(--text);
-}
-.note-error::before { content: '✕'; background: #ef4444; color: white; }
-
-/* Ensure block elements that appear inside notes (tables, pre/code) are visible
-    and rendered with sensible spacing. Some content generators may inject
-    HTML snippets that contain <table> or <pre> inside notes; make them work. */
 .note table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; }
-.note table th, .note table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
-.note pre { background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; overflow: auto; margin: 8px 0; }
-.note code { white-space: pre-wrap; word-break: break-word; }
-.note .note-content { display: block; width: 100%; }
+/* --- remainder unchanged --- */
 
-
-/* --- 9. UI COMPONENTS --- */
-.icon-btn { 
-    background: transparent; border: var(--border-w) solid var(--border); 
-    color: var(--accent) !important; cursor: pointer; width: 34px; height: 34px; 
-    border-radius: var(--radius); display: flex; align-items: center; justify-content: center; 
-}
-
-.toggle-group {
-    background: var(--bg); border: var(--border-w) solid var(--border);
-    padding: 3px; border-radius: var(--radius);
-}
-.toggle { border-radius: calc(var(--radius) - 2px); }
-
-.palette-picker, .style-picker { display: flex; gap: 8px; align-items: center; }
-.color-dot { 
-    width: 18px; height: 18px; border-radius: 50%; cursor: pointer; transition: 0.2s; 
-}
-.style-dot {
-    /* Let the SVG determine the visible size; ensure a comfortable hit area */
-    min-width: 40px; min-height: 40px; border-radius: 8px; cursor: pointer; transition: 0.15s;
-    background: transparent; color: var(--text-dim); border: none; font-size: 1.1rem;
-    display: inline-flex; align-items: center; justify-content: center; padding: 6px;
-}
-.style-dot:hover { color: var(--accent); transform: scale(1.2); }
-
-@keyframes highlightFlash { 0% { background-color: var(--accent-glow); } 100% { background-color: transparent; } }
-.highlight-flash { animation: highlightFlash 2s ease-out; }
-
-.arrow { color: var(--accent); transition: transform 0.3s; font-weight: bold; }
-.is-collapsed .arrow { transform: rotate(180deg); }
-
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+/* Aggregated CSS entrypoint — load modules below. */

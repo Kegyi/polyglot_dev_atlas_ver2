@@ -1,0 +1,28 @@
+/* --- MODULE: nav.css --- */
+/* Navbar and primary navigation styling */
+#navbar {
+    height: var(--nav-h); background: var(--panel); border-bottom: var(--border-w) solid var(--border);
+    display: flex; flex-direction: column; flex-shrink: 0; z-index: 1000;
+}
+.nav-top, .nav-bottom { display: flex; align-items: center; padding: 10px 20px; flex: 1; }
+.nav-top { justify-content: space-between; border-bottom: 1px solid rgba(128, 128, 128, 0.1); }
+.nav-left, .nav-center, .nav-right { display: flex; align-items: center; gap: 15px; }
+.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
+.logo .accent { color: var(--accent); }
+
+.nav-list { list-style: none; padding: 0; margin: 0; }
+.nav-list li { margin-bottom: 4px; position: relative; }
+
+.nav-list a, .toc-item span {
+    text-decoration: none; color: var(--text-dim); font-size: 0.9rem; display: block;
+    padding: 6px 10px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
+    white-space: normal; overflow: visible; text-overflow: clip;
+    padding-left: 12px;
+    text-indent: -12px;
+    line-height: 1.25;
+}
+
+.sidebar-wrap-indent { display:block; padding-left: 16px; }
+
+.nav-list a:hover, .toc-item span:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.nav-list .active > a, .nav-list li.active > span { color: var(--accent); font-weight: bold; background: var(--accent-glow); }

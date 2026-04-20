@@ -535,13 +535,96 @@ class AtlasBuilder:
             html += f'<button class="lang-btn" data-lang-id="{lid}" style="--lang-color: {color}">{info.get("name", lid)}</button>'
         return html
 
+    def _generate_bundled_css(self):
+        """Inline @import rules from workspace `assets/css/main.css` and
+        emit a bundled `main.css` into the dist folder. Also ensure
+        `ui_states.css` is present and move other css files into
+        `assets/css/custom/` inside the dist to denote page-scoped styles.
+        """
+        import re
+
+        workspace_css_dir = os.path.join(self.assets_dir, "css")
+        dist_css_dir = os.path.join(self.dist_dir, "assets", "css")
+        if not os.path.isdir(dist_css_dir):
+            return
+
+        main_src = os.path.join(workspace_css_dir, "main.css")
+        main_dest = os.path.join(dist_css_dir, "main.css")
+
+        combined = []
+        if os.path.exists(main_src):
+            text = self._read_file(main_src)
+            # Replace @import "..." by inlining referenced files when local
+            imports = re.findall(r'@import\s+["\']([^"\']+)["\']\s*;', text)
+            # Inline each import in order
+            for imp in imports:
+                imp_path = os.path.join(workspace_css_dir, imp)
+                if os.path.exists(imp_path):
+                    combined.append(f"/* Inlined: {imp} */\n")
+                    combined.append(self._read_file(imp_path))
+                else:
+                    # If import not found, keep the import line as-is
+                    combined.append(f"/* Missing import: {imp} */\n")
+
+            # Append remaining non-import content (strip import lines)
+            stripped = re.sub(r'@import\s+["\'][^"\']+["\']\s*;\s*', '', text)
+            combined.append("\n/* main.css remaining content */\n")
+            combined.append(stripped)
+        else:
+            # Fallback: if no main.css in workspace, try to join modules folder
+            modules_dir = os.path.join(workspace_css_dir, "modules")
+            if os.path.isdir(modules_dir):
+                for fname in sorted(os.listdir(modules_dir)):
+                    if fname.endswith('.css'):
+                        combined.append(f"/* Inlined module: {fname} */\n")
+                        combined.append(self._read_file(os.path.join(modules_dir, fname)))
+
+        # Write bundled main.css to dist
+        try:
+            with open(main_dest, 'w', encoding='utf-8') as f:
+                f.write('\n'.join(combined))
+        except Exception as e:
+            self._log_warning(f"Failed to write bundled main.css: {e}")
+
+        # Ensure ui_states.css exists in dist (copy from workspace if present)
+        ui_src = os.path.join(workspace_css_dir, "ui_states.css")
+        ui_dest = os.path.join(dist_css_dir, "ui_states.css")
+        if os.path.exists(ui_src):
+            try:
+                shutil.copyfile(ui_src, ui_dest)
+            except Exception:
+                self._log_warning("Failed to copy ui_states.css to dist")
+        else:
+            # Create an empty placeholder so templates can reference it safely
+            open(ui_dest, 'a').close()
+
+        # Move other CSS files into `custom/` inside dist assets/css so they are
+        # clearly page-scoped and not part of the global bundle.
+        custom_dir = os.path.join(dist_css_dir, 'custom')
+        os.makedirs(custom_dir, exist_ok=True)
+
+        for entry in os.listdir(dist_css_dir):
+            src_path = os.path.join(dist_css_dir, entry)
+            # Skip directories we want to keep and the bundled files
+            if entry in ('modules', 'custom', 'main.css', 'ui_states.css'):
+                continue
+            # Move files and folders into custom
+            try:
+                target_path = os.path.join(custom_dir, entry)
+                shutil.move(src_path, target_path)
+            except Exception as e:
+                # Non-fatal: log and continue
+                self._log_warning(f"Failed to relocate CSS asset {entry}: {e}")
+
     def assemble_mode_switcher(self, active_mode, prefix):
         html = '<div class="toggle-group mode-toggles">'
-        # Add the new Meta mode (framework documentation) to the switcher
-        targets = {"atlas": "index.html", "course": "course/index.html", "meta": "meta/index.html"}
-        for m in ["atlas", "course", "meta"]:
+        # Build mode toggles from discovered pages subfolders so adding
+        # a new top-level folder under `content/pages/` auto-creates a mode.
+        modes = sorted(self.site_registry.keys()) if self.site_registry else ["atlas"]
+        for m in modes:
             active = "active" if m == active_mode else ""
-            target_url = prefix + targets.get(m, "index.html")
+            # Root/top-level mode ('atlas') resolves to index.html at root.
+            target_url = prefix + ("index.html" if m == "atlas" else f"{m}/index.html")
             # Close the UI-only showcases view when switching modes so the
             # destination mode can restore its own saved state if present.
             html += f'<a href="{target_url}" class="toggle {active}" onclick="app.prepareModeSwitch()">{m.capitalize()}</a>'
@@ -645,16 +728,21 @@ class AtlasBuilder:
                     ordered.append(it)
             self.site_registry[mode] = ordered
 
-        prioritize_mode('atlas', ['index'])
-        prioritize_mode('course', ['index'])
-        prioritize_mode('meta', ['index'])
+        # Prefer an `index` page first for every discovered mode.
+        for mode_key in list(self.site_registry.keys()):
+            prioritize_mode(mode_key, ['index'])
 
         for mk in sorted(self.site_registry.keys()):
             for pe in self.site_registry[mk]:
                 self.process_page(pe)
-
         if os.path.exists(self.assets_dir):
             shutil.copytree(self.assets_dir, os.path.join(self.dist_dir, "assets"))
+            # Post-process CSS: bundle `main.css` by inlining @imports from
+            # the workspace assets/css files and produce `ui_states.css`.
+            try:
+                self._generate_bundled_css()
+            except Exception as e:
+                self._log_warning(f"CSS bundling failed: {e}")
         
         locales_src = os.path.join(self.content_dir, "locales")
         if os.path.exists(locales_src):
