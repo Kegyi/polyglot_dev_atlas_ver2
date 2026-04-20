@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -149,14 +153,14 @@
                 <h1  class="">Design Patterns</h1><p  class="">Design patterns are reusable solutions to common software design problems. They provide a template for how to solve a problem that can be used in many different situations. This page explores various design patterns, their implementations across different programming languages, and modern variants that leverage contemporary language features.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="creational_patterns">
             <div class="topic-header" onclick="app.toggleTopic('creational_patterns')">
-                <h2>Creational patterns</h2>
+                <div class="topic-title-wrap"><h2>Creational patterns</h2><a class="topic-permalink" href="#creational_patterns" aria-label="Link to Creational patterns">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
         <div class="topic-section text_style  " id="abstract_factory">
             <div class="topic-header" onclick="app.toggleTopic('abstract_factory')">
-                <h3>Abstract Factory</h3>
+                <div class="topic-title-wrap"><h3>Abstract Factory</h3><a class="topic-permalink" href="#abstract_factory" aria-label="Link to Abstract Factory">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -447,7 +451,7 @@ showScreen(new DarkFactory());</code></pre></div></div></div>
         
         <div class="topic-section text_style  " id="builder">
             <div class="topic-header" onclick="app.toggleTopic('builder')">
-                <h3>Builder</h3>
+                <div class="topic-title-wrap"><h3>Builder</h3><a class="topic-permalink" href="#builder" aria-label="Link to Builder">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -692,7 +696,7 @@ for (const section of report.sections) {
         
         <div class="topic-section text_style  " id="factory_method">
             <div class="topic-header" onclick="app.toggleTopic('factory_method')">
-                <h3>Factory Method</h3>
+                <div class="topic-title-wrap"><h3>Factory Method</h3><a class="topic-permalink" href="#factory_method" aria-label="Link to Factory Method">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -912,7 +916,7 @@ for (const job of [new JsonImportJob(), new CsvImportJob()]) {
         
         <div class="topic-section text_style  " id="prototype">
             <div class="topic-header" onclick="app.toggleTopic('prototype')">
-                <h3>Prototype</h3>
+                <div class="topic-title-wrap"><h3>Prototype</h3><a class="topic-permalink" href="#prototype" aria-label="Link to Prototype">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1056,7 +1060,7 @@ console.log(copy);</code></pre></div></div></div>
         
         <div class="topic-section text_style  " id="singleton">
             <div class="topic-header" onclick="app.toggleTopic('singleton')">
-                <h3>Singleton</h3>
+                <div class="topic-title-wrap"><h3>Singleton</h3><a class="topic-permalink" href="#singleton" aria-label="Link to Singleton">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1173,7 +1177,7 @@ console.log(Config.instance().env);</code></pre></div></div></div>
         
         <div class="topic-section text_style  " id="object_pool">
             <div class="topic-header" onclick="app.toggleTopic('object_pool')">
-                <h3>Object Pool</h3>
+                <div class="topic-title-wrap"><h3>Object Pool</h3><a class="topic-permalink" href="#object_pool" aria-label="Link to Object Pool">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1302,7 +1306,7 @@ export {}
         
         <div class="topic-section text_style  " id="lazy_initialization">
             <div class="topic-header" onclick="app.toggleTopic('lazy_initialization')">
-                <h3>Lazy Initialization</h3>
+                <div class="topic-title-wrap"><h3>Lazy Initialization</h3><a class="topic-permalink" href="#lazy_initialization" aria-label="Link to Lazy Initialization">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1384,7 +1388,7 @@ export {}
         
         <div class="topic-section text_style  " id="multiton">
             <div class="topic-header" onclick="app.toggleTopic('multiton')">
-                <h3>Multiton</h3>
+                <div class="topic-title-wrap"><h3>Multiton</h3><a class="topic-permalink" href="#multiton" aria-label="Link to Multiton">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1478,14 +1482,14 @@ export {}
         
         <div class="topic-section text_style  " id="structural_patterns">
             <div class="topic-header" onclick="app.toggleTopic('structural_patterns')">
-                <h2>Structural patterns</h2>
+                <div class="topic-title-wrap"><h2>Structural patterns</h2><a class="topic-permalink" href="#structural_patterns" aria-label="Link to Structural patterns">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
         <div class="topic-section text_style  " id="adapter">
             <div class="topic-header" onclick="app.toggleTopic('adapter')">
-                <h3>Adapter</h3>
+                <div class="topic-title-wrap"><h3>Adapter</h3><a class="topic-permalink" href="#adapter" aria-label="Link to Adapter">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1639,7 +1643,7 @@ new JsonLoggerAdapter(new JsonLogger()).print('build finished');
         
         <div class="topic-section text_style  " id="bridge">
             <div class="topic-header" onclick="app.toggleTopic('bridge')">
-                <h3>Bridge</h3>
+                <div class="topic-title-wrap"><h3>Bridge</h3><a class="topic-permalink" href="#bridge" aria-label="Link to Bridge">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1835,7 +1839,7 @@ new AlertNotification(new SmsSender()).notify('CPU high');
         
         <div class="topic-section text_style  " id="composite">
             <div class="topic-header" onclick="app.toggleTopic('composite')">
-                <h3>Composite</h3>
+                <div class="topic-title-wrap"><h3>Composite</h3><a class="topic-permalink" href="#composite" aria-label="Link to Composite">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2043,7 +2047,7 @@ console.log(root.totalSize());
         
         <div class="topic-section text_style  " id="decorator">
             <div class="topic-header" onclick="app.toggleTopic('decorator')">
-                <h3>Decorator</h3>
+                <div class="topic-title-wrap"><h3>Decorator</h3><a class="topic-permalink" href="#decorator" aria-label="Link to Decorator">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2215,7 +2219,7 @@ new SmsDecorator(new EmailNotifier()).send('deployment done');
         
         <div class="topic-section text_style  " id="facade">
             <div class="topic-header" onclick="app.toggleTopic('facade')">
-                <h3>Facade</h3>
+                <div class="topic-title-wrap"><h3>Facade</h3><a class="topic-permalink" href="#facade" aria-label="Link to Facade">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2399,7 +2403,7 @@ new ReleaseFacade().deploy();
         
         <div class="topic-section text_style  " id="flyweight">
             <div class="topic-header" onclick="app.toggleTopic('flyweight')">
-                <h3>Flyweight</h3>
+                <div class="topic-title-wrap"><h3>Flyweight</h3><a class="topic-permalink" href="#flyweight" aria-label="Link to Flyweight">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2569,7 +2573,7 @@ console.log(first === second);
         
         <div class="topic-section text_style  " id="proxy">
             <div class="topic-header" onclick="app.toggleTopic('proxy')">
-                <h3>Proxy</h3>
+                <div class="topic-title-wrap"><h3>Proxy</h3><a class="topic-permalink" href="#proxy" aria-label="Link to Proxy">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2750,7 +2754,7 @@ proxy.display();
         
         <div class="topic-section text_style  " id="data_mapper">
             <div class="topic-header" onclick="app.toggleTopic('data_mapper')">
-                <h3>Data Mapper</h3>
+                <div class="topic-title-wrap"><h3>Data Mapper</h3><a class="topic-permalink" href="#data_mapper" aria-label="Link to Data Mapper">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2817,7 +2821,7 @@ export {}
         
         <div class="topic-section text_style  " id="object_adapter">
             <div class="topic-header" onclick="app.toggleTopic('object_adapter')">
-                <h3>Object Adapter</h3>
+                <div class="topic-title-wrap"><h3>Object Adapter</h3><a class="topic-permalink" href="#object_adapter" aria-label="Link to Object Adapter">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2871,7 +2875,7 @@ export {}
         
         <div class="topic-section text_style  " id="class_adapter">
             <div class="topic-header" onclick="app.toggleTopic('class_adapter')">
-                <h3>Class Adapter</h3>
+                <div class="topic-title-wrap"><h3>Class Adapter</h3><a class="topic-permalink" href="#class_adapter" aria-label="Link to Class Adapter">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -2929,14 +2933,14 @@ export {}
         
         <div class="topic-section text_style  " id="behavioral_patterns">
             <div class="topic-header" onclick="app.toggleTopic('behavioral_patterns')">
-                <h2>Behavioral patterns</h2>
+                <div class="topic-title-wrap"><h2>Behavioral patterns</h2><a class="topic-permalink" href="#behavioral_patterns" aria-label="Link to Behavioral patterns">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
         <div class="topic-section text_style  " id="chain_of_responsibility">
             <div class="topic-header" onclick="app.toggleTopic('chain_of_responsibility')">
-                <h3>Chain Of Responsibility</h3>
+                <div class="topic-title-wrap"><h3>Chain Of Responsibility</h3><a class="topic-permalink" href="#chain_of_responsibility" aria-label="Link to Chain Of Responsibility">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -3364,7 +3368,7 @@ process(chain, Request(3, "high request"))
         
         <div class="topic-section text_style  " id="command">
             <div class="topic-header" onclick="app.toggleTopic('command')">
-                <h3>Command</h3>
+                <div class="topic-title-wrap"><h3>Command</h3><a class="topic-permalink" href="#command" aria-label="Link to Command">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -3736,7 +3740,7 @@ commands.forEach(cmd =&gt; cmd());
         
         <div class="topic-section text_style  " id="observer">
             <div class="topic-header" onclick="app.toggleTopic('observer')">
-                <h3>Observer</h3>
+                <div class="topic-title-wrap"><h3>Observer</h3><a class="topic-permalink" href="#observer" aria-label="Link to Observer">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -4084,7 +4088,7 @@ subject.notify("Event 2");
         
         <div class="topic-section text_style  " id="state">
             <div class="topic-header" onclick="app.toggleTopic('state')">
-                <h3>State</h3>
+                <div class="topic-title-wrap"><h3>State</h3><a class="topic-permalink" href="#state" aria-label="Link to State">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -4428,7 +4432,7 @@ handle(state);
         
         <div class="topic-section text_style  " id="strategy">
             <div class="topic-header" onclick="app.toggleTopic('strategy')">
-                <h3>Strategy</h3>
+                <div class="topic-title-wrap"><h3>Strategy</h3><a class="topic-permalink" href="#strategy" aria-label="Link to Strategy">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -4810,7 +4814,7 @@ console.log("Multiply:", calc.execute(5, 3));
         
         <div class="topic-section text_style  " id="template_method">
             <div class="topic-header" onclick="app.toggleTopic('template_method')">
-                <h3>Template Method</h3>
+                <div class="topic-title-wrap"><h3>Template Method</h3><a class="topic-permalink" href="#template_method" aria-label="Link to Template Method">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -5155,7 +5159,7 @@ process_data(json_read, json_parse, json_write)
         
         <div class="topic-section text_style  " id="visitor">
             <div class="topic-header" onclick="app.toggleTopic('visitor')">
-                <h3>Visitor</h3>
+                <div class="topic-title-wrap"><h3>Visitor</h3><a class="topic-permalink" href="#visitor" aria-label="Link to Visitor">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -5601,7 +5605,7 @@ console.log(describe(rectangle));
         
         <div class="topic-section text_style  " id="interpreter">
             <div class="topic-header" onclick="app.toggleTopic('interpreter')">
-                <h3>Interpreter</h3>
+                <div class="topic-title-wrap"><h3>Interpreter</h3><a class="topic-permalink" href="#interpreter" aria-label="Link to Interpreter">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -5822,7 +5826,7 @@ console.log(expr.interpret("bird"));
         
         <div class="topic-section text_style  " id="iterator">
             <div class="topic-header" onclick="app.toggleTopic('iterator')">
-                <h3>Iterator</h3>
+                <div class="topic-title-wrap"><h3>Iterator</h3><a class="topic-permalink" href="#iterator" aria-label="Link to Iterator">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -6103,7 +6107,7 @@ console.log(result);
         
         <div class="topic-section text_style  " id="mediator">
             <div class="topic-header" onclick="app.toggleTopic('mediator')">
-                <h3>Mediator</h3>
+                <div class="topic-title-wrap"><h3>Mediator</h3><a class="topic-permalink" href="#mediator" aria-label="Link to Mediator">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -6390,7 +6394,7 @@ u2.send("Hi there!");
         
         <div class="topic-section text_style  " id="memento">
             <div class="topic-header" onclick="app.toggleTopic('memento')">
-                <h3>Memento</h3>
+                <div class="topic-title-wrap"><h3>Memento</h3><a class="topic-permalink" href="#memento" aria-label="Link to Memento">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -6746,5 +6750,6 @@ if (restored) {
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
     <script src="../assets/js/content_renderers.js"></script>
+    <script src="../assets/js/search_ui.js"></script>
 </body>
 </html>

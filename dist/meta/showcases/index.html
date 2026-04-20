@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -150,7 +154,7 @@
                 <div  class="blocks-container ">
         <div class="topic-section showcase-index  " id="showcases_intro">
             <div class="topic-header" onclick="app.toggleTopic('showcases_intro')">
-                <h2>Welcome to Showcases</h2>
+                <div class="topic-title-wrap"><h2>Welcome to Showcases</h2><a class="topic-permalink" href="#showcases_intro" aria-label="Link to Welcome to Showcases">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -187,5 +191,6 @@
     <script src="../../assets/js/app.js"></script>
     <script src="../../assets/js/selection_engine.js"></script>
     <script src="../../assets/js/content_renderers.js"></script>
+    <script src="../../assets/js/search_ui.js"></script>
 </body>
 </html>

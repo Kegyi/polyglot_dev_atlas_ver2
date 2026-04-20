@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -149,7 +153,7 @@
                 <h2  class="">Coding Principles</h2><p  class="">This page outlines key coding principles and best practices that are essential for writing clean, efficient, and maintainable code across different programming languages.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="single_responsibility">
             <div class="topic-header" onclick="app.toggleTopic('single_responsibility')">
-                <h2>Single Responsibility Principle</h2>
+                <div class="topic-title-wrap"><h2>Single Responsibility Principle</h2><a class="topic-permalink" href="#single_responsibility" aria-label="Link to Single Responsibility Principle">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -159,7 +163,7 @@
         
         <div class="topic-section text_style  " id="open_closed">
             <div class="topic-header" onclick="app.toggleTopic('open_closed')">
-                <h2>Open/Closed Principle</h2>
+                <div class="topic-title-wrap"><h2>Open/Closed Principle</h2><a class="topic-permalink" href="#open_closed" aria-label="Link to Open/Closed Principle">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -169,7 +173,7 @@
         
         <div class="topic-section text_style  " id="liskov_substitution">
             <div class="topic-header" onclick="app.toggleTopic('liskov_substitution')">
-                <h2>Liskov Substitution Principle</h2>
+                <div class="topic-title-wrap"><h2>Liskov Substitution Principle</h2><a class="topic-permalink" href="#liskov_substitution" aria-label="Link to Liskov Substitution Principle">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -179,7 +183,7 @@
         
         <div class="topic-section text_style  " id="interface_segregation">
             <div class="topic-header" onclick="app.toggleTopic('interface_segregation')">
-                <h2>Interface Segregation Principle</h2>
+                <div class="topic-title-wrap"><h2>Interface Segregation Principle</h2><a class="topic-permalink" href="#interface_segregation" aria-label="Link to Interface Segregation Principle">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -189,7 +193,7 @@
         
         <div class="topic-section text_style  " id="dependency_inversion">
             <div class="topic-header" onclick="app.toggleTopic('dependency_inversion')">
-                <h2>Dependency Inversion Principle</h2>
+                <div class="topic-title-wrap"><h2>Dependency Inversion Principle</h2><a class="topic-permalink" href="#dependency_inversion" aria-label="Link to Dependency Inversion Principle">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -226,5 +230,6 @@
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
     <script src="../assets/js/content_renderers.js"></script>
+    <script src="../assets/js/search_ui.js"></script>
 </body>
 </html>

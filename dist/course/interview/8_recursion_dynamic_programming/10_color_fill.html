@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -149,7 +153,7 @@
                 <h2  class="">Color Fill</h2><p  class="">Color Fill</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="problem_statement">
             <div class="topic-header" onclick="app.toggleTopic('problem_statement')">
-                <h2>Problem Statement</h2>
+                <div class="topic-title-wrap"><h2>Problem Statement</h2><a class="topic-permalink" href="#problem_statement" aria-label="Link to Problem Statement">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -159,7 +163,7 @@
         
         <div class="topic-section text_style  " id="example_cases">
             <div class="topic-header" onclick="app.toggleTopic('example_cases')">
-                <h2>Example Cases</h2>
+                <div class="topic-title-wrap"><h2>Example Cases</h2><a class="topic-permalink" href="#example_cases" aria-label="Link to Example Cases">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -169,7 +173,7 @@
         
         <div class="topic-section text_style  " id="code_example">
             <div class="topic-header" onclick="app.toggleTopic('code_example')">
-                <h2>Code Example</h2>
+                <div class="topic-title-wrap"><h2>Code Example</h2><a class="topic-permalink" href="#code_example" aria-label="Link to Code Example">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -351,5 +355,6 @@ for (const row of result) {
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
     <script src="../../../assets/js/content_renderers.js"></script>
+    <script src="../../../assets/js/search_ui.js"></script>
 </body>
 </html>

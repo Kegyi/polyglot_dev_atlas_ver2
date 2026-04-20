@@ -63,3 +63,56 @@
     content: "After ";
     opacity: 0.8;
 }
+
+@media (max-width: 760px) {
+    .sheet-toolbar {
+        justify-content: stretch;
+    }
+
+    .sheet-transpose-btn {
+        width: 100%;
+    }
+
+    .sheet-table,
+    .sheet-table tbody,
+    .sheet-table tr,
+    .sheet-table td,
+    .sheet-table th {
+        display: block;
+        width: 100%;
+    }
+
+    .sheet-table tr.is-header-row {
+        display: none;
+    }
+
+    .sheet-table tr {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin: 8px;
+        overflow: hidden;
+        background: color-mix(in srgb, var(--panel) 92%, transparent);
+    }
+
+    .sheet-table td,
+    .sheet-table th {
+        border: none;
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+    }
+
+    .sheet-table td:last-child,
+    .sheet-table th:last-child {
+        border-bottom: none;
+    }
+
+    .sheet-table td::before {
+        content: attr(data-label);
+        display: block;
+        color: var(--accent);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
+    }
+}

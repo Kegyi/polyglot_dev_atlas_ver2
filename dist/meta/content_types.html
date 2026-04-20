@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -150,7 +154,7 @@
                 <h2  class="">Element Showcase</h2><p  class="">The engine processes a specific set of JSON objects. Each type maps to a semantic HTML structure designed for technical documentation.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="text_elements">
             <div class="topic-header" onclick="app.toggleTopic('text_elements')">
-                <h2>Typography & Headings</h2>
+                <div class="topic-title-wrap"><h2>Typography & Headings</h2><a class="topic-permalink" href="#text_elements" aria-label="Link to Typography & Headings">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -160,14 +164,14 @@
         
         <div class="topic-section text_style  " id="note_elements">
             <div class="topic-header" onclick="app.toggleTopic('note_elements')">
-                <h2>Callouts & Notes</h2>
+                <div class="topic-title-wrap"><h2>Callouts & Notes</h2><a class="topic-permalink" href="#note_elements" aria-label="Link to Callouts & Notes">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <p  class="">Notes are used to highlight specific information. They support different variants via the <code>variant</code> key.</p><div  class="note note-info "><div class="note-content">This is an <b>info</b> variant. Useful for general tips.</div></div><div  class="note note-warning "><div class="note-content">This is a <b>warning</b> variant. Use this to highlight anti-patterns or dangers.</div></div><div  class="note note-error "><div class="note-content">This is an <b>error</b> variant. Use this to highlight critical issues or common mistakes.</div></div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="note_formatting">
             <div class="topic-header" onclick="app.toggleTopic('note_formatting')">
-                <h3>Formatting Notes</h3>
+                <div class="topic-title-wrap"><h3>Formatting Notes</h3><a class="topic-permalink" href="#note_formatting" aria-label="Link to Formatting Notes">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -186,7 +190,7 @@ console.log(greet('World'));</code></pre></div></div><div  class="note note-warn
         
         <div class="topic-section text_style  " id="list_elements">
             <div class="topic-header" onclick="app.toggleTopic('list_elements')">
-                <h2>Lists</h2>
+                <div class="topic-title-wrap"><h2>Lists</h2><a class="topic-permalink" href="#list_elements" aria-label="Link to Lists">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -196,7 +200,7 @@ console.log(greet('World'));</code></pre></div></div><div  class="note note-warn
         
         <div class="topic-section text_style  " id="code_comparison">
             <div class="topic-header" onclick="app.toggleTopic('code_comparison')">
-                <h2>Code Comparison Grid</h2>
+                <div class="topic-title-wrap"><h2>Code Comparison Grid</h2><a class="topic-permalink" href="#code_comparison" aria-label="Link to Code Comparison Grid">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -313,7 +317,7 @@ console.log(Config.instance().env);</code></pre></div></div></div><div  class="n
         
         <div class="topic-section text_style  " id="image_elements">
             <div class="topic-header" onclick="app.toggleTopic('image_elements')">
-                <h2>Images</h2>
+                <div class="topic-title-wrap"><h2>Images</h2><a class="topic-permalink" href="#image_elements" aria-label="Link to Images">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -350,5 +354,6 @@ console.log(Config.instance().env);</code></pre></div></div></div><div  class="n
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
     <script src="../assets/js/content_renderers.js"></script>
+    <script src="../assets/js/search_ui.js"></script>
 </body>
 </html>

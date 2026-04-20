@@ -72,17 +72,48 @@
         if (!table.querySelector('tbody')) table.appendChild(tbody);
     }
 
+    function applySheetCardLabels(table) {
+        const rows = Array.from(table.querySelectorAll('tr'));
+        if (!rows.length) return;
+
+        let headers = [];
+        const firstRow = rows[0];
+        const firstCells = Array.from(firstRow.children || []);
+        const hasHeader = firstCells.length && firstCells.every(c => c.tagName.toLowerCase() === 'th');
+
+        rows.forEach(r => r.classList.remove('is-header-row'));
+
+        if (hasHeader) {
+            firstRow.classList.add('is-header-row');
+            headers = firstCells.map(c => (c.textContent || '').trim());
+        }
+
+        rows.forEach((row, rowIndex) => {
+            if (hasHeader && rowIndex === 0) return;
+            const cells = Array.from(row.querySelectorAll('td'));
+            cells.forEach((cell, cellIndex) => {
+                const label = headers[cellIndex] || ('Column ' + (cellIndex + 1));
+                cell.setAttribute('data-label', label);
+            });
+        });
+    }
+
     function setupSheetTranspose() {
         document.querySelectorAll('.sheet-block').forEach(block => {
             const btn = block.querySelector('.sheet-transpose-btn');
             const table = block.querySelector('.sheet-table');
-            if (!btn || !table) return;
+            if (!table) return;
+
+            applySheetCardLabels(table);
+
+            if (!btn) return;
 
             btn.addEventListener('click', () => {
                 const matrix = tableToArray(table);
                 const transposed = transposeMatrix(matrix);
                 const hasHeader = block.getAttribute('data-auto-header') === 'true';
                 arrayToTable(table, transposed, hasHeader);
+                applySheetCardLabels(table);
                 block.classList.toggle('is-transposed');
             });
         });

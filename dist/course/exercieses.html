@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -149,14 +153,14 @@
                 <h2  class="">Exercises</h2><p  class="">This section contains practice problems and coding exercises to reinforce learning.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="beginner_exercises">
             <div class="topic-header" onclick="app.toggleTopic('beginner_exercises')">
-                <h2>Beginner Exercises</h2>
+                <div class="topic-title-wrap"><h2>Beginner Exercises</h2><a class="topic-permalink" href="#beginner_exercises" aria-label="Link to Beginner Exercises">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <p  class="">A set of exercises designed for beginners to practice basic programming concepts.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="hello_world">
             <div class="topic-header" onclick="app.toggleTopic('hello_world')">
-                <h3>Hello World</h3>
+                <div class="topic-title-wrap"><h3>Hello World</h3><a class="topic-permalink" href="#hello_world" aria-label="Link to Hello World">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -186,7 +190,7 @@ func main() {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="sum_of_numbers">
             <div class="topic-header" onclick="app.toggleTopic('sum_of_numbers')">
-                <h3>Sum of Numbers</h3>
+                <div class="topic-title-wrap"><h3>Sum of Numbers</h3><a class="topic-permalink" href="#sum_of_numbers" aria-label="Link to Sum of Numbers">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -253,7 +257,7 @@ console.log(sumN(n));
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="factorial">
             <div class="topic-header" onclick="app.toggleTopic('factorial')">
-                <h3>Factorial Calculation</h3>
+                <div class="topic-title-wrap"><h3>Factorial Calculation</h3><a class="topic-permalink" href="#factorial" aria-label="Link to Factorial Calculation">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -331,7 +335,7 @@ console.log(factorial(n));
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="prime_check">
             <div class="topic-header" onclick="app.toggleTopic('prime_check')">
-                <h3>Prime Number Check</h3>
+                <div class="topic-title-wrap"><h3>Prime Number Check</h3><a class="topic-permalink" href="#prime_check" aria-label="Link to Prime Number Check">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -438,7 +442,7 @@ console.log(isPrime(n));
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="max_of_array">
             <div class="topic-header" onclick="app.toggleTopic('max_of_array')">
-                <h3>Maximum of an Array</h3>
+                <div class="topic-title-wrap"><h3>Maximum of an Array</h3><a class="topic-permalink" href="#max_of_array" aria-label="Link to Maximum of an Array">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -521,7 +525,7 @@ console.log(Math.max(...arr));
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="even_odd">
             <div class="topic-header" onclick="app.toggleTopic('even_odd')">
-                <h3>Even-Odd Check</h3>
+                <div class="topic-title-wrap"><h3>Even-Odd Check</h3><a class="topic-permalink" href="#even_odd" aria-label="Link to Even-Odd Check">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -587,7 +591,7 @@ rl.question("Enter a number: ", (input) =&gt; {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="fizz_buzz">
             <div class="topic-header" onclick="app.toggleTopic('fizz_buzz')">
-                <h3>FizzBuzz</h3>
+                <div class="topic-title-wrap"><h3>FizzBuzz</h3><a class="topic-permalink" href="#fizz_buzz" aria-label="Link to FizzBuzz">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -658,14 +662,14 @@ for (let i = 1; i &lt;= 100; i++) {
         
         <div class="topic-section text_style  " id="intermediate_exercises">
             <div class="topic-header" onclick="app.toggleTopic('intermediate_exercises')">
-                <h2>Intermediate Exercises</h2>
+                <div class="topic-title-wrap"><h2>Intermediate Exercises</h2><a class="topic-permalink" href="#intermediate_exercises" aria-label="Link to Intermediate Exercises">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <p  class="">A set of exercises designed for intermediate learners to practice more complex programming concepts.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="reverse_string">
             <div class="topic-header" onclick="app.toggleTopic('reverse_string')">
-                <h3>Reverse a String</h3>
+                <div class="topic-title-wrap"><h3>Reverse a String</h3><a class="topic-permalink" href="#reverse_string" aria-label="Link to Reverse a String">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -675,7 +679,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="binary_search">
             <div class="topic-header" onclick="app.toggleTopic('binary_search')">
-                <h3>Binary Search</h3>
+                <div class="topic-title-wrap"><h3>Binary Search</h3><a class="topic-permalink" href="#binary_search" aria-label="Link to Binary Search">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -685,7 +689,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="merge_sort">
             <div class="topic-header" onclick="app.toggleTopic('merge_sort')">
-                <h3>Merge Sort</h3>
+                <div class="topic-title-wrap"><h3>Merge Sort</h3><a class="topic-permalink" href="#merge_sort" aria-label="Link to Merge Sort">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -695,7 +699,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="anagram_check">
             <div class="topic-header" onclick="app.toggleTopic('anagram_check')">
-                <h3>Anagram Check</h3>
+                <div class="topic-title-wrap"><h3>Anagram Check</h3><a class="topic-permalink" href="#anagram_check" aria-label="Link to Anagram Check">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -705,7 +709,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="stack_implementation">
             <div class="topic-header" onclick="app.toggleTopic('stack_implementation')">
-                <h3>Stack Implementation</h3>
+                <div class="topic-title-wrap"><h3>Stack Implementation</h3><a class="topic-permalink" href="#stack_implementation" aria-label="Link to Stack Implementation">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -715,7 +719,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="queue_implementation">
             <div class="topic-header" onclick="app.toggleTopic('queue_implementation')">
-                <h3>Queue Implementation</h3>
+                <div class="topic-title-wrap"><h3>Queue Implementation</h3><a class="topic-permalink" href="#queue_implementation" aria-label="Link to Queue Implementation">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -725,7 +729,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="binary_tree_traversal">
             <div class="topic-header" onclick="app.toggleTopic('binary_tree_traversal')">
-                <h3>Binary Tree Traversal</h3>
+                <div class="topic-title-wrap"><h3>Binary Tree Traversal</h3><a class="topic-permalink" href="#binary_tree_traversal" aria-label="Link to Binary Tree Traversal">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -735,7 +739,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer')">
-                <h3>Divide and Conquer: Quick Sort</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Quick Sort</h3><a class="topic-permalink" href="#divide_and_conquer" aria-label="Link to Divide and Conquer: Quick Sort">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -745,7 +749,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="greedy_algorithm_huffman">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_huffman')">
-                <h3>Greedy Algorithm: Huffman Coding</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Huffman Coding</h3><a class="topic-permalink" href="#greedy_algorithm_huffman" aria-label="Link to Greedy Algorithm: Huffman Coding">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -755,7 +759,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="backtracking_sudoku">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_sudoku')">
-                <h3>Backtracking: Sudoku Solver</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: Sudoku Solver</h3><a class="topic-permalink" href="#backtracking_sudoku" aria-label="Link to Backtracking: Sudoku Solver">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -765,7 +769,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="dynamic_programming_longest_common_subsequence">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_longest_common_subsequence')">
-                <h3>Dynamic Programming: Longest Common Subsequence</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Longest Common Subsequence</h3><a class="topic-permalink" href="#dynamic_programming_longest_common_subsequence" aria-label="Link to Dynamic Programming: Longest Common Subsequence">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -775,7 +779,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer_closest_pair">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_closest_pair')">
-                <h3>Divide and Conquer: Closest Pair of Points</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Closest Pair of Points</h3><a class="topic-permalink" href="#divide_and_conquer_closest_pair" aria-label="Link to Divide and Conquer: Closest Pair of Points">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -785,7 +789,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="greedy_algorithm_kruskal">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_kruskal')">
-                <h3>Greedy Algorithm: Kruskal's Algorithm</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Kruskal's Algorithm</h3><a class="topic-permalink" href="#greedy_algorithm_kruskal" aria-label="Link to Greedy Algorithm: Kruskal's Algorithm">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -795,7 +799,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="backtracking_permutations">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_permutations')">
-                <h3>Backtracking: Permutations of a String</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: Permutations of a String</h3><a class="topic-permalink" href="#backtracking_permutations" aria-label="Link to Backtracking: Permutations of a String">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -805,7 +809,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="dynamic_programming_coin_change">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_coin_change')">
-                <h3>Dynamic Programming: Coin Change Problem</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Coin Change Problem</h3><a class="topic-permalink" href="#dynamic_programming_coin_change" aria-label="Link to Dynamic Programming: Coin Change Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -815,7 +819,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer_matrix_multiply">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_matrix_multiply')">
-                <h3>Divide and Conquer: Matrix Multiplication</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Matrix Multiplication</h3><a class="topic-permalink" href="#divide_and_conquer_matrix_multiply" aria-label="Link to Divide and Conquer: Matrix Multiplication">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -825,7 +829,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="backtracking_combination_sum">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_combination_sum')">
-                <h3>Backtracking: Combination Sum</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: Combination Sum</h3><a class="topic-permalink" href="#backtracking_combination_sum" aria-label="Link to Backtracking: Combination Sum">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -835,7 +839,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="dynamic_programming_edit_distance">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_edit_distance')">
-                <h3>Dynamic Programming: Edit Distance</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Edit Distance</h3><a class="topic-permalink" href="#dynamic_programming_edit_distance" aria-label="Link to Dynamic Programming: Edit Distance">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -845,7 +849,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer_count_inversions">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_count_inversions')">
-                <h3>Divide and Conquer: Count Inversions in an Array</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Count Inversions in an Array</h3><a class="topic-permalink" href="#divide_and_conquer_count_inversions" aria-label="Link to Divide and Conquer: Count Inversions in an Array">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -855,7 +859,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="greedy_algorithm_job_scheduling">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_job_scheduling')">
-                <h3>Greedy Algorithm: Job Scheduling Problem</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Job Scheduling Problem</h3><a class="topic-permalink" href="#greedy_algorithm_job_scheduling" aria-label="Link to Greedy Algorithm: Job Scheduling Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -865,7 +869,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="backtracking_subset_sum">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_subset_sum')">
-                <h3>Backtracking: Subset Sum Problem</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: Subset Sum Problem</h3><a class="topic-permalink" href="#backtracking_subset_sum" aria-label="Link to Backtracking: Subset Sum Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -875,7 +879,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="dynamic_programming_longest_increasing_subsequence">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_longest_increasing_subsequence')">
-                <h3>Dynamic Programming: Longest Increasing Subsequence</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Longest Increasing Subsequence</h3><a class="topic-permalink" href="#dynamic_programming_longest_increasing_subsequence" aria-label="Link to Dynamic Programming: Longest Increasing Subsequence">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -885,7 +889,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer_count_occurrences">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_count_occurrences')">
-                <h3>Divide and Conquer: Count Occurrences in a Sorted Array</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Count Occurrences in a Sorted Array</h3><a class="topic-permalink" href="#divide_and_conquer_count_occurrences" aria-label="Link to Divide and Conquer: Count Occurrences in a Sorted Array">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -895,7 +899,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="greedy_algorithm_fractional_knapsack">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_fractional_knapsack')">
-                <h3>Greedy Algorithm: Fractional Knapsack Problem</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Fractional Knapsack Problem</h3><a class="topic-permalink" href="#greedy_algorithm_fractional_knapsack" aria-label="Link to Greedy Algorithm: Fractional Knapsack Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -905,7 +909,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="dynamic_programming_palindrome_partitioning">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_palindrome_partitioning')">
-                <h3>Dynamic Programming: Palindrome Partitioning</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Palindrome Partitioning</h3><a class="topic-permalink" href="#dynamic_programming_palindrome_partitioning" aria-label="Link to Dynamic Programming: Palindrome Partitioning">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -915,7 +919,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="divide_and_conquer_majority_element">
             <div class="topic-header" onclick="app.toggleTopic('divide_and_conquer_majority_element')">
-                <h3>Divide and Conquer: Majority Element</h3>
+                <div class="topic-title-wrap"><h3>Divide and Conquer: Majority Element</h3><a class="topic-permalink" href="#divide_and_conquer_majority_element" aria-label="Link to Divide and Conquer: Majority Element">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -925,7 +929,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="greedy_algorithm_huffman_coding">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_huffman_coding')">
-                <h3>Greedy Algorithm: Huffman Coding</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Huffman Coding</h3><a class="topic-permalink" href="#greedy_algorithm_huffman_coding" aria-label="Link to Greedy Algorithm: Huffman Coding">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -935,7 +939,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="backtracking_word_search">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_word_search')">
-                <h3>Backtracking: Word Search</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: Word Search</h3><a class="topic-permalink" href="#backtracking_word_search" aria-label="Link to Backtracking: Word Search">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -945,7 +949,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="linked_list">
             <div class="topic-header" onclick="app.toggleTopic('linked_list')">
-                <h3>Linked List Implementation</h3>
+                <div class="topic-title-wrap"><h3>Linked List Implementation</h3><a class="topic-permalink" href="#linked_list" aria-label="Link to Linked List Implementation">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -955,7 +959,7 @@ for (let i = 1; i &lt;= 100; i++) {
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="array_reverse">
             <div class="topic-header" onclick="app.toggleTopic('array_reverse')">
-                <h3>Array Reverse</h3>
+                <div class="topic-title-wrap"><h3>Array Reverse</h3><a class="topic-permalink" href="#array_reverse" aria-label="Link to Array Reverse">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1004,7 +1008,7 @@ console.log(arr);
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="fibonacci">
             <div class="topic-header" onclick="app.toggleTopic('fibonacci')">
-                <h3>Fibonacci Sequence</h3>
+                <div class="topic-title-wrap"><h3>Fibonacci Sequence</h3><a class="topic-permalink" href="#fibonacci" aria-label="Link to Fibonacci Sequence">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1085,7 +1089,7 @@ console.log();
         </div><div  class="blocks-container ">
         <div class="topic-section text_style  " id="palindrome">
             <div class="topic-header" onclick="app.toggleTopic('palindrome')">
-                <h3>Palindrome Check</h3>
+                <div class="topic-title-wrap"><h3>Palindrome Check</h3><a class="topic-permalink" href="#palindrome" aria-label="Link to Palindrome Check">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1162,14 +1166,14 @@ console.log(isPalindrome("A man, a plan, a canal: Panama"));
         
         <div class="topic-section text_style  " id="advanced_exercises">
             <div class="topic-header" onclick="app.toggleTopic('advanced_exercises')">
-                <h2>Advanced Exercises</h2>
+                <div class="topic-title-wrap"><h2>Advanced Exercises</h2><a class="topic-permalink" href="#advanced_exercises" aria-label="Link to Advanced Exercises">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
                 <div  class="blocks-container ">
         <div class="topic-section text_style  " id="graph_traversal">
             <div class="topic-header" onclick="app.toggleTopic('graph_traversal')">
-                <h3>Graph Traversal: Depth-First Search and Breadth-First Search</h3>
+                <div class="topic-title-wrap"><h3>Graph Traversal: Depth-First Search and Breadth-First Search</h3><a class="topic-permalink" href="#graph_traversal" aria-label="Link to Graph Traversal: Depth-First Search and Breadth-First Search">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1279,7 +1283,7 @@ export {}
         
         <div class="topic-section text_style  " id="dijkstra_algorithm">
             <div class="topic-header" onclick="app.toggleTopic('dijkstra_algorithm')">
-                <h3>Dijkstra's Algorithm for Shortest Path</h3>
+                <div class="topic-title-wrap"><h3>Dijkstra's Algorithm for Shortest Path</h3><a class="topic-permalink" href="#dijkstra_algorithm" aria-label="Link to Dijkstra's Algorithm for Shortest Path">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1398,7 +1402,7 @@ export {}
         
         <div class="topic-section text_style  " id="dynamic_programming_knapsack">
             <div class="topic-header" onclick="app.toggleTopic('dynamic_programming_knapsack')">
-                <h3>Dynamic Programming: Knapsack Problem</h3>
+                <div class="topic-title-wrap"><h3>Dynamic Programming: Knapsack Problem</h3><a class="topic-permalink" href="#dynamic_programming_knapsack" aria-label="Link to Dynamic Programming: Knapsack Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1468,7 +1472,7 @@ export {}
         
         <div class="topic-section text_style  " id="backtracking_n_queens">
             <div class="topic-header" onclick="app.toggleTopic('backtracking_n_queens')">
-                <h3>Backtracking: N-Queens Problem</h3>
+                <div class="topic-title-wrap"><h3>Backtracking: N-Queens Problem</h3><a class="topic-permalink" href="#backtracking_n_queens" aria-label="Link to Backtracking: N-Queens Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1532,7 +1536,7 @@ solve(); export {}
         
         <div class="topic-section text_style  " id="greedy_algorithm_activity_selection">
             <div class="topic-header" onclick="app.toggleTopic('greedy_algorithm_activity_selection')">
-                <h3>Greedy Algorithm: Activity Selection Problem</h3>
+                <div class="topic-title-wrap"><h3>Greedy Algorithm: Activity Selection Problem</h3><a class="topic-permalink" href="#greedy_algorithm_activity_selection" aria-label="Link to Greedy Algorithm: Activity Selection Problem">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -1625,5 +1629,6 @@ export {}
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
     <script src="../assets/js/content_renderers.js"></script>
+    <script src="../assets/js/search_ui.js"></script>
 </body>
 </html>

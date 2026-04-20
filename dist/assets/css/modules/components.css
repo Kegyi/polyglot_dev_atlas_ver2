@@ -3,6 +3,111 @@
 #content { flex: 1; overflow-y: auto; padding: var(--pad); scroll-behavior: smooth; background: var(--bg); }
 .content-wrapper { width: 100%; margin: 0; }
 
+.atlas-search {
+    position: relative;
+    min-width: 260px;
+    max-width: 460px;
+    width: 42vw;
+}
+
+#atlas-search-input {
+    width: 100%;
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    color: var(--text);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+#atlas-search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    max-height: min(60vh, 520px);
+    overflow-y: auto;
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    z-index: 30;
+}
+
+.search-result {
+    display: block;
+    text-decoration: none;
+    border-bottom: var(--border-w) solid var(--border);
+    padding: 10px 12px;
+}
+
+.search-result:last-child {
+    border-bottom: none;
+}
+
+.search-result-title {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+}
+
+.search-result-meta {
+    color: var(--accent);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+}
+
+.search-result-excerpt {
+    color: var(--text-dim);
+    font-size: 0.83rem;
+    line-height: 1.35;
+}
+
+.search-empty {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    padding: 12px;
+}
+
+.topic-title-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topic-permalink,
+.inline-permalink {
+    opacity: 0;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 700;
+    transition: opacity var(--transition);
+}
+
+.topic-header:hover .topic-permalink,
+h1:hover .inline-permalink,
+h2:hover .inline-permalink,
+h3:hover .inline-permalink,
+h4:hover .inline-permalink,
+h5:hover .inline-permalink,
+h6:hover .inline-permalink {
+    opacity: 1;
+}
+
+.topic-permalink:hover,
+.inline-permalink:hover {
+    color: var(--text);
+}
+
 .breadcrumbs {
     display: flex;
     flex-wrap: wrap;
@@ -111,3 +216,16 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 .snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }
+
+@media (max-width: 950px) {
+    .atlas-search {
+        min-width: 180px;
+        width: 34vw;
+    }
+}
+
+@media (max-width: 760px) {
+    .atlas-search {
+        display: none;
+    }
+}

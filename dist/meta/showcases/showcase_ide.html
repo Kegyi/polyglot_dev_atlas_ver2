@@ -100,6 +100,10 @@
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
                 <button id="swap-btn" class="icon-btn">⇄</button>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
             </div>
             <div class="nav-right">
                 <!-- Phase 3: Global Geometric Style Picker -->
@@ -150,7 +154,7 @@
                 <div  class="blocks-container ">
         <div class="topic-section ide-style  " id="ide_overview">
             <div class="topic-header" onclick="app.toggleTopic('ide_overview')">
-                <h2>IDE-style Overview</h2>
+                <div class="topic-title-wrap"><h2>IDE-style Overview</h2><a class="topic-permalink" href="#ide_overview" aria-label="Link to IDE-style Overview">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -160,7 +164,7 @@
         
         <div class="topic-section ide-style  " id="ide_diff">
             <div class="topic-header" onclick="app.toggleTopic('ide_diff')">
-                <h2>Side-by-side Diff</h2>
+                <div class="topic-title-wrap"><h2>Side-by-side Diff</h2><a class="topic-permalink" href="#ide_diff" aria-label="Link to Side-by-side Diff">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -170,7 +174,7 @@
         
         <div class="topic-section ide-style  " id="ide_notes">
             <div class="topic-header" onclick="app.toggleTopic('ide_notes')">
-                <h2>Notes & Tips</h2>
+                <div class="topic-title-wrap"><h2>Notes & Tips</h2><a class="topic-permalink" href="#ide_notes" aria-label="Link to Notes & Tips">#</a></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
@@ -207,5 +211,6 @@
     <script src="../../assets/js/app.js"></script>
     <script src="../../assets/js/selection_engine.js"></script>
     <script src="../../assets/js/content_renderers.js"></script>
+    <script src="../../assets/js/search_ui.js"></script>
 </body>
 </html>

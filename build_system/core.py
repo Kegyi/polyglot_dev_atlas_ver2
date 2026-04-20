@@ -382,11 +382,15 @@ class AtlasBuilder:
 
     def _render_title(self, item, depth=2, inherited_style="", context=None):
         tag = f"h{min(depth, 6)}"
-        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}</{tag}>'
+        item_id = item.get("id", "")
+        permalink = f'<a class="inline-permalink" href="#{item_id}" aria-label="Link to section">#</a>' if item_id else ""
+        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}{permalink}</{tag}>'
 
     def _render_heading(self, item, depth=2, inherited_style="", context=None):
         tag = item.get("type", "h3")
-        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}</{tag}>'
+        item_id = item.get("id", "")
+        permalink = f'<a class="inline-permalink" href="#{item_id}" aria-label="Link to section">#</a>' if item_id else ""
+        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}{permalink}</{tag}>'
 
     def _render_text(self, item, depth=2, inherited_style="", context=None):
         return f'<p {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text", "")}</p>'
@@ -508,11 +512,12 @@ class AtlasBuilder:
 
         collapsed_class = "is-collapsed" if should_collapse else ""
         body_class = "collapsed" if should_collapse else ""
+        permalink = f'<a class="topic-permalink" href="#{bid}" aria-label="Link to {title}">#</a>' if bid else ""
 
         html = f'''
         <div class="topic-section {current_style} {collapsed_class} {custom_class}" id="{bid}">
             <div class="topic-header" onclick="app.toggleTopic('{bid}')">
-                <{h_tag}>{title}</{h_tag}>
+                <div class="topic-title-wrap"><{h_tag}>{title}</{h_tag}>{permalink}</div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body {body_class}">
