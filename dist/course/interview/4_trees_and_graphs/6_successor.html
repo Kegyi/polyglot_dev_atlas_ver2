@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_04_06_successor"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_04_06_successor" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 struct Node { int v; Node* l; Node* r; Node(int x): v(x), l(nullptr), r(nullptr) {} };
 
@@ -194,7 +194,7 @@ int main() {
     std::cout &lt;&lt; (s1 ? s1-&gt;v : -1) &lt;&lt; '/n';
     std::cout &lt;&lt; (s2 ? s2-&gt;v : -1) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -231,7 +231,7 @@ func main() {
 		fmt.Println(-1)
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Node:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Node:
     def __init__(self, val: int) -&gt; None:
         self.val = val
         self.left: Node | None = None
@@ -261,7 +261,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0406Successor {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0406Successor {
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
 
   def inorderSuccessor(root0: Node | Null, p: Int): Node | Null = {
@@ -287,7 +287,7 @@ if __name__ == "__main__":
     println(if (s2 == null) -1 else s2.asInstanceOf[Node].value)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0406Successor:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0406Successor:
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
 
   def inorderSuccessor(root0: Node | Null, p: Int): Node | Null =
@@ -310,7 +310,7 @@ if __name__ == "__main__":
     val s2 = inorderSuccessor(root, 7)
     println(if (s1 == null) -1 else s1.asInstanceOf[Node].value)
     println(if (s2 == null) -1 else s2.asInstanceOf[Node].value)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
   constructor(
     public val: number,
     public left: Node | null = null,
@@ -365,5 +365,6 @@ console.log(inorderSuccessor(root, 7)?.val ?? -1);
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

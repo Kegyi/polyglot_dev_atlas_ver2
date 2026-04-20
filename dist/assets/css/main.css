@@ -305,6 +305,74 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 
 .snippet-error { color: var(--error, #ef4444); font-weight: 800; margin-right: 8px; }
 
+/* Inlined: modules/phase2.css */
+
+/* Phase 2: Generic component rendering and comparison helpers */
+
+.sheet-block {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 12px 0;
+    overflow: auto;
+    background: color-mix(in srgb, var(--panel) 88%, transparent);
+}
+
+.sheet-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sheet-transpose-btn {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+.sheet-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sheet-table th,
+.sheet-table td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.sheet-table th {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.line-highlight {
+    display: block;
+    margin: 0 -12px;
+    padding: 0 12px;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    border-left: 2px solid var(--accent);
+}
+
+.collapsible-code.diff-mode .code-block {
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+
+.collapsible-code.diff-mode .code-block[data-diff-slot="before"] .block-header-tag::before {
+    content: "Before ";
+    opacity: 0.8;
+}
+
+.collapsible-code.diff-mode .code-block[data-diff-slot="after"] .block-header-tag::before {
+    content: "After ";
+    opacity: 0.8;
+}
+
 
 /* main.css remaining content */
 

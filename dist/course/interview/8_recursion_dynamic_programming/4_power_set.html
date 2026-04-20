@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_08_04_power_set"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_08_04_power_set" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;algorithm&gt;
 using namespace std;
@@ -204,7 +204,7 @@ int main() {
     }
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -232,7 +232,7 @@ func main() {
 		fmt.Println(s)
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 def subsets(nums: List[int]) -&gt; List[List[int]]:
     nums.sort()
@@ -249,7 +249,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0804PowerSet {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0804PowerSet {
     def subsets(nums: Array[Int]): Array[Array[Int]] = {
         val sorted = nums.sorted
         val n = sorted.length
@@ -264,7 +264,7 @@ if __name__ == "__main__":
         }
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0804PowerSet:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0804PowerSet:
     def subsets(nums: Array[Int]): Array[Array[Int]] =
         val sorted = nums.sorted
         val n = sorted.length
@@ -276,7 +276,7 @@ if __name__ == "__main__":
         for (s &lt;- subsets(Array(1, 2, 3))) {
             println(s.mkString("[", ",", "]"))
         }
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function subsets(nums: number[]): number[][] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function subsets(nums: number[]): number[][] {
     nums.sort((a, b) =&gt; a - b);
     const n = nums.length;
     const result: number[][] = [];
@@ -324,5 +324,6 @@ for (const s of subsets([1, 2, 3])) {
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

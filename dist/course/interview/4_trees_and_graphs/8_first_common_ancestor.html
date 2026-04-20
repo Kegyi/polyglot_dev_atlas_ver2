@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_04_08_first_common_ancestor"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_04_08_first_common_ancestor" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 struct Node {
     int v;
@@ -198,7 +198,7 @@ int main() {
     std::cout &lt;&lt; lca(root, 6, 2)-&gt;v &lt;&lt; '/n';
     std::cout &lt;&lt; lca(root, 6, 8)-&gt;v &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -230,7 +230,7 @@ func main() {
 	fmt.Println(lca(root, 6, 2).Val)
 	fmt.Println(lca(root, 6, 8).Val)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Node:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Node:
     def __init__(self, val: int) -&gt; None:
         self.val = val
         self.left: Node | None = None
@@ -259,7 +259,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0408FirstCommonAncestor {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0408FirstCommonAncestor {
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
 
   def lca(root: Node | Null, p: Int, q: Int): Node | Null = {
@@ -280,7 +280,7 @@ if __name__ == "__main__":
     println(lca(root, 6, 8).asInstanceOf[Node].value)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0408FirstCommonAncestor:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0408FirstCommonAncestor:
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
 
   def lca(root: Node | Null, p: Int, q: Int): Node | Null =
@@ -298,7 +298,7 @@ if __name__ == "__main__":
     )
     println(lca(root, 6, 2).asInstanceOf[Node].value)
     println(lca(root, 6, 8).asInstanceOf[Node].value)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
   constructor(
     public val: number,
     public left: Node | null = null,
@@ -353,5 +353,6 @@ console.log(lca(root, 6, 8)?.val ?? -1);
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_01_swap_numbers"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_01_swap_numbers" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 using namespace std;
 
@@ -186,7 +186,7 @@ int main() {
     cout &lt;&lt; "[" &lt;&lt; ans[0] &lt;&lt; ", " &lt;&lt; ans[1] &lt;&lt; "]" &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -197,7 +197,7 @@ func swapNumbers(numbers []int) []int {
 func main() {
 	fmt.Println(swapNumbers([]int{1, 2}))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 
 def swap_numbers(numbers: List[int]) -&gt; List[int]:
@@ -210,19 +210,19 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1601SwapNumbers {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1601SwapNumbers {
     def swapNumbers(numbers: Array[Int]): Array[Int] = Array(numbers(1), numbers(0))
 
     def main(args: Array[String]): Unit = {
         println(swapNumbers(Array(1, 2)).mkString("[", ", ", "]"))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1601SwapNumbers:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1601SwapNumbers:
     def swapNumbers(numbers: Array[Int]): Array[Int] = Array(numbers(1), numbers(0))
 
     @main def main(): Unit =
         println(swapNumbers(Array(1, 2)).mkString("[", ", ", "]"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function swapNumbers(numbers: number[]): number[] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function swapNumbers(numbers: number[]): number[] {
     return [numbers[1], numbers[0]];
 }
 
@@ -258,5 +258,6 @@ console.log(swapNumbers([1, 2]));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

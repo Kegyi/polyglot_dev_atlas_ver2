@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_10_02_group_anagrams"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_10_02_group_anagrams" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;unordered_map&gt;
@@ -213,7 +213,7 @@ int main() {
     cout &lt;&lt; "]" &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -244,7 +244,7 @@ func groupAnagrams(strs []string) [][]string {
 func main() {
 	fmt.Println(groupAnagrams([]string{"eat", "tea", "tan", "ate", "nat", "bat"}))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import defaultdict
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import defaultdict
 from typing import List
 
 
@@ -263,7 +263,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1002GroupAnagrams {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1002GroupAnagrams {
     def groupAnagrams(strs: Array[String]): Array[Array[String]] = {
         val groups = strs.groupBy(word =&gt; word.sorted).values.map(_.sorted).toArray
         groups.sortBy(_(0))
@@ -274,7 +274,7 @@ if __name__ == "__main__":
         println(result.map(_.mkString("[", ", ", "]")).mkString("[", ", ", "]"))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1002GroupAnagrams:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1002GroupAnagrams:
     def groupAnagrams(strs: Array[String]): Array[Array[String]] =
         val groups = strs.groupBy(word =&gt; word.sorted).values.map(_.sorted).toArray
         groups.sortBy(_(0))
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     @main def main(): Unit =
         val result = groupAnagrams(Array("eat", "tea", "tan", "ate", "nat", "bat"))
         println(result.map(_.mkString("[", ", ", "]")).mkString("[", ", ", "]"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function groupAnagrams(strs: string[]): string[][] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function groupAnagrams(strs: string[]): string[][] {
     const groups = new Map&lt;string, string[]&gt;();
     for (const word of strs) {
         const key = [...word].sort().join("");
@@ -327,5 +327,6 @@ console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

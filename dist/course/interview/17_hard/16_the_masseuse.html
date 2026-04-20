@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_16_the_masseuse"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_16_the_masseuse" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
 #include &lt;algorithm&gt;
 using namespace std;
 
@@ -189,7 +189,7 @@ public:
         return max(f, g);
     }
 };
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 func massage(nums []int) int {
 	f, g := 0, 0
@@ -205,7 +205,7 @@ func max(a, b int) int {
 	}
 	return b
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 
 class Solution:
@@ -214,7 +214,7 @@ class Solution:
         for x in nums:
             f, g = g + x, max(f, g)
         return max(f, g)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Solution {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Solution {
   def massage(nums: Array[Int]): Int = {
     var f = 0
     var g = 0
@@ -227,7 +227,7 @@ class Solution:
     f.max(g)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Solution:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Solution:
   def massage(nums: Array[Int]): Int =
     var f = 0
     var g = 0
@@ -238,7 +238,7 @@ class Solution:
       g = ng
     }
     f.max(g)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function massage(nums: number[]): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function massage(nums: number[]): number {
     let f = 0, g = 0;
     for (const x of nums) {
         [f, g] = [g + x, Math.max(f, g)];
@@ -276,5 +276,6 @@ class Solution:
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

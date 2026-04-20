@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_08_06_hanota"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_08_06_hanota" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;functional&gt;
 using namespace std;
@@ -197,7 +197,7 @@ int main() {
     cout &lt;&lt; "C: ["; for (int i = 0; i &lt; (int)C.size(); i++) cout &lt;&lt; (i?",":"") &lt;&lt; C[i]; cout &lt;&lt; "]" &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -224,7 +224,7 @@ func main() {
 	fmt.Println("B:", B)
 	fmt.Println("C:", C)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 def hanota(A: List[int], B: List[int], C: List[int]) -&gt; None:
     def move(n, src, aux, dst):
@@ -245,7 +245,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable.ArrayBuffer
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable.ArrayBuffer
 
 object Lcci0806Hanota {
     def hanota(A: ArrayBuffer[Int], B: ArrayBuffer[Int], C: ArrayBuffer[Int]): Unit = {
@@ -268,7 +268,7 @@ object Lcci0806Hanota {
         println(s"C: ${C.mkString("[", ",", "]")}")
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable.ArrayBuffer
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable.ArrayBuffer
 
 object Lcci0806Hanota:
     def hanota(A: ArrayBuffer[Int], B: ArrayBuffer[Int], C: ArrayBuffer[Int]): Unit =
@@ -287,7 +287,7 @@ object Lcci0806Hanota:
         println(s"A: ${A.mkString("[", ",", "]")}")
         println(s"B: ${B.mkString("[", ",", "]")}")
         println(s"C: ${C.mkString("[", ",", "]")}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function hanota(A: number[], B: number[], C: number[]): void {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function hanota(A: number[], B: number[], C: number[]): void {
     function move(n: number, src: number[], aux: number[], dst: number[]): void {
         if (n === 0) return;
         move(n - 1, src, dst, aux);
@@ -333,5 +333,6 @@ console.log("C:", C);
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_18_pattern_matching"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_18_pattern_matching" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -229,7 +229,7 @@ int main() {
     cout &lt;&lt; boolalpha &lt;&lt; patternMatching("abba", "dogcatcatfish") &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -316,7 +316,7 @@ func main() {
 	fmt.Println(patternMatching("abba", "dogcatcatdog"))
 	fmt.Println(patternMatching("abba", "dogcatcatfish"))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def pattern_matching(pattern: str, value: str) -&gt; bool:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def pattern_matching(pattern: str, value: str) -&gt; bool:
     if not pattern:
         return value == ""
 
@@ -375,7 +375,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1618PatternMatching {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1618PatternMatching {
     def patternMatching(pattern: String, value: String): Boolean = {
         if (pattern.isEmpty) return value.isEmpty
 
@@ -433,7 +433,7 @@ if __name__ == "__main__":
         println(patternMatching("abba", "dogcatcatfish"))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1618PatternMatching:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1618PatternMatching:
     def patternMatching(pattern: String, value: String): Boolean =
         if (pattern.isEmpty) return value.isEmpty
 
@@ -488,7 +488,7 @@ if __name__ == "__main__":
     @main def main(): Unit =
         println(patternMatching("abba", "dogcatcatdog"))
         println(patternMatching("abba", "dogcatcatfish"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function patternMatching(pattern: string, value: string): boolean {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function patternMatching(pattern: string, value: string): boolean {
     if (pattern.length === 0) return value.length === 0;
 
     let countA = 0;
@@ -577,5 +577,6 @@ console.log(patternMatching("abba", "dogcatcatfish"));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

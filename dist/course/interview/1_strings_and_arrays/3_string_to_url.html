@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_01_03_string_to_url"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_01_03_string_to_url" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 std::string urlify(const std::string& s, int trueLength) {
@@ -195,7 +195,7 @@ int main() {
     std::cout &lt;&lt; urlify(input, 13) &lt;&lt; '/n';
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -217,7 +217,7 @@ func urlify(s string, trueLength int) string {
 func main() {
 	fmt.Println(urlify("Mr John Smith    ", 13))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def urlify(s: str, true_length: int) -&gt; str:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def urlify(s: str, true_length: int) -&gt; str:
     return "".join("%20" if ch == " " else ch for ch in s[:true_length])
 
 
@@ -227,7 +227,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0103StringToUrl {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0103StringToUrl {
   def urlify(s: String, trueLength: Int): String = {
     val b = new StringBuilder
     for (i &lt;- 0 until trueLength) {
@@ -244,7 +244,7 @@ if __name__ == "__main__":
     println(urlify("Mr John Smith    ", 13))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0103StringToUrl:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0103StringToUrl:
   def urlify(s: String, trueLength: Int): String =
     val b = new StringBuilder
     for (i &lt;- 0 until trueLength) {
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
   @main def main(): Unit =
     println(urlify("Mr John Smith    ", 13))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function urlify(s: string, trueLength: number): string {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function urlify(s: string, trueLength: number): string {
   let out = "";
   for (let i = 0; i &lt; trueLength; i++) {
     out += s[i] === " " ? "%20" : s[i];
@@ -302,5 +302,6 @@ main();
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

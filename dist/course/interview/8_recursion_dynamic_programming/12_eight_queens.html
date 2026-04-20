@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_08_12_eight_queens"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_08_12_eight_queens" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;string&gt;
 #include &lt;set&gt;
@@ -209,7 +209,7 @@ int main() {
     }
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -266,7 +266,7 @@ func main() {
 		fmt.Println()
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 def solveNQueens(n: int) -&gt; List[List[str]]:
     result = []
@@ -301,7 +301,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0812EightQueens {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0812EightQueens {
     def solveNQueens(n: Int): Array[Array[String]] = {
         val result = scala.collection.mutable.ArrayBuffer[Array[String]]()
         val usedCols = scala.collection.mutable.Set[Int]()
@@ -338,7 +338,7 @@ if __name__ == "__main__":
         }
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0812EightQueens:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0812EightQueens:
     def solveNQueens(n: Int): Array[Array[String]] =
         val result = scala.collection.mutable.ArrayBuffer[Array[String]]()
         val usedCols = scala.collection.mutable.Set[Int]()
@@ -371,7 +371,7 @@ if __name__ == "__main__":
             board.foreach(println)
             println()
         }
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function solveNQueens(n: number): string[][] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function solveNQueens(n: number): string[][] {
     const result: string[][] = [];
     const usedCols = new Set&lt;number&gt;();
     const diag1 = new Set&lt;number&gt;();
@@ -434,5 +434,6 @@ for (const board of result) {
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

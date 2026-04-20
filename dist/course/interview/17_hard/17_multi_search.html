@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_17_multi_search"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_17_multi_search" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
 #include &lt;vector&gt;
 using namespace std;
 
@@ -212,7 +212,7 @@ public:
         return ans;
     }
 };
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 type Trie struct {
 	children [26]*Trie
@@ -263,7 +263,7 @@ func multiSearch(big string, smalls []string) [][]int {
 	}
 	return ans
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 
 class Trie:
@@ -299,7 +299,7 @@ class Solution:
                 if node.idx != -1:
                     ans[node.idx].append(i)
         return ans
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Solution {
   class TrieNode {
@@ -336,7 +336,7 @@ object Solution {
     ans.map(_.toArray)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Solution:
   class TrieNode:
@@ -370,7 +370,7 @@ object Solution:
       }
     }
     ans.map(_.toArray)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class TrieNode {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class TrieNode {
     children: (TrieNode | null)[] = new Array(26).fill(null);
     idx: number = -1;
 }
@@ -432,5 +432,6 @@ function multiSearch(big: string, smalls: string[]): number[][] {
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

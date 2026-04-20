@@ -192,6 +192,15 @@ function updateUI() {
 
     // 4. Refresh Content Blocks Display & Highlights
     refreshContentBlocks();
+
+    // Notify optional feature modules (e.g., Phase 2 render helpers).
+    document.dispatchEvent(new CustomEvent('atlas:selection-updated', {
+        detail: {
+            mode: AtlasState.viewMode,
+            primary: AtlasState.primaryLang,
+            secondary: AtlasState.secondaryLang
+        }
+    }));
 }
 
 function refreshContentBlocks() {

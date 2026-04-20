@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_05_07_exchange"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_05_07_exchange" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 // Swap all odd and even bits of an integer.
 // Odd bits (0-indexed): mask 0x55555555; even bits: mask 0xAAAAAAAA.
@@ -187,7 +187,7 @@ int main() {
     // 3 = 011 -&gt; 11 -&gt; swap -&gt; 11 = 3
     std::cout &lt;&lt; exchangeBits(3) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -200,7 +200,7 @@ func main() {
 	fmt.Println(exchangeBits(2))
 	fmt.Println(exchangeBits(3))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def exchange_bits(num: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def exchange_bits(num: int) -&gt; int:
     u = num & 0xFFFFFFFF
     return (((u & 0xAAAAAAAA) &gt;&gt; 1) | ((u & 0x55555555) &lt;&lt; 1)) & 0xFFFFFFFF
 
@@ -212,7 +212,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0507Exchange {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0507Exchange {
   def exchangeBits(num: Int): Int = {
     val u = num & 0xFFFFFFFFL
     val odd  = (u & 0xAAAAAAAAL) &gt;&gt; 1
@@ -225,7 +225,7 @@ if __name__ == "__main__":
     println(exchangeBits(3))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0507Exchange:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0507Exchange:
   def exchangeBits(num: Int): Int =
     val u = num & 0xFFFFFFFFL
     val odd  = (u & 0xAAAAAAAAL) &gt;&gt; 1
@@ -235,7 +235,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(exchangeBits(2))
     println(exchangeBits(3))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function exchangeBits(num: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function exchangeBits(num: number): number {
   const u = num &gt;&gt;&gt; 0;
   return (((u & 0xAAAAAAAA) &gt;&gt;&gt; 1) | ((u & 0x55555555) &lt;&lt; 1)) &gt;&gt;&gt; 0;
 }
@@ -273,5 +273,6 @@ console.log(exchangeBits(3));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

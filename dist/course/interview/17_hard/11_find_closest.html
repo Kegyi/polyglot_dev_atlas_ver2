@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_11_find_closest"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_11_find_closest" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;string&gt;
 #include &lt;climits&gt;
@@ -200,7 +200,7 @@ int main() {
     cout &lt;&lt; sol.findClosest(w2, "aa", "bb") &lt;&lt; endl; // 1
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -234,7 +234,7 @@ func main() {
 	fmt.Println(findClosest([]string{"I", "am", "a", "student", "from", "a", "university", "in", "a", "city"}, "a", "student")) // 1
 	fmt.Println(findClosest([]string{"aa", "bb"}, "aa", "bb"))                                                                  // 1
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 
 class Solution:
@@ -259,7 +259,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1711FindClosest {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1711FindClosest {
   def findClosest(words: Array[String], word1: String, word2: String): Int = {
     var i1 = -1
     var i2 = -1
@@ -277,7 +277,7 @@ if __name__ == "__main__":
     println(findClosest(Array("aa", "bb"), "aa", "bb")) // 1
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1711FindClosest:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1711FindClosest:
   def findClosest(words: Array[String], word1: String, word2: String): Int =
     var i1 = -1
     var i2 = -1
@@ -292,7 +292,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(findClosest(Array("I", "am", "a", "student", "from", "a", "university", "in", "a", "city"), "a", "student")) // 1
     println(findClosest(Array("aa", "bb"), "aa", "bb")) // 1
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function findClosest(words: string[], word1: string, word2: string): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function findClosest(words: string[], word1: string, word2: string): number {
     let i1 = -1, i2 = -1;
     let ans = Number.MAX_SAFE_INTEGER;
     for (let i = 0; i &lt; words.length; i++) {
@@ -338,5 +338,6 @@ console.log(findClosest(["aa", "bb"], "aa", "bb")); // 1
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

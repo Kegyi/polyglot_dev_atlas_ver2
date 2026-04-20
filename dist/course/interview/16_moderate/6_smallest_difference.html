@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_06_smallest_difference"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_06_smallest_difference" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
 #include &lt;cmath&gt;
 #include &lt;iostream&gt;
 #include &lt;vector&gt;
@@ -196,7 +196,7 @@ int main() {
     cout &lt;&lt; smallestDifference({1, 3, 15, 11, 2}, {23, 127, 235, 19, 8}) &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -229,7 +229,7 @@ func smallestDifference(a []int, b []int) int {
 func main() {
 	fmt.Println(smallestDifference([]int{1, 3, 15, 11, 2}, []int{23, 127, 235, 19, 8}))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 
 
 def smallest_difference(a: List[int], b: List[int]) -&gt; int:
@@ -252,7 +252,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1606SmallestDifference {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1606SmallestDifference {
     def smallestDifference(a: Array[Int], b: Array[Int]): Int = {
         val x = a.sorted
         val y = b.sorted
@@ -270,7 +270,7 @@ if __name__ == "__main__":
         println(smallestDifference(Array(1, 3, 15, 11, 2), Array(23, 127, 235, 19, 8)))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1606SmallestDifference:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1606SmallestDifference:
     def smallestDifference(a: Array[Int], b: Array[Int]): Int =
         val x = a.sorted
         val y = b.sorted
@@ -285,7 +285,7 @@ if __name__ == "__main__":
 
     @main def main(): Unit =
         println(smallestDifference(Array(1, 3, 15, 11, 2), Array(23, 127, 235, 19, 8)))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function smallestDifference(a: number[], b: number[]): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function smallestDifference(a: number[], b: number[]): number {
     a.sort((x, y) =&gt; x - y);
     b.sort((x, y) =&gt; x - y);
     let i = 0;
@@ -334,5 +334,6 @@ console.log(smallestDifference([1, 3, 15, 11, 2], [23, 127, 235, 19, 8]));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

@@ -199,7 +199,7 @@ console.log(greet('World'));</code></pre></div></div><div  class="note note-warn
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">The <code>code</code> type is the heart of the Atlas. It looks for files in <code>content/snippets/</code> that match the provided name.</p><div class="collapsible-code" data-snippet-id="design_patterns_singleton"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">The <code>code</code> type is the heart of the Atlas. It looks for files in <code>content/snippets/</code> that match the provided name.</p><div class="collapsible-code" data-snippet-id="design_patterns_singleton" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 class Config {
@@ -225,7 +225,7 @@ private:
 int main() {
     Config::instance().setEnv("prod");
     std::cout &lt;&lt; Config::instance().env() &lt;&lt; '/n';
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -252,7 +252,7 @@ func main() {
 	Instance().Env = "prod"
 	fmt.Println(Instance().Env)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
     _instance: "Config | None" = None
 
     def __new__(cls) -&gt; "Config":
@@ -263,7 +263,7 @@ func main() {
 
 
 Config().env = "prod"
-print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
+print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
 object Config {
     private var env: String = "dev"
 
@@ -279,7 +279,7 @@ object Main extends App {
     Config.setEnv("prod")
     println(Config.getEnv())
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
 object Config:
     private var env: String = "dev"
 
@@ -292,7 +292,7 @@ object Config:
     println(Config.getEnv())
     Config.setEnv("prod")
     println(Config.getEnv())
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
   private static shared: Config | null = null;
 
   private constructor(public env: string) {}
@@ -347,5 +347,6 @@ console.log(Config.instance().env);</code></pre></div></div></div><div  class="n
     <!-- App Logic & Selection Engine -->
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
+    <script src="../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

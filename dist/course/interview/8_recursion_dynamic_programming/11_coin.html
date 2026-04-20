@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_08_11_coin"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_08_11_coin" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 using namespace std;
 
@@ -194,7 +194,7 @@ int main() {
     cout &lt;&lt; waysToChange(10) &lt;&lt; endl; // 4
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -215,7 +215,7 @@ func main() {
 	fmt.Println(waysToChange(5))  // 2
 	fmt.Println(waysToChange(10)) // 4
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def waysToChange(n: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def waysToChange(n: int) -&gt; int:
     MOD = 10**9 + 7
     coins = [1, 5, 10, 25]
     dp = [0] * (n + 1)
@@ -231,7 +231,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0811Coin {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0811Coin {
     def waysToChange(n: Int): Int = {
         val MOD = 1000000007L
         val coins = Array(1, 5, 10, 25)
@@ -250,7 +250,7 @@ if __name__ == "__main__":
         println(waysToChange(10))  // 4
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0811Coin:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0811Coin:
     def waysToChange(n: Int): Int =
         val MOD = 1000000007L
         val coins = Array(1, 5, 10, 25)
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     @main def main(): Unit =
         println(waysToChange(5))   // 2
         println(waysToChange(10))  // 4
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function waysToChange(n: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function waysToChange(n: number): number {
     const MOD = 1000000007n;
     const coins = [1, 5, 10, 25];
     const dp = new Array(n + 1).fill(0n);
@@ -312,5 +312,6 @@ console.log(waysToChange(10));  // 4
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

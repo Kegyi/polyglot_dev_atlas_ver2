@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_01_02_check_permutation"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;array&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_01_02_check_permutation" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;array&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
 
@@ -199,7 +199,7 @@ int main() {
     std::cout &lt;&lt; "abc vs abz -&gt; " &lt;&lt; std::boolalpha &lt;&lt; checkPermutation("abc", "abz") &lt;&lt; '/n';
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -225,7 +225,7 @@ func main() {
 	fmt.Printf("abcde vs edcba -&gt; %t/n", checkPermutation("abcde", "edcba"))
 	fmt.Printf("abc vs abz -&gt; %t/n", checkPermutation("abc", "abz"))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import Counter
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import Counter
 
 
 def check_permutation(a: str, b: str) -&gt; bool:
@@ -239,7 +239,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0102CheckPermutation {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0102CheckPermutation {
   def checkPermutation(a: String, b: String): Boolean = {
     if (a.length != b.length) {
       return false
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     println(s"abc vs abz -&gt; ${checkPermutation("abc", "abz")}")
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0102CheckPermutation:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0102CheckPermutation:
   def checkPermutation(a: String, b: String): Boolean =
     if (a.length != b.length) {
       return false
@@ -284,7 +284,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(s"abcde vs edcba -&gt; ${checkPermutation("abcde", "edcba")}")
     println(s"abc vs abz -&gt; ${checkPermutation("abc", "abz")}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function checkPermutation(a: string, b: string): boolean {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function checkPermutation(a: string, b: string): boolean {
   if (a.length !== b.length) {
     return false;
   }
@@ -342,5 +342,6 @@ main();
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

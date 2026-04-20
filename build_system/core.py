@@ -17,6 +17,27 @@ class AtlasBuilder:
         # Build Status & Registry
         self.site_registry = {} 
         self.warnings = []
+        self.renderers = self._build_renderer_registry()
+
+    def _build_renderer_registry(self):
+        return {
+            "title": self._render_title,
+            "h1": self._render_heading,
+            "h2": self._render_heading,
+            "h3": self._render_heading,
+            "h4": self._render_heading,
+            "h5": self._render_heading,
+            "h6": self._render_heading,
+            "text": self._render_text,
+            "note": self._render_note,
+            "code": self._render_code,
+            "image": self._render_image,
+            "list": self._render_list,
+            "blocks": self._render_blocks,
+            "table": self._render_sheet,
+            "sheet": self._render_sheet,
+            "matrix": self._render_sheet,
+        }
 
     def _resolve_json_ref(self, ref, base_path=None):
         """Resolve JSON pointer references (e.g., '#/content/0' or '@core/language_icons')."""
@@ -129,68 +150,116 @@ class AtlasBuilder:
 
     def render_item(self, item, depth=2, inherited_style="", context=None):
         itype = item.get("type")
-        custom_class = item.get("class", "")
-        item_id = item.get("id", "")
-        id_attr = f'id="{item_id}"' if item_id else ""
-
-        # Smart Heading Scaling
-        if itype == "title":
-            tag = f"h{min(depth, 6)}"
-            return f'<{tag} {id_attr} class="{custom_class}">{item.get("text")}</{tag}>'
-        
-        elif itype in ["h1", "h2", "h3", "h4", "h5", "h6"]:
-            return f'<{itype} {id_attr} class="{custom_class}">{item.get("text")}</{itype}>'
-
-        elif itype == "text":
-            text = item.get("text", "")
-            return f'<p {id_attr} class="{custom_class}">{text}</p>'
-
-        elif itype == "note":
-            variant = item.get("variant", "info")
-            # Wrap note content in a dedicated container so inner block elements
-            # (tables, pre, code) can be targeted separately by CSS and render
-            # correctly inside the flexible note layout.
-            content_html = item.get("text", "")
-            return f'<div {id_attr} class="note note-{variant} {custom_class}"><div class="note-content">{content_html}</div></div>'
-
-        elif itype == "code":
-            # Accept either `name` (legacy) or `path`/`snippet_path` (preferred)
-            snippet_ref = item.get("path") or item.get("snippet_path") or item.get("name")
-            # New optional fields: `is_collapse` (bool) - make block collapsible and collapsed by default
-            # and `label` / `display_name` / `code_name` used as a visible title even when collapsed.
-            explicit_collapse = item.get("is_collapse") if "is_collapse" in item else None
-            display_name = item.get("label") or item.get("display_name") or item.get("code_name") or item.get("title")
-
-            # Pull page-level defaults from context (generic, reusable across pages)
-            page_code_defaults = (context or {}).get('code_defaults', {}) if context is not None else {}
-
-            if not display_name:
-                display_name = page_code_defaults.get('display_name')
-
-            if explicit_collapse is not None:
-                is_collapse = bool(explicit_collapse)
-            else:
-                is_collapse = bool(page_code_defaults.get('is_collapse', False))
-
-            return self.assemble_code_comparison(snippet_ref, is_collapse=is_collapse, display_name=display_name)
-
-        elif itype == "image":
-            alt = item.get("alt", "")
-            src = item.get("src", "")
-            return f'<figure class="{custom_class}"><img src="{src}" alt="{alt}"><figcaption>{item.get("caption", "")}</figcaption></figure>'
-
-        elif itype == "list":
-            tag = "ol" if item.get("ordered") else "ul"
-            list_items = "".join([f"<li>{i}</li>" for i in item.get("items", [])])
-            return f'<{tag} class="{custom_class}">{list_items}</{tag}>'
-
-        elif itype == "blocks":
-            block_html = ""
-            for block in item.get("blocks", []):
-                block_html += self.render_block(block, depth, inherited_style, context=context)
-            return f'<div {id_attr} class="blocks-container {custom_class}">{block_html}</div>'
-
+        renderer = self.renderers.get(itype)
+        if renderer:
+            return renderer(item, depth=depth, inherited_style=inherited_style, context=context)
         return f"<!-- Unknown item type: {itype} -->"
+
+    def _id_attr(self, item):
+        item_id = item.get("id", "")
+        return f'id="{item_id}"' if item_id else ""
+
+    def _render_title(self, item, depth=2, inherited_style="", context=None):
+        tag = f"h{min(depth, 6)}"
+        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}</{tag}>'
+
+    def _render_heading(self, item, depth=2, inherited_style="", context=None):
+        tag = item.get("type", "h3")
+        return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}</{tag}>'
+
+    def _render_text(self, item, depth=2, inherited_style="", context=None):
+        return f'<p {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text", "")}</p>'
+
+    def _render_note(self, item, depth=2, inherited_style="", context=None):
+        variant = item.get("variant", "info")
+        content_html = item.get("text", "")
+        return f'<div {self._id_attr(item)} class="note note-{variant} {item.get("class", "")}"><div class="note-content">{content_html}</div></div>'
+
+    def _render_code(self, item, depth=2, inherited_style="", context=None):
+        snippet_ref = item.get("path") or item.get("snippet_path") or item.get("name")
+        explicit_collapse = item.get("is_collapse") if "is_collapse" in item else None
+        display_name = item.get("label") or item.get("display_name") or item.get("code_name") or item.get("title")
+        page_code_defaults = (context or {}).get('code_defaults', {}) if context is not None else {}
+
+        if not display_name:
+            display_name = page_code_defaults.get('display_name')
+
+        if explicit_collapse is not None:
+            is_collapse = bool(explicit_collapse)
+        else:
+            is_collapse = bool(page_code_defaults.get('is_collapse', False))
+
+        line_ranges = item.get("line_ranges") or item.get("highlight_ranges") or []
+        diff_mode = bool(item.get("diff_mode", False))
+        fragment_key = item.get("fragment_key", "")
+
+        return self.assemble_code_comparison(
+            snippet_ref,
+            is_collapse=is_collapse,
+            display_name=display_name,
+            line_ranges=line_ranges,
+            diff_mode=diff_mode,
+            fragment_key=fragment_key,
+        )
+
+    def _render_image(self, item, depth=2, inherited_style="", context=None):
+        alt = item.get("alt", "")
+        src = item.get("src", "")
+        return f'<figure class="{item.get("class", "")}"><img src="{src}" alt="{alt}"><figcaption>{item.get("caption", "")}</figcaption></figure>'
+
+    def _render_list(self, item, depth=2, inherited_style="", context=None):
+        tag = "ol" if item.get("ordered") else "ul"
+        list_items = "".join([f"<li>{i}</li>" for i in item.get("items", [])])
+        return f'<{tag} class="{item.get("class", "")}">{list_items}</{tag}>'
+
+    def _render_blocks(self, item, depth=2, inherited_style="", context=None):
+        block_html = ""
+        for block in item.get("blocks", []):
+            block_html += self.render_block(block, depth, inherited_style, context=context)
+        return f'<div {self._id_attr(item)} class="blocks-container {item.get("class", "")}">{block_html}</div>'
+
+    def _render_sheet(self, item, depth=2, inherited_style="", context=None):
+        rows = item.get("rows") or item.get("data") or []
+        if not rows and item.get("columns") and item.get("items"):
+            rows = [item.get("columns", [])]
+            rows.extend(item.get("items", []))
+
+        headers = item.get("headers") or []
+        if headers:
+            table_rows = [headers] + rows
+        else:
+            table_rows = rows
+
+        detect_header = bool(item.get("detect_header", True))
+        if not headers and detect_header and table_rows:
+            first_row = table_rows[0]
+            if isinstance(first_row, list) and first_row and all(isinstance(c, str) for c in first_row):
+                headers = first_row
+
+        transposable = bool(item.get("transpose", True))
+        mode = item.get("mode", "table")
+        custom_class = item.get("class", "")
+        id_attr = self._id_attr(item)
+
+        table_html = '<table class="sheet-table"><tbody>'
+        for ridx, row in enumerate(table_rows):
+            table_html += '<tr>'
+            for cell in (row if isinstance(row, list) else [row]):
+                cell_text = str(cell)
+                tag = "th" if (headers and ridx == 0) else "td"
+                table_html += f'<{tag}>{cell_text}</{tag}>'
+            table_html += '</tr>'
+        table_html += '</tbody></table>'
+
+        toggle_html = ''
+        if transposable:
+            toggle_html = '<button class="sheet-transpose-btn" type="button">Transpose</button>'
+
+        return (
+            f'<div {id_attr} class="sheet-block {custom_class}" data-sheet-mode="{mode}" '
+            f'data-auto-header="{str(bool(headers)).lower()}" data-fragment-group="{item.get("fragment_group", "")}">'
+            f'<div class="sheet-toolbar">{toggle_html}</div>{table_html}</div>'
+        )
 
     def render_block(self, block_data, depth=2, inherited_style="", context=None):
         """Renders a collapsible block with inheritance and depth-based visibility logic."""
@@ -234,7 +303,7 @@ class AtlasBuilder:
 
     # --- ASSEMBLERS (PHASE 2: Depth-Tagged Sidebars) ---
 
-    def assemble_code_comparison(self, snippet_id, is_collapse=False, display_name=None):
+    def assemble_code_comparison(self, snippet_id, is_collapse=False, display_name=None, line_ranges=None, diff_mode=False, fragment_key=""):
         snippet_root = os.path.join(self.content_dir, "snippets")
         # Prepare wrapper: optional collapsed state and header label
         wrapper_classes = "collapsible-code"
@@ -247,7 +316,15 @@ class AtlasBuilder:
                            f'<button class="collapse-toggle" aria-expanded="{str(not is_collapse).lower()}">▸</button>'
                            f'</div>')
 
-        html = f'<div class="{wrapper_classes}" data-snippet-id="{snippet_id}">{header_html}<div class="code-comparison-grid">'
+        ranges_attr = ""
+        if line_ranges and isinstance(line_ranges, list):
+            ranges_attr = ','.join([str(r) for r in line_ranges if r])
+        html = (
+            f'<div class="{wrapper_classes}" data-snippet-id="{snippet_id}" '
+            f'data-diff-mode="{str(bool(diff_mode)).lower()}" '
+            f'data-fragment-key="{fragment_key}" '
+            f'data-highlight-ranges="{ranges_attr}">{header_html}<div class="code-comparison-grid">'
+        )
         found_any = False
 
         hljs_map = {"scala2": "scala", "scala3": "scala", "typescript": "ts"}
@@ -309,7 +386,7 @@ class AtlasBuilder:
                                 raw_code = self._read_file(fpath)
                                 escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
                                 hljs_lang = hljs_map.get(lang_dir, lang_dir)
-                                html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                html += (f'<div class="code-block" data-lang="{lang_dir}" data-fragment-key="{fragment_key}">'
                                          f'<div class="block-header-tag">{lang_dir.upper()}</div>'
                                          f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
                             if found_any: break
@@ -326,7 +403,7 @@ class AtlasBuilder:
                                 raw_code = self._read_file(fpath)
                                 escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
                                 hljs_lang = hljs_map.get(lang_dir, lang_dir)
-                                html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                                html += (f'<div class="code-block" data-lang="{lang_dir}" data-fragment-key="{fragment_key}">'
                                          f'<div class="block-header-tag">{lang_dir.upper()}</div>'
                                          f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
                             if found_any: break
@@ -338,7 +415,7 @@ class AtlasBuilder:
                         raw_code = self._read_file(file_candidate)
                         escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
                         hljs_lang = hljs_map.get(lang_dir, lang_dir)
-                        html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                        html += (f'<div class="code-block" data-lang="{lang_dir}" data-fragment-key="{fragment_key}">'
                                  f'<div class="block-header-tag">{lang_dir.upper()}</div>'
                                  f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
                         break
@@ -350,7 +427,7 @@ class AtlasBuilder:
                         raw_code = self._read_file(os.path.join(dir_path, target))
                         escaped = raw_code.replace('<', '&lt;').replace('>', '&gt;')
                         hljs_lang = hljs_map.get(lang_dir, lang_dir)
-                        html += (f'<div class="code-block" data-lang="{lang_dir}">'
+                        html += (f'<div class="code-block" data-lang="{lang_dir}" data-fragment-key="{fragment_key}">'
                                  f'<div class="block-header-tag">{lang_dir.upper()}</div>'
                                  f'<pre><code class="language-{hljs_lang}">{escaped}</code></pre></div>')
                         break
@@ -715,12 +792,11 @@ class AtlasBuilder:
         prefix = "./" if depth == 0 else "../" * depth
         mode = rel_path.split(os.sep)[0] if rel_path else "atlas"
 
-        
-
         # Phase 1: Resolve $ref pointers in content before rendering
         if 'content' in data and isinstance(data['content'], list):
             data['content'] = self._process_content_with_refs(data['content'], page_entry['path'])
-# Topic Detection
+
+        # Topic Detection
         has_topics = any(item.get('type') == 'blocks' for item in data.get('content', []))
         topic_class = "" if has_topics else "no-topics"
         

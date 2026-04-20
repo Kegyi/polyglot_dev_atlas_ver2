@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_02_words_frequency"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_02_words_frequency" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;unordered_map&gt;
 #include &lt;vector&gt;
@@ -202,7 +202,7 @@ int main() {
     cout &lt;&lt; wf.get("you") &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -227,7 +227,7 @@ func main() {
 	fmt.Println(wf.Get("have"))
 	fmt.Println(wf.Get("you"))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import Counter
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import Counter
 from typing import List
 
 
@@ -247,7 +247,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1602WordsFrequency {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1602WordsFrequency {
     final class WordsFrequency(book: Array[String]) {
         private val counter = scala.collection.mutable.Map[String, Int]().withDefaultValue(0)
         book.foreach(word =&gt; counter(word) = counter(word) + 1)
@@ -261,7 +261,7 @@ if __name__ == "__main__":
         println(wf.get("you"))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1602WordsFrequency:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1602WordsFrequency:
     final class WordsFrequency(book: Array[String]) {
         private val counter = scala.collection.mutable.Map[String, Int]().withDefaultValue(0)
         book.foreach(word =&gt; counter(word) = counter(word) + 1)
@@ -273,7 +273,7 @@ if __name__ == "__main__":
         val wf = new WordsFrequency(Array("i", "have", "an", "apple", "he", "have", "a", "pen"))
         println(wf.get("have"))
         println(wf.get("you"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class WordsFrequency {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class WordsFrequency {
     private readonly counter = new Map&lt;string, number&gt;();
 
     constructor(book: string[]) {
@@ -321,5 +321,6 @@ console.log(wf.get("you"));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

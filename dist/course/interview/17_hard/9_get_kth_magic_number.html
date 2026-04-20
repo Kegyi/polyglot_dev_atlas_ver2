@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_09_get_kth_magic_number"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_09_get_kth_magic_number" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;algorithm&gt;
 using namespace std;
@@ -202,7 +202,7 @@ int main() {
     cout &lt;&lt; sol.getKthMagicNumber(1) &lt;&lt; endl; // 1
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -238,7 +238,7 @@ func main() {
 	fmt.Println(getKthMagicNumber(5)) // 9
 	fmt.Println(getKthMagicNumber(1)) // 1
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Solution:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Solution:
     def getKthMagicNumber(self, k: int) -&gt; int:
         dp = [0] * (k + 1)
         dp[1] = 1
@@ -265,7 +265,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1709GetKthMagicNumber {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1709GetKthMagicNumber {
   def getKthMagicNumber(k: Int): Int = {
     val dp = Array.fill(k + 1)(0)
     dp(1) = 1
@@ -289,7 +289,7 @@ if __name__ == "__main__":
     println(getKthMagicNumber(1)) // 1
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1709GetKthMagicNumber:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1709GetKthMagicNumber:
   def getKthMagicNumber(k: Int): Int =
     val dp = Array.fill(k + 1)(0)
     dp(1) = 1
@@ -310,7 +310,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(getKthMagicNumber(5)) // 9
     println(getKthMagicNumber(1)) // 1
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function getKthMagicNumber(k: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function getKthMagicNumber(k: number): number {
     const dp: number[] = Array(k + 1).fill(0);
     dp[1] = 1;
     let i3 = 1, i5 = 1, i7 = 1;
@@ -359,5 +359,6 @@ console.log(getKthMagicNumber(1)); // 1
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

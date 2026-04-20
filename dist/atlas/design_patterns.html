@@ -159,7 +159,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/abstract_factory"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Create families of related objects without specifying concrete classes. Shown as classic factory-method-based examples.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/abstract_factory" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -216,7 +216,7 @@ int main() {
     DarkFactory dark;
     showScreen(light);
     showScreen(dark);
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -264,7 +264,7 @@ func main() {
 	showScreen(LightFactory{})
 	showScreen(DarkFactory{})
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 
 class Button(ABC):
@@ -326,7 +326,7 @@ def show_screen(factory: WidgetFactory) -&gt; None:
 
 
 show_screen(LightFactory())
-show_screen(DarkFactory())</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Abstract Factory
+show_screen(DarkFactory())</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Abstract Factory
 trait UIElement
 
 case class Button(label: String) extends UIElement
@@ -354,7 +354,7 @@ object Main extends App {
   println(lightFactory.createButton("OK"))
   println(darkFactory.createButton("OK"))
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Abstract Factory
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Abstract Factory
 trait UIElement
 
 case class Button(label: String) extends UIElement
@@ -378,7 +378,7 @@ object DarkThemeFactory extends UIFactory:
   
   println(lightFactory.createButton("OK"))
   println(darkFactory.createButton("OK"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Button {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Button {
   render(): string;
 }
 
@@ -450,7 +450,7 @@ showScreen(new DarkFactory());</code></pre></div></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/builder"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Step-by-step construction of complex objects using a fluent interface.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/builder" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;utility&gt;
 #include &lt;vector&gt;
@@ -491,7 +491,7 @@ int main() {
     for (const auto& section : report.sections) {
         std::cout &lt;&lt; "- " &lt;&lt; section &lt;&lt; '/n';
     }
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -530,7 +530,7 @@ func main() {
 		fmt.Println("-", section)
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
 
 
 @dataclass
@@ -565,7 +565,7 @@ report = (
 
 print(report.title)
 for section in report.sections:
-    print(f"- {section}")</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Builder
+    print(f"- {section}")</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Builder
 case class House(
     walls: String = "",
     roof: String = "",
@@ -612,7 +612,7 @@ object Main extends App {
 
     println(house)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Builder
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Builder
 case class House(
     walls: String = "",
     roof: String = "",
@@ -653,7 +653,7 @@ class HouseBuilder:
         .build()
 
     println(house)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Report = {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Report = {
   title: string;
   sections: string[];
 };
@@ -695,7 +695,7 @@ for (const section of report.sections) {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/factory_method"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Define an interface for creating objects but let subclasses decide which class to instantiate.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/factory_method" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -738,7 +738,7 @@ int main() {
     CsvImportJob csv;
     std::cout &lt;&lt; json.run() &lt;&lt; '/n';
     std::cout &lt;&lt; csv.run() &lt;&lt; '/n';
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -773,7 +773,7 @@ func main() {
 		fmt.Println(job.Run())
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 
 class Parser(ABC):
@@ -810,7 +810,7 @@ class CsvImportJob(ImportJob):
 
 
 for job in (JsonImportJob(), CsvImportJob()):
-    print(job.run())</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Factory Method
+    print(job.run())</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Factory Method
 trait Vehicle {
     def drive(): String
 }
@@ -842,7 +842,7 @@ object Main extends App {
     println(carFactory.createVehicle().drive())
     println(truckFactory.createVehicle().drive())
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Factory Method
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Factory Method
 trait Vehicle:
     def drive(): String
 
@@ -867,7 +867,7 @@ object TruckFactory extends Factory:
     
     println(carFactory.createVehicle().drive())
     println(truckFactory.createVehicle().drive())
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Parser {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Parser {
   parse(): string;
 }
 
@@ -915,7 +915,7 @@ for (const job of [new JsonImportJob(), new CsvImportJob()]) {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/prototype"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Create new objects by copying a prototypical instance, useful for runtime-configurable object creation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/prototype" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -951,7 +951,7 @@ int main() {
     auto copy = templateCircle.clone();
     templateCircle.describe();
     copy-&gt;describe();
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -980,7 +980,7 @@ func main() {
 	template.Describe()
 	copy.Describe()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from copy import deepcopy
 
 
@@ -997,7 +997,7 @@ template = Report("weekly", ["ops", "summary"])
 copy = template.clone()
 
 print(template)
-print(copy)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Prototype
+print(copy)</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Prototype
 trait Prototype {
     def clone(): Prototype
 }
@@ -1015,7 +1015,7 @@ object Main extends App {
     println(copy1)
     println(copy2)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Prototype
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Prototype
 trait Prototype:
     def clone(): Prototype
 
@@ -1030,7 +1030,7 @@ case class Document(title: String, content: String) extends Prototype:
     println(original)
     println(copy1)
     println(copy2)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Prototype&lt;T&gt; {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Prototype&lt;T&gt; {
   clone(): T;
 }
 
@@ -1059,7 +1059,7 @@ console.log(copy);</code></pre></div></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><div  class="note note-info "><div class="note-content">Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div></div><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/singleton"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Ensure a class has only one instance and provide a global point of access.</p><div  class="note note-info "><div class="note-content">Note: Singleton is often considered an anti-pattern in modern software design due to issues with testability and global state, but it's included here for completeness.</div></div><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/singleton" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 class Config {
@@ -1085,7 +1085,7 @@ private:
 int main() {
     Config::instance().setEnv("prod");
     std::cout &lt;&lt; Config::instance().env() &lt;&lt; '/n';
-}</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+}</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -1112,7 +1112,7 @@ func main() {
 	Instance().Env = "prod"
 	fmt.Println(Instance().Env)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Config:
     _instance: "Config | None" = None
 
     def __new__(cls) -&gt; "Config":
@@ -1123,7 +1123,7 @@ func main() {
 
 
 Config().env = "prod"
-print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
+print(Config().env)</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Singleton
 object Config {
     private var env: String = "dev"
 
@@ -1139,7 +1139,7 @@ object Main extends App {
     Config.setEnv("prod")
     println(Config.getEnv())
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Singleton
 object Config:
     private var env: String = "dev"
 
@@ -1152,7 +1152,7 @@ object Config:
     println(Config.getEnv())
     Config.setEnv("prod")
     println(Config.getEnv())
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Config {
   private static shared: Config | null = null;
 
   private constructor(public env: string) {}
@@ -1176,7 +1176,7 @@ console.log(Config.instance().env);</code></pre></div></div></div>
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_pool"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
+                <p  class="">Manage a pool of reusable objects to improve performance and resource utilization.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_pool" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
 #include &lt;memory&gt;
 #include &lt;iostream&gt;
 
@@ -1207,7 +1207,7 @@ int main(){
     std::cout&lt;&lt;o-&gt;value&lt;&lt;"/n";
     p.release(o);
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1240,7 +1240,7 @@ func main() {
 	fmt.Println(o.Value)
 	p.Release(o)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class PooledObject:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class PooledObject:
     def __init__(self):
         self.value = None
 
@@ -1258,7 +1258,7 @@ if __name__ == '__main__':
     o.value = 1
     print(o.value)
     p.release(o)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
 class ObjectPool[T &lt;: PooledObject](size: Int){
   private val pool = new scala.collection.mutable.Stack[T]
   def acquire(factory: =&gt; T): T = if(pool.nonEmpty) pool.pop() else factory
@@ -1271,7 +1271,7 @@ object Demo extends App{
   println(o.value)
   p.release(o)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class PooledObject(var value: Int = 0)
 class ObjectPool[T &lt;: PooledObject](size: Int):
   private val pool = scala.collection.mutable.Stack.empty[T]
   def acquire(factory: =&gt; T): T = if pool.nonEmpty then pool.pop() else factory
@@ -1282,7 +1282,7 @@ class ObjectPool[T &lt;: PooledObject](size: Int):
   val o = p.acquire(PooledObject())
   o.value = 4
   println(o.value)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class PooledObject { value: number | null = null }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class PooledObject { value: number | null = null }
 class ObjectPool&lt;T extends PooledObject&gt; {
   private pool: T[] = []
   acquire(factory: () =&gt; T) { return this.pool.pop() ?? factory() }
@@ -1305,7 +1305,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/lazy_initialization"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;memory&gt;
+                <p  class="">Delay the creation of an object until it is needed, improving startup performance and resource usage.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/lazy_initialization" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;memory&gt;
 #include &lt;iostream&gt;
 
 class LazySingleton {
@@ -1320,7 +1320,7 @@ int main(){
     LazySingleton::instance().value = 10;
     std::cout&lt;&lt;LazySingleton::instance().value&lt;&lt;"/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -1339,7 +1339,7 @@ func main() {
 	Instance().Value = 8
 	fmt.Println(Instance().Value)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class LazySingleton:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class LazySingleton:
     _instance = None
     def __init__(self):
         self.value = 0
@@ -1352,7 +1352,7 @@ func main() {
 if __name__ == '__main__':
     LazySingleton.instance().value = 9
     print(LazySingleton.instance().value)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object LazySingleton {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object LazySingleton {
   lazy val instance: LazySingleton = new LazySingleton
 }
 class LazySingleton { var value = 0 }
@@ -1360,14 +1360,14 @@ object Demo extends App{
   LazySingleton.instance.value = 1
   println(LazySingleton.instance.value)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object LazySingleton:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object LazySingleton:
   lazy val instance = new LazySingleton
 class LazySingleton:
   var value = 0
 @main def runLazy() =
   LazySingleton.instance.value = 2
   println(LazySingleton.instance.value)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class LazySingleton {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class LazySingleton {
   private static _instance: LazySingleton | null = null
   private constructor(public value = 0){}
   static instance(){
@@ -1387,7 +1387,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/multiton"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;map&gt;
+                <p  class="">Ensure a class has only a limited number of instances and provide a global point of access to them.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/multiton" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;map&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 #include &lt;iostream&gt;
@@ -1410,7 +1410,7 @@ int main(){
     auto b = Multiton::get("b");
     std::cout&lt;&lt;a-&gt;name&lt;&lt;" "&lt;&lt;b-&gt;name&lt;&lt;"/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1431,7 +1431,7 @@ func main() {
 	b := Get("b")
 	fmt.Println(a.Key, b.Key)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Multiton:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Multiton:
     _instances = {}
     def __init__(self, key):
         self.key = key
@@ -1445,7 +1445,7 @@ if __name__ == '__main__':
     a = Multiton.get('a')
     b = Multiton.get('b')
     print(a.key, b.key)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Multiton {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Multiton {
   private var instances = Map.empty[String, Multiton]
   def get(key: String) = instances.getOrElse(key, { val m = new Multiton(key); instances += (key -&gt; m); m })
 }
@@ -1453,13 +1453,13 @@ class Multiton(val key: String)
 object Demo extends App{
   println(Multiton.get("a").key)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Multiton:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Multiton:
   private var instances = Map.empty[String, Multiton]
   def get(key: String) =
     instances.get(key).getOrElse({ val m = Multiton(key); instances += (key -&gt; m); m })
 case class Multiton(key: String)
 @main def runMulti() = println(Multiton.get("a").key)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Multiton {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Multiton {
   private static instances: Record&lt;string, Multiton&gt; = {}
   private constructor(public key: string){}
   static get(key: string){
@@ -1488,7 +1488,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Maps one interface to another, enabling integration of incompatible APIs.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/adapter" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Printer {
@@ -1520,7 +1520,7 @@ int main() {
     JsonLoggerAdapter printer(logger);
     printer.print("build finished");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1546,7 +1546,7 @@ func main() {
 	printer := JSONLoggerAdapter{logger: JSONLogger{}}
 	printer.Print("build finished")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 
 
 class Printer:
@@ -1568,7 +1568,7 @@ class JsonLoggerAdapter(Printer):
 
 
 JsonLoggerAdapter(JsonLogger()).print("build finished")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Adapter
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Adapter
 trait Printer {
     def printText(text: String): Unit
 }
@@ -1593,7 +1593,7 @@ object Main extends App {
     val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
     adaptedPrinter.printText("")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Adapter
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Adapter
 trait Printer:
     def printText(text: String): Unit
 
@@ -1613,7 +1613,7 @@ class JSONToPrinterAdapter(json: JSONObject) extends Printer:
     val json = JSONObject(Map("key" -&gt; "value"))
     val adaptedPrinter: Printer = JSONToPrinterAdapter(json)
     adaptedPrinter.printText("")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Printer {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Printer {
   print(message: string): void;
 }
 
@@ -1642,7 +1642,7 @@ new JsonLoggerAdapter(new JsonLogger()).print('build finished');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/bridge"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Decouples an abstraction from its implementation so they can vary independently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/bridge" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -1688,7 +1688,7 @@ int main() {
     AlertNotification(email).notify("CPU high");
     AlertNotification(sms).notify("CPU high");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1720,7 +1720,7 @@ func main() {
 	AlertNotification{sender: EmailSender{}}.Notify("CPU high")
 	AlertNotification{sender: SMSSender{}}.Notify("CPU high")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from typing import Protocol
 
 
@@ -1748,7 +1748,7 @@ class AlertNotification:
 
 AlertNotification(EmailSender()).notify("CPU high")
 AlertNotification(SmsSender()).notify("CPU high")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Bridge
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Bridge
 trait Sender {
     def send(msg: String): Unit
 }
@@ -1777,7 +1777,7 @@ object Main extends App {
     emailAlert.notify("Test alert")
     smsAlert.notify("Test alert")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Bridge
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Bridge
 trait Sender:
     def send(msg: String): Unit
 
@@ -1802,7 +1802,7 @@ class Alert(sender: Sender) extends Notification(sender)
     
     emailAlert.notify("Test alert")
     smsAlert.notify("Test alert")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Sender {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Sender {
   send(message: string): void;
 }
 
@@ -1838,7 +1838,7 @@ new AlertNotification(new SmsSender()).notify('CPU high');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/composite"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Compose objects into tree structures to represent part-whole hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/composite" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;numeric&gt;
 #include &lt;vector&gt;
@@ -1881,7 +1881,7 @@ int main() {
     root-&gt;add(std::move(sub));
     std::cout &lt;&lt; root-&gt;totalSize() &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1920,7 +1920,7 @@ func main() {
 	root.Add(sub)
 	fmt.Println(root.TotalSize())
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass, field
 from typing import Protocol
 
 
@@ -1952,7 +1952,7 @@ root.add(File(5))
 sub = Folder([File(7), File(3)])
 root.add(sub)
 print(root.total_size())
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Composite
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Composite
 trait FileSystemNode {
     def getSize(): Long
 }
@@ -1981,7 +1981,7 @@ object Main extends App {
     
     println(s"Folder size: ${folder.getSize()}")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Composite
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Composite
 trait FileSystemNode:
     def getSize(): Long
 
@@ -2005,7 +2005,7 @@ class Folder(name: String) extends FileSystemNode:
     folder.add(file2)
     
     println(s"Folder size: ${folder.getSize()}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Node {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Node {
   totalSize(): number;
 }
 
@@ -2046,7 +2046,7 @@ console.log(root.totalSize());
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/decorator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Attach additional responsibilities to objects dynamically via lightweight wrappers.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/decorator" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -2083,7 +2083,7 @@ int main() {
     auto notifier = std::make_unique&lt;SmsDecorator&gt;(std::make_unique&lt;EmailNotifier&gt;());
     notifier-&gt;send("deployment done");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2110,7 +2110,7 @@ func main() {
 	notifier := SMSDecorator{inner: EmailNotifier{}}
 	notifier.Send("deployment done")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from dataclasses import dataclass
 from typing import Protocol
 
 
@@ -2133,7 +2133,7 @@ class SmsDecorator:
 
 
 SmsDecorator(EmailNotifier()).send("deployment done")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Decorator
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Decorator
 trait Notification {
     def send(): Unit
 }
@@ -2164,7 +2164,7 @@ object Main extends App {
     notif.send()
     println()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Decorator
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Decorator
 trait Notification:
     def send(): Unit
 
@@ -2188,7 +2188,7 @@ class SMSNotification(notif: Notification) extends Notification:
     
     notif.send()
     println()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Notifier {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Notifier {
   send(message: string): void;
 }
 
@@ -2218,7 +2218,7 @@ new SmsDecorator(new EmailNotifier()).send('deployment done');
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/facade"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Provide a simplified interface to a complex subsystem.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/facade" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 
 struct Compiler {
@@ -2250,7 +2250,7 @@ private:
 int main() {
     ReleaseFacade().deploy();
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2281,7 +2281,7 @@ func (f ReleaseFacade) Deploy() {
 func main() {
 	ReleaseFacade{}.Deploy()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Compiler:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Compiler:
     def run(self) -&gt; None:
         print("compile")
 
@@ -2309,7 +2309,7 @@ class ReleaseFacade:
 
 
 ReleaseFacade().deploy()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Facade
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Facade
 class Compiler {
     def compile(): Unit = println("Compiling code...")
 }
@@ -2338,7 +2338,7 @@ object Main extends App {
     val facade = new BuildFacade()
     facade.build()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Facade
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Facade
 class Compiler:
     def compile(): Unit = println("Compiling code...")
 
@@ -2361,7 +2361,7 @@ class BuildFacade:
 @main def main(): Unit =
     val facade = new BuildFacade()
     facade.build()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Compiler {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Compiler {
   run(): void {
     console.log('compile');
   }
@@ -2402,7 +2402,7 @@ new ReleaseFacade().deploy();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/flyweight"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Use sharing to support large numbers of fine-grained objects efficiently.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/flyweight" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 #include &lt;unordered_map&gt;
@@ -2432,7 +2432,7 @@ int main() {
     const GlyphStyle* second = factory.get("mono-12");
     std::cout &lt;&lt; std::boolalpha &lt;&lt; (first == second) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2463,7 +2463,7 @@ func main() {
 	second := factory.Get("mono-12")
 	fmt.Println(first == second)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class GlyphStyle:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class GlyphStyle:
     def __init__(self, font: str) -&gt; None:
         self.font = font
 
@@ -2482,7 +2482,7 @@ factory = StyleFactory()
 first = factory.get("mono-12")
 second = factory.get("mono-12")
 print(first is second)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Flyweight
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Flyweight
 case class GlyphStyle(font: String, size: Int)
 
 class Glyph(char: Char, style: GlyphStyle) {
@@ -2513,7 +2513,7 @@ object Main extends App {
     glyph1.render()
     glyph2.render()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Flyweight
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Flyweight
 case class GlyphStyle(font: String, size: Int)
 
 class Glyph(char: Char, style: GlyphStyle):
@@ -2540,7 +2540,7 @@ class GlyphFactory:
     
     glyph1.render()
     glyph2.render()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class GlyphStyle {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class GlyphStyle {
   constructor(public readonly font: string) {}
 }
 
@@ -2572,7 +2572,7 @@ console.log(first === second);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/proxy"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Proxy is sometimes categorized as a structural pattern, sometimes as a behavioral pattern. It's included here for simplicity. If we wanted to be more precise, we could split it into two patterns: Proxy (structural) and Virtual Proxy (behavioral). For now, we'll keep it as a single pattern</p><p  class="">Provide a surrogate or placeholder to control access to another object.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/proxy" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 struct Image {
@@ -2609,7 +2609,7 @@ int main() {
     proxy.display();
     proxy.display();
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2644,7 +2644,7 @@ func main() {
 	proxy.Display()
 	proxy.Display()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class RealImage:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class RealImage:
     def __init__(self) -&gt; None:
         print("load image")
 
@@ -2665,7 +2665,7 @@ class ImageProxy:
 proxy = ImageProxy()
 proxy.display()
 proxy.display()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Proxy
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Proxy
 trait Image {
     def display(): Unit
 }
@@ -2695,7 +2695,7 @@ object Main extends App {
     image.display()
     image.display()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Proxy
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Proxy
 trait Image:
     def display(): Unit
 
@@ -2719,7 +2719,7 @@ class ImageProxy(filename: String) extends Image:
     val image: Image = new ImageProxy("photo.jpg")
     image.display()
     image.display()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class RealImage {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class RealImage {
   constructor() {
     console.log('load image');
   }
@@ -2753,7 +2753,7 @@ proxy.display();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/data_mapper"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
+                <p  class="">Separate the in-memory objects from the database, allowing for a clean domain model and flexible data access.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/data_mapper" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
 #include &lt;map&gt;
 #include &lt;iostream&gt;
 
@@ -2767,7 +2767,7 @@ int main(){
     auto u = mapRow(r);
     std::cout&lt;&lt;u.id&lt;&lt;" "&lt;&lt;u.name&lt;&lt;"/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2785,7 +2785,7 @@ func main() {
 	u := mapRow(row)
 	fmt.Println(u.ID, u.Name)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class User:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class User:
     def __init__(self, id:int, name:str):
         self.id = id; self.name = name
 
@@ -2796,16 +2796,16 @@ if __name__ == '__main__':
     row = {'id':'2','name':'Bob'}
     u = map_row(row)
     print(u.id, u.name)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">case class User(id:Int,name:String)
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">case class User(id:Int,name:String)
 object Mapper{
   def mapRow(row: Map[String,String]) = User(row("id").toInt, row("name"))
 }
 object Demo extends App{ println(Mapper.mapRow(Map("id"-&gt;"5","name"-&gt;"Eve"))) }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">case class User(id:Int,name:String)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">case class User(id:Int,name:String)
 object Mapper:
   def mapRow(row: Map[String,String]) = User(row("id").toInt, row("name"))
 @main def runMapper() = println(Mapper.mapRow(Map("id"-&gt;"6","name"-&gt;"Frank")))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Row = { [k: string]: string }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Row = { [k: string]: string }
 class User { constructor(public id: number, public name: string){} }
 function mapRow(r: Row){ return new User(Number(r.id), r.name) }
 console.log(mapRow({id:'4', name:'Dana'}))
@@ -2820,14 +2820,14 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Adapter that uses composition to delegate calls to the adaptee, allowing for more flexibility than class adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/object_adapter" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 // Object Adapter: Adapter has-a Adaptee
 class Adaptee { public: void specific() { std::cout&lt;&lt;"Adaptee specific/n"; } };
 class Target { public: virtual void request() = 0; };
 class ObjectAdapter : public Target { Adaptee a; public: void request() override { a.specific(); } };
 int main(){ ObjectAdapter a; a.request(); }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2841,7 +2841,7 @@ type ObjectAdapter struct{ a Adaptee }
 
 func (o ObjectAdapter) Request() { o.a.Specific() }
 func main()                      { var t Target = ObjectAdapter{}; t.Request() }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
     def specific(self): print('Adaptee specific')
 class Target:
     def request(self): raise NotImplementedError
@@ -2851,15 +2851,15 @@ class ObjectAdapter(Target):
 
 if __name__ == '__main__':
     ObjectAdapter().request()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
 trait Target{ def request():Unit }
 class ObjectAdapter extends Target{ val a = new Adaptee(); def request() = a.specific() }
 object Demo extends App{ new ObjectAdapter().request() }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
 trait Target{ def request():Unit }
 class ObjectAdapter extends Target{ val a = Adaptee(); def request() = a.specific() }
 @main def runObjAdapter() = ObjectAdapter().request()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
 interface Target{ request(): void }
 class ObjectAdapter implements Target{ constructor(private a=new Adaptee()){} request(){ this.a.specific() } }
 new ObjectAdapter().request()
@@ -2874,14 +2874,14 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/class_adapter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Adapter that uses multiple inheritance to adapt one interface to another, but is less flexible than object adapters.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/class_adapter" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 class Target { public: virtual void request() = 0; };
 class Adaptee { public: void specific() { std::cout&lt;&lt;"Adaptee specific/n"; } };
 // C++ class adapter via inheritance isn't common; emulate by inheriting Adaptee and adapting
 class ClassAdapter : public Adaptee, public Target { public: void request() override { specific(); } };
 int main(){ ClassAdapter a; a.request(); }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -2897,7 +2897,7 @@ type ClassAdapter struct{ Adaptee }
 
 func (c ClassAdapter) Request() { c.Specific() }
 func main()                     { var t Target = ClassAdapter{}; t.Request() }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Adaptee:
     def specific(self): print('Adaptee specific')
 class Target:
     def request(self): raise NotImplementedError
@@ -2906,15 +2906,15 @@ class ClassAdapter(Adaptee, Target):
 
 if __name__ == '__main__':
     ClassAdapter().request()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
 trait Target{ def request():Unit }
 class ClassAdapter extends Adaptee with Target{ def request() = specific() }
 object Demo extends App{ new ClassAdapter().request() }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">class Adaptee{ def specific() = println("Adaptee specific") }
 trait Target{ def request():Unit }
 class ClassAdapter extends Adaptee with Target{ def request() = specific() }
 @main def runClassAdapter() = ClassAdapter().request()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Adaptee{ specific(){ console.log('Adaptee specific') } }
 interface Target{ request(): void }
 class ClassAdapter extends Adaptee implements Target { request(){ this.specific() } }
 new ClassAdapter().request()
@@ -2939,7 +2939,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using functional handlers (functions/callables): the chain is a flat vector of handlers; no subclass-linked list is required.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;string&gt;
 
@@ -3005,7 +3005,7 @@ int main() {
     low-&gt;handle(r2);
     low-&gt;handle(r3);
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -3075,7 +3075,7 @@ func main() {
 	low.Handle(&Request{2, "Normal"})
 	low.Handle(&Request{3, "Critical"})
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 from typing import Optional
 
 class Request:
@@ -3122,7 +3122,7 @@ low.set_next(mid).set_next(high)
 print(low.handle(Request(1, "Simple")))
 print(low.handle(Request(2, "Normal")))
 print(low.handle(Request(3, "Critical")))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Chain of Responsibility
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Chain of Responsibility
 case class Request(level: Int, message: String)
 
 trait Handler {
@@ -3175,7 +3175,7 @@ object Main extends App {
     low.handle(Request(2, "Normal"))
     low.handle(Request(3, "Critical"))
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Chain of Responsibility
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Chain of Responsibility
 case class Request(level: Int, message: String)
 
 trait Handler:
@@ -3219,7 +3219,7 @@ class HighHandler extends Handler:
     low.handle(Request(1, "Simple"))
     low.handle(Request(2, "Normal"))
     low.handle(Request(3, "Critical"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IHandler {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IHandler {
     setNext(next: IHandler): void;
     handle(request: Request): void;
 }
@@ -3276,7 +3276,7 @@ mid.setNext(high);
 low.handle(new Request(1, "Simple"));
 low.handle(new Request(2, "Normal"));
 low.handle(new Request(3, "Critical"));
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Chain of Responsibility using std::function
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/chain_of_responsibility_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Chain of Responsibility using std::function
 // The chain is a flat vector of handlers; no linked-list of subclasses required.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3319,7 +3319,7 @@ int main() {
     process(chain, {2, "mid request"});
     process(chain, {3, "high request"});
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Chain of Responsibility using a flat list of callables
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Chain of Responsibility using a flat list of callables
 # No linked-list of handler subclasses - handlers are plain functions returning bool.
 from typing import Callable
 from dataclasses import dataclass
@@ -3367,7 +3367,7 @@ process(chain, Request(3, "high request"))
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/command"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callables (functions/lambdas): commands can be simple callables replacing class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/command" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 #include &lt;vector&gt;
 
@@ -3420,7 +3420,7 @@ int main() {
     
     invoker-&gt;executeAll();
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3477,7 +3477,7 @@ func main() {
 
 	invoker.ExecuteAll()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Receiver:
     def turn_on(self):
@@ -3523,7 +3523,7 @@ invoker.add_command(TurnOnCommand(device))
 invoker.add_command(TurnOffCommand(device))
 
 invoker.execute_all()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Command
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Command
 class Device {
     def turnOn(): Unit = println("Device is ON")
     def turnOff(): Unit = println("Device is OFF")
@@ -3562,7 +3562,7 @@ object Main extends App {
     
     invoker.executeAll()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Command
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Command
 class Device:
     def turnOn(): Unit = println("Device is ON")
     def turnOff(): Unit = println("Device is OFF")
@@ -3593,7 +3593,7 @@ class Invoker:
     invoker.addCommand(new TurnOffCommand(device))
     
     invoker.executeAll()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface ICommand {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface ICommand {
     execute(): void;
 }
 
@@ -3644,7 +3644,7 @@ invoker.addCommand(new TurnOnCommand(device));
 invoker.addCommand(new TurnOffCommand(device));
 
 invoker.executeAll();
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/command_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Command using std::function
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/command_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Command using std::function
 // Replaces the command class hierarchy with a simple callable; lambdas capture context directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3668,7 +3668,7 @@ int main() {
         cmd();
     }
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3692,7 +3692,7 @@ func main() {
 		cmd()
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Command using plain callables
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Command using plain callables
 # No Command ABC or class hierarchy - commands are just Callable[[], None].
 from typing import Callable
 
@@ -3713,7 +3713,7 @@ commands: list[Callable[[], None]] = [
 
 for cmd in commands:
     cmd()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Command using () =&gt; void closures
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Command using () =&gt; void closures
 // No Command interface or class hierarchy - commands are plain callable closures.
 
 class Device {
@@ -3739,7 +3739,7 @@ commands.forEach(cmd =&gt; cmd());
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/observer"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using callbacks or function references: any callable subscribes directly, removing the Observer interface in many cases.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/observer" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -3786,7 +3786,7 @@ int main() {
     subject-&gt;notify("Event 1");
     subject-&gt;notify("Event 2");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -3827,7 +3827,7 @@ func main() {
 	subject.Notify("Event 1")
 	subject.Notify("Event 2")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Observer(ABC):
     @abstractmethod
@@ -3861,7 +3861,7 @@ subject.attach(obs2)
 
 subject.notify("Event 1")
 subject.notify("Event 2")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Observer
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Observer
 trait Observer {
     def update(msg: String): Unit
 }
@@ -3895,7 +3895,7 @@ object Main extends App {
     subject.notify("Event 1")
     subject.notify("Event 2")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Observer
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Observer
 trait Observer:
     def update(msg: String): Unit
 
@@ -3922,7 +3922,7 @@ class ConcreteObserver(name: String) extends Observer:
     
     subject.notify("Event 1")
     subject.notify("Event 2")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IObserver {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IObserver {
     update(msg: string): void;
 }
 
@@ -3957,7 +3957,7 @@ subject.attach(obs2);
 
 subject.notify("Event 1");
 subject.notify("Event 2");
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/observer_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Observer using std::function callbacks
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/observer_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Observer using std::function callbacks
 // Removes the Observer interface; any callable (lambda, free function, member) subscribes directly.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -3996,7 +3996,7 @@ int main() {
     subject.notify("Event 1");
     subject.notify("Event 2");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4030,7 +4030,7 @@ func main() {
 	subject.Notify("Event 1")
 	subject.Notify("Event 2")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Observer using function callbacks
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Observer using function callbacks
 # No Observer ABC or subclasses - any callable with the right signature subscribes directly.
 from typing import Callable
 
@@ -4053,7 +4053,7 @@ subject.subscribe(lambda msg: print(f"Observer2 received: {msg}"))
 
 subject.notify("Event 1")
 subject.notify("Event 2")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Observer using typed function callbacks
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Observer using typed function callbacks
 // No Observer interface or class hierarchy - listeners are plain typed callbacks.
 
 type Listener&lt;T&gt; = (event: T) =&gt; void;
@@ -4087,7 +4087,7 @@ subject.notify("Event 2");
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/state"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using variants or algebraic data types where available: states are value types and transitions are assignments, avoiding virtual dispatch.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/state" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class State {
@@ -4137,7 +4137,7 @@ int main() {
     ctx.setState(std::make_shared&lt;StoppedState&gt;());
     ctx.request();
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4187,7 +4187,7 @@ func main() {
 	ctx.SetState(&StoppedState{})
 	ctx.Request()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class State(ABC):
     @abstractmethod
@@ -4226,7 +4226,7 @@ ctx.request()
 
 ctx.set_state(StoppedState())
 ctx.request()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// State
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// State
 trait State {
     def handle(): Unit
 }
@@ -4264,7 +4264,7 @@ object Main extends App {
     ctx.setState(new StoppedState())
     ctx.request()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala State using sealed trait ADT + pattern matching (Scala 3)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala State using sealed trait ADT + pattern matching (Scala 3)
 // No State trait or subclass hierarchy - states are plain ADT cases.
 // Transitions are just variable reassignments.
 
@@ -4287,7 +4287,7 @@ def handle(state: State): Unit = state match
 
   state = StoppedState
   handle(state)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IState {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IState {
     handle(): void;
 }
 
@@ -4331,7 +4331,7 @@ ctx.request();
 
 ctx.setState(new StoppedState());
 ctx.request();
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/state_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ State using std::variant
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/state_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ State using std::variant
 // States are plain value types; transitions are just assignments.
 // No virtual dispatch, no heap allocation, exhaustive state handling enforced by the compiler.
 #include &lt;iostream&gt;
@@ -4357,7 +4357,7 @@ int main() {
     state = StoppedState{};
     handle(state);
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python State using structural pattern matching (Python 3.10+)
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python State using structural pattern matching (Python 3.10+)
 # No State ABC or subclass hierarchy - states are plain dataclasses.
 from __future__ import annotations
 from dataclasses import dataclass
@@ -4393,7 +4393,7 @@ handle(state)
 
 state = StoppedState()
 handle(state)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript State using discriminated union + exhaustive switch
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript State using discriminated union + exhaustive switch
 // No IState interface or class hierarchy - states are plain tagged objects.
 
 type StartState   = { kind: "start" };
@@ -4431,7 +4431,7 @@ handle(state);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/strategy"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using policy-based or function-based approaches: offers both compile-time and runtime selection strategies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/strategy" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Strategy {
@@ -4481,7 +4481,7 @@ int main() {
     ctx.setStrategy(std::make_shared&lt;MultiplyStrategy&gt;());
     std::cout &lt;&lt; "Multiply: " &lt;&lt; ctx.executeStrategy(5, 3) &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4531,7 +4531,7 @@ func main() {
 	ctx.SetStrategy(&MultiplyStrategy{})
 	fmt.Printf("Multiply: %d/n", ctx.ExecuteStrategy(5, 3))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Strategy(ABC):
     @abstractmethod
@@ -4570,7 +4570,7 @@ print(f"Subtract: {ctx.execute_strategy(5, 3)}")
 
 ctx.set_strategy(MultiplyStrategy())
 print(f"Multiply: {ctx.execute_strategy(5, 3)}")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Strategy
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Strategy
 trait Strategy {
     def execute(a: Int, b: Int): Int
 }
@@ -4608,7 +4608,7 @@ object Main extends App {
     ctx.setStrategy(new MultiplyStrategy())
     println(s"Multiply: ${ctx.executeStrategy(5, 3)}")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Strategy using function values and Scala 3 type classes (given/using)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Strategy using function values and Scala 3 type classes (given/using)
 // No Strategy trait or subclasses - strategies are plain function values.
 
 // Approach 1: function value (simplest)
@@ -4639,7 +4639,7 @@ def calculate(a: Int, b: Int)(using s: Strategy): Int = s.execute(a, b)
   // Type class approach
   println(s"Given add: ${calculate(5, 3)(using addStrategy)}")
   println(s"Given sub: ${calculate(5, 3)(using subtractStrategy)}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IStrategy {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IStrategy {
     execute(a: number, b: number): number;
 }
 
@@ -4683,7 +4683,7 @@ console.log(`Subtract: ${ctx.executeStrategy(5, 3)}`);
 
 ctx.setStrategy(new MultiplyStrategy());
 console.log(`Multiply: ${ctx.executeStrategy(5, 3)}`);
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/strategy_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/strategy_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Strategy using policy-based templates (compile-time) and std::function (runtime)
 // No virtual dispatch, no heap allocation for small strategies.
 #include &lt;iostream&gt;
 #include &lt;functional&gt;
@@ -4733,7 +4733,7 @@ int main() {
     calc = DynamicCalculator([](int a, int b) { return a * b; });
     std::cout &lt;&lt; "Dynamic mul: " &lt;&lt; calc.execute(5, 3) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4760,7 +4760,7 @@ func main() {
 	calc.strategy = func(a, b int) int { return a * b }
 	fmt.Println("Multiply:", calc.Execute(5, 3))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Strategy using plain callables
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Strategy using plain callables
 # No Strategy ABC or subclasses - any callable with the right signature works.
 from typing import Callable
 
@@ -4782,7 +4782,7 @@ print(f"Subtract: {calc.execute(5, 3)}")
 
 calc.strategy = lambda a, b: a * b
 print(f"Multiply: {calc.execute(5, 3)}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Strategy using function types
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Strategy using function types
 // No Strategy interface or class hierarchy - strategies are plain function values.
 
 type Strategy = (a: number, b: number) =&gt; number;
@@ -4813,7 +4813,7 @@ console.log("Multiply:", calc.execute(5, 3));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/template_method"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using CRTP or higher-order functions provide compile-time polymorphism without virtual calls.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/template_method" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 class DataProcessor {
 public:
@@ -4868,7 +4868,7 @@ int main() {
     JSONProcessor json;
     json.process();
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -4930,7 +4930,7 @@ func main() {
 	json.processor = json
 	json.Process()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class DataProcessor(ABC):
     def process(self) -&gt; None:
@@ -4975,7 +4975,7 @@ csv.process()
 
 json = JSONProcessor()
 json.process()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Template Method
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Template Method
 abstract class DataProcessor {
     final def process(): Unit = {
         readData()
@@ -5009,7 +5009,7 @@ object Main extends App {
     val json: DataProcessor = new JSONProcessor()
     json.process()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Template Method
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Template Method
 abstract class DataProcessor {
     final def process(): Unit = {
         readData()
@@ -5040,7 +5040,7 @@ class JSONProcessor extends DataProcessor:
     
     val json: DataProcessor = new JSONProcessor()
     json.process()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">abstract class DataProcessor {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">abstract class DataProcessor {
     process(): void {
         this.readData();
         this.parseData();
@@ -5085,7 +5085,7 @@ csv.process();
 
 const json = new JSONProcessor();
 json.process();
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/template_method_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/template_method_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Template Method using CRTP (Curiously Recurring Template Pattern)
 // Compile-time polymorphism: no virtual dispatch, no vtable, concrete steps inlined.
 #include &lt;iostream&gt;
 
@@ -5123,7 +5123,7 @@ int main() {
     JSONProcessor json;
     json.process();
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Template Method using higher-order functions
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Template Method using higher-order functions
 # No abstract base class - the template is a plain function that takes callables.
 from typing import Callable
 
@@ -5158,7 +5158,7 @@ process_data(json_read, json_parse, json_write)
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/visitor"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Modern implementations using sum types/variants and pattern matching remove the need for double-dispatch and base class hierarchies.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/visitor" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Visitor;
@@ -5215,7 +5215,7 @@ int main() {
     circle-&gt;accept(visitor.get());
     rectangle-&gt;accept(visitor.get());
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5266,7 +5266,7 @@ func main() {
 	circle.Accept(visitor)
 	rectangle.Accept(visitor)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Visitor(ABC):
     @abstractmethod
@@ -5309,7 +5309,7 @@ visitor = DrawVisitor()
 
 circle.accept(visitor)
 rectangle.accept(visitor)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Visitor
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Visitor
 trait Visitor {
     def visitCircle(c: Circle): Unit
     def visitRectangle(r: Rectangle): Unit
@@ -5353,7 +5353,7 @@ object Main extends App {
     circle.accept(visitor)
     rectangle.accept(visitor)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Visitor using sealed trait ADT + pattern matching (Scala 3)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Modern Scala Visitor using sealed trait ADT + pattern matching (Scala 3)
 // No Visitor trait, no accept/visit - shapes are plain ADT cases.
 // The compiler enforces exhaustiveness at compile time.
 
@@ -5375,7 +5375,7 @@ def describe(shape: Shape): String = shape match
   val shapes = List(Circle(), Rectangle())
   shapes.foreach(draw)
   shapes.map(describe).foreach(println)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IVisitor {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IVisitor {
     visitCircle(c: Circle): void;
     visitRectangle(r: Rectangle): void;
 }
@@ -5420,7 +5420,7 @@ const visitor = new DrawVisitor();
 
 circle.accept(visitor);
 rectangle.accept(visitor);
-</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/visitor_modern"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Visitor using std::variant + std::visit
+</code></pre></div></div></div><h4  class="">Modern variant of the pattern</h4><div class="collapsible-code" data-snippet-id="design_patterns/visitor_modern" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">// Modern C++ Visitor using std::variant + std::visit
 // Eliminates double-dispatch ceremony; shapes are plain value types with no base class.
 #include &lt;iostream&gt;
 #include &lt;variant&gt;
@@ -5465,7 +5465,7 @@ int main() {
     std::visit(describe, circle);
     std::visit(describe, rectangle);
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5512,7 +5512,7 @@ func main() {
 	fmt.Println(describe(Circle{}))
 	fmt.Println(describe(Rectangle{}))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Visitor using functools.singledispatch
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python"># Modern Python Visitor using functools.singledispatch
 # No accept/visit ceremony - shapes are plain dataclasses, operations are functions.
 from __future__ import annotations
 from dataclasses import dataclass
@@ -5556,7 +5556,7 @@ draw(Circle())
 draw(Rectangle())
 print(describe(Circle()))
 print(describe(Rectangle()))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Visitor using discriminated unions + exhaustive switch
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">// Modern TypeScript Visitor using discriminated unions + exhaustive switch
 // No Visitor interface or accept/visit ceremony - shapes are plain data objects.
 
 interface Circle    { readonly kind: "circle" }
@@ -5604,7 +5604,7 @@ console.log(describe(rectangle));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/interpreter"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Represent and evaluate a grammar or expression language with object-oriented structures.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/interpreter" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;memory&gt;
 
@@ -5657,7 +5657,7 @@ int main() {
     std::cout &lt;&lt; (expr-&gt;interpret("cat") ? "true" : "false") &lt;&lt; std::endl;
     std::cout &lt;&lt; (expr-&gt;interpret("bird") ? "true" : "false") &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -5700,7 +5700,7 @@ func main() {
 	fmt.Println(expr.Interpret("cat"))
 	fmt.Println(expr.Interpret("bird"))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Expression(ABC):
     @abstractmethod
@@ -5736,7 +5736,7 @@ expr = OrExpression(c1, c2)
 
 print(expr.interpret("cat"))
 print(expr.interpret("bird"))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Interpreter
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Interpreter
 trait Expression {
     def interpret(ctx: String): Boolean
 }
@@ -5761,7 +5761,7 @@ object Main extends App {
     println(expr.interpret("cat"))
     println(expr.interpret("bird"))
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Interpreter
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Interpreter
 trait Expression:
     def interpret(ctx: String): Boolean
 
@@ -5781,7 +5781,7 @@ class AndExpression(expr1: Expression, expr2: Expression) extends Expression:
     
     println(expr.interpret("cat"))
     println(expr.interpret("bird"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Expression {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface Expression {
     interpret(ctx: string): boolean;
 }
 
@@ -5825,7 +5825,7 @@ console.log(expr.interpret("bird"));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/iterator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Provide a way to access elements of an aggregate object sequentially without exposing its underlying representation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/iterator" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
 
@@ -5885,7 +5885,7 @@ int main() {
     }
     std::cout &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -5937,7 +5937,7 @@ func main() {
 	}
 	fmt.Println()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 from typing import Any, Iterator as PyIterator
 
 class Iterator(ABC):
@@ -5986,7 +5986,7 @@ it = collection.create_iterator()
 while it.has_next():
     print(it.next(), end=" ")
 print()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Iterator
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Iterator
 trait CustomIterator[T] {
     def hasNext: Boolean
     def next(): T
@@ -6021,7 +6021,7 @@ object Main extends App {
     }
     println()
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Iterator
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Iterator
 trait CustomIterator[T]:
     def hasNext: Boolean
     def next(): T
@@ -6050,7 +6050,7 @@ class ArrayCollection[T](items: Vector[T]) extends CustomCollection[T]:
         print(it.next() + " ")
     }
     println()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IIterator {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IIterator {
     hasNext(): boolean;
     next(): number;
 }
@@ -6106,7 +6106,7 @@ console.log(result);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/mediator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Define an object that encapsulates how a set of objects interact, promoting loose coupling.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/mediator" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;memory&gt;
 
 class Mediator {
@@ -6168,7 +6168,7 @@ int main() {
     u1-&gt;send("Hello!");
     u2-&gt;send("Hi there!");
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -6218,7 +6218,7 @@ func main() {
 	u1.Send("Hello!")
 	u2.Send("Hi there!")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from abc import ABC, abstractmethod
 
 class Mediator(ABC):
     @abstractmethod
@@ -6260,7 +6260,7 @@ room.add_users(u1, u2)
 
 u1.send("Hello!")
 u2.send("Hi there!")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Mediator
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Mediator
 trait ChatMediator {
     def sendMessage(sender: ChatUser, msg: String): Unit
 }
@@ -6304,7 +6304,7 @@ object Main extends App {
     u1.send("Hello!")
     u2.send("Hi there!")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Mediator
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Mediator
 trait ChatMediator:
     def sendMessage(sender: ChatUser, msg: String): Unit
 
@@ -6340,7 +6340,7 @@ class ChatUser(name: String, mediator: ChatMediator):
     
     u1.send("Hello!")
     u2.send("Hi there!")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IMediator {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">interface IMediator {
     notify(sender: User, event: string): void;
 }
 
@@ -6393,7 +6393,7 @@ u2.send("Hi there!");
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/memento"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Capture and externalize an object's internal state so it can be restored later, without violating encapsulation.</p><p  class="">Example implementation across language variants.</p><div class="collapsible-code" data-snippet-id="design_patterns/memento" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
 #include &lt;memory&gt;
@@ -6454,7 +6454,7 @@ int main() {
     originator.restoreState(caretaker.restore(0));
     std::cout &lt;&lt; "Restored: " &lt;&lt; originator.getState() &lt;&lt; std::endl;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -6517,7 +6517,7 @@ func main() {
 	origin.RestoreState(caretaker.Restore(0))
 	fmt.Printf("Restored: %s/n", origin.GetState())
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Memento:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">class Memento:
     def __init__(self, state: str):
         self.state = state
     
@@ -6566,7 +6566,7 @@ print(f"Current: {originator.get_state()}")
 
 originator.restore_state(caretaker.restore(0))
 print(f"Restored: {originator.get_state()}")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Memento
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">// Memento
 case class Memento(state: String)
 
 class Originator(private var state: String) {
@@ -6611,7 +6611,7 @@ object Main extends App {
     caretaker.restore(0).foreach(originator.restoreState)
     println(s"Restored: ${originator.getState}")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Memento
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Memento
 case class Memento(state: String)
 
 class Originator(private var state: String):
@@ -6649,7 +6649,7 @@ class Caretaker:
     
     caretaker.restore(0).foreach(originator.restoreState)
     println(s"Restored: ${originator.getState}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Memento {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Memento {
     constructor(private state: string) {}
     
     getState(): string {
@@ -6743,5 +6743,6 @@ if (restored) {
     <!-- App Logic & Selection Engine -->
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
+    <script src="../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

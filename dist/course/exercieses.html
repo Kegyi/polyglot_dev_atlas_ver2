@@ -159,26 +159,26 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Write a program that prints 'Hello, World!' to the console.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/hello_world"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Write a program that prints 'Hello, World!' to the console.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/hello_world" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 int main() {
     std::cout &lt;&lt; "Hello, World!/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
 func main() {
 	fmt.Println("Hello, World!")
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">print("Hello, World!")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Main extends App {
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">print("Hello, World!")
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Main extends App {
   println("Hello, World!")
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def hello(): Unit =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def hello(): Unit =
   println("Hello, World!")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">console.log("Hello, World!");
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">console.log("Hello, World!");
 </code></pre></div></div></div>
             </div>
         </div>
@@ -189,7 +189,7 @@ func main() {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Write a program that calculates the sum of the first n natural numbers.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/sum_of_numbers"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Write a program that calculates the sum of the first n natural numbers.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/sum_of_numbers" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 using namespace std;
 
 long long sum_n(long long n) {
@@ -203,7 +203,7 @@ int main() {
     cout &lt;&lt; sum_n(n) &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -220,7 +220,7 @@ func main() {
 	}
 	fmt.Println(sumN(n))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def sum_n(n: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def sum_n(n: int) -&gt; int:
     return n * (n + 1) // 2
 
 if __name__ == '__main__':
@@ -229,16 +229,16 @@ if __name__ == '__main__':
     except Exception:
         n = 10
     print(sum_n(n))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object SumOfNumbers {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object SumOfNumbers {
   def sumN(n: Int): Int = n * (n + 1) / 2
   def main(args: Array[String]): Unit = {
     val n = if (args.nonEmpty) args(0).toInt else 10
     println(sumN(n))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def sumOfNumbers(n: Int = 10): Unit =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def sumOfNumbers(n: Int = 10): Unit =
   println(n * (n + 1) / 2)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function sumN(n: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function sumN(n: number): number {
   return (n * (n + 1)) / 2;
 }
 
@@ -256,7 +256,7 @@ console.log(sumN(n));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Write a program that calculates the factorial of a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/factorial"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Write a program that calculates the factorial of a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/factorial" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 using namespace std;
 
 long long factorial(int n) {
@@ -271,7 +271,7 @@ int main() {
     cout &lt;&lt; factorial(n) &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -292,7 +292,7 @@ func main() {
 	}
 	fmt.Println(factorial(n))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def factorial(n: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def factorial(n: int) -&gt; int:
     r = 1
     for i in range(2, n+1):
         r *= i
@@ -304,17 +304,17 @@ if __name__ == '__main__':
     except Exception:
         n = 5
     print(factorial(n))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Factorial {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Factorial {
   def fact(n: Int): BigInt = if (n &lt;= 1) 1 else (2 to n).map(BigInt(_)).product
   def main(args: Array[String]): Unit = {
     val n = if (args.nonEmpty) args(0).toInt else 5
     println(fact(n))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Factorial:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Factorial:
   def fact(n: Int): BigInt = if n &lt;= 1 then 1 else (2 to n).map(BigInt(_)).product
   @main def run(n: Int = 5) = println(fact(n))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function factorial(n: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function factorial(n: number): number {
   let r = 1;
   for (let i = 2; i &lt;= n; i++) r *= i;
   return r;
@@ -334,7 +334,7 @@ console.log(factorial(n));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Write a program that checks if a given number is prime.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/prime_check"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Write a program that checks if a given number is prime.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/prime_check" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;cmath&gt;
 using namespace std;
 
@@ -350,7 +350,7 @@ int main() {
     if (!(cin &gt;&gt; n)) n = 97;
     cout &lt;&lt; (is_prime(n) ? "true" : "false") &lt;&lt; "/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -378,7 +378,7 @@ func main() {
 	}
 	fmt.Println(isPrime(n))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import math
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import math
 
 def is_prime(n: int) -&gt; bool:
     if n &lt; 2:
@@ -398,7 +398,7 @@ if __name__ == '__main__':
     except Exception:
         n = 97
     print(str(is_prime(n)).lower())
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object PrimeCheck {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object PrimeCheck {
   def isPrime(n: Int): Boolean = {
     if (n &lt; 2) return false
     if (n % 2 == 0) return n == 2
@@ -414,13 +414,13 @@ if __name__ == '__main__':
     println(isPrime(n))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object PrimeCheck:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object PrimeCheck:
   def isPrime(n: Int): Boolean =
     if n &lt; 2 then false
     else if n % 2 == 0 then n == 2
     else (3 to math.sqrt(n).toInt by 2).forall(n % _ != 0)
   @main def run(n: Int = 97) = println(isPrime(n))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function isPrime(n: number): boolean {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function isPrime(n: number): boolean {
   if (n &lt; 2) return false;
   if (n % 2 === 0) return n === 2;
   for (let i = 3; i * i &lt;= n; i += 2) if (n % i === 0) return false;
@@ -441,7 +441,7 @@ console.log(isPrime(n));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Write a program that finds the maximum element in an array.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/max_of_array"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Write a program that finds the maximum element in an array.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/max_of_array" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;limits&gt;
 using namespace std;
@@ -458,7 +458,7 @@ int main() {
     cout &lt;&lt; mx &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -483,7 +483,7 @@ func main() {
 	}
 	fmt.Println(mx)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import sys
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import sys
 
 def max_of_array(arr):
     return max(arr) if arr else None
@@ -498,16 +498,16 @@ if __name__ == '__main__':
     except Exception:
         n = 5; vals = [1,2,3,4,5]
     print(max_of_array(vals))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object MaxOfArray {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object MaxOfArray {
   def main(args: Array[String]): Unit = {
     val arr = if (args.nonEmpty) args.map(_.toInt) else Array(1,2,3,4,5)
     println(arr.max)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def maxOfArray(args: String*): Unit =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def maxOfArray(args: String*): Unit =
   val arr = if args.nonEmpty then args.map(_.toInt).toArray else Array(1,2,3,4,5)
   println(arr.max)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const fs = require('fs');
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const fs = require('fs');
 const input = fs.readFileSync(0, 'utf8').trim().split(//s+/);
 let idx = 0;
 let n = input.length ? Number(input[idx++]) : 5;
@@ -524,7 +524,7 @@ console.log(Math.max(...arr));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Determine if a number is even or odd.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/even_odd"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Determine if a number is even or odd.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/even_odd" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 int main() {
     int n;
@@ -537,7 +537,7 @@ int main() {
         std::cout &lt;&lt; n &lt;&lt; " is odd/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -554,18 +554,18 @@ func main() {
 		fmt.Printf("%d is odd/n", n)
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter a number: "))
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter a number: "))
 if n % 2 == 0:
     print(f"{n} is even")
 else:
     print(f"{n} is odd")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
 if (n % 2 == 0) println(s"$n is even")
 else println(s"$n is odd")
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
 if n % 2 == 0 then println(s"$n is even")
 else println(s"$n is odd")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">import * as readline from "readline";
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">import * as readline from "readline";
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 rl.question("Enter a number: ", (input) =&gt; {
   const n = parseInt(input);
@@ -590,7 +590,7 @@ rl.question("Enter a number: ", (input) =&gt; {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Print numbers from 1 to n. For multiples of 3, print 'Fizz' instead of the number, and for multiples of 5, print 'Buzz'. For numbers which are multiples of both 3 and 5, print 'FizzBuzz'.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/fizzbuzz"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Print numbers from 1 to n. For multiples of 3, print 'Fizz' instead of the number, and for multiples of 5, print 'Buzz'. For numbers which are multiples of both 3 and 5, print 'FizzBuzz'.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/beginner/fizzbuzz" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 int main() {
     for (int i = 1; i &lt;= 100; ++i) {
@@ -601,7 +601,7 @@ int main() {
     }
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -619,24 +619,24 @@ func main() {
 		}
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">for i in range(1, 101):
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">for i in range(1, 101):
     if i % 15 == 0: print("FizzBuzz")
     elif i % 3 == 0: print("Fizz")
     elif i % 5 == 0: print("Buzz")
     else: print(i)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
   if (i % 15 == 0) println("FizzBuzz")
   else if (i % 3 == 0) println("Fizz")
   else if (i % 5 == 0) println("Buzz")
   else println(i)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">(1 to 100).foreach { i =&gt;
   if i % 15 == 0 then println("FizzBuzz")
   else if i % 3 == 0 then println("Fizz")
   else if i % 5 == 0 then println("Buzz")
   else println(i)
 }
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">for (let i = 1; i &lt;= 100; i++) {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">for (let i = 1; i &lt;= 100; i++) {
   if (i % 15 === 0) console.log("FizzBuzz");
   else if (i % 3 === 0) console.log("Fizz");
   else if (i % 5 === 0) console.log("Buzz");
@@ -958,7 +958,7 @@ for (let i = 1; i &lt;= 100; i++) {
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Reverse an array in place.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/array_reverse"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Reverse an array in place.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/array_reverse" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 
 int main() {
@@ -971,7 +971,7 @@ int main() {
     std::cout &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -982,16 +982,16 @@ func main() {
 	}
 	fmt.Println(arr)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">arr = [1, 2, 3, 4, 5]
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">arr = [1, 2, 3, 4, 5]
 arr.reverse()  # or arr = arr[::-1]
 print(arr)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
 val reversed = arr.reverse
 println(reversed)
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val arr = List(1, 2, 3, 4, 5)
 val reversed = arr.reverse
 println(reversed)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const arr = [1, 2, 3, 4, 5];
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const arr = [1, 2, 3, 4, 5];
 arr.reverse();
 console.log(arr);
 const arr = [1, 2, 3, 4, 5];
@@ -1007,7 +1007,7 @@ console.log(arr);
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Generate the Fibonacci sequence up to a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/fibonacci"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <p  class="">Generate the Fibonacci sequence up to a given number.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/fibonacci" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 int main() {
     int n;
@@ -1024,7 +1024,7 @@ int main() {
     std::cout &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1039,13 +1039,13 @@ func main() {
 	}
 	fmt.Println()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter number of terms: "))
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">n = int(input("Enter number of terms: "))
 a, b = 0, 1
 for _ in range(n):
     print(a, end=" ")
     a, b = b, a + b
 print()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
 var a = 0L
 var b = 1L
 for (_ &lt;- 0 until n) {
@@ -1055,7 +1055,7 @@ for (_ &lt;- 0 until n) {
   b = temp
 }
 println()
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val n = scala.io.StdIn.readInt()
 var a = 0L
 var b = 1L
 for _ &lt;- 0 until n do
@@ -1064,7 +1064,7 @@ for _ &lt;- 0 until n do
   a = b
   b = temp
 println()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const n = parseInt(process.argv[2] || "10");
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const n = parseInt(process.argv[2] || "10");
 let a = 0, b = 1;
 for (let i = 0; i &lt; n; i++) {
   process.stdout.write(a + " ");
@@ -1088,7 +1088,7 @@ console.log();
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Check if a string is a palindrome.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/palindrome"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+                <p  class="">Check if a string is a palindrome.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/intermediate/palindrome" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
 #include &lt;cctype&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
@@ -1106,7 +1106,7 @@ int main() {
     std::cout &lt;&lt; (isPalin ? "Palindrome" : "Not a palindrome") &lt;&lt; "/n";
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -1130,19 +1130,19 @@ func main() {
 		fmt.Println("Not a palindrome")
 	}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">s = "A man, a plan, a canal: Panama"
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">s = "A man, a plan, a canal: Panama"
 cleaned = "".join(c.lower() for c in s if c.isalnum())
 is_palin = cleaned == cleaned[::-1]
 print("Palindrome" if is_palin else "Not a palindrome")
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
 val cleaned = s.filter(_.isLetterOrDigit).toLowerCase
 val isPalin = cleaned == cleaned.reverse
 println(if (isPalin) "Palindrome" else "Not a palindrome")
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">val s = "A man, a plan, a canal: Panama"
 val cleaned = s.filter(_.isLetterOrDigit).toLowerCase
 val isPalin = cleaned == cleaned.reverse
 println(if isPalin then "Palindrome" else "Not a palindrome")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const s = "A man, a plan, a canal: Panama";
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const s = "A man, a plan, a canal: Panama";
 const cleaned = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 const isPalin = cleaned === cleaned.split("").reverse().join("");
 console.log(isPalin ? "Palindrome" : "Not a palindrome");
@@ -1172,7 +1172,7 @@ console.log(isPalindrome("A man, a plan, a canal: Panama"));
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Implement depth-first search (DFS) and breadth-first search (BFS) algorithms for graph traversal.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/graph_traversal"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+                <p  class="">Implement depth-first search (DFS) and breadth-first search (BFS) algorithms for graph traversal.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/graph_traversal" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 int main(){
     vector&lt;vector&lt;int&gt;&gt; g = {{1,2},{0,3},{0,3},{1,2}}; // simple graph
@@ -1184,7 +1184,7 @@ int main(){
     // DFS
     vector&lt;int&gt; seen(4); function&lt;void(int)&gt; dfs=[&](int u){ seen[u]=1; cout&lt;&lt;u&lt;&lt;" "; for(int v:g[u]) if(!seen[v]) dfs(v); };
     cout&lt;&lt;"DFS: "; dfs(0); cout&lt;&lt;"/n"; }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1222,7 +1222,7 @@ func main() {
 	dfs(0)
 	fmt.Println()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
 
 g = {0:[1,2],1:[0,3],2:[0,3],3:[1,2]}
 print('BFS:', end=' ')
@@ -1241,7 +1241,7 @@ def dfs(u):
         if v not in seen: dfs(v)
 
 dfs(0)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object GraphTraversal extends App{
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object GraphTraversal extends App{
   val g = Array(Array(1,2),Array(0,3),Array(0,3),Array(1,2))
   println("BFS:")
   import scala.collection.mutable.Queue
@@ -1252,7 +1252,7 @@ dfs(0)
   def dfs(u:Int):Unit={ s += u; print(u+" "); for(v&lt;-g(u)) if(!s(v)) dfs(v) }
   dfs(0); println();
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runGraph() =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runGraph() =
   val g = Array(Array(1,2),Array(0,3),Array(0,3),Array(1,2))
   print("BFS:")
   import scala.collection.mutable.Queue
@@ -1262,7 +1262,7 @@ dfs(0)
   print("DFS:"); val s = scala.collection.mutable.Set[Int]()
   def dfs(u:Int):Unit = { s += u; print(s" $u"); for v &lt;- g(u) do if !s(v) then dfs(v) }
   dfs(0); println()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const g: number[][] = [[1,2],[0,3],[0,3],[1,2]]
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const g: number[][] = [[1,2],[0,3],[0,3],[1,2]]
 console.log('BFS:');
 {
   const q = [0]; const seen = new Set([0]);
@@ -1282,7 +1282,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Implement Dijkstra's algorithm to find the shortest path in a weighted graph.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/dijkstra_algorithm"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+                <p  class="">Implement Dijkstra's algorithm to find the shortest path in a weighted graph.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/dijkstra_algorithm" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 int main(){
     int n=5; vector&lt;vector&lt;pair&lt;int,int&gt;&gt;&gt; g(n);
@@ -1291,7 +1291,7 @@ int main(){
     while(!pq.empty()){ auto [dist,u]=pq.top(); pq.pop(); if(dist!=d[u]) continue; for(auto [v,w]:g[u]) if(d[v]&gt;d[u]+w){ d[v]=d[u]+w; pq.push({d[v],v}); } }
     for(int i=0;i&lt;n;i++) cout&lt;&lt;"dist["&lt;&lt;i&lt;&lt;"]="&lt;&lt;d[i]&lt;&lt;"/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"container/heap"
@@ -1339,7 +1339,7 @@ func main() {
 	g := map[int][][]int{0: {{1, 10}, {2, 3}}, 1: {{3, 2}}, 2: {{1, 1}, {3, 8}}, 3: {}}
 	fmt.Println(dijkstra(0, g))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import heapq
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">import heapq
 
 g = {0:[(1,10),(2,3)], 1:[(3,2)], 2:[(1,1),(3,8)], 3:[]}
 INF=10**9
@@ -1356,7 +1356,7 @@ def dijkstra(src):
     return dist
 
 print(dijkstra(0))
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Dijkstra extends App{
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Dijkstra extends App{
   val g = Map(0-&gt;List((1,10),(2,3)),1-&gt;List((3,2)),2-&gt;List((1,1),(3,8)),3-&gt;List())
   import scala.collection.mutable.PriorityQueue
   implicit val ord = Ordering.by[(Int,Int),Int](-_._2)
@@ -1368,7 +1368,7 @@ print(dijkstra(0))
   }
   println(dijkstra(0))
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runDijkstra() =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runDijkstra() =
   val g = Map(0-&gt;List((1,10),(2,3)),1-&gt;List((3,2)),2-&gt;List((1,1),(3,8)),3-&gt;List())
   import scala.collection.mutable.PriorityQueue
   given ord: Ordering[(Int,Int)] = Ordering.by(-_._2)
@@ -1381,7 +1381,7 @@ print(dijkstra(0))
       if du==dist(u) then for ( (v,w) &lt;- g(u) ) if dist(v) &gt; du + w then dist(v)=du+w; pq.enqueue((v,dist(v)))
     dist
   println(dijkstra(0))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Edge = [number,number]
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Edge = [number,number]
 const g: Record&lt;number,Edge[]&gt; = {0:[[1,10],[2,3]],1:[[3,2]],2:[[1,1],[3,8]],3:[]}
 const INF = 1e9
 function dijkstra(src:number){ const dist = new Map&lt;number,number&gt;(); for(const k in g) dist.set(Number(k), INF); dist.set(src,0);
@@ -1401,7 +1401,7 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Solve the 0/1 knapsack problem using dynamic programming.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/knapsack_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+                <p  class="">Solve the 0/1 knapsack problem using dynamic programming.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/knapsack_problem" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;int main(){
     vector&lt;int&gt; wt={3,4,5}, val={30,50,60}; int W=8, n=wt.size();
     vector&lt;vector&lt;int&gt;&gt; dp(n+1, vector&lt;int&gt;(W+1));
@@ -1409,7 +1409,7 @@ using namespace std;int main(){
     for(int i=1;i&lt;=n;i++) for(int w=wt[i-1];w&lt;=W;w++) dp[i][w]=max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1]);
     cout&lt;&lt;dp[n][W]&lt;&lt;"/n";
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1434,7 +1434,7 @@ func main() {
 	}
 	fmt.Println(dp[n][W])
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">wt=[3,4,5]
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">wt=[3,4,5]
 val=[30,50,60]
 W=8
 n=len(wt)
@@ -1444,18 +1444,18 @@ for i in range(1,n+1):
         dp[i][w]=dp[i-1][w]
         if w&gt;=wt[i-1]: dp[i][w]=max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1])
 print(dp[n][W])
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Knapsack extends App{
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Knapsack extends App{
   val wt = Array(3,4,5); val v = Array(30,50,60); val W=8; val n=wt.length
   val dp = Array.fill(n+1, W+1)(0)
   for(i&lt;-1+1 to n) for(w&lt;-0 to W){ dp(i)(w)=dp(i-1)(w); if(w&gt;=wt(i-1)) dp(i)(w)=math.max(dp(i)(w), dp(i-1)(w-wt(i-1))+v(i-1)) }
   println(dp(n)(W))
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runKnapsack() =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runKnapsack() =
   val wt = Array(3,4,5); val v = Array(30,50,60); val W=8; val n=wt.length
   val dp = Array.fill(n+1, W+1)(0)
   for i &lt;- 1 to n do for w &lt;- 0 to W do dp(i)(w) = math.max(dp(i)(w), if w&gt;=wt(i-1) then dp(i-1)(w-wt(i-1))+v(i-1) else dp(i-1)(w))
   println(dp(n)(W))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const wt = [3,4,5], val=[30,50,60], W=8
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const wt = [3,4,5], val=[30,50,60], W=8
 const n=wt.length
 const dp: number[][] = Array.from({length:n+1},()=&gt;Array(W+1).fill(0))
 for(let i=1;i&lt;=n;i++) for(let w=0; w&lt;=W; w++){ dp[i][w]=dp[i-1][w]; if(w&gt;=wt[i-1]) dp[i][w]=Math.max(dp[i][w], dp[i-1][w-wt[i-1]]+val[i-1]) }
@@ -1471,13 +1471,13 @@ export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Solve the N-Queens problem using backtracking.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/n_queens_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+                <p  class="">Solve the N-Queens problem using backtracking.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/n_queens_problem" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 int N=8; vector&lt;int&gt; col;
 bool ok(int r,int c){ for(int i=0;i&lt;r;i++) if(col[i]==c||abs(col[i]-c)==r-i) return false; return true; }
 void solve(int r){ if(r==N){ for(int i=0;i&lt;N;i++) cout&lt;&lt;col[i]&lt;&lt;" "; cout&lt;&lt;"/n"; exit(0);} for(int c=0;c&lt;N;c++) if(ok(r,c)){ col[r]=c; solve(r+1); }}
 int main(){ col.assign(N,0); solve(0); }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 import "fmt"
 var N=8
 var cols = make([]int, N)
@@ -1485,7 +1485,7 @@ func ok(r,c int) bool{ for i:=0;i&lt;r;i++{ if cols[i]==c || abs(cols[i]-c)==r-i
 func abs(x int) int{ if x&lt;0 { return -x }; return x }
 func solve(r int) bool{ if r==N { fmt.Println(cols); return true }; for c:=0;c&lt;N;c++{ if ok(r,c){ cols[r]=c; if solve(r+1){ return true } } } return false }
 func main(){ solve(0) }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">N=8
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">N=8
 cols=[0]*N
 
 def ok(r,c):
@@ -1503,13 +1503,13 @@ def solve(r):
     return False
 
 if __name__=='__main__': solve(0)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object NQueens extends App{
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object NQueens extends App{
   val N=8; val cols = Array.fill(N)(0)
   def ok(r:Int,c:Int)= (0 until r).forall(i=&gt; cols(i)!=c && math.abs(cols(i)-c)!=r-i)
   def solve(r:Int):Boolean = if(r==N){ println(cols.mkString(",")); true } else { for(c&lt;-0 until N) if(ok(r,c)){ cols(r)=c; if(solve(r+1)) return true }; false }
   solve(0)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runNQueens() =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runNQueens() =
   val N = 8
   val cols = Array.fill(N)(0)
   def ok(r:Int,c:Int) = (0 until r).forall(i =&gt; cols(i)!=c && math.abs(cols(i)-c)!=r-i)
@@ -1520,7 +1520,7 @@ if __name__=='__main__': solve(0)
         if ok(r,c) then cols(r)=c; if solve(r+1) then return true
       false
   solve(0)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const N = 8
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const N = 8
 const cols = new Array&lt;number&gt;(N).fill(0)
 function ok(r:number,c:number){ for(let i=0;i&lt;r;i++) if(cols[i]===c || Math.abs(cols[i]-c)===r-i) return false; return true }
 function solve(r=0): boolean{ if(r===N){ console.log(cols); return true } for(let c=0;c&lt;N;c++){ if(ok(r,c)){ cols[r]=c; if(solve(r+1)) return true } } return false }
@@ -1535,9 +1535,9 @@ solve(); export {}
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <p  class="">Solve the activity selection problem using a greedy algorithm.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/activity_selection_problem"><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+                <p  class="">Solve the activity selection problem using a greedy algorithm.</p><div class="collapsible-code is-collapsed" data-snippet-id="exercises/advanced/activity_selection_problem" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;int main(){ vector&lt;pair&lt;int,int&gt;&gt; acts={{1,4},{3,5},{0,6},{5,7},{8,9},{5,9}}; sort(acts.begin(), acts.end(), [](auto &a, auto &b){ return a.second &lt; b.second; }); int last= -1; cout&lt;&lt;"Selected:"; for(auto &p:acts) if(p.first&gt;last){ cout&lt;&lt;" ("&lt;&lt;p.first&lt;&lt;","&lt;&lt;p.second&lt;&lt;")"; last=p.second; } cout&lt;&lt;"/n"; }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -1561,27 +1561,27 @@ func main() {
 	}
 	fmt.Println("Selected", res)
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">acts=[(1,4),(3,5),(0,6),(5,7),(8,9),(5,9)]
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">acts=[(1,4),(3,5),(0,6),(5,7),(8,9),(5,9)]
 acts.sort(key=lambda x:x[1])
 res=[]; last=-1
 for s,e in acts:
     if s&gt;last: res.append((s,e)); last=e
 print('Selected',res)
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object ActivitySelection extends App{
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object ActivitySelection extends App{
   val acts = Array((1,4),(3,5),(0,6),(5,7),(8,9),(5,9))
   val sorted = acts.sortBy(_._2)
   var last = -1; val res = scala.collection.mutable.ArrayBuffer[(Int,Int)]()
   for((s,e) &lt;- sorted) if(s&gt;last){ res += ((s,e)); last = e }
   println("Selected " + res)
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runActivity() =
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">@main def runActivity() =
   val acts = Array((1,4),(3,5),(0,6),(5,7),(8,9),(5,9))
   val sorted = acts.sortBy(_._2)
   var last = -1
   val res = scala.collection.mutable.ArrayBuffer.empty[(Int,Int)]
   for ((s,e) &lt;- sorted) if s &gt; last then res += ((s,e)); last = e
   println("Selected " + res)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const acts: [number,number][] = [[1,4],[3,5],[0,6],[5,7],[8,9],[5,9]]
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">const acts: [number,number][] = [[1,4],[3,5],[0,6],[5,7],[8,9],[5,9]]
 acts.sort((a,b)=&gt;a[1]-b[1])
 const res: [number,number][] = []
 let last=-1
@@ -1622,5 +1622,6 @@ export {}
     <!-- App Logic & Selection Engine -->
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/selection_engine.js"></script>
+    <script src="../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

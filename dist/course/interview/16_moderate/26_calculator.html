@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_26_calculator"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_26_calculator" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
 using namespace std;
@@ -212,7 +212,7 @@ int main() {
     cout &lt;&lt; calculate(" 3+5 / 2 ") &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -257,7 +257,7 @@ func main() {
 	fmt.Println(calculate(" 3/2 "))
 	fmt.Println(calculate(" 3+5 / 2 "))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def calculate(s: str) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def calculate(s: str) -&gt; int:
     st = []
     num = 0
     op = "+"
@@ -288,7 +288,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1626Calculator {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1626Calculator {
     def calculate(s: String): Int = {
         val st = scala.collection.mutable.ArrayBuffer[Int]()
         var num = 0
@@ -319,7 +319,7 @@ if __name__ == "__main__":
         println(calculate(" 3+5 / 2 "))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1626Calculator:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1626Calculator:
     def calculate(s: String): Int =
         val st = scala.collection.mutable.ArrayBuffer[Int]()
         var num = 0
@@ -347,7 +347,7 @@ if __name__ == "__main__":
         println(calculate("3+2*2"))
         println(calculate(" 3/2 "))
         println(calculate(" 3+5 / 2 "))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function calculate(s: string): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function calculate(s: string): number {
     const st: number[] = [];
     let num = 0;
     let op = "+";
@@ -402,5 +402,6 @@ console.log(calculate(" 3+5 / 2 "));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

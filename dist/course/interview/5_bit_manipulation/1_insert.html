@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_05_01_insert"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_05_01_insert" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 
 // Insert bits of M into N from bit i to bit j (inclusive).
 int insert(int N, int M, int i, int j) {
@@ -186,7 +186,7 @@ int main() {
     // N = 0, M = 10011, i = 0, j = 4            -&gt; 10011
     std::cout &lt;&lt; insert(0, 19, 0, 4) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -199,7 +199,7 @@ func main() {
 	fmt.Println(insert(1024, 19, 2, 6))
 	fmt.Println(insert(0, 19, 0, 4))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def insert(N: int, M: int, i: int, j: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def insert(N: int, M: int, i: int, j: int) -&gt; int:
     mask = ~(((1 &lt;&lt; (j - i + 1)) - 1) &lt;&lt; i)
     return (N & mask) | (M &lt;&lt; i)
 
@@ -211,7 +211,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0501Insert {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0501Insert {
   def insert(N: Int, M: Int, i: Int, j: Int): Int = {
     val mask = ~(((1 &lt;&lt; (j - i + 1)) - 1) &lt;&lt; i)
     (N & mask) | (M &lt;&lt; i)
@@ -222,7 +222,7 @@ if __name__ == "__main__":
     println(insert(0, 19, 0, 4))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0501Insert:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0501Insert:
   def insert(N: Int, M: Int, i: Int, j: Int): Int =
     val mask = ~(((1 &lt;&lt; (j - i + 1)) - 1) &lt;&lt; i)
     (N & mask) | (M &lt;&lt; i)
@@ -230,7 +230,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(insert(1024, 19, 2, 6))
     println(insert(0, 19, 0, 4))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function insert(N: number, M: number, i: number, j: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function insert(N: number, M: number, i: number, j: number): number {
   const mask = ~(((1 &lt;&lt; (j - i + 1)) - 1) &lt;&lt; i);
   return (N & mask) | (M &lt;&lt; i);
 }
@@ -268,5 +268,6 @@ console.log(insert(0, 19, 0, 4));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

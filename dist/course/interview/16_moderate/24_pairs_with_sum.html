@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_16_24_pairs_with_sum"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_16_24_pairs_with_sum" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 #include &lt;unordered_map&gt;
 #include &lt;vector&gt;
@@ -203,7 +203,7 @@ int main() {
     cout &lt;&lt; "]" &lt;&lt; endl;
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -229,7 +229,7 @@ func pairSums(nums []int, target int) [][]int {
 func main() {
 	fmt.Println(pairSums([]int{5, 6, 5}, 11))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import defaultdict
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import defaultdict
 from typing import List
 
 
@@ -252,7 +252,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1624PairsWithSum {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci1624PairsWithSum {
     def pairSums(nums: Array[Int], target: Int): Array[Array[Int]] = {
         val freq = scala.collection.mutable.Map[Int, Int]().withDefaultValue(0)
         val ans = scala.collection.mutable.ArrayBuffer[Array[Int]]()
@@ -272,7 +272,7 @@ if __name__ == "__main__":
         println(pairSums(Array(5, 6, 5), 11).map(_.mkString("[", ", ", "]")).mkString("[", ", ", "]"))
     }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1624PairsWithSum:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci1624PairsWithSum:
     def pairSums(nums: Array[Int], target: Int): Array[Array[Int]] =
         val freq = scala.collection.mutable.Map[Int, Int]().withDefaultValue(0)
         val ans = scala.collection.mutable.ArrayBuffer[Array[Int]]()
@@ -289,7 +289,7 @@ if __name__ == "__main__":
 
     @main def main(): Unit =
         println(pairSums(Array(5, 6, 5), 11).map(_.mkString("[", ", ", "]")).mkString("[", ", ", "]"))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function pairSums(nums: number[], target: number): number[][] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function pairSums(nums: number[], target: number): number[][] {
     const freq = new Map&lt;number, number&gt;();
     const ans: number[][] = [];
     for (const x of nums) {
@@ -337,5 +337,6 @@ console.log(pairSums([5, 6, 5], 11));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

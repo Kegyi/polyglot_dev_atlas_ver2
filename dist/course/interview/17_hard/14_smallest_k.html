@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_14_smallest_k"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_14_smallest_k" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;vector&gt;
 #include &lt;algorithm&gt;
 using namespace std;
 
@@ -183,7 +183,7 @@ public:
         return vector&lt;int&gt;(arr.begin(), arr.begin() + k);
     }
 };
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "sort"
 
@@ -191,7 +191,7 @@ func smallestK(arr []int, k int) []int {
 	sort.Ints(arr)
 	return arr[:k]
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 import heapq
 
 
@@ -205,15 +205,15 @@ class Solution:
             if len(h) &gt; k:
                 heapq.heappop(h)
         return [-x for x in h]
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Solution {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Solution {
   def smallestK(arr: Array[Int], k: Int): Array[Int] = {
     arr.sorted.take(k)
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Solution:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Solution:
   def smallestK(arr: Array[Int], k: Int): Array[Int] =
     arr.sorted.take(k)
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function smallestK(arr: number[], k: number): number[] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function smallestK(arr: number[], k: number): number[] {
     arr.sort((a, b) =&gt; a - b);
     return arr.slice(0, k);
 }
@@ -248,5 +248,6 @@ class Solution:
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

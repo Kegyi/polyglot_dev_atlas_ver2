@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_05_03_flip_bit_to_win"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_05_03_flip_bit_to_win" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 
 // Find the longest sequence of 1s achievable by flipping one 0 bit.
@@ -194,7 +194,7 @@ int main() {
     // 7 = 111, already 3 ones; flipping a 0 at bit 3 gives 4
     std::cout &lt;&lt; flipBit(7) &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -222,7 +222,7 @@ func main() {
 	fmt.Println(flipBit(1775))
 	fmt.Println(flipBit(7))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def flip_bit(num: int) -&gt; int:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def flip_bit(num: int) -&gt; int:
     # Treat as 32-bit unsigned integer
     if num & 0xFFFFFFFF == 0xFFFFFFFF:
         return 32
@@ -247,7 +247,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0503FlipBitToWin {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0503FlipBitToWin {
   def flipBit(num: Int): Int = {
     if (~num == 0) return 32
     var n = num & 0xFFFFFFFFL.toInt
@@ -269,7 +269,7 @@ if __name__ == "__main__":
     println(flipBit(7))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0503FlipBitToWin:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0503FlipBitToWin:
   def flipBit(num: Int): Int =
     if (~num == 0) return 32
     var n = num & 0xFFFFFFFFL.toInt
@@ -288,7 +288,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(flipBit(1775))
     println(flipBit(7))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function flipBit(num: number): number {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function flipBit(num: number): number {
   // Work with 32-bit unsigned
   num = num &gt;&gt;&gt; 0;
   if (num === 0xffffffff) return 32;
@@ -339,5 +339,6 @@ console.log(flipBit(7));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_04_03_list_of_depth"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_04_03_list_of_depth" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;queue&gt;
 #include &lt;vector&gt;
 
@@ -211,7 +211,7 @@ int main() {
     }
     std::cout &lt;&lt; '/n';
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import "fmt"
 
@@ -264,7 +264,7 @@ func main() {
 	}
 	fmt.Println()
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
 
 
 class Node:
@@ -302,7 +302,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Lcci0403ListOfDepth {
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
@@ -330,7 +330,7 @@ object Lcci0403ListOfDepth {
     println(listOfDepth(root).map(_.mkString(" ")).mkString(" | "))
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Lcci0403ListOfDepth:
   final case class Node(value: Int, var left: Node | Null = null, var right: Node | Null = null)
@@ -355,7 +355,7 @@ object Lcci0403ListOfDepth:
   @main def main(): Unit =
     val root = Node(1, Node(2, Node(4), Node(5)), Node(3, Node(6), Node(7)))
     println(listOfDepth(root).map(_.mkString(" ")).mkString(" | "))
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">class Node {
   constructor(
     public val: number,
     public left: Node | null = null,
@@ -414,5 +414,6 @@ console.log(listOfDepth(root).map((lvl) =&gt; lvl.join(" ")).join(" | "));
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

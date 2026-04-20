@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_17_22_word_transformer"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_17_22_word_transformer" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;string&gt;
 #include &lt;vector&gt;
 #include &lt;unordered_set&gt;
 #include &lt;queue&gt;
@@ -210,7 +210,7 @@ public:
         return {};
     }
 };
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 func findLadders(beginWord string, endWord string, wordList []string) []string {
 	wordSet := make(map[string]bool)
@@ -254,7 +254,7 @@ func findLadders(beginWord string, endWord string, wordList []string) []string {
 	}
 	return []string{}
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from typing import List
 from collections import deque
 
 
@@ -277,7 +277,7 @@ class Solution:
                         visited.add(nxt)
                         queue.append(path + [nxt])
         return []
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Solution {
   def findLadders(beginWord: String, endWord: String, wordList: Array[String]): Array[String] = {
@@ -306,7 +306,7 @@ object Solution {
     Array()
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
 
 object Solution:
   def findLadders(beginWord: String, endWord: String, wordList: Array[String]): Array[String] =
@@ -333,7 +333,7 @@ object Solution:
       }
     }
     Array()
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function findLadders(beginWord: string, endWord: string, wordList: string[]): string[] {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function findLadders(beginWord: string, endWord: string, wordList: string[]): string[] {
     const wordSet = new Set(wordList);
     if (!wordSet.has(endWord)) return [];
 
@@ -393,5 +393,6 @@ object Solution:
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>

@@ -172,7 +172,7 @@
                 <div class="arrow">^</div>
             </div>
             <div class="topic-body ">
-                <div class="collapsible-code" data-snippet-id="interview_lcci_01_04_palindrome_permutation"><div class="code-comparison-grid"><div class="code-block" data-lang="cpp"><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;array&gt;
+                <div class="collapsible-code" data-snippet-id="interview_lcci_01_04_palindrome_permutation" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;array&gt;
 #include &lt;cctype&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
@@ -204,7 +204,7 @@ int main() {
     std::cout &lt;&lt; "daily -&gt; " &lt;&lt; std::boolalpha &lt;&lt; canPermutePalindrome("daily") &lt;&lt; '/n';
     return 0;
 }
-</code></pre></div><div class="code-block" data-lang="go"><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
 
 import (
 	"fmt"
@@ -236,7 +236,7 @@ func main() {
 	fmt.Printf("tact coa -&gt; %t/n", canPermutePalindrome("tact coa"))
 	fmt.Printf("daily -&gt; %t/n", canPermutePalindrome("daily"))
 }
-</code></pre></div><div class="code-block" data-lang="python"><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def can_permute_palindrome(s: str) -&gt; bool:
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def can_permute_palindrome(s: str) -&gt; bool:
     counts: dict[str, int] = {}
     for ch in s.lower():
         if ch.isspace():
@@ -253,7 +253,7 @@ def main() -&gt; None:
 
 if __name__ == "__main__":
     main()
-</code></pre></div><div class="code-block" data-lang="scala2"><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0104PalindromePermutation {
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object Lcci0104PalindromePermutation {
   def canPermutePalindrome(s: String): Boolean = {
     val freq = scala.collection.mutable.Map.empty[Char, Int].withDefaultValue(0)
 
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     println(s"daily -&gt; ${canPermutePalindrome("daily")}")
   }
 }
-</code></pre></div><div class="code-block" data-lang="scala3"><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0104PalindromePermutation:
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object Lcci0104PalindromePermutation:
   def canPermutePalindrome(s: String): Boolean =
     val freq = scala.collection.mutable.Map.empty[Char, Int].withDefaultValue(0)
 
@@ -286,7 +286,7 @@ if __name__ == "__main__":
   @main def main(): Unit =
     println(s"tact coa -&gt; ${canPermutePalindrome("tact coa")}")
     println(s"daily -&gt; ${canPermutePalindrome("daily")}")
-</code></pre></div><div class="code-block" data-lang="typescript"><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function canPermutePalindrome(s: string): boolean {
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function canPermutePalindrome(s: string): boolean {
   const freq = new Map&lt;string, number&gt;();
   for (const ch of s.toLowerCase()) {
     if (ch === " ") {
@@ -344,5 +344,6 @@ main();
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
+    <script src="../../../assets/js/phase2_renderers.js"></script>
 </body>
 </html>
