@@ -433,6 +433,27 @@ h6:hover .inline-permalink {
     color: var(--text);
 }
 
+.topic-permalink.permalink-copied,
+.inline-permalink.permalink-copied {
+    opacity: 1;
+    color: #10b981;
+}
+
+@keyframes hashTargetFlash {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+    100% {
+        box-shadow: none;
+        background: transparent;
+    }
+}
+
+.hash-target-flash {
+    animation: hashTargetFlash 1.6s ease-out;
+}
+
 .breadcrumbs {
     display: flex;
     flex-wrap: wrap;
