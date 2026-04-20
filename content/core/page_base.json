@@ -38,8 +38,7 @@
     },
     "style": {
       "type": "string",
-      "description": "Default style preset for all child blocks (inherited downward).",
-      "enum": ["text_style", "card_style", "code_style"]
+      "description": "Default style preset for all child blocks (inherited downward)."
     },
     "content": {
       "type": "array",

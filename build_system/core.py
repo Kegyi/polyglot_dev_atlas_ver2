@@ -2,6 +2,8 @@ import os
 import shutil
 import re
 import json
+import sys
+import argparse
 
 class AtlasBuilder:
     def __init__(self):
@@ -17,7 +19,11 @@ class AtlasBuilder:
         # Build Status & Registry
         self.site_registry = {} 
         self.warnings = []
+        self.validation_errors = []
         self.renderers = self._build_renderer_registry()
+        self._page_schema_cache = None
+        self._jsonschema_checked = False
+        self._jsonschema_available = False
 
     def _build_renderer_registry(self):
         return {
@@ -189,6 +195,80 @@ class AtlasBuilder:
 
         return ok
 
+    def _log_validation_error(self, message):
+        print(f"VALIDATION_ERROR: {message}")
+        self.validation_errors.append(message)
+
+    def _get_page_schema(self):
+        if self._page_schema_cache is not None:
+            return self._page_schema_cache
+        schema_path = os.path.join(self.content_dir, 'core', 'page_base.json')
+        schema = self._load_json(schema_path)
+        self._page_schema_cache = schema if isinstance(schema, dict) else {}
+        return self._page_schema_cache
+
+    def _validate_page_jsonschema(self, page_data, page_path):
+        """Validate page data against page_base schema when jsonschema is available."""
+        if not self._jsonschema_checked:
+            try:
+                import jsonschema  # type: ignore
+                self._jsonschema_available = True
+                self._jsonschema_mod = jsonschema
+            except Exception:
+                self._jsonschema_available = False
+                self._jsonschema_mod = None
+            self._jsonschema_checked = True
+
+        if not self._jsonschema_available:
+            return True
+
+        schema = self._get_page_schema()
+        if not schema:
+            self._log_validation_error(f"Missing/invalid page schema file for validating {page_path}")
+            return False
+
+        try:
+            self._jsonschema_mod.validate(instance=page_data, schema=schema)
+            return True
+        except Exception as e:
+            self._log_validation_error(f"jsonschema validation failed for {page_path}: {e}")
+            return False
+
+    def _scan_and_register_pages(self, validate_only=False):
+        """Scan all page JSON files, validate, and populate site registry."""
+        page_count = 0
+        for root, _, files in os.walk(self.pages_dir):
+            rel = os.path.relpath(root, self.pages_dir)
+            if rel == ".":
+                rel = ""
+            mode = rel.split(os.sep)[0] if rel else "atlas"
+            if mode not in self.site_registry:
+                self.site_registry[mode] = []
+            for f in files:
+                if not f.endswith('.json'):
+                    continue
+                page_count += 1
+                p_id = f.replace('.json', '')
+                p_path = os.path.join(root, f)
+                p_data = self._load_json(p_path)
+
+                self._validate_page_schema_sanity(p_data, p_path)
+                self._validate_page_jsonschema(p_data, p_path)
+
+                # In validate-only mode we also resolve refs to catch unresolved entries early.
+                if validate_only and isinstance(p_data.get('content'), list):
+                    snapshot = json.loads(json.dumps(p_data))
+                    snapshot['content'] = self._process_content_with_refs(snapshot.get('content', []), p_path)
+
+                self.site_registry[mode].append({
+                    "id": p_id,
+                    "title": p_data.get("title", p_id),
+                    "url": os.path.join(rel, p_id + ".html").replace("\\", "/"),
+                    "path": p_path,
+                    "rel_path": rel,
+                })
+        return page_count
+
     def _validate_generated_internal_links(self):
         """Build-time check for broken internal href/src links in generated HTML."""
         attr_re = re.compile(r'(?:href|src)="([^"]+)"')
@@ -212,6 +292,49 @@ class AtlasBuilder:
                     if not os.path.exists(target):
                         short_html = os.path.relpath(html_path, self.base_dir).replace('\\', '/')
                         self._log_warning(f"Broken internal link in {short_html}: {raw}")
+
+    def _collect_text_excerpt(self, content_list, max_chars=240):
+        """Collect a lightweight text excerpt from page content for search index."""
+        chunks = []
+        for item in self._iter_content_items(content_list):
+            if not isinstance(item, dict):
+                continue
+            t = item.get('type')
+            if t in ('text', 'note') and isinstance(item.get('text'), str):
+                chunks.append(item.get('text'))
+            elif t in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title') and isinstance(item.get('text'), str):
+                chunks.append(item.get('text'))
+            if len(' '.join(chunks)) >= max_chars:
+                break
+        joined = re.sub(r'\s+', ' ', ' '.join(chunks)).strip()
+        return joined[:max_chars]
+
+    def _generate_search_index(self):
+        """Emit static search index for instant client-side lookup."""
+        entries = []
+        for mode, pages in self.site_registry.items():
+            for page in pages:
+                page_data = self._load_json(page.get('path', ''))
+                if not isinstance(page_data, dict):
+                    continue
+                entries.append({
+                    'id': page.get('id', ''),
+                    'mode': mode,
+                    'title': page_data.get('title', page.get('title', page.get('id', ''))),
+                    'description': page_data.get('description', ''),
+                    'tags': page_data.get('metadata', {}).get('tags', []) if isinstance(page_data.get('metadata'), dict) else [],
+                    'url': page.get('url', ''),
+                    'excerpt': self._collect_text_excerpt(page_data.get('content', [])),
+                })
+
+        out_dir = os.path.join(self.dist_dir, 'content')
+        os.makedirs(out_dir, exist_ok=True)
+        out_path = os.path.join(out_dir, 'search-index.json')
+        try:
+            with open(out_path, 'w', encoding='utf-8') as f:
+                json.dump(entries, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            self._log_warning(f"Failed to generate search index: {e}")
 
     def _log_warning(self, message):
         print(f"WARNING: {message}")
@@ -868,6 +991,68 @@ class AtlasBuilder:
             html += f'<a href="{target_url}" class="toggle {active}" onclick="app.prepareModeSwitch()">{m.capitalize()}</a>'
         return html + '</div>'
 
+    def assemble_breadcrumbs(self, rel_path, page_entry, prefix):
+        """Build breadcrumbs from folder structure and known generated index pages."""
+        parts = [p for p in rel_path.split(os.sep) if p]
+        crumbs = [f'<a href="{prefix}index.html">Home</a>']
+
+        if not parts:
+            crumbs.append('<span>Atlas</span>')
+            crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
+            return '<nav class="breadcrumbs" aria-label="Breadcrumbs">' + '<span class="sep">/</span>'.join(crumbs) + '</nav>'
+
+        # Build an index of generated URLs so we only link to known pages.
+        known_urls = set()
+        for mode_entries in self.site_registry.values():
+            for pe in mode_entries:
+                known_urls.add(pe.get('url', ''))
+
+        running = []
+        for idx, part in enumerate(parts):
+            running.append(part)
+            human = part.replace('_', ' ').capitalize()
+
+            # Prefer folder index page links when available.
+            if idx == 0 and part == 'atlas':
+                target = 'index.html'
+            else:
+                target = '/'.join(running + ['index.html'])
+
+            if target in known_urls:
+                crumbs.append(f'<a href="{prefix}{target}">{human}</a>')
+            else:
+                crumbs.append(f'<span>{human}</span>')
+
+        crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
+        return '<nav class="breadcrumbs" aria-label="Breadcrumbs">' + '<span class="sep">/</span>'.join(crumbs) + '</nav>'
+
+    def assemble_prev_next(self, mode, current_page_url, prefix):
+        """Build previous/next links from current mode registry order."""
+        pages = self.site_registry.get(mode, [])
+        if not pages:
+            return ''
+
+        idx = -1
+        for i, entry in enumerate(pages):
+            if entry.get('url') == current_page_url:
+                idx = i
+                break
+
+        if idx == -1:
+            return ''
+
+        prev_entry = pages[idx - 1] if idx > 0 else None
+        next_entry = pages[idx + 1] if idx < len(pages) - 1 else None
+
+        prev_html = '<span></span>'
+        next_html = '<span></span>'
+        if prev_entry:
+            prev_html = f'<a class="pager-link prev" href="{prefix}{prev_entry.get("url", "")}">← {prev_entry.get("title", prev_entry.get("id", "Previous"))}</a>'
+        if next_entry:
+            next_html = f'<a class="pager-link next" href="{prefix}{next_entry.get("url", "")}">{next_entry.get("title", next_entry.get("id", "Next"))} →</a>'
+
+        return f'<nav class="pager-nav" aria-label="Previous and Next">{prev_html}{next_html}</nav>'
+
     # --- BUILD PROCESS ---
 
     def process_page(self, page_entry):
@@ -912,9 +1097,11 @@ class AtlasBuilder:
         output = output.replace("{{ language_selection_buttons }}", self.assemble_language_selector())
         # Compute the page URL as stored in the registry (consistent format)
         current_page_url = os.path.join(rel_path, page_entry['id'] + ".html").replace("\\", "/")
+        output = output.replace("{{ breadcrumbs }}", self.assemble_breadcrumbs(rel_path, page_entry, prefix))
         output = output.replace("{{ navigation_sidebar }}", self.assemble_navigation(current_page_url, prefix, mode))
         output = output.replace("{{ topic_sidebar }}", self.assemble_topic_sidebar(data) if has_topics else "")
         output = output.replace("{{ content }}", page_html)
+        output = output.replace("{{ pager_nav }}", self.assemble_prev_next(mode, current_page_url, prefix))
         output = output.replace("{{ body_class_placeholders }}", f"mode-{mode} {topic_class} {data.get('body_class', '')}")
 
         # Extra Assets
@@ -945,29 +1132,29 @@ class AtlasBuilder:
         with open(os.path.join(out_dir, f"{page_entry['id']}.html"), 'w', encoding='utf-8') as f:
             f.write(output)
 
-    def build(self):
-        print("🛠️ Initializing Build Process...")
+    def build(self, validate_only=False, strict_validation=False):
+        print("Initializing Build Process..." if not validate_only else "Initializing Validation Process...")
         self.warnings = []
+        self.validation_errors = []
         self.site_registry = {}
-        if os.path.exists(self.dist_dir): shutil.rmtree(self.dist_dir)
-        os.makedirs(self.dist_dir)
+        page_count = self._scan_and_register_pages(validate_only=validate_only)
 
-        for root, _, files in os.walk(self.pages_dir):
-            rel = os.path.relpath(root, self.pages_dir)
-            if rel == ".": rel = ""
-            mode = rel.split(os.sep)[0] if rel else "atlas"
-            if mode not in self.site_registry: self.site_registry[mode] = []
-            for f in files:
-                if f.endswith('.json'):
-                    p_id = f.replace('.json', '')
-                    p_path = os.path.join(root, f)
-                    p_data = self._load_json(p_path)
-                    self._validate_page_schema_sanity(p_data, p_path)
-                    self.site_registry[mode].append({
-                        "id": p_id, "title": p_data.get("title", p_id),
-                        "url": os.path.join(rel, p_id + ".html").replace("\\", "/"),
-                        "path": p_path, "rel_path": rel
-                    })
+        if strict_validation and self.validation_errors:
+            print("-" * 30)
+            print(f"Validation failed with {len(self.validation_errors)} error(s).")
+            return False
+
+        if validate_only:
+            print("-" * 30)
+            print(f"Validation complete. Pages scanned: {page_count}")
+            if self.validation_errors:
+                print(f"Validation errors: {len(self.validation_errors)}")
+            print(f"Warnings: {len(self.warnings)}")
+            return True
+
+        if os.path.exists(self.dist_dir):
+            shutil.rmtree(self.dist_dir)
+        os.makedirs(self.dist_dir)
 
         # Prioritize default pages for each mode so they appear first in navigation.
         def prioritize_mode(mode, preferred_ids):
@@ -1006,14 +1193,25 @@ class AtlasBuilder:
         if os.path.exists(locales_src):
             shutil.copytree(locales_src, os.path.join(self.dist_dir, "content", "locales"))
 
+        # Phase 4: static search index for client-side lookup.
+        self._generate_search_index()
+
         # Phase 3: Generated-site integrity check for broken local links.
         self._validate_generated_internal_links()
 
         print("-" * 30)
         if self.warnings:
-            print(f"✅ Build complete with {len(self.warnings)} warning(s).")
+            print(f"Build complete with {len(self.warnings)} warning(s).")
         else:
-            print("✨ Build finished successfully.")
+            print("Build finished successfully.")
+        return True
 
 if __name__ == "__main__":
-    AtlasBuilder().build()
+    parser = argparse.ArgumentParser(description="Polyglot Atlas builder")
+    parser.add_argument("--validate-only", action="store_true", help="Run validations without generating dist output")
+    parser.add_argument("--strict-validation", action="store_true", help="Fail when validation errors are found")
+    args = parser.parse_args()
+
+    ok = AtlasBuilder().build(validate_only=args.validate_only, strict_validation=args.strict_validation)
+    if not ok:
+        sys.exit(1)
