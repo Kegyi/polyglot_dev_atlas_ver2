@@ -18,6 +18,82 @@ class AtlasBuilder:
         self.site_registry = {} 
         self.warnings = []
 
+    def _resolve_json_ref(self, ref, base_path=None):
+        """Resolve JSON pointer references (e.g., '#/content/0' or '@core/language_icons')."""
+        if not ref or not isinstance(ref, str):
+            return None
+        
+        # Handle @core/ aliases
+        if ref.startswith('@core/'):
+            core_name = ref.replace('@core/', '').replace('.json', '')
+            core_path = os.path.join(self.content_dir, 'core', f'{core_name}.json')
+            return self._load_json(core_path)
+        
+        # Handle @snippets/ aliases
+        if ref.startswith('@snippets/'):
+            snippet_name = ref.replace('@snippets/', '')
+            snippet_path = os.path.join(self.content_dir, 'snippets', snippet_name)
+            return self._read_file(snippet_path)
+        
+        # Handle @images/ aliases (return base64)
+        if ref.startswith('@images/'):
+            image_name = ref.replace('@images/', '')
+            image_path = os.path.join(self.assets_dir, 'images', image_name)
+            if os.path.exists(image_path):
+                import base64
+                with open(image_path, 'rb') as f:
+                    return 'data:image/png;base64,' + base64.b64encode(f.read()).decode('ascii')
+            return None
+        
+        # Handle JSON pointers
+        if ref.startswith('#/'):
+            if base_path and os.path.exists(base_path):
+                doc = self._load_json(base_path)
+                pointer = ref[2:].split('/')
+                current = doc
+                for segment in pointer:
+                    if isinstance(current, dict):
+                        current = current.get(segment)
+                    elif isinstance(current, list):
+                        try:
+                            current = current[int(segment)]
+                        except (ValueError, IndexError):
+                            return None
+                    else:
+                        return None
+                return current
+        return None
+
+    def _process_content_with_refs(self, content_list, page_path=None):
+        """Recursively process content blocks to resolve $ref pointers."""
+        if not isinstance(content_list, list):
+            return content_list
+        
+        processed = []
+        for item in content_list:
+            if isinstance(item, dict):
+                # Resolve $ref first
+                if '$ref' in item:
+                    ref_data = self._resolve_json_ref(item['$ref'], page_path)
+                    if ref_data and isinstance(ref_data, dict):
+                        merged = ref_data.copy()
+                        merged.update({k: v for k, v in item.items() if k != '$ref'})
+                        item = merged
+                
+                # Recursively process nested content
+                if 'content' in item and isinstance(item['content'], list):
+                    item['content'] = self._process_content_with_refs(item['content'], page_path)
+                
+                # Recursively process blocks
+                if 'blocks' in item and isinstance(item['blocks'], list):
+                    item['blocks'] = self._process_content_with_refs(item['blocks'], page_path)
+                
+                processed.append(item)
+            else:
+                processed.append(item)
+        
+        return processed
+
     def _log_warning(self, message):
         print(f"WARNING: {message}")
         self.warnings.append(message)
@@ -639,7 +715,12 @@ class AtlasBuilder:
         prefix = "./" if depth == 0 else "../" * depth
         mode = rel_path.split(os.sep)[0] if rel_path else "atlas"
 
-        # Topic Detection
+        
+
+        # Phase 1: Resolve $ref pointers in content before rendering
+        if 'content' in data and isinstance(data['content'], list):
+            data['content'] = self._process_content_with_refs(data['content'], page_entry['path'])
+# Topic Detection
         has_topics = any(item.get('type') == 'blocks' for item in data.get('content', []))
         topic_class = "" if has_topics else "no-topics"
         

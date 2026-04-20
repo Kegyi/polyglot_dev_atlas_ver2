@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Base Block Schema",
+  "description": "Foundation schema for all content blocks in the Polyglot Dev Atlas.",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the block. Used for anchoring and $ref resolution.",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "type": {
+      "type": "string",
+      "description": "Block type that determines rendering strategy.",
+      "enum": [
+        "title", "h1", "h2", "h3", "h4", "h5", "h6",
+        "text", "paragraph", "note", "code", "blocks",
+        "list", "table", "sheet", "matrix",
+        "mermaid", "mathjax", "interactive_demo",
+        "insight", "warning", "code_comparison"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "Display title for the block (used in navigation and block headers)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of block content (for SEO, search indexing)."
+    },
+    "is_collapsible": {
+      "type": "boolean",
+      "description": "Whether the block can be collapsed by the user.",
+      "default": false
+    },
+    "is_collapsed": {
+      "type": "boolean",
+      "description": "Initial collapse state (only used if is_collapsible is true).",
+      "default": false
+    },
+    "class": {
+      "type": "string",
+      "description": "Custom CSS classes to apply to the block."
+    },
+    "style": {
+      "type": "string",
+      "description": "Preset style template (e.g., 'text_style', 'card_style').",
+      "enum": ["text_style", "card_style", "code_style"]
+    },
+    "$ref": {
+      "type": "string",
+      "description": "JSON pointer reference to another block definition (e.g., '#/content/0' or '@core/language_icons')."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata tags for filtering and categorization.",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Categorization tags (e.g., 'functional', 'imperative', 'OOP')."
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"],
+          "description": "Complexity level for content filtering."
+        },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Supported languages for this block (e.g., ['cpp', 'rust', 'go'])."
+        },
+        "version": {
+          "type": "string",
+          "description": "Content version marker (e.g., '2.0', 'legacy')."
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

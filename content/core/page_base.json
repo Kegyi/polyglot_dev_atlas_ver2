@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Page Schema",
+  "description": "Root schema for all pages in the Polyglot Dev Atlas.",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for this page (enables graceful backwards compatibility).",
+      "default": "2.0"
+    },
+    "title": {
+      "type": "string",
+      "description": "Main page title (browser tab, search index)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Page description for SEO and search indexing."
+    },
+    "category": {
+      "type": "string",
+      "description": "Grouping label for sidebar registry (e.g., 'Atlas', 'Course', 'Meta')."
+    },
+    "template": {
+      "type": "string",
+      "description": "HTML template file to use (e.g., 'base.html').",
+      "default": "base.html"
+    },
+    "body_class": {
+      "type": "string",
+      "description": "Custom CSS classes to inject into the body element."
+    },
+    "extra_assets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Additional CSS/JS files to load for this page (relative to assets/)."
+    },
+    "style": {
+      "type": "string",
+      "description": "Default style preset for all child blocks (inherited downward).",
+      "enum": ["text_style", "card_style", "code_style"]
+    },
+    "content": {
+      "type": "array",
+      "description": "Array of content blocks (inherits from base_block schema).",
+      "items": {
+        "type": "object"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Page-level metadata.",
+      "properties": {
+        "author": { "type": "string" },
+        "published_date": { "type": "string", "format": "date" },
+        "updated_date": { "type": "string", "format": "date" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "code_defaults": {
+      "type": "object",
+      "description": "Default properties for code blocks on this page.",
+      "properties": {
+        "is_collapse": { "type": "boolean" },
+        "display_name": { "type": "string" },
+        "highlight_lines": { "type": "array", "items": { "type": "integer" } }
+      }
+    }
+  },
+  "additionalProperties": true
+}

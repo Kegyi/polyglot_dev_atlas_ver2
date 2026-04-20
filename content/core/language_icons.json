@@ -1,0 +1,16 @@
+{
+  "id": "language_icons",
+  "type": "reference",
+  "title": "Standard Language Icons",
+  "description": "Shared language icon definitions used across the atlas.",
+  "icons": {
+    "cpp": { "emoji": "⚙️", "full_name": "C++" },
+    "csharp": { "emoji": "🟦", "full_name": "C#" },
+    "go": { "emoji": "🐹", "full_name": "Go" },
+    "javascript": { "emoji": "🟨", "full_name": "JavaScript" },
+    "python": { "emoji": "🐍", "full_name": "Python" },
+    "rust": { "emoji": "🦀", "full_name": "Rust" },
+    "scala": { "emoji": "📦", "full_name": "Scala" },
+    "typescript": { "emoji": "🔵", "full_name": "TypeScript" }
+  }
+}
