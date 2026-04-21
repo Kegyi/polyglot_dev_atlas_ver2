@@ -1,0 +1,50 @@
+/* --- HIGH-CONTRAST THEME (WCAG AAA Accessible) --- */
+:root[data-theme="high-contrast"] {
+    /* Base Colors - Maximum contrast for accessibility */
+    --bg: #000000;
+    --panel: #1a1a1a;
+    --border: #ffffff;
+    --text: #ffffff;
+    --text-dim: #cccccc;
+    --text-muted: #999999;
+    --code-bg: #1a1a1a;
+    
+    /* Interactive States */
+    --hover-bg: #333333;
+    --active-bg: #555555;
+    --focus-ring: #ffff00;
+    
+    /* Semantic Colors (high-contrast bright variants) */
+    --success: #00cc00;
+    --warning: #ffcc00;
+    --error: #ff0000;
+    --info: #00ccff;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.2);
+    --shadow-md: 0 4px 8px rgba(255, 255, 255, 0.25);
+    --shadow-lg: 0 10px 20px rgba(255, 255, 255, 0.3);
+    
+    /* Syntax Highlighting - High Contrast */
+    --syntax-keyword: #ff00ff;
+    --syntax-string: #00ffff;
+    --syntax-number: #ffff00;
+    --syntax-function: #00ff00;
+    --syntax-comment: #ff9999;
+    
+    /* Extra High-Contrast Overrides */
+    --accent: #ffff00;
+    --accent-glow: rgba(255, 255, 0, 0.4);
+}
+
+/* Ensure borders and focus states are highly visible */
+:root[data-theme="high-contrast"] * {
+    text-decoration-skip-ink: none;
+}
+
+:root[data-theme="high-contrast"] button:focus,
+:root[data-theme="high-contrast"] a:focus,
+:root[data-theme="high-contrast"] input:focus {
+    outline: 3px solid #ffff00 !important;
+    outline-offset: 2px;
+}

@@ -78,6 +78,10 @@
             // 3. Setup Syntax Highlighting CSS path
             const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
             window.hljsStylePath = `{{ asset_prefix }}assets/hljs/${hljsStyle}`;
+            
+            // 4. Setup Theme CSS path and store asset prefix globally
+            window.assetPrefix = '{{ asset_prefix }}';
+            window.themeStylePath = `{{ asset_prefix }}assets/css/themes/${savedTheme}.css`;
         })();
     </script>
 
@@ -86,6 +90,9 @@
     <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
 
     <link rel="stylesheet" href="{{ asset_prefix }}assets/css/main.css">
+    <!-- Theme CSS (Light/Dark/High-Contrast) -->
+    <link id="theme-css" rel="stylesheet" href="">
+    <script>document.getElementById('theme-css').href = window.themeStylePath;</script>
     <link rel="stylesheet" href="{{ asset_prefix }}assets/css/ui_states.css">
     {{ extra_assets }}
 </head>

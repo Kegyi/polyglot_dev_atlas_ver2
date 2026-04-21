@@ -8,7 +8,8 @@ const app = {
     icons: {
         theme: {
             dark: '<svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-            light: '<svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+            light: '<svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+            'high-contrast': '<svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="2" ry="2" fill="white"/><circle cx="8" cy="8" r="3" fill="black"/><circle cx="16" cy="16" r="3" fill="black"/><path d="M8 16 L16 8" stroke="black" stroke-width="2"/></svg>'
         },
         style: {
             sharp: '<svg viewBox="0 0 24 24" width="14" height="14" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>',
@@ -17,30 +18,43 @@ const app = {
         }
     },
     /**
-     * Toggles between Dark and Light mode.
-     * Updates HLJS theme CSS path dynamically.
+     * Cycles through Dark → Light → High-Contrast → Dark.
+     * Updates both Theme CSS and HLJS theme dynamically.
      */
     toggleTheme: function() {
         const html = document.documentElement;
-        const target = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        const current = html.getAttribute('data-theme') || 'dark';
         
+        // Cycle: dark → light → high-contrast → dark
+        const themeOrder = ['dark', 'light', 'high-contrast'];
+        const currentIdx = themeOrder.indexOf(current);
+        const nextIdx = (currentIdx + 1) % themeOrder.length;
+        const target = themeOrder[nextIdx];
+        
+        // Update data attribute
         html.setAttribute('data-theme', target);
         localStorage.setItem('atlas-theme', target);
         this.updateIcons(target);
 
+        // Update Theme CSS file
+        const themeLink = document.getElementById('theme-css');
+        if (themeLink) {
+            const prefix = window.assetPrefix || './';
+            themeLink.href = `${prefix}assets/css/themes/${target}.css`;
+        }
+
+        // Update HLJS theme (only dark/light modes have HLJS alternatives)
         const hljsLink = document.getElementById('hljs-theme');
         if (hljsLink) {
-            const currentHref = hljsLink.href;
-            const newFile = target === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
-            const pathParts = hljsLink.href.split('/');
-            pathParts[pathParts.length - 1] = newFile;
-            hljsLink.href = pathParts.join('/');
+            const hljsFile = target === 'dark' ? 'atom-one-dark.min.css' : (target === 'light' ? 'github.min.css' : 'atom-one-dark.min.css');
+            const prefix = window.assetPrefix || './';
+            hljsLink.href = `${prefix}assets/hljs/${hljsFile}`;
         }
     },
 
     updateIcons: function(theme) {
         const btn = document.getElementById('theme-toggle');
-        if (btn) btn.innerHTML = theme === 'dark' ? this.icons.theme.dark : this.icons.theme.light;
+        if (btn) btn.innerHTML = this.icons.theme[theme] || this.icons.theme.dark;
     },
 
     /**
