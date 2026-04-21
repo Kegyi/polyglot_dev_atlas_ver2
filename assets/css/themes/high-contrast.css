@@ -48,3 +48,60 @@
     outline: 3px solid #ffff00 !important;
     outline-offset: 2px;
 }
+
+/* --- High-contrast fixes: readable text on yellow highlights --- */
+
+/* Active nav item: black text on yellow background */
+:root[data-theme="high-contrast"] .nav-list .active > a,
+:root[data-theme="high-contrast"] .nav-list li.active > span {
+    color: #000000 !important;
+    background: #ffff00 !important;
+}
+
+/* Nav hover must also remain readable */
+:root[data-theme="high-contrast"] .nav-list a:hover,
+:root[data-theme="high-contrast"] .toc-item span:hover {
+    color: #000000 !important;
+    background: #ffff00 !important;
+}
+
+/* Browser text selection */
+:root[data-theme="high-contrast"] ::selection {
+    background-color: #ffff00;
+    color: #000000;
+}
+
+/* Accent-glow flash animation on topics */
+:root[data-theme="high-contrast"] .highlight-flash {
+    animation: hc-highlight-flash 2s ease-out;
+}
+
+@keyframes hc-highlight-flash {
+    0%  { background-color: rgba(255, 255, 0, 0.7); color: #000000; }
+    60% { background-color: rgba(255, 255, 0, 0.3); color: #ffffff; }
+    100% { background-color: transparent; color: #ffffff; }
+}
+
+/* Active lang button in high contrast */
+:root[data-theme="high-contrast"] .lang-btn.active-primary,
+:root[data-theme="high-contrast"] .lang-btn.active-secondary {
+    color: #000000 !important;
+    background-color: #ffff00 !important;
+}
+
+/* Search result hover */
+:root[data-theme="high-contrast"] .search-result:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+:root[data-theme="high-contrast"] .search-result:hover .search-result-title,
+:root[data-theme="high-contrast"] .search-result:hover .search-result-excerpt,
+:root[data-theme="high-contrast"] .search-result:hover .search-result-meta {
+    color: #000000 !important;
+}
+
+/* Insight blocks: keep readable in HC */
+:root[data-theme="high-contrast"] .insight {
+    border-left-color: #ffff00 !important;
+    background: #1a1a1a !important;
+}

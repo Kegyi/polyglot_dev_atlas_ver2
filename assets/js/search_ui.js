@@ -48,17 +48,50 @@
 
     function scoreItem(item, q, currentMode) {
         let score = 0;
+        let matched = false;
         const title = normalize(item.title);
         const desc = normalize(item.description);
         const excerpt = normalize(item.excerpt);
+        const searchText = normalize(item.search_text);
         const tags = Array.isArray(item.tags) ? normalize(item.tags.join(' ')) : '';
+        const terms = q.split(/\s+/).filter(Boolean);
 
-        if (title.startsWith(q)) score += 70;
-        else if (title.includes(q)) score += 45;
+        if (!terms.length) return 0;
 
-        if (desc.includes(q)) score += 18;
-        if (excerpt.includes(q)) score += 12;
-        if (tags.includes(q)) score += 10;
+        terms.forEach((term) => {
+            if (title.startsWith(term)) {
+                score += 70;
+                matched = true;
+            } else if (title.includes(term)) {
+                score += 45;
+                matched = true;
+            }
+
+            if (desc.includes(term)) {
+                score += 18;
+                matched = true;
+            }
+            if (excerpt.includes(term)) {
+                score += 12;
+                matched = true;
+            }
+            if (searchText.includes(term)) {
+                score += 10;
+                matched = true;
+            }
+            if (tags.includes(term)) {
+                score += 10;
+                matched = true;
+            }
+        });
+
+        if (!matched) {
+            return 0;
+        }
+
+        if (terms.length > 1 && title.includes(q)) {
+            score += 20;
+        }
 
         if (item.mode === currentMode) score += 8;
 
@@ -113,6 +146,62 @@
             .replace(/'/g, '&#39;');
     }
 
+    function toSafeKey(segment) {
+        return String(segment || '').replace(/[^a-zA-Z0-9_-]/g, '-');
+    }
+
+    function parseTargetPath(href) {
+        try {
+            const url = new URL(href, window.location.href);
+            const parts = url.pathname.split('/').filter(Boolean);
+            const modeIndex = parts.findIndex(p => ['atlas', 'course', 'meta'].includes(p.toLowerCase()));
+            if (modeIndex < 0) return null;
+
+            const mode = parts[modeIndex].toLowerCase();
+            const tail = parts.slice(modeIndex + 1);
+            if (!tail.length) return { mode, folders: [] };
+
+            // Drop terminal file name (e.g. index.html, foo.html)
+            const folders = tail.slice(0, -1);
+            return { mode, folders };
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function seedCollectionStateForSearchTarget(href) {
+        const parsed = parseTargetPath(href);
+        if (!parsed) return;
+
+        const { mode, folders } = parsed;
+
+        try {
+            // Reset stale open state for target mode.
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (!key) continue;
+                if (key.indexOf(`${mode}-collection-`) === 0 && key.endsWith('-open')) {
+                    localStorage.removeItem(key);
+                }
+            }
+
+            // Legacy showcases flag should only be present for the showcases path.
+            localStorage.removeItem(`${mode}-showcases-open`);
+
+            const safeFolders = folders.map(toSafeKey).filter(Boolean);
+            for (let i = 0; i < safeFolders.length; i++) {
+                const fullKey = safeFolders.slice(0, i + 1).join('-');
+                localStorage.setItem(`${mode}-collection-${fullKey}-open`, '1');
+            }
+
+            if (mode === 'meta' && safeFolders[0] === 'showcases') {
+                localStorage.setItem(`${mode}-showcases-open`, '1');
+            }
+        } catch (e) {
+            // Best-effort state seed only.
+        }
+    }
+
     async function handleInput(e) {
         const input = e.target;
         const query = input.value || '';
@@ -145,6 +234,12 @@
             if (input.value.trim()) {
                 renderResults(search(input.value));
             }
+        });
+
+        panel.addEventListener('click', (e) => {
+            const link = e.target.closest('a.search-result');
+            if (!link) return;
+            seedCollectionStateForSearchTarget(link.getAttribute('href') || '');
         });
 
         document.addEventListener('click', (e) => {

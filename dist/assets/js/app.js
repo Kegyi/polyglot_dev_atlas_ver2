@@ -678,11 +678,6 @@ const app = {
             const lastPath = localStorage.getItem(`${text}-last-path`);
             if (lastPath) {
                 btn.setAttribute('href', lastPath);
-            } else {
-                // No stored selection: persist the current target as the default for this mode
-                // This makes the top page the default choice for future mode switches.
-                const target = btn.getAttribute('href');
-                if (target) localStorage.setItem(`${text}-last-path`, target);
             }
         });
     },

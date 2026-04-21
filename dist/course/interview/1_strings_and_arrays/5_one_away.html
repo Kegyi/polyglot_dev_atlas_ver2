@@ -23,7 +23,6 @@
             const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
             const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
             const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
-            const savedFilterLangs = localStorage.getItem('atlas-filter-langs') || '';
             
             // Phase 3: Global Design Style (Sharp, Round, Airy)
             const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
@@ -36,7 +35,6 @@
             doc.setAttribute('data-selection-mode', savedSelectionMode);
             doc.setAttribute('data-primary', savedPrimary);
             doc.setAttribute('data-secondary', savedSecondary);
-            doc.setAttribute('data-filter-langs', savedFilterLangs);
             
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
@@ -147,21 +145,6 @@
         <div class="nav-bottom">
             <div class="lang-selector-list">
                 <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
-            </div>
-            <div class="filter-tools">
-                <div class="polyglot-filter">
-                    <button id="polyglot-filter-toggle" class="mini-toggle" type="button">Filter: All</button>
-                    <div id="polyglot-filter-panel" class="polyglot-filter-panel" hidden>
-                        <div class="polyglot-filter-header">
-                            <strong>Polyglot Filter</strong>
-                            <div class="polyglot-filter-actions">
-                                <button id="polyglot-filter-current" type="button">Use Current</button>
-                                <button id="polyglot-filter-all" type="button">All</button>
-                            </div>
-                        </div>
-                        <div id="polyglot-filter-options" class="polyglot-filter-options"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -472,7 +455,6 @@ main();
     <!-- App Logic & Selection Engine -->
     <script src="../../../assets/js/app.js"></script>
     <script src="../../../assets/js/selection_engine.js"></script>
-    <script src="../../../assets/js/polyglot_filter.js"></script>
     <script src="../../../assets/js/content_renderers.js"></script>
     <script src="../../../assets/js/search_ui.js"></script>
     <script src="../../../assets/js/permalinks.js"></script>

@@ -297,21 +297,67 @@ class AtlasBuilder:
                         short_html = os.path.relpath(html_path, self.base_dir).replace('\\', '/')
                         self._log_warning(f"Broken internal link in {short_html}: {raw}")
 
+    def _collect_search_text(self, node, max_chars=5000):
+        """Collect searchable text recursively from a page payload."""
+        chunks = []
+        current_len = 0
+
+        # Skip technical fields that are noisy or not user-facing for search.
+        skip_keys = {
+            'id', 'type', 'path', 'url', 'href', 'src', 'lang', 'language',
+            'code', 'snippet', 'raw', 'html', 'class', 'style', 'icon',
+            'extra_assets', '$ref'
+        }
+
+        def walk(value, key_hint=''):
+            nonlocal current_len
+            if current_len >= max_chars:
+                return
+
+            if isinstance(value, str):
+                if key_hint in skip_keys:
+                    return
+                text = re.sub(r'\s+', ' ', value).strip()
+                # Ignore tiny tokens and obvious URLs in the search corpus.
+                if len(text) < 2 or text.startswith('http://') or text.startswith('https://'):
+                    return
+                remaining = max_chars - current_len
+                if remaining <= 0:
+                    return
+                text = text[:remaining]
+                chunks.append(text)
+                current_len += len(text) + 1
+                return
+
+            if isinstance(value, list):
+                for item in value:
+                    walk(item, key_hint)
+                    if current_len >= max_chars:
+                        return
+                return
+
+            if isinstance(value, dict):
+                # Prioritize common human-readable fields first.
+                prioritized = ('title', 'text', 'description', 'summary', 'caption', 'label')
+                for key in prioritized:
+                    if key in value:
+                        walk(value.get(key), key)
+                        if current_len >= max_chars:
+                            return
+
+                for key, nested in value.items():
+                    if key in prioritized or key in skip_keys:
+                        continue
+                    walk(nested, key)
+                    if current_len >= max_chars:
+                        return
+
+        walk(node)
+        return re.sub(r'\s+', ' ', ' '.join(chunks)).strip()
+
     def _collect_text_excerpt(self, content_list, max_chars=240):
         """Collect a lightweight text excerpt from page content for search index."""
-        chunks = []
-        for item in self._iter_content_items(content_list):
-            if not isinstance(item, dict):
-                continue
-            t = item.get('type')
-            if t in ('text', 'note') and isinstance(item.get('text'), str):
-                chunks.append(item.get('text'))
-            elif t in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title') and isinstance(item.get('text'), str):
-                chunks.append(item.get('text'))
-            if len(' '.join(chunks)) >= max_chars:
-                break
-        joined = re.sub(r'\s+', ' ', ' '.join(chunks)).strip()
-        return joined[:max_chars]
+        return self._collect_search_text(content_list, max_chars=max_chars)
 
     def _generate_search_index(self):
         """Emit static search index for instant client-side lookup."""
@@ -321,6 +367,7 @@ class AtlasBuilder:
                 page_data = self._load_json(page.get('path', ''))
                 if not isinstance(page_data, dict):
                     continue
+                search_text = self._collect_search_text(page_data.get('content', []), max_chars=5000)
                 entries.append({
                     'id': page.get('id', ''),
                     'mode': mode,
@@ -328,7 +375,8 @@ class AtlasBuilder:
                     'description': page_data.get('description', ''),
                     'tags': page_data.get('metadata', {}).get('tags', []) if isinstance(page_data.get('metadata'), dict) else [],
                     'url': page.get('url', ''),
-                    'excerpt': self._collect_text_excerpt(page_data.get('content', [])),
+                    'excerpt': search_text[:240],
+                    'search_text': search_text,
                 })
 
         out_dir = os.path.join(self.dist_dir, 'content')
