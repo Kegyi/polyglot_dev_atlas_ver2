@@ -39,6 +39,7 @@ class AtlasBuilder:
             "h6": self._render_heading,
             "text": self._render_text,
             "note": self._render_note,
+            "insight": self._render_insight,
             "code": self._render_code,
             "image": self._render_image,
             "list": self._render_list,
@@ -402,6 +403,26 @@ class AtlasBuilder:
         variant = item.get("variant", "info")
         content_html = item.get("text", "")
         return f'<div {self._id_attr(item)} class="note note-{variant} {item.get("class", "")}"><div class="note-content">{content_html}</div></div>'
+
+    def _render_insight(self, item, depth=2, inherited_style="", context=None):
+        """
+        Render an insight block (pro-tip, warning, important, takeaway).
+        Insight types: 'tip' (lightbulb), 'warning' (alert), 'important' (exclamation), 'takeaway' (star)
+        """
+        insight_type = item.get("type_insight", item.get("insight_type", "tip"))  # Default to tip
+        title = item.get("title", "")
+        content_html = item.get("content", item.get("text", ""))
+        
+        # Build the insight block with icon and styling
+        title_html = f'<h4 class="insight-title">{title}</h4>' if title else ''
+        
+        return f'''<div {self._id_attr(item)} class="insight insight-{insight_type} {item.get("class", "")}">
+    <div class="insight-icon"></div>
+    <div class="insight-body">
+        {title_html}
+        <div class="insight-content">{content_html}</div>
+    </div>
+</div>'''
 
     def _render_code(self, item, depth=2, inherited_style="", context=None):
         snippet_ref = item.get("path") or item.get("snippet_path") or item.get("name")

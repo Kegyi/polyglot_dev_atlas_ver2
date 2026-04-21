@@ -1,0 +1,99 @@
+{
+  "title": "Insight Blocks Test",
+  "description": "Test page demonstrating insight block types and styling",
+  "content": [
+    {
+      "type": "h1",
+      "text": "Insight Blocks Showcase"
+    },
+    {
+      "type": "text",
+      "text": "This page demonstrates all four insight block types with consistent iconography and styling."
+    },
+    {
+      "type": "h2",
+      "text": "Tip Block"
+    },
+    {
+      "type": "insight",
+      "insight_type": "tip",
+      "title": "Pro Tip: Use the Search Feature",
+      "content": "Press <code>/</code> or <code>Ctrl+K</code> to instantly search through all pages in the Atlas. The search ranks results by title relevance, making it easy to find exactly what you need."
+    },
+    {
+      "type": "text",
+      "text": "Tips are highlighted in yellow and use a lightbulb icon to indicate helpful advice and best practices."
+    },
+    {
+      "type": "h2",
+      "text": "Warning Block"
+    },
+    {
+      "type": "insight",
+      "insight_type": "warning",
+      "title": "Common Pitfall: Breaking Changes",
+      "content": "When upgrading dependencies, always check the changelog for breaking changes. Test your code thoroughly before deploying to production."
+    },
+    {
+      "type": "text",
+      "text": "Warnings are highlighted in orange and use an alert triangle icon to catch user attention."
+    },
+    {
+      "type": "h2",
+      "text": "Important Block"
+    },
+    {
+      "type": "insight",
+      "insight_type": "important",
+      "title": "Critical: Security Configuration",
+      "content": "Never commit secrets or API keys to version control. Always use environment variables or secure secret management tools. This is a critical security requirement."
+    },
+    {
+      "type": "text",
+      "text": "Important blocks are highlighted in red and use a lightning bolt icon for critical information."
+    },
+    {
+      "type": "h2",
+      "text": "Takeaway Block"
+    },
+    {
+      "type": "insight",
+      "insight_type": "takeaway",
+      "title": "Key Takeaway: Consistency is Key",
+      "content": "The most important aspect of code design is consistency. Whether you choose tabs or spaces, camelCase or snake_case, make sure the choice is consistent throughout your project."
+    },
+    {
+      "type": "text",
+      "text": "Takeaways are highlighted in purple and use a star icon to emphasize key points and main concepts."
+    },
+    {
+      "type": "h2",
+      "text": "Mixed Content with Insights"
+    },
+    {
+      "type": "text",
+      "text": "Insight blocks work well alongside other content types:"
+    },
+    {
+      "type": "insight",
+      "insight_type": "tip",
+      "title": "Documentation Best Practice",
+      "content": "Always include examples in your documentation. Code snippets are more valuable than lengthy explanations."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Use clear, descriptive variable names",
+        "Add comments for complex logic",
+        "Keep functions small and focused",
+        "Write unit tests for critical paths"
+      ]
+    },
+    {
+      "type": "insight",
+      "insight_type": "important",
+      "title": "Testing Requirements",
+      "content": "All new features must have corresponding unit tests. Aim for at least 80% code coverage on critical paths."
+    }
+  ]
+}

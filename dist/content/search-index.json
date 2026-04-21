@@ -27,6 +27,15 @@
     "excerpt": "Design Patterns Design patterns are reusable solutions to common software design problems. They provide a template for how to solve a problem that can be used in many different situations. This page explores various design patterns, their i"
   },
   {
+    "id": "insights_test",
+    "mode": "atlas",
+    "title": "Insight Blocks Test",
+    "description": "Test page demonstrating insight block types and styling",
+    "tags": [],
+    "url": "atlas/insights_test.html",
+    "excerpt": "Insight Blocks Showcase This page demonstrates all four insight block types with consistent iconography and styling. Tip Block Tips are highlighted in yellow and use a lightbulb icon to indicate helpful advice and best practices. Warning Bl"
+  },
+  {
     "id": "principles",
     "mode": "atlas",
     "title": "principles",
