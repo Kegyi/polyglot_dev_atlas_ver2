@@ -1080,9 +1080,13 @@ class AtlasBuilder:
 
         # Build an index of generated URLs so we only link to known pages.
         known_urls = set()
-        for mode_entries in self.site_registry.values():
+        known_urls_by_mode = {}
+        for mode_name, mode_entries in self.site_registry.items():
+            known_urls_by_mode[mode_name] = []
             for pe in mode_entries:
-                known_urls.add(pe.get('url', ''))
+                u = pe.get('url', '')
+                known_urls.add(u)
+                known_urls_by_mode[mode_name].append(u)
 
         running = []
         for idx, part in enumerate(parts):
@@ -1097,17 +1101,41 @@ class AtlasBuilder:
 
             if target in known_urls:
                 crumbs.append(f'<a href="{prefix}{target}">{human}</a>')
+                continue
+
+            # Fallback for folders without index pages: link to the first
+            # content page under that folder so deep breadcrumb clicks still
+            # navigate to the intended depth.
+            folder_prefix = '/'.join(running) + '/'
+            mode_key = parts[0] if parts else 'atlas'
+            candidates = [u for u in known_urls_by_mode.get(mode_key, []) if u.startswith(folder_prefix) and not u.endswith('/index.html')]
+            if candidates:
+                best = sorted(candidates, key=lambda u: (u.count('/'), u))[0]
+                crumbs.append(f'<a href="{prefix}{best}">{human}</a>')
             else:
                 crumbs.append(f'<span>{human}</span>')
 
-        crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
+        # For folder index pages (e.g. meta/showcases/index), the folder crumb
+        # already represents the current location. Avoid duplicating with an
+        # extra trailing page-title crumb like "All Showcases".
+        if not (page_entry.get('id') == 'index' and parts):
+            crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
         return '<nav class="breadcrumbs" aria-label="Breadcrumbs">' + '<span class="sep">/</span>'.join(crumbs) + '</nav>'
 
     def assemble_prev_next(self, mode, current_page_url, prefix):
-        """Build previous/next links from current mode registry order."""
-        pages = self.site_registry.get(mode, [])
-        if not pages:
+        """Build previous/next links from a content-page sequence.
+
+        Nested folder index pages are navigation containers, not content pages.
+        Excluding them avoids jumps like chapter page -> chapter index in pager.
+        """
+        all_pages = self.site_registry.get(mode, [])
+        if not all_pages:
             return ''
+
+        def is_nested_index(entry):
+            return entry.get('id') == 'index' and (entry.get('rel_path') or '') != mode
+
+        pages = [p for p in all_pages if not is_nested_index(p)]
 
         idx = -1
         for i, entry in enumerate(pages):

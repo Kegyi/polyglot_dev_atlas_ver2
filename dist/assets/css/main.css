@@ -784,6 +784,7 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
     flex-shrink: 0;
     width: 24px;
     height: 24px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -838,6 +839,10 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 .insight-tip .insight-icon::before {
     content: '💡';
     position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
     line-height: 1;
 }
@@ -855,6 +860,10 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 .insight-warning .insight-icon::before {
     content: '⚠️';
     position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
     line-height: 1;
 }
@@ -872,6 +881,10 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 .insight-important .insight-icon::before {
     content: '⚡';
     position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
     line-height: 1;
 }
@@ -889,6 +902,10 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 .insight-takeaway .insight-icon::before {
     content: '⭐';
     position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
     line-height: 1;
 }

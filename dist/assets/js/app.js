@@ -302,9 +302,9 @@ const app = {
                 const isOnCollection = window.location.pathname.indexOf(`/${mode}/${keyPath}/`) !== -1;
                 if (!isOnCollection) {
                     const prevKey = `${mode}-collection-${key}-prev-path`;
-                    if (!localStorage.getItem(prevKey)) {
-                        localStorage.setItem(prevKey, window.location.pathname + window.location.search + window.location.hash);
-                    }
+                    // Always refresh the origin path so Back returns to the
+                    // most recent page that opened this collection.
+                    localStorage.setItem(prevKey, window.location.pathname + window.location.search + window.location.hash);
                     try { localStorage.setItem(`${mode}-collection-${key}-open`, '1'); } catch (e) {}
                     // Mark that this collection was opened via navigation so Back
                     // can return the user to the prior page instead of just closing
