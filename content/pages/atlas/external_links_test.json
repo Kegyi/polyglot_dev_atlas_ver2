@@ -1,0 +1,32 @@
+{
+  "title": "External Links Test",
+  "description": "Test page with external URLs for link validation",
+  "content": [
+    {
+      "type": "h1",
+      "text": "External Links Test Page"
+    },
+    {
+      "type": "text",
+      "text": "This page contains various external links to test the dead link checker:\n- [GitHub](https://github.com) - should be valid\n- [MDN Web Docs](https://developer.mozilla.org) - should be valid\n- [Stack Overflow](https://stackoverflow.com) - should be valid\n- Direct URL: https://www.wikipedia.org - should be valid"
+    },
+    {
+      "type": "h2",
+      "text": "Reference Links"
+    },
+    {
+      "type": "list",
+      "items": [
+        "[Rust Programming Language](https://www.rust-lang.org)",
+        "[Python Official](https://www.python.org)",
+        "[Node.js](https://nodejs.org)"
+      ]
+    },
+    {
+      "type": "insight",
+      "insight_type": "tip",
+      "title": "Documentation Links",
+      "content": "For more information, visit [Polyglot Atlas](https://github.com) or check [W3C Standards](https://www.w3.org)"
+    }
+  ]
+}

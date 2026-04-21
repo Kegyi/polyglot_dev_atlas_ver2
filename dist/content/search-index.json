@@ -27,6 +27,15 @@
     "excerpt": "Design Patterns Design patterns are reusable solutions to common software design problems. They provide a template for how to solve a problem that can be used in many different situations. This page explores various design patterns, their i"
   },
   {
+    "id": "external_links_test",
+    "mode": "atlas",
+    "title": "External Links Test",
+    "description": "Test page with external URLs for link validation",
+    "tags": [],
+    "url": "atlas/external_links_test.html",
+    "excerpt": "External Links Test Page This page contains various external links to test the dead link checker: - [GitHub](https://github.com) - should be valid - [MDN Web Docs](https://developer.mozilla.org) - should be valid - [Stack Overflow](https://"
+  },
+  {
     "id": "insights_test",
     "mode": "atlas",
     "title": "Insight Blocks Test",

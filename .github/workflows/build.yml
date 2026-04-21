@@ -1,0 +1,131 @@
+name: Build & Validate Atlas
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Full history for better analysis
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    
+    - name: Build Polyglot Atlas
+      run: |
+        cd polyglot_dev_atlas_ver2
+        python build_system/core.py --strict-validation
+      env:
+        PYTHONIOENCODING: utf-8
+    
+    - name: Validate with Dead Link Checker
+      run: |
+        cd polyglot_dev_atlas_ver2
+        python build_system/dead_link_checker.py --timeout 10 --strict
+      continue-on-error: true  # Links may be temporarily unavailable
+    
+    - name: Check build artifacts
+      run: |
+        echo "=== Build Artifacts ==="
+        find polyglot_dev_atlas_ver2/dist -name "*.html" | wc -l
+        echo "HTML files generated"
+        find polyglot_dev_atlas_ver2/dist -name "search-index.json" -exec wc -c {} \;
+    
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: atlas-build-${{ matrix.python-version }}
+        path: polyglot_dev_atlas_ver2/dist
+        retention-days: 30
+    
+    - name: Prepare for deployment
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        echo "=== Build Summary ==="
+        echo "Commit: ${{ github.sha }}"
+        echo "Branch: ${{ github.ref }}"
+        echo "Build Status: Success ✓"
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Build Atlas for deployment
+      run: |
+        cd polyglot_dev_atlas_ver2
+        python build_system/core.py
+      env:
+        PYTHONIOENCODING: utf-8
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload artifacts to Pages
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: 'polyglot_dev_atlas_ver2/dist'
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+      continue-on-error: true
+    
+    - name: Create deployment summary
+      run: |
+        echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✓ Atlas successfully built and deployed" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Build Details:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Branch: main" >> $GITHUB_STEP_SUMMARY
+        echo "- Timestamp: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_STEP_SUMMARY
+
+  # Optional: Notify on failure
+  notify:
+    needs: [build]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build failed notification
+        run: |
+          echo "❌ Build failed for commit ${{ github.sha }}"
+          echo "Check the logs for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -1,0 +1,41 @@
+name: Dead Link Check
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allow manual trigger
+  pull_request:
+    paths:
+      - 'content/**'
+      - '.github/workflows/dead-links.yml'
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Check for dead links
+      run: |
+        cd polyglot_dev_atlas_ver2
+        python build_system/dead_link_checker.py --verbose --timeout 15
+      continue-on-error: true
+      env:
+        PYTHONIOENCODING: utf-8
+    
+    - name: Create issue if links are broken
+      if: failure() && github.event_name == 'schedule'
+      uses: actions/create-issue@v2
+      with:
+        title: '🔗 Dead links detected in content'
+        body: 'The dead link checker found broken external URLs. Please review and update the content.'
+        labels: 'documentation,bug'
+      continue-on-error: true

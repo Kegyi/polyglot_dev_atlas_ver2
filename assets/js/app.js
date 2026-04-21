@@ -747,7 +747,26 @@ const app = {
 };
 
 // Start App
-document.addEventListener('DOMContentLoaded', () => app.init());
+document.addEventListener('DOMContentLoaded', () => {
+    app.init();
+    
+    // Register Service Worker for PWA offline support
+    if ('serviceWorker' in navigator) {
+        const assetPrefix = document.documentElement.getAttribute('data-asset-prefix') || './';
+        navigator.serviceWorker.register(`${assetPrefix}assets/js/service_worker.js`)
+            .then(registration => {
+                console.log('[PWA] Service Worker registered:', registration);
+                
+                // Check for updates periodically
+                setInterval(() => {
+                    registration.update().catch(error => 
+                        console.error('[PWA] Update check failed:', error)
+                    );
+                }, 60000); // Check every minute
+            })
+            .catch(error => console.error('[PWA] Service Worker registration failed:', error));
+    }
+});
 
 // Global exposure
 window.app = app;
