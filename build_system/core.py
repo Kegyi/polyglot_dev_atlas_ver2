@@ -4,6 +4,9 @@ import re
 import json
 import sys
 import argparse
+import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 class AtlasBuilder:
     def __init__(self):
@@ -1058,6 +1061,69 @@ class AtlasBuilder:
 
         return f'<nav class="pager-nav" aria-label="Previous and Next">{prev_html}{next_html}</nav>'
 
+    # --- FILE WATCHING & HOT RELOAD ---
+
+    class _RebuildEventHandler(FileSystemEventHandler):
+        """Event handler for triggering rebuilds on file changes."""
+        def __init__(self, builder):
+            self.builder = builder
+            self.last_rebuild = time.time()
+            self.debounce_delay = 0.5  # Ignore rapid repeated events (ms)
+
+        def on_modified(self, event):
+            if event.is_directory:
+                return
+            
+            # Debounce rapid events
+            current_time = time.time()
+            if current_time - self.last_rebuild < self.debounce_delay:
+                return
+            self.last_rebuild = current_time
+
+            # Only watch specific file types
+            path = event.src_path
+            if any(path.endswith(ext) for ext in ['.json', '.html', '.css', '.js', '.md', '.txt']):
+                print(f"\n[WATCH] File changed: {path}")
+                try:
+                    self.builder.build()
+                    print("[WATCH] Rebuild complete. Waiting for changes...\n")
+                except Exception as e:
+                    print(f"[WATCH] Rebuild failed: {e}\n")
+
+    def watch_mode(self):
+        """Run the builder in watch mode, automatically rebuilding on file changes."""
+        print("=" * 50)
+        print("WATCH MODE ENABLED")
+        print("=" * 50)
+        print(f"Monitoring: {self.content_dir}")
+        print(f"            {self.templates_dir}")
+        print(f"            {self.assets_dir}")
+        print("Press Ctrl+C to stop watching.\n")
+
+        # Initial build
+        print("Running initial build...")
+        self.build()
+        print()
+
+        # Set up watchers
+        event_handler = self._RebuildEventHandler(self)
+        observer = Observer()
+        
+        # Watch content, templates, and assets directories
+        observer.schedule(event_handler, self.content_dir, recursive=True)
+        observer.schedule(event_handler, self.templates_dir, recursive=True)
+        observer.schedule(event_handler, self.assets_dir, recursive=True)
+        
+        observer.start()
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("\n[WATCH] Stopping file monitor...")
+            observer.stop()
+        observer.join()
+        print("[WATCH] Watch mode stopped.")
+
     # --- BUILD PROCESS ---
 
     def process_page(self, page_entry):
@@ -1215,8 +1281,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Polyglot Atlas builder")
     parser.add_argument("--validate-only", action="store_true", help="Run validations without generating dist output")
     parser.add_argument("--strict-validation", action="store_true", help="Fail when validation errors are found")
+    parser.add_argument("--watch", action="store_true", help="Enable watch mode: automatically rebuild when files change")
     args = parser.parse_args()
 
-    ok = AtlasBuilder().build(validate_only=args.validate_only, strict_validation=args.strict_validation)
-    if not ok:
-        sys.exit(1)
+    builder = AtlasBuilder()
+    
+    if args.watch:
+        builder.watch_mode()
+    else:
+        ok = builder.build(validate_only=args.validate_only, strict_validation=args.strict_validation)
+        if not ok:
+            sys.exit(1)
