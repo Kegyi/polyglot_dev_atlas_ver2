@@ -736,8 +736,12 @@ const app = {
                 setTimeout(() => this.openShowcases({ noNavigate: true }), 100);
             }
             // Restore any generic collection submenus that were left open.
-            // The builder emits lists with ids like `toc-collection-{mode}-{key}`.
+            // Only restore collections that still match the current page path;
+            // otherwise breadcrumb or pager navigation can leave the sidebar
+            // stuck in a stale submenu from the previous page.
             try {
+                const currentPath = (window.location.pathname || '').toLowerCase();
+                let restoredCollection = false;
                 document.querySelectorAll('[id^="toc-collection-"]').forEach(el => {
                     const id = el.id; // toc-collection-{mode}-{key}
                     const parts = id.split('-');
@@ -745,11 +749,28 @@ const app = {
                     if (parts.length >= 4) {
                         const cmode = parts[2];
                         const ckey = parts.slice(3).join('-');
-                        if (localStorage.getItem(`${cmode}-collection-${ckey}-open`) === '1') {
+                        const collectionPath = `/${cmode}/${ckey.replace(/-/g, '/')}/`;
+                        if (
+                            localStorage.getItem(`${cmode}-collection-${ckey}-open`) === '1' &&
+                            currentPath.indexOf(collectionPath) !== -1
+                        ) {
+                            restoredCollection = true;
                             setTimeout(() => this.openCollection(cmode, ckey, { noNavigate: true }), 120);
                         }
                     }
                 });
+
+                if (!restoredCollection) {
+                    const main = document.getElementById('toc-main');
+                    if (main) main.style.display = '';
+                    document.querySelectorAll('.nav-collection-list').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    document.documentElement.classList.remove('collection-open');
+                    const generatedStyle = document.querySelector('style[data-generated="collection-open-style"]');
+                    if (generatedStyle) generatedStyle.remove();
+                    document.documentElement.removeAttribute('data-collection-open');
+                }
             } catch (e) {}
         } catch (e) {}
 

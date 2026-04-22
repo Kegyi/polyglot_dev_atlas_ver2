@@ -59,6 +59,10 @@
                         if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
                             // Extract the collection key between modeKey + '-collection-' and '-open'
                             var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
                             // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
                             var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
                             var listId = 'toc-collection-' + modeKey + '-' + safe;
