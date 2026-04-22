@@ -127,7 +127,7 @@
             const excerpt = String(item.excerpt || '').slice(0, 180);
             // If this is a block-level result, append the block ID as an anchor fragment
             let resultUrl = getAssetPrefix() + item.url;
-            if (item.block_id && item.block_id !== item.id) {
+            if (item.block_id) {
                 resultUrl += '#' + item.block_id;
             }
             return (
