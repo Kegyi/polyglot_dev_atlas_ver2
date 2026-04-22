@@ -1,0 +1,41 @@
+{
+    "title": "Atlas Mode | Polyglot Dev App",
+    "description": "Atlas mode reference pages for cross-language concepts, patterns, and workflows.",
+    "template": "base.html",
+    "body_class": "atlas-view atlas-mode-home",
+    "content": [
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "atlas-intro",
+                    "title": "Atlas Mode",
+                    "content": [
+                        {
+                            "type": "h2",
+                            "text": "Reference-First Navigation"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Atlas mode is the reference layer of the app. Use the left navigation to jump across design patterns, principles, workflows, and language-specific reference collections."
+                        },
+                        {
+                            "type": "text",
+                            "text": "Pick one or two languages in the selector bar to compare implementation styles side by side while staying on the same concept page."
+                        }
+                    ]
+                },
+                {
+                    "id": "atlas-start",
+                    "title": "Where to Start",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, and Keywords for language-specific quick lookup."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

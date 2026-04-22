@@ -7,8 +7,152 @@
 .nav-top, .nav-bottom { display: flex; align-items: center; padding: 10px 20px; flex: 1; }
 .nav-top { justify-content: space-between; border-bottom: 1px solid rgba(128, 128, 128, 0.1); }
 .nav-left, .nav-center, .nav-right { display: flex; align-items: center; gap: 15px; }
-.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
+.logo-with-modes { position: relative; display: flex; align-items: center; gap: 8px; }
+.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; cursor: pointer; user-select: none; }
 .logo .accent { color: var(--accent); }
+
+.home-modes-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-mode-btn {
+    text-decoration: none;
+    color: var(--text-dim);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+}
+
+.nav-mode-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+/* Mode home links removed - now in nav-center as home-modes-nav */
+
+.mode-switcher {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    margin-left: -8px;
+}
+
+.mode-switcher-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    cursor: pointer;
+    border: var(--border-w) solid var(--border);
+    background: var(--bg);
+    color: var(--text-dim);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.mode-switcher-trigger:hover,
+.mode-switcher[open] .mode-switcher-trigger {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.mode-switcher-trigger .chevron {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+
+.mode-switcher[open] .mode-switcher-trigger .chevron {
+    transform: rotate(180deg);
+}
+
+.mode-switcher-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--panel);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-direction: column;
+    min-width: 140px;
+    z-index: 100;
+}
+
+.mode-switcher[open] .mode-switcher-menu {
+    display: flex;
+}
+    margin-left: 6px;
+.mode-switcher-caret {
+    display: inline-block;
+    font-size: 0.72rem;
+}
+
+.mode-switcher-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 160px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--panel);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 8px;
+    z-index: 50;
+}
+
+.mode-switcher[open] .mode-switcher-menu {
+    display: flex;
+}
+
+.mode-switcher-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-dim);
+    border-radius: var(--radius);
+    padding: 7px 10px;
+    font-size: 0.86rem;
+}
+
+.mode-switcher-link:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-switcher-link.active {
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--accent-glow);
+}
+
+.nav-mode-list {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: var(--border-w) solid var(--border);
+}
+
+.nav-mode-list .mode-nav-link {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
 
 .nav-list { list-style: none; padding: 0; margin: 0; }
 .nav-list li { margin-bottom: 4px; position: relative; }

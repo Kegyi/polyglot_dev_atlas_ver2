@@ -106,15 +106,22 @@
     <div id="navbar">
         <div class="nav-top">
             <div class="nav-left">
-                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
-                <div class="toggle-group mode-toggles"><a href="../../../index.html" class="toggle " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../../course/index.html" class="toggle active" onclick="app.prepareModeSwitch()">Course</a><a href="../../../meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
+                <div class="logo-with-modes">
+                    <span class="logo" id="app-mode-title">POLYGLOT <span class="accent">PROJECT</span></span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="chevron">▼</span></summary><div class="mode-switcher-menu"><a href="../../../index.html" class="mode-switcher-link" onclick="app.prepareModeSwitch()">Project</a><a href="../../../atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../../course/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Course</a><a href="../../../meta/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Meta</a></div></details>
+                </div>
             </div>
             <div class="nav-center">
+                <div id="home-modes-nav" class="home-modes-nav" style="display:none;">
+                    <a href="./atlas/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Atlas</a>
+                    <a href="./course/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Course</a>
+                    <a href="./meta/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Meta</a>
+                </div>
                 <div class="toggle-group view-toggles">
                     <button id="view-single-btn" class="toggle">Single</button>
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
-                <button id="swap-btn" class="icon-btn">⇄</button>
+                <button id="swap-btn" class="icon-btn" aria-label="Swap languages">&#8646;</button>
                 <div class="atlas-search">
                     <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
                     <div id="atlas-search-results" class="search-results" hidden></div>
@@ -151,7 +158,7 @@
 
     <div id="container">
         <aside id="sidebar-left">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
                 <ul class="nav-list" id="toc-main"><li class=""><a href="../../../course/index.html">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li>
@@ -164,7 +171,7 @@
         
         <main id="content">
             <div class="content-wrapper">
-                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../../../index.html">Home</a><span class="sep">/</span><a href="../../../course/index.html">Course</a><span class="sep">/</span><a href="../../../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Interview</a><span class="sep">/</span><a href="../../../course/interview/2_linked_list/index.html">2 linked list</a><span class="sep">/</span><span>kth Node from End</span></nav>
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../../../index.html">Home</a><span class="sep">/</span><a href="../../../course/index.html">Course</a><span class="sep">/</span><span>Interview</span><span class="sep">/</span><a href="../../../course/interview/2_linked_list/index.html">2 linked list</a><span class="sep">/</span><span>kth Node from End</span></nav>
                 <h2  class="">kth Node from End</h2><p  class="">Given a linked list, find the kth node from the end of the list.</p><div  class="blocks-container ">
         <div class="topic-section text_style  " id="problem_statement">
             <div class="topic-header" onclick="app.toggleTopic('problem_statement')">
@@ -420,7 +427,7 @@ main();
         </main>
 
         <aside id="sidebar-right">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
             <div class="sidebar-content">
                 <div class="sidebar-header-row">
                     <div class="sidebar-label">Topics</div>
@@ -446,5 +453,25 @@ main();
     <script src="../../../assets/js/content_renderers.js"></script>
     <script src="../../../assets/js/search_ui.js"></script>
     <script src="../../../assets/js/permalinks.js"></script>
-</body>
+    <script>
+        (function() {
+            var logo = document.getElementById("app-mode-title");
+            var homeModesNav = document.getElementById("home-modes-nav");
+            if (!logo) return;
+            
+            var path = (window.location.pathname || "").toLowerCase();
+            var mode = "atlas";
+            if (path.indexOf("/course/") !== -1 || path.indexOf("/course") === 0) mode = "course";
+            else if (path.indexOf("/meta/") !== -1 || path.indexOf("/meta") === 0) mode = "meta";
+            var isHome = mode === "atlas" && /\/index\.html$/.test(path) && path.indexOf("/atlas/") === -1;
+            
+            var label = isHome ? "PROJECT" : (mode === "course" ? "COURSE" : (mode === "meta" ? "META" : "ATLAS"));
+            logo.innerHTML = "POLYGLOT <span class=\"accent\">" + label + "</span>";
+            
+            // Show home modes nav only on home page
+            if (homeModesNav) {
+                homeModesNav.style.display = isHome ? "flex" : "none";
+            }
+        })();
+    </script></body>
 </html>

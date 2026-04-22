@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Polyglot Atlas">
-    <title>Welcome | Polyglot Dev Atlas</title>
+    <title>Home | Polyglot Dev App</title>
     
     <!-- Web App Manifest for PWA installation -->
     <link rel="manifest" href="./assets/manifest.json">
@@ -102,19 +102,26 @@
     <link rel="stylesheet" href="./assets/css/ui_states.css">
     
 </head>
-<body class="mode-atlas no-topics home-view">
+<body class="mode-atlas  home-view">
     <div id="navbar">
         <div class="nav-top">
             <div class="nav-left">
-                <span class="logo">POLYGLOT <span class="accent">ATLAS</span></span>
-                <div class="toggle-group mode-toggles"><a href="./index.html" class="toggle active" onclick="app.prepareModeSwitch()">Atlas</a><a href="./course/index.html" class="toggle " onclick="app.prepareModeSwitch()">Course</a><a href="./meta/index.html" class="toggle " onclick="app.prepareModeSwitch()">Meta</a></div>
+                <div class="logo-with-modes">
+                    <span class="logo" id="app-mode-title">POLYGLOT <span class="accent">PROJECT</span></span>
+                    <details class="mode-switcher" style="display:none;"><summary class="mode-switcher-trigger"></summary></details>
+                </div>
             </div>
             <div class="nav-center">
+                <div id="home-modes-nav" class="home-modes-nav" style="display:none;">
+                    <a href="./atlas/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Atlas</a>
+                    <a href="./course/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Course</a>
+                    <a href="./meta/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Meta</a>
+                </div>
                 <div class="toggle-group view-toggles">
                     <button id="view-single-btn" class="toggle">Single</button>
                     <button id="view-double-btn" class="toggle">Double</button>
                 </div>
-                <button id="swap-btn" class="icon-btn">⇄</button>
+                <button id="swap-btn" class="icon-btn" aria-label="Swap languages">&#8646;</button>
                 <div class="atlas-search">
                     <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
                     <div id="atlas-search-results" class="search-results" hidden></div>
@@ -151,27 +158,53 @@
 
     <div id="container">
         <aside id="sidebar-left">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('left')">◀</div>
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
-                <ul class="nav-list" id="toc-main"><li class="active"><a href="./index.html">Welcome<span class="sidebar-wrap-indent">Polyglot Dev Atlas</span></a></li>
-<li class=""><a href="./atlas/design_patterns.html">Design Patterns</a></li>
-<li class=""><a href="./atlas/principles.html">principles</a></li>
-<li class=""><a href="./atlas/workflow.html">Workflow</a></li>
-<li class="nav-item nav-collection nav-keywords"><a href="#" onclick="app.openCollection('atlas', 'keywords');return false;">Keywords <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-atlas-keywords" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'keywords');return false;">← Back</a></li><li class=""><a href="./atlas/keywords/index.html">Keywords</a></li><li class=""><a href="./atlas/keywords/cpp.html">C++ Keywords</a></li></ul>
+                <ul class="nav-list" id="toc-main"></ul>
             </div>
         </aside>
         
         <main id="content">
             <div class="content-wrapper">
-                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="./index.html">Home</a><span class="sep">/</span><span>Atlas</span><span class="sep">/</span><span>Welcome | Polyglot Dev Atlas</span></nav>
-                
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="./index.html">Home</a></nav>
+                <div  class="blocks-container ">
+        <div class="topic-section   " id="intro">
+            <div class="topic-header" onclick="app.toggleTopic('intro')">
+                <div class="topic-title-wrap"><h2>Welcome to the Home Page</h2><a class="topic-permalink" href="#intro" aria-label="Link to Welcome to the Home Page">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <h2  class="">The Polyglot Mindset</h2><p  class="">The Polyglot Developer Atlas is built to help you navigate multiple programming environments simultaneously. Whether you are a systems engineer moving to web development, or a scripter moving to low-level memory management, this tool provides the bridges you need.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section   " id="modes">
+            <div class="topic-header" onclick="app.toggleTopic('modes')">
+                <div class="topic-title-wrap"><h2>Understanding the Modes</h2><a class="topic-permalink" href="#modes" aria-label="Link to Understanding the Modes">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <h3  class="">Atlas Mode</h3><p  class="">In Atlas mode, you can select one or two programming languages from the top bar to see side-by-side comparisons of syntax, logic, and memory management. It acts as a live reference sheet for daily coding work.</p><h3  class="">Course Mode</h3><p  class="">Course mode transforms the atlas into a structured learning roadmap. It guides you through the fundamental concepts of programming step by step, ensuring you understand the why behind the syntax in every language.</p><h3  class="">Meta Mode</h3><p  class="">Meta mode collects app-level references, showcases, and supporting material around how the atlas itself is organized.</p>
+            </div>
+        </div>
+        
+        <div class="topic-section   " id="getting-started">
+            <div class="topic-header" onclick="app.toggleTopic('getting-started')">
+                <div class="topic-title-wrap"><h2>How to Navigate</h2><a class="topic-permalink" href="#getting-started" aria-label="Link to How to Navigate">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">1. Use the mode selector in the center of the navbar to switch between Project, Atlas, Course, and Meta.</p><p  class="">2. Select your languages in the selector bar to trigger comparison views.</p><p  class="">3. Use the left sidebar to change pages and the right sidebar to focus on specific topics within a page.</p><p  class="">4. Toggle the sidebars using the edge buttons to clear the view for deep code reading.</p>
+            </div>
+        </div>
+        </div>
                 
             </div>
         </main>
 
         <aside id="sidebar-right">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('right')">▶</div>
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
             <div class="sidebar-content">
                 <div class="sidebar-header-row">
                     <div class="sidebar-label">Topics</div>
@@ -182,7 +215,7 @@
                         <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
                     </div>
                 </div>
-                
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="intro" data-depth="1"><span onclick="app.focusTopic('intro')">Welcome to the Home Page</span></li><li class="toc-item depth-1" data-topic-id="modes" data-depth="1"><span onclick="app.focusTopic('modes')">Understanding the Modes</span></li><li class="toc-item depth-1" data-topic-id="getting-started" data-depth="1"><span onclick="app.focusTopic('getting-started')">How to Navigate</span></li></ul></div>
             </div>
         </aside>
     </div>
@@ -197,5 +230,25 @@
     <script src="./assets/js/content_renderers.js"></script>
     <script src="./assets/js/search_ui.js"></script>
     <script src="./assets/js/permalinks.js"></script>
-</body>
+    <script>
+        (function() {
+            var logo = document.getElementById("app-mode-title");
+            var homeModesNav = document.getElementById("home-modes-nav");
+            if (!logo) return;
+            
+            var path = (window.location.pathname || "").toLowerCase();
+            var mode = "atlas";
+            if (path.indexOf("/course/") !== -1 || path.indexOf("/course") === 0) mode = "course";
+            else if (path.indexOf("/meta/") !== -1 || path.indexOf("/meta") === 0) mode = "meta";
+            var isHome = mode === "atlas" && /\/index\.html$/.test(path) && path.indexOf("/atlas/") === -1;
+            
+            var label = isHome ? "PROJECT" : (mode === "course" ? "COURSE" : (mode === "meta" ? "META" : "ATLAS"));
+            logo.innerHTML = "POLYGLOT <span class=\"accent\">" + label + "</span>";
+            
+            // Show home modes nav only on home page
+            if (homeModesNav) {
+                homeModesNav.style.display = isHome ? "flex" : "none";
+            }
+        })();
+    </script></body>
 </html>

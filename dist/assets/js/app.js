@@ -174,6 +174,138 @@ const app = {
         return 'atlas';
     },
 
+    isProjectMode: function() {
+        const p = (window.location.pathname || '').toLowerCase();
+        return document.body.classList.contains('home-view') ||
+            (this.getCurrentMode() === 'atlas' && /\/index\.html$/.test(p) && p.indexOf('/atlas/') === -1);
+    },
+
+    getDisplayedMode: function() {
+        return this.isProjectMode() ? 'project' : this.getCurrentMode();
+    },
+
+    getModeLabel: function(mode) {
+        if (mode === 'project') return 'PROJECT';
+        if (mode === 'course') return 'COURSE';
+        if (mode === 'meta') return 'META';
+        return 'ATLAS';
+    },
+
+    updateModeTitle: function(mode) {
+        const logo = document.getElementById('app-mode-title');
+        if (!logo) return;
+        const label = this.getModeLabel(mode || this.getDisplayedMode());
+        logo.innerHTML = `POLYGLOT <span class="accent">${label}</span>`;
+    },
+
+    getModeRootPrefix: function() {
+        const script = document.querySelector('script[src*="assets/js/app.js"]');
+        if (!script) return './';
+        const src = script.getAttribute('src') || './assets/js/app.js';
+        const marker = 'assets/js/app.js';
+        const idx = src.indexOf(marker);
+        if (idx === -1) return './';
+        return src.substring(0, idx) || './';
+    },
+
+    getModeLinkDefs: function() {
+        const modeSwitcherLinks = Array.from(document.querySelectorAll('.mode-switcher .mode-switcher-link'));
+        if (modeSwitcherLinks.length > 0) {
+            return modeSwitcherLinks
+                .map(link => {
+                    const label = (link.textContent || '').trim();
+                    if (!label) return null;
+                    return { label, href: link.getAttribute('href') || '#' };
+                })
+                .filter(Boolean);
+        }
+
+        const prefix = this.getModeRootPrefix();
+        return [
+            { label: 'Project', href: `${prefix}index.html` },
+            { label: 'Atlas', href: `${prefix}atlas/index.html` },
+            { label: 'Course', href: `${prefix}course/index.html` },
+            { label: 'Meta', href: `${prefix}meta/index.html` }
+        ];
+    },
+
+    bindModeTitleSync: function(root) {
+        if (!root) return;
+        root.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                const label = (link.textContent || '').trim().toLowerCase();
+                this.updateModeTitle(label || this.getDisplayedMode());
+            });
+        });
+    },
+
+    ensureModeSwitcher: function() {
+        const modeSwitcher = document.querySelector('.mode-switcher');
+        if (!modeSwitcher) return;
+
+        const summary = modeSwitcher.querySelector('.mode-switcher-trigger') || modeSwitcher.querySelector('summary');
+        if (summary && !summary.innerHTML.trim()) {
+            summary.innerHTML = '<span class="chevron">▼</span>';
+        }
+
+        let menu = modeSwitcher.querySelector('.mode-switcher-menu');
+        if (!menu) {
+            menu = document.createElement('div');
+            menu.className = 'mode-switcher-menu';
+            modeSwitcher.appendChild(menu);
+        }
+
+        if (menu.querySelectorAll('.mode-switcher-link').length === 0) {
+            const current = this.getDisplayedMode();
+            const defs = this.getModeLinkDefs();
+            menu.innerHTML = defs.map(def => {
+                const lower = def.label.toLowerCase();
+                const active = lower === current ? ' active' : '';
+                return `<a href="${def.href}" class="mode-switcher-link${active}" onclick="app.prepareModeSwitch()">${def.label}</a>`;
+            }).join('');
+        }
+
+        modeSwitcher.style.display = '';
+        this.bindModeTitleSync(menu);
+        this.positionModeMenuUnderModeLabel();
+    },
+
+    positionModeMenuUnderModeLabel: function() {
+        const logo = document.getElementById('app-mode-title');
+        const accent = document.querySelector('#app-mode-title .accent');
+        const modeSwitcher = document.querySelector('.mode-switcher');
+        if (!logo || !accent || !modeSwitcher) return;
+
+        const accentRect = accent.getBoundingClientRect();
+        const switcherRect = modeSwitcher.getBoundingClientRect();
+        const left = Math.round(accentRect.left - switcherRect.left);
+        modeSwitcher.style.setProperty('--mode-menu-left', `${left}px`);
+    },
+
+    setupProjectSidebarModes: function() {
+        if (!this.isProjectMode()) return;
+        const tocMain = document.getElementById('toc-main');
+        if (!tocMain) return;
+        if (tocMain.querySelector('.nav-mode-group')) return;
+
+        const defs = this.getModeLinkDefs();
+        const modeItems = defs.map(def => {
+            const lower = def.label.toLowerCase();
+            const active = lower === 'project' ? ' class="active"' : '';
+            return `<li${active}><a href="${def.href}" onclick="app.prepareModeSwitch()">${def.label}</a></li>`;
+        }).join('');
+
+        const html = `<li class="nav-mode-group"><span>Modes</span></li>${modeItems}`;
+        tocMain.insertAdjacentHTML('afterbegin', html);
+    },
+
+    hideTopModeLinks: function() {
+        const homeModesNav = document.getElementById('home-modes-nav');
+        if (homeModesNav) {
+            homeModesNav.style.display = 'none';
+        }
+    },
+
     updateViewModeUI: function(mode) {
         const btn = document.getElementById('view-mode-btn');
         if (btn) btn.innerText = mode === 'all' ? 'All' : 'Focus';
@@ -182,10 +314,11 @@ const app = {
     /**
      * Showcases navigation helpers: swap main nav for showcases list and back.
      */
-    openShowcases: function() {
+    openShowcases: function(options) {
         const main = document.getElementById('toc-main');
         const shows = document.getElementById('toc-showcases');
         if (!shows || !main) return;
+        const noNavigate = !!(options && options.noNavigate);
         // store scroll position to restore later
         main.dataset._scroll = main.scrollTop || 0;
         main.style.display = 'none';
@@ -200,7 +333,7 @@ const app = {
             // (the first content link is an appropriate default).
             try {
                 const isOnShowcases = window.location.pathname.indexOf('/meta/showcases/') !== -1;
-                if (!isOnShowcases) {
+                if (!isOnShowcases && !noNavigate) {
                     const mode = this.getCurrentMode();
                     const prevKey = `${mode}-showcases-prev-path`;
                     if (!localStorage.getItem(prevKey)) {
@@ -248,11 +381,12 @@ const app = {
      * meta/showcases). The builder creates a hidden list with id
      * `toc-collection-{mode}-{key}` and a toggle that calls these helpers.
      */
-    openCollection: function(mode, key) {
+    openCollection: function(mode, key, options) {
         try {
             const main = document.getElementById('toc-main');
             const shows = document.getElementById(`toc-collection-${mode}-${key}`);
             if (!shows || !main) return;
+            const noNavigate = !!(options && options.noNavigate);
             // Clear any other open flags for this mode so only one collection
             // is considered 'open' at a time. This prevents multiple lists
             // from competing and avoids stale state when navigating.
@@ -300,7 +434,7 @@ const app = {
             if (firstContentLink) {
                 const keyPath = key.split('-').join('/');
                 const isOnCollection = window.location.pathname.indexOf(`/${mode}/${keyPath}/`) !== -1;
-                if (!isOnCollection) {
+                if (!isOnCollection && !noNavigate) {
                     const prevKey = `${mode}-collection-${key}-prev-path`;
                     // Always refresh the origin path so Back returns to the
                     // most recent page that opened this collection.
@@ -658,6 +792,9 @@ const app = {
      */
     saveCurrentPageState: function() {
         const path = window.location.pathname;
+        if (document.body.classList.contains('home-view')) {
+            return;
+        }
         if (document.body.classList.contains('mode-atlas')) {
             localStorage.setItem('atlas-last-path', path);
         } else if (document.body.classList.contains('mode-course')) {
@@ -672,14 +809,30 @@ const app = {
      * Intercepts mode switches to use last visited paths.
      */
     setupPersistentModeSwitcher: function() {
-        const modeBtns = document.querySelectorAll('.mode-toggles .toggle');
-        modeBtns.forEach(btn => {
-            const text = btn.innerText.toLowerCase(); 
-            const lastPath = localStorage.getItem(`${text}-last-path`);
-            if (lastPath) {
-                btn.setAttribute('href', lastPath);
+        // Sidebar mode links should always open mode index pages.
+        // Keep last-path restoration only for any legacy header toggles.
+        const modeSelectors = document.querySelectorAll('.mode-toggles .toggle');
+        modeSelectors.forEach(btn => {
+            const text = btn.innerText.toLowerCase();
+            const mode = text.trim(); // e.g., 'atlas', 'course', 'meta'
+            const lastPath = localStorage.getItem(`${mode}-last-path`);
+            if (lastPath && btn.href) {
+                // Update the href to the last visited path for this mode
+                btn.href = lastPath;
             }
         });
+        
+        // Wire up logo click to toggle mode switcher details.
+        const logo = document.querySelector('.logo-with-modes .logo');
+        const modeSwitcher = document.querySelector('.mode-switcher');
+        if (logo && modeSwitcher) {
+            logo.addEventListener('click', (e) => {
+                e.preventDefault();
+                modeSwitcher.open = !modeSwitcher.open;
+            });
+
+            window.addEventListener('resize', () => this.positionModeMenuUnderModeLabel());
+        }
     },
 
     /**
@@ -707,6 +860,10 @@ const app = {
 
         this.setupScrollSpy();
         this.saveCurrentPageState();
+        this.updateModeTitle(this.getDisplayedMode());
+        this.ensureModeSwitcher();
+        this.setupProjectSidebarModes();
+        this.hideTopModeLinks();
         this.setupPersistentModeSwitcher();
 
         // If the user had the Showcases nav open, restore it on page load so
@@ -714,7 +871,7 @@ const app = {
         try {
             const mode = this.getCurrentMode();
             if (localStorage.getItem(`${mode}-showcases-open`) === '1') {
-                setTimeout(() => this.openShowcases(), 100);
+                setTimeout(() => this.openShowcases({ noNavigate: true }), 100);
             }
             // Restore any generic collection submenus that were left open.
             // The builder emits lists with ids like `toc-collection-{mode}-{key}`.
@@ -727,7 +884,7 @@ const app = {
                         const cmode = parts[2];
                         const ckey = parts.slice(3).join('-');
                         if (localStorage.getItem(`${cmode}-collection-${ckey}-open`) === '1') {
-                            setTimeout(() => this.openCollection(cmode, ckey), 120);
+                            setTimeout(() => this.openCollection(cmode, ckey, { noNavigate: true }), 120);
                         }
                     }
                 });

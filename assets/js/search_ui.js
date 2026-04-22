@@ -125,8 +125,13 @@
 
         panel.innerHTML = items.map(item => {
             const excerpt = String(item.excerpt || '').slice(0, 180);
+            // If this is a block-level result, append the block ID as an anchor fragment
+            let resultUrl = getAssetPrefix() + item.url;
+            if (item.block_id && item.block_id !== item.id) {
+                resultUrl += '#' + item.block_id;
+            }
             return (
-                '<a class="search-result" href="' + getAssetPrefix() + item.url + '">' +
+                '<a class="search-result" href="' + resultUrl + '">' +
                     '<div class="search-result-title">' + escapeHtml(item.title || item.id || 'Untitled') + '</div>' +
                     '<div class="search-result-meta">' + escapeHtml(item.mode || '') + '</div>' +
                     '<div class="search-result-excerpt">' + escapeHtml(excerpt) + '</div>' +

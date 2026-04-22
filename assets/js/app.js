@@ -182,10 +182,11 @@ const app = {
     /**
      * Showcases navigation helpers: swap main nav for showcases list and back.
      */
-    openShowcases: function() {
+    openShowcases: function(options) {
         const main = document.getElementById('toc-main');
         const shows = document.getElementById('toc-showcases');
         if (!shows || !main) return;
+        const noNavigate = !!(options && options.noNavigate);
         // store scroll position to restore later
         main.dataset._scroll = main.scrollTop || 0;
         main.style.display = 'none';
@@ -200,7 +201,7 @@ const app = {
             // (the first content link is an appropriate default).
             try {
                 const isOnShowcases = window.location.pathname.indexOf('/meta/showcases/') !== -1;
-                if (!isOnShowcases) {
+                if (!isOnShowcases && !noNavigate) {
                     const mode = this.getCurrentMode();
                     const prevKey = `${mode}-showcases-prev-path`;
                     if (!localStorage.getItem(prevKey)) {
@@ -248,11 +249,12 @@ const app = {
      * meta/showcases). The builder creates a hidden list with id
      * `toc-collection-{mode}-{key}` and a toggle that calls these helpers.
      */
-    openCollection: function(mode, key) {
+    openCollection: function(mode, key, options) {
         try {
             const main = document.getElementById('toc-main');
             const shows = document.getElementById(`toc-collection-${mode}-${key}`);
             if (!shows || !main) return;
+            const noNavigate = !!(options && options.noNavigate);
             // Clear any other open flags for this mode so only one collection
             // is considered 'open' at a time. This prevents multiple lists
             // from competing and avoids stale state when navigating.
@@ -300,7 +302,7 @@ const app = {
             if (firstContentLink) {
                 const keyPath = key.split('-').join('/');
                 const isOnCollection = window.location.pathname.indexOf(`/${mode}/${keyPath}/`) !== -1;
-                if (!isOnCollection) {
+                if (!isOnCollection && !noNavigate) {
                     const prevKey = `${mode}-collection-${key}-prev-path`;
                     // Always refresh the origin path so Back returns to the
                     // most recent page that opened this collection.
@@ -658,6 +660,9 @@ const app = {
      */
     saveCurrentPageState: function() {
         const path = window.location.pathname;
+        if (document.body.classList.contains('home-view')) {
+            return;
+        }
         if (document.body.classList.contains('mode-atlas')) {
             localStorage.setItem('atlas-last-path', path);
         } else if (document.body.classList.contains('mode-course')) {
@@ -672,14 +677,28 @@ const app = {
      * Intercepts mode switches to use last visited paths.
      */
     setupPersistentModeSwitcher: function() {
-        const modeBtns = document.querySelectorAll('.mode-toggles .toggle');
-        modeBtns.forEach(btn => {
-            const text = btn.innerText.toLowerCase(); 
-            const lastPath = localStorage.getItem(`${text}-last-path`);
-            if (lastPath) {
-                btn.setAttribute('href', lastPath);
+        // Sidebar mode links should always open mode index pages.
+        // Keep last-path restoration only for any legacy header toggles.
+        const modeSelectors = document.querySelectorAll('.mode-toggles .toggle');
+        modeSelectors.forEach(btn => {
+            const text = btn.innerText.toLowerCase();
+            const mode = text.trim(); // e.g., 'atlas', 'course', 'meta'
+            const lastPath = localStorage.getItem(`${mode}-last-path`);
+            if (lastPath && btn.href) {
+                // Update the href to the last visited path for this mode
+                btn.href = lastPath;
             }
         });
+        
+        // Wire up logo click to toggle mode switcher details on non-Home pages
+        const logo = document.querySelector('.logo-with-modes .logo');
+        const modeSwitcher = document.querySelector('.mode-switcher');
+        if (logo && modeSwitcher && modeSwitcher.style.display !== 'none') {
+            logo.addEventListener('click', (e) => {
+                e.preventDefault();
+                modeSwitcher.open = !modeSwitcher.open;
+            });
+        }
     },
 
     /**
@@ -714,7 +733,7 @@ const app = {
         try {
             const mode = this.getCurrentMode();
             if (localStorage.getItem(`${mode}-showcases-open`) === '1') {
-                setTimeout(() => this.openShowcases(), 100);
+                setTimeout(() => this.openShowcases({ noNavigate: true }), 100);
             }
             // Restore any generic collection submenus that were left open.
             // The builder emits lists with ids like `toc-collection-{mode}-{key}`.
@@ -727,7 +746,7 @@ const app = {
                         const cmode = parts[2];
                         const ckey = parts.slice(3).join('-');
                         if (localStorage.getItem(`${cmode}-collection-${ckey}-open`) === '1') {
-                            setTimeout(() => this.openCollection(cmode, ckey), 120);
+                            setTimeout(() => this.openCollection(cmode, ckey, { noNavigate: true }), 120);
                         }
                     }
                 });

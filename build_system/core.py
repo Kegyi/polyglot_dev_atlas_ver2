@@ -362,12 +362,66 @@ class AtlasBuilder:
     def _generate_search_index(self):
         """Emit static search index for instant client-side lookup."""
         entries = []
+        
+        def extract_block_data(content_list, page_url):
+            """Recursively extract blocks with their IDs and text content."""
+            blocks = []
+            for item in content_list:
+                item_type = item.get("type", "")
+                
+                # Handle "blocks" type which contains nested blocks array
+                if item_type == "blocks" and item.get("blocks"):
+                    for block in item.get("blocks", []):
+                        block_id = block.get("id")
+                        title = block.get("title", "")
+                        
+                        # Collect search text from block content
+                        block_text = title
+                        if block.get("content") and isinstance(block["content"], list):
+                            block_text += " " + self._collect_search_text(block["content"], max_chars=1000)
+                        
+                        if block_text.strip() and block_id:
+                            blocks.append({
+                                'block_id': block_id,
+                                'block_title': title,
+                                'block_text': block_text,
+                                'page_url': page_url
+                            })
+                        
+                        # Recursively process nested content within this block
+                        if block.get("content"):
+                            blocks.extend(extract_block_data(block["content"], page_url))
+                
+                # Handle regular items with IDs (headings, text elements, etc.)
+                elif item.get("id") and item_type not in ["blocks"]:
+                    title = item.get("title") or item.get("text") or ""
+                    block_text = title
+                    if item.get("content") and isinstance(item["content"], list):
+                        block_text += " " + self._collect_search_text(item["content"], max_chars=500)
+                    
+                    if block_text.strip():
+                        blocks.append({
+                            'block_id': item.get("id"),
+                            'block_title': title,
+                            'block_text': block_text,
+                            'page_url': page_url
+                        })
+                
+                # Recursively process nested content
+                if item.get("content") and isinstance(item["content"], list) and item_type != "blocks":
+                    blocks.extend(extract_block_data(item["content"], page_url))
+            
+            return blocks
+        
         for mode, pages in self.site_registry.items():
             for page in pages:
                 page_data = self._load_json(page.get('path', ''))
                 if not isinstance(page_data, dict):
                     continue
+                
                 search_text = self._collect_search_text(page_data.get('content', []), max_chars=5000)
+                
+                # Add page-level entry
                 entries.append({
                     'id': page.get('id', ''),
                     'mode': mode,
@@ -377,7 +431,23 @@ class AtlasBuilder:
                     'url': page.get('url', ''),
                     'excerpt': search_text[:240],
                     'search_text': search_text,
+                    'block_id': None,  # page-level entries have no block_id
                 })
+                
+                # Add block-level entries for content with IDs
+                blocks = extract_block_data(page_data.get('content', []), page.get('url', ''))
+                for block in blocks:
+                    entries.append({
+                        'id': block['block_id'],
+                        'mode': mode,
+                        'title': block['block_title'],
+                        'description': '',
+                        'tags': [],
+                        'url': block['page_url'],  # page URL, will add anchor in search_ui.js
+                        'excerpt': block['block_text'][:240],
+                        'search_text': block['block_text'],
+                        'block_id': block['block_id'],  # mark as block-level for search_ui.js to append anchor
+                    })
 
         out_dir = os.path.join(self.dist_dir, 'content')
         os.makedirs(out_dir, exist_ok=True)
@@ -777,6 +847,8 @@ class AtlasBuilder:
         root = make_node()
 
         for p in self.site_registry.get(active_mode, []):
+            if active_mode == 'atlas' and p.get('url') == 'index.html':
+                continue
             active = "active" if p.get('url') == current_page_url else ""
             safe_title = format_title_for_sidebar(p.get('title', ''))
             item_html = f'<li class="{active}"><a href="{prefix}{p["url"]}">{safe_title}</a></li>'
@@ -869,10 +941,13 @@ class AtlasBuilder:
 
             return '\n'.join(html_parts)
 
-        # Render root main list
-        nav_html += '<ul class="nav-list" id="toc-main">'
-        nav_html += render_node(root, [])
-        nav_html += '</ul>'
+        # Root home is only a launcher for modes, not the Atlas navigation tree.
+        if active_mode == 'atlas' and current_page_url == 'index.html':
+            nav_html += '<ul class="nav-list" id="toc-main"></ul>'
+        else:
+            nav_html += '<ul class="nav-list" id="toc-main">'
+            nav_html += render_node(root, [])
+            nav_html += '</ul>'
 
         # Emit submenus recursively
         def emit_submenus(node, path_parts=None):
@@ -932,7 +1007,8 @@ class AtlasBuilder:
                 # Recurse into grandchildren
                 emit_submenus(child_node, path_parts + [child_key])
 
-        emit_submenus(root, [])
+        if not (active_mode == 'atlas' and current_page_url == 'index.html'):
+            emit_submenus(root, [])
 
         return nav_html
 
@@ -1054,72 +1130,66 @@ class AtlasBuilder:
         # Intentionally avoid relocating other CSS files because page
         # metadata can reference them directly via `extra_assets`.
 
-    def assemble_mode_switcher(self, active_mode, prefix):
-        html = '<div class="toggle-group mode-toggles">'
-        # Build mode toggles from discovered pages subfolders so adding
-        # a new top-level folder under `content/pages/` auto-creates a mode.
-        modes = sorted(self.site_registry.keys()) if self.site_registry else ["atlas"]
-        for m in modes:
-            active = "active" if m == active_mode else ""
-            # Root/top-level mode ('atlas') resolves to index.html at root.
-            target_url = prefix + ("index.html" if m == "atlas" else f"{m}/index.html")
-            # Close the UI-only showcases view when switching modes so the
-            # destination mode can restore its own saved state if present.
-            html += f'<a href="{target_url}" class="toggle {active}" onclick="app.prepareModeSwitch()">{m.capitalize()}</a>'
-        return html + '</div>'
+    def assemble_mode_switcher(self, active_mode, prefix, current_page_url):
+        is_root_home = active_mode == 'atlas' and current_page_url == 'index.html'
+
+        preferred_modes = ['atlas', 'course', 'meta']
+        discovered_modes = sorted(self.site_registry.keys()) if self.site_registry else ['atlas']
+        ordered_modes = [m for m in preferred_modes if m in discovered_modes] + [m for m in discovered_modes if m not in preferred_modes]
+
+        if is_root_home:
+            # Home page: only render trigger (modes will be shown in nav-center)
+            return '<details class="mode-switcher" style="display:none;"><summary class="mode-switcher-trigger"></summary></details>'
+
+        html = '<details class="mode-switcher">'
+        html += '<summary class="mode-switcher-trigger"><span class="chevron">▼</span></summary>'
+        html += '<div class="mode-switcher-menu">'
+        html += f'<a href="{prefix}index.html" class="mode-switcher-link" onclick="app.prepareModeSwitch()">Project</a>'
+        for mode_name in ordered_modes:
+            active = 'active' if mode_name == active_mode else ''
+            target_url = prefix + f'{mode_name}/index.html'
+            html += f'<a href="{target_url}" class="mode-switcher-link {active}" onclick="app.prepareModeSwitch()">{mode_name.capitalize()}</a>'
+        html += '</div></details>'
+        return html
 
     def assemble_breadcrumbs(self, rel_path, page_entry, prefix):
-        """Build breadcrumbs from folder structure and known generated index pages."""
+        """Build breadcrumbs from folder structure. Only link groups that have index pages."""
         parts = [p for p in rel_path.split(os.sep) if p]
+        
+        # Start with Home link pointing to root
         crumbs = [f'<a href="{prefix}index.html">Home</a>']
 
+        # If on root index page, we're done (just show Home)
         if not parts:
-            crumbs.append('<span>Atlas</span>')
-            crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
             return '<nav class="breadcrumbs" aria-label="Breadcrumbs">' + '<span class="sep">/</span>'.join(crumbs) + '</nav>'
 
-        # Build an index of generated URLs so we only link to known pages.
-        known_urls = set()
-        known_urls_by_mode = {}
+        # Build a set of all known folder index URLs for quick lookup
+        known_indices = set()
         for mode_name, mode_entries in self.site_registry.items():
-            known_urls_by_mode[mode_name] = []
             for pe in mode_entries:
-                u = pe.get('url', '')
-                known_urls.add(u)
-                known_urls_by_mode[mode_name].append(u)
+                url = pe.get('url', '')
+                if url.endswith('/index.html'):
+                    known_indices.add(url)
 
+        # For each breadcrumb part, check if that folder has an index page
         running = []
         for idx, part in enumerate(parts):
             running.append(part)
             human = part.replace('_', ' ').capitalize()
 
-            # Prefer folder index page links when available.
-            if idx == 0 and part == 'atlas':
-                target = 'index.html'
-            else:
-                target = '/'.join(running + ['index.html'])
+            index_url = '/'.join(running + ['index.html'])
 
-            if target in known_urls:
-                crumbs.append(f'<a href="{prefix}{target}">{human}</a>')
-                continue
-
-            # Fallback for folders without index pages: link to the first
-            # content page under that folder so deep breadcrumb clicks still
-            # navigate to the intended depth.
-            folder_prefix = '/'.join(running) + '/'
-            mode_key = parts[0] if parts else 'atlas'
-            candidates = [u for u in known_urls_by_mode.get(mode_key, []) if u.startswith(folder_prefix) and not u.endswith('/index.html')]
-            if candidates:
-                best = sorted(candidates, key=lambda u: (u.count('/'), u))[0]
-                crumbs.append(f'<a href="{prefix}{best}">{human}</a>')
+            # Only render as clickable link if this folder's index page exists
+            if index_url in known_indices:
+                crumbs.append(f'<a href="{prefix}{index_url}">{human}</a>')
             else:
+                # No index page for this folder; render as plain text span (not clickable)
                 crumbs.append(f'<span>{human}</span>')
 
-        # For folder index pages (e.g. meta/showcases/index), the folder crumb
-        # already represents the current location. Avoid duplicating with an
-        # extra trailing page-title crumb like "All Showcases".
+        # Add the final page title (unless it's an index page at a folder, which is already represented by the folder crumb)
         if not (page_entry.get('id') == 'index' and parts):
             crumbs.append(f'<span>{page_entry.get("title", page_entry.get("id", "Page"))}</span>')
+
         return '<nav class="breadcrumbs" aria-label="Breadcrumbs">' + '<span class="sep">/</span>'.join(crumbs) + '</nav>'
 
     def assemble_prev_next(self, mode, current_page_url, prefix):
@@ -1258,13 +1328,14 @@ class AtlasBuilder:
         # Add prefix to src/href that start with assets/
         page_html = re.sub(r'(src|href)="assets/', lambda m: f"{m.group(1)}=\"{prefix}assets/", page_html)
 
+        # Compute the page URL as stored in the registry (consistent format)
+        current_page_url = os.path.join(rel_path, page_entry['id'] + ".html").replace("\\", "/")
+
         # Build Output
         output = template.replace("{{ title }}", data.get("title", "Polyglot Atlas"))
         output = output.replace("{{ asset_prefix }}", prefix)
-        output = output.replace("{{ mode_switcher }}", self.assemble_mode_switcher(mode, prefix))
+        output = output.replace("{{ mode_switcher }}", self.assemble_mode_switcher(mode, prefix, current_page_url))
         output = output.replace("{{ language_selection_buttons }}", self.assemble_language_selector())
-        # Compute the page URL as stored in the registry (consistent format)
-        current_page_url = os.path.join(rel_path, page_entry['id'] + ".html").replace("\\", "/")
         output = output.replace("{{ breadcrumbs }}", self.assemble_breadcrumbs(rel_path, page_entry, prefix))
         output = output.replace("{{ navigation_sidebar }}", self.assemble_navigation(current_page_url, prefix, mode))
         output = output.replace("{{ topic_sidebar }}", self.assemble_topic_sidebar(data) if has_topics else "")
