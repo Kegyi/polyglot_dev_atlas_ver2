@@ -195,7 +195,8 @@ content/pages/
 │   ├── design_patterns.json
 │   ├── principles.json
 │   ├── workflow.json
-│   └── keywords.json           Dynamic keyword page (language-aware)
+│   ├── keywords.json           Dynamic keyword page (language-aware)
+│   └── playground_setup.json   Language-aware setup docs rendered from markdown
 ├── course/
 │   ├── index.json              Course mode landing page
 │   ├── basics.json             Language basics landing (links to 5 sub-chapters)
@@ -309,7 +310,7 @@ All styling is plain CSS using custom properties. No preprocessor.
 | `meta.css` | Meta mode page styles |
 | `reference.css` | Atlas mode reference styles (keyword tables, principle cards) |
 | `tutorial.css` | Course mode styles (step indicators, exercise panels) |
-| `playground.css` | Future interactive playground styles |
+| `playground.css` | Playground-themed styles used by meta showcase pages |
 
 **`assets/css/themes/`**
 
@@ -334,6 +335,8 @@ Vanilla JavaScript — no build step, no frameworks.
 | `polyglot_filter.js` | Multi-select language column filter independent of primary/secondary selection |
 | `search_ui.js` | Client-side search against pre-built `search-index.json` |
 | `content_renderers.js` | Runtime block enhancements: sheet transpose, line-range highlighting, diff mode |
+| `markdown_renderer.js` | Loads and renders markdown blocks from files and inline markdown containers |
+| `marked.offline.js` | Offline markdown parser shim used by `markdown_renderer.js` |
 | `permalinks.js` | Click-to-copy permalink anchors, hash-target flash |
 | `service_worker.js` | PWA offline cache (cache-first for static assets, network-first for content) |
 
@@ -435,7 +438,8 @@ Full set of top-level fields:
 |---|---|---|
 | `title` | `<h1>` | Use once per page at the top |
 | `h1`–`h6` | `<h1>`–`<h6>` | Nesting inside `blocks` auto-adjusts the tag level |
-| `text` | `<p>` | Supports inline markdown (bold, italic, `code`, links) |
+| `text` | `<p>` or markdown container | Standard text block; markdown rendering is enabled for interview pages and can be forced via `markdown: true` / `format: "markdown"` |
+| `markdown` | `<div data-markdown-file>` / dynamic templates | Renders markdown from file paths (including per-language variants) via the frontend markdown renderer |
 | `note` | Styled callout box | For warnings, tips, important notices |
 | `insight` | Highlighted insight card | For pro-tips and key takeaways |
 | `link` | `<a>` | Explicit link block |
