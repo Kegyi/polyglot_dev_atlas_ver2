@@ -144,14 +144,20 @@ const MarkdownRenderer = (function() {
      */
     const processMarkdownElements = async (root = document) => {
         const scanRoot = root && typeof root.querySelectorAll === 'function' ? root : document;
-        const elements = scanRoot.querySelectorAll('[data-markdown-file]');
+        const fileElements = scanRoot.querySelectorAll('[data-markdown-file]');
+        const inlineElements = scanRoot.querySelectorAll('[data-markdown-inline="true"]');
         const promises = [];
 
-        for (const el of elements) {
+        for (const el of fileElements) {
             const filePath = el.getAttribute('data-markdown-file');
             if (filePath) {
                 promises.push(renderMarkdownFile(filePath, el));
             }
+        }
+
+        for (const el of inlineElements) {
+            const markdown = el.textContent || '';
+            renderMarkdownContent(markdown, el);
         }
 
         await Promise.all(promises);

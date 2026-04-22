@@ -592,7 +592,18 @@ class AtlasBuilder:
         return f'<{tag} {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text")}{permalink}</{tag}>'
 
     def _render_text(self, item, depth=2, inherited_style="", context=None):
-        return f'<p {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text", "")}</p>'
+        text_value = item.get("text", "")
+        text_class = item.get("class", "")
+        fmt = str(item.get("format", "")).lower()
+        force_markdown = bool(item.get("markdown", False)) or fmt == "markdown"
+        rel_path = (context or {}).get("rel_path", "")
+        is_interview_page = rel_path.startswith("course/interview/")
+
+        if force_markdown or is_interview_page:
+            # Keep markdown source as escaped text, then render client-side for consistent output.
+            return f'<div {self._id_attr(item)} class="markdown-content markdown-inline {text_class}" data-markdown-inline="true">{self._escape(text_value)}</div>'
+
+        return f'<p {self._id_attr(item)} class="{text_class}">{text_value}</p>'
 
     def _render_link(self, item, depth=2, inherited_style="", context=None):
         href = item.get("href", "#")
@@ -1630,7 +1641,16 @@ class AtlasBuilder:
         # Render Content with depth tracking (2 = Level 1)
         # Pass page-level `code_defaults` in context so code rendering remains generic.
         page_code_defaults = data.get('code_defaults', {})
-        page_html = self.render_content(data.get("content", []), depth=2, inherited_style=page_preset_style, context={'code_defaults': page_code_defaults})
+        page_html = self.render_content(
+            data.get("content", []),
+            depth=2,
+            inherited_style=page_preset_style,
+            context={
+                'code_defaults': page_code_defaults,
+                'mode': mode,
+                'rel_path': rel_path.replace('\\', '/'),
+            },
+        )
 
         # Normalize asset paths produced inside content HTML:
         # - convert backslashes to forward slashes
