@@ -1,0 +1,5 @@
+include(GoogleTest)
+
+add_executable(example_project_tests hello_test.cpp)
+target_link_libraries(example_project_tests PRIVATE hello_lib GTest::gtest_main)
+gtest_discover_tests(example_project_tests)

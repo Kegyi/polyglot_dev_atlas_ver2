@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#09090b">
+    <meta name="description" content="Polyglot Dev Atlas - Multi-language comparison framework for developers. Side-by-side code examples across C++, Go, Python, TypeScript, and Scala.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Polyglot Atlas">
+    <title>Playground Setup</title>
+    
+    <!-- Web App Manifest for PWA installation -->
+    <link rel="manifest" href="../assets/manifest.json">
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases or any collection open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../assets/hljs/${hljsStyle}`;
+            
+            // 4. Setup Theme CSS path and store asset prefix globally
+            window.assetPrefix = '../';
+            window.themeStylePath = `../assets/css/themes/${savedTheme}.css`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Theme CSS (Light/Dark/High-Contrast) -->
+    <link id="theme-css" rel="stylesheet" href="">
+    <script>document.getElementById('theme-css').href = window.themeStylePath;</script>
+    <link rel="stylesheet" href="../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-atlas no-topics ">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <div class="logo-with-modes">
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="mode-switcher-current" id="app-mode-title">Atlas</span><span class="mode-switcher-underbar" aria-hidden="true"></span></summary><div class="mode-switcher-menu"><a href="../index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Project</a><a href="../atlas/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Meta</a></div></details>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
+                </div>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
+                </div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../atlas/index.html">Atlas Mode<span class="sidebar-wrap-indent">Polyglot Dev App</span></a></li>
+<li class=""><a href="../atlas/design_patterns.html">Design Patterns</a></li>
+<li class=""><a href="../atlas/keywords.html">Keywords</a></li>
+<li class="active"><a href="../atlas/playground_setup.html">Playground Setup</a></li>
+<li class=""><a href="../atlas/principles.html">principles</a></li>
+<li class=""><a href="../atlas/workflow.html">Workflow</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../atlas/index.html">Atlas</a><span class="sep">/</span><span>Playground Setup</span></nav>
+                <h2  class="">Playground Setup</h2><p  class="">This page is language-aware. Select one language for focused setup guidance, or switch to double view to compare setup workflows side by side.</p><div  class="note note-info "><div class="note-content">Source guides are copied into the project under <code>playground/</code> and shipped to <code>dist/playground/</code> during build.</div></div><section id="playground-setup-by-language" class="dynamic-language-block " data-primary-label="Selected language" data-secondary-label="Comparison language"><div class="dynamic-language-grid"><article class="dynamic-language-slot" data-slot="primary"><header class="dynamic-language-slot-header"><span class="dynamic-language-slot-role">Selected language</span><span class="dynamic-language-slot-name"></span></header><div class="dynamic-language-slot-body"></div></article><article class="dynamic-language-slot" data-slot="secondary"><header class="dynamic-language-slot-header"><span class="dynamic-language-slot-role">Comparison language</span><span class="dynamic-language-slot-name"></span></header><div class="dynamic-language-slot-body"></div></article></div><template data-dynamic-variant="cpp" data-lang-name="C++"><div class="markdown-content" data-markdown-file="playground/cpp/.setup/README.md"></div></template><template data-dynamic-variant="go" data-lang-name="Go"><div class="markdown-content" data-markdown-file="playground/go/.setup/README.md"></div></template><template data-dynamic-variant="python" data-lang-name="Python"><div class="markdown-content" data-markdown-file="playground/python/.setup/README.md"></div></template><template data-dynamic-variant="typescript" data-lang-name="TypeScript"><div class="markdown-content" data-markdown-file="playground/typescript/.setup/README.md"></div></template><template data-dynamic-variant="scala2" data-lang-name="Scala 2"><div class="markdown-content" data-markdown-file="playground/scala/.setup/README.md"></div></template><template data-dynamic-variant="scala3" data-lang-name="Scala 3"><div class="markdown-content" data-markdown-file="playground/scala/.setup/README.md"></div></template><template data-dynamic-fallback="true"><div  class="note note-info "><div class="note-content">No setup guidance has been authored yet for the selected language.</div></div></template></section>
+                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../atlas/keywords.html">← Keywords</a><a class="pager-link next" href="../atlas/principles.html">principles →</a></nav>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../assets/hljs/highlight.min.js"></script>
+    <script src="../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- Markdown Renderer (offline/local) -->
+    <script src="../assets/js/marked.offline.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/selection_engine.js"></script>
+    <script src="../assets/js/content_renderers.js"></script>
+    <script src="../assets/js/markdown_renderer.js"></script>
+    <script src="../assets/js/search_ui.js"></script>
+    <script src="../assets/js/permalinks.js"></script>
+</body>
+</html>

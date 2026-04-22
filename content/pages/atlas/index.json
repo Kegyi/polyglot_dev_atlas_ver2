@@ -31,7 +31,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, and Keywords for language-specific quick lookup."
+                            "text": "Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, Keywords for language-specific quick lookup, and Playground Setup for language-specific local environment setup guidance."
                         }
                     ]
                 }

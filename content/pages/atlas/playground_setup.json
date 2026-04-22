@@ -1,0 +1,39 @@
+{
+  "title": "Playground Setup",
+  "description": "Language-aware local setup guidance based on playground README files.",
+  "style": "text_style",
+  "content": [
+    {
+      "type": "title",
+      "text": "Playground Setup"
+    },
+    {
+      "type": "text",
+      "text": "This page is language-aware. Select one language for focused setup guidance, or switch to double view to compare setup workflows side by side."
+    },
+    {
+      "type": "note",
+      "variant": "info",
+      "text": "Source guides are copied into the project under <code>playground/</code> and shipped to <code>dist/playground/</code> during build."
+    },
+    {
+      "type": "markdown",
+      "id": "playground-setup-by-language",
+      "variants": {
+        "cpp": "playground/cpp/.setup/README.md",
+        "go": "playground/go/.setup/README.md",
+        "python": "playground/python/.setup/README.md",
+        "typescript": "playground/typescript/.setup/README.md",
+        "scala2": "playground/scala/.setup/README.md",
+        "scala3": "playground/scala/.setup/README.md"
+      },
+      "fallback": [
+        {
+          "type": "note",
+          "variant": "info",
+          "text": "No setup guidance has been authored yet for the selected language."
+        }
+      ]
+    }
+  ]
+}

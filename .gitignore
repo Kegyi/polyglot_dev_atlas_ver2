@@ -11,6 +11,8 @@ Thumbs.db
 *.so
 *.a
 *.pdb
+*.ilk
+*.tlog
 
 # IDEs and editors
 .vscode/
@@ -27,6 +29,12 @@ venv/
 
 # Node
 node_modules/
+
+# Playground-generated local build outputs
+playground/**/.playground_build/
+playground/**/build/
+playground/**/target/
+dist/playground/**/target/
 
 # Logs
 *.log

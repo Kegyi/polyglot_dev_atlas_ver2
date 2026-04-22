@@ -51,7 +51,7 @@
     "tags": [],
     "url": "atlas/index.html",
     "excerpt": "Atlas Mode Reference-First Navigation Atlas mode is the reference layer of the app. Use the left navigation to jump across design patterns, principles, workflows, and language-specific reference collections. Pick one or two languages in the",
-    "search_text": "Atlas Mode Reference-First Navigation Atlas mode is the reference layer of the app. Use the left navigation to jump across design patterns, principles, workflows, and language-specific reference collections. Pick one or two languages in the selector bar to compare implementation styles side by side while staying on the same concept page. Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, and Keywords for language-specific quick lookup.",
+    "search_text": "Atlas Mode Reference-First Navigation Atlas mode is the reference layer of the app. Use the left navigation to jump across design patterns, principles, workflows, and language-specific reference collections. Pick one or two languages in the selector bar to compare implementation styles side by side while staying on the same concept page. Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, Keywords for language-specific quick lookup, and Playground Setup for language-specific local environment setup guidance.",
     "block_id": null
   },
   {
@@ -72,8 +72,8 @@
     "description": "",
     "tags": [],
     "url": "atlas/index.html",
-    "excerpt": "Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, and Keywords for language-specific quick lookup.",
-    "search_text": "Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, and Keywords for language-specific quick lookup.",
+    "excerpt": "Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, Keywords for language-specific quick lookup, and Playground Setup for language-specific local",
+    "search_text": "Where to Start Use Design Patterns for implementation comparisons, Principles for architecture guidance, Workflow for toolchain and process notes, Keywords for language-specific quick lookup, and Playground Setup for language-specific local environment setup guidance.",
     "block_id": "atlas-start"
   },
   {
@@ -448,6 +448,17 @@
     "url": "atlas/keywords.html",
     "excerpt": "Keywords This page is language-aware. Pick one language to inspect its keyword reference, or switch to double view to compare two language-specific keyword sets side by side. Hover over a dashed keyword chip to read a short description. A k",
     "search_text": "Keywords This page is language-aware. Pick one language to inspect its keyword reference, or switch to double view to compare two language-specific keyword sets side by side. Hover over a dashed keyword chip to read a short description. A keyword reference has not been authored yet for the selected language. info",
+    "block_id": null
+  },
+  {
+    "id": "playground_setup",
+    "mode": "atlas",
+    "title": "Playground Setup",
+    "description": "Language-aware local setup guidance based on playground README files.",
+    "tags": [],
+    "url": "atlas/playground_setup.html",
+    "excerpt": "Playground Setup This page is language-aware. Select one language for focused setup guidance, or switch to double view to compare setup workflows side by side. Source guides are copied into the project under <code>playground/</code> and shi",
+    "search_text": "Playground Setup This page is language-aware. Select one language for focused setup guidance, or switch to double view to compare setup workflows side by side. Source guides are copied into the project under <code>playground/</code> and shipped to <code>dist/playground/</code> during build. info playground/cpp/.setup/README.md playground/go/.setup/README.md playground/python/.setup/README.md playground/typescript/.setup/README.md playground/scala/.setup/README.md playground/scala/.setup/README.md No setup guidance has been authored yet for the selected language. info",
     "block_id": null
   },
   {

@@ -304,11 +304,17 @@ function renderDynamicLanguageSlot(block, slotName, langId) {
 
     if (variantTemplate) {
         slotBody.innerHTML = variantTemplate.innerHTML;
+        if (typeof MarkdownRenderer !== 'undefined' && MarkdownRenderer.processMarkdownElements) {
+            MarkdownRenderer.processMarkdownElements(slotBody);
+        }
         return;
     }
 
     if (fallbackTemplate) {
         slotBody.innerHTML = fallbackTemplate.innerHTML;
+        if (typeof MarkdownRenderer !== 'undefined' && MarkdownRenderer.processMarkdownElements) {
+            MarkdownRenderer.processMarkdownElements(slotBody);
+        }
         return;
     }
 

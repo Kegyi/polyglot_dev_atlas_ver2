@@ -976,6 +976,167 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
     }
 }
 
+/* --- MARKDOWN CONTENT STYLING --- */
+
+.markdown-content {
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.markdown-content h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.markdown-content h2 {
+    font-size: 1.5em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+}
+
+.markdown-content h3 {
+    font-size: 1.25em;
+}
+
+.markdown-content h4 {
+    font-size: 1.1em;
+}
+
+.markdown-content h5 {
+    font-size: 1em;
+}
+
+.markdown-content h6 {
+    font-size: 0.9em;
+    color: var(--text-dim);
+}
+
+.markdown-content p {
+    margin: 12px 0;
+}
+
+.markdown-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.2s ease;
+}
+
+.markdown-content a:hover {
+    border-bottom-color: var(--accent);
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin: 12px 0;
+    padding-left: 32px;
+}
+
+.markdown-content ul {
+    list-style-type: disc;
+}
+
+.markdown-content ol {
+    list-style-type: decimal;
+}
+
+.markdown-content li {
+    margin: 6px 0;
+}
+
+.markdown-content code {
+    background: var(--code-bg);
+    color: var(--text);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+.markdown-content pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    margin: 12px 0;
+}
+
+.markdown-content pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: var(--text);
+}
+
+.markdown-content blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 16px;
+    margin-left: 0;
+    margin: 12px 0;
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.markdown-content hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.markdown-content table th {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    font-weight: 600;
+}
+
+.markdown-content table tr:nth-child(even) {
+    background: color-mix(in srgb, var(--panel) 50%, transparent);
+}
+
+/* Loading and error states */
+.markdown-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.markdown-error {
+    background: color-mix(in srgb, #ef4444 15%, transparent);
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ef4444;
+    font-weight: 500;
+}
+
 /* Inlined: modules/insights.css */
 
 /* --- INSIGHT BLOCKS: Pro-tips, Warnings, Important Notes --- */

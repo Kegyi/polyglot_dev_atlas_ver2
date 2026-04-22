@@ -16,6 +16,7 @@ class AtlasBuilder:
         self.content_dir = os.path.join(self.base_dir, "content")
         self.templates_dir = os.path.join(self.base_dir, "templates")
         self.assets_dir = os.path.join(self.base_dir, "assets")
+        self.playground_dir = os.path.join(self.base_dir, "playground")
         self.pages_dir = os.path.join(self.content_dir, "pages")
         self.lang_def_path = os.path.join(self.content_dir, "definitions", "languages.json")
         
@@ -52,6 +53,7 @@ class AtlasBuilder:
             "dynamic": self._render_dynamic,
             "lang_content": self._render_dynamic,
             "keyword_grid": self._render_keyword_grid,
+            "markdown": self._render_markdown,
         }
 
     def _resolve_json_ref(self, ref, base_path=None):
@@ -658,6 +660,59 @@ class AtlasBuilder:
         tag = "ol" if item.get("ordered") else "ul"
         list_items = "".join([f"<li>{i}</li>" for i in item.get("items", [])])
         return f'<{tag} class="{item.get("class", "")}">{list_items}</{tag}>'
+
+    def _render_markdown(self, item, depth=2, inherited_style="", context=None):
+        """Render a markdown file with optional variants for different languages."""
+        file_path = item.get("file") or item.get("path")
+        variants = item.get("variants", {})
+        wrapper_class = item.get("class", "")
+        
+        # If variants are provided, treat it like a dynamic content with markdown
+        if variants and isinstance(variants, dict):
+            language_defs = self._get_language_definitions()
+            templates = []
+            
+            for lang_id, variant_path in variants.items():
+                lang_name = language_defs.get(lang_id, {}).get("name", lang_id)
+                markdown_html = f'<div class="markdown-content" data-markdown-file="{variant_path}"></div>'
+                templates.append(
+                    f'<template data-dynamic-variant="{lang_id}" data-lang-name="{lang_name}">{markdown_html}</template>'
+                )
+            
+            fallback_blocks = self._coerce_content_list(item.get("fallback"))
+            fallback_html = ''
+            if fallback_blocks:
+                rendered_fallback = self.render_content(fallback_blocks, depth=depth + 1, inherited_style=inherited_style, context=context)
+                fallback_html = f'<template data-dynamic-fallback="true">{rendered_fallback}</template>'
+            
+            return (
+                f'<section {self._id_attr(item)} class="dynamic-language-block {wrapper_class}" '
+                f'data-primary-label="Selected language" data-secondary-label="Comparison language">'
+                f'<div class="dynamic-language-grid">'
+                f'<article class="dynamic-language-slot" data-slot="primary">'
+                f'<header class="dynamic-language-slot-header">'
+                f'<span class="dynamic-language-slot-role">Selected language</span>'
+                f'<span class="dynamic-language-slot-name"></span>'
+                f'</header>'
+                f'<div class="dynamic-language-slot-body"></div>'
+                f'</article>'
+                f'<article class="dynamic-language-slot" data-slot="secondary">'
+                f'<header class="dynamic-language-slot-header">'
+                f'<span class="dynamic-language-slot-role">Comparison language</span>'
+                f'<span class="dynamic-language-slot-name"></span>'
+                f'</header>'
+                f'<div class="dynamic-language-slot-body"></div>'
+                f'</article>'
+                f'</div>'
+                f'{"".join(templates)}{fallback_html}'
+                f'</section>'
+            )
+        
+        # Single markdown file
+        if file_path:
+            return f'<div {self._id_attr(item)} class="markdown-content {wrapper_class}" data-markdown-file="{file_path}"></div>'
+        
+        return '<!-- Markdown: no file or variants specified -->'
 
     def _get_language_definitions(self):
         if self._language_defs_cache is None:
@@ -1688,6 +1743,9 @@ class AtlasBuilder:
         locales_src = os.path.join(self.content_dir, "locales")
         if os.path.exists(locales_src):
             shutil.copytree(locales_src, os.path.join(self.dist_dir, "content", "locales"))
+
+        if os.path.exists(self.playground_dir):
+            shutil.copytree(self.playground_dir, os.path.join(self.dist_dir, "playground"))
 
         # Phase 4: static search index for client-side lookup.
         self._generate_search_index()
