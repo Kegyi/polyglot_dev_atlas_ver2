@@ -25,28 +25,15 @@
 
 .nav-item.nav-collection > a .collection-marker {
     margin-left: auto;
-    margin-right: 0;
-    width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(128, 128, 128, 0.45);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    transition: color 0.15s;
 }
 
 .nav-item.nav-collection > a .collection-marker::after {
-    content: '›';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 12px;
-    height: 12px;
-    font-size: 11px;
-    line-height: 1;
-    color: var(--accent);
+    content: '▸';
+    color: inherit;
 }
 
 .nav-item.nav-collection > a:hover {
@@ -55,16 +42,16 @@
     background: linear-gradient(90deg, var(--accent-glow), rgba(255,255,255,0.03) 82%);
 }
 
+.nav-item.nav-collection > a:hover .collection-marker {
+    color: var(--accent);
+}
+
 .nav-item.nav-collection > a:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
-:root[data-global-style="sharp"] .nav-item.nav-collection > a .collection-marker { border-radius: 4px; }
-:root[data-global-style="round"] .nav-item.nav-collection > a .collection-marker { border-radius: 999px; }
-:root[data-global-style="airy"] .nav-item.nav-collection > a .collection-marker { border-radius: 6px; width: 14px; height: 12px; flex: 0 0 14px; }
 
-:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06); }
 
 .nav-list.nav-collection-list {
     margin-top: 8px;

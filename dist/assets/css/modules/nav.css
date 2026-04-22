@@ -204,10 +204,8 @@
 
 .nav-list a, .toc-item span {
     text-decoration: none; color: var(--text-dim); font-size: 0.9rem; display: block;
-    padding: 6px 10px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
+    padding: 6px 12px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
     white-space: normal; overflow: visible; text-overflow: clip;
-    padding-left: 12px;
-    text-indent: -12px;
     line-height: 1.25;
 }
 
