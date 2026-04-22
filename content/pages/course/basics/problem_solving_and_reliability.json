@@ -1,0 +1,95 @@
+{
+    "title": "Problem Solving & Reliability",
+    "description": "Algorithmic thinking and robustness topics: recursion, randomness, exceptions, hashing, and bit manipulation.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Example",
+        "is_collapse": true
+    },
+    "content": [
+        {
+            "type": "title",
+            "text": "Problem Solving & Reliability"
+        },
+        {
+            "type": "text",
+            "text": "These topics train the habits that make code both capable and dependable: solving recursive problems, handling failure, producing random values correctly, and reasoning about data at a lower level."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "recursion",
+                    "title": "Recursion",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Recursion helps you express divide-and-conquer logic and tree traversal elegantly. This page shows the baseline shape of a recursive solution in each language."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/recursion"
+                        }
+                    ]
+                },
+                {
+                    "id": "random_numbers",
+                    "title": "Random Numbers",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Randomness looks simple but often hides subtle API choices around seeding, ranges, and reproducibility. Compare the defaults before using them in simulations or tests."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/random_numbers"
+                        }
+                    ]
+                },
+                {
+                    "id": "exceptions_and_recovery",
+                    "title": "Exceptions and Recovery",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Robust programs define what should happen when things go wrong. This example contrasts exception-based and error-value-based recovery strategies."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/exceptions_and_recovery"
+                        }
+                    ]
+                },
+                {
+                    "id": "hashing_and_checksums",
+                    "title": "Hashing and Checksums",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hashing appears in security, caching, deduplication, and integrity checks. Use this snippet as a fast reference for standard hashing APIs across languages."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/hashing_and_checksums"
+                        }
+                    ]
+                },
+                {
+                    "id": "bit_manipulation",
+                    "title": "Bit Manipulation",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Bitwise operations train precision and are common in performance-sensitive code, systems work, and interview problems. This comparison highlights syntax differences and operator semantics."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/bit_manipulation"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

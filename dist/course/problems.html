@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Polyglot Atlas">
-    <title>Problems</title>
+    <title>Problems | Cross-Language Practice Set</title>
     
     <!-- Web App Manifest for PWA installation -->
     <link rel="manifest" href="../assets/manifest.json">
@@ -106,7 +106,7 @@
     <link rel="stylesheet" href="../assets/css/ui_states.css">
     
 </head>
-<body class="mode-course no-topics ">
+<body class="mode-course  course-view">
     <div id="navbar">
         <div class="nav-top">
             <div class="nav-left">
@@ -116,34 +116,39 @@
                 </div>
             </div>
             <div class="nav-center">
-                <div class="toggle-group view-toggles">
-                    <button id="view-single-btn" class="toggle">Single</button>
-                    <button id="view-double-btn" class="toggle">Double</button>
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
                 </div>
-                <button id="swap-btn" class="icon-btn" aria-label="Swap languages">&#8646;</button>
                 <div class="atlas-search">
                     <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
                     <div id="atlas-search-results" class="search-results" hidden></div>
                 </div>
             </div>
             <div class="nav-right">
-                <!-- Phase 3: Global Geometric Style Picker -->
-                <div class="style-picker">
-                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
-                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
-                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
                 </div>
-
-                <div class="palette-picker">
-                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
-                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
-                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
-                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
-                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
-                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
-                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
-                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
-                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
                 </div>
                 <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
             </div>
@@ -161,18 +166,1620 @@
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
                 <ul class="nav-list" id="toc-main"><li class=""><a href="../course/index.html">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li>
-<li class=""><a href="../course/basics.html">Basics</a></li>
 <li class=""><a href="../course/exercises.html">Exercises</a></li>
-<li class="active"><a href="../course/problems.html">Problems</a></li>
-<li class="nav-item nav-collection nav-interview"><a href="#" onclick="app.openCollection('course', 'interview');return false;">Interview <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview');return false;">← Back to menu</a></li><li class="nav-item nav-collection nav-interview-1_strings_and_arrays"><a href="#" onclick="app.openCollection('course', 'interview-1_strings_and_arrays');return false;">1 strings and arrays <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-2_linked_list"><a href="#" onclick="app.openCollection('course', 'interview-2_linked_list');return false;">2 linked list <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-3_stacks_and_queues"><a href="#" onclick="app.openCollection('course', 'interview-3_stacks_and_queues');return false;">3 stacks and queues <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-4_trees_and_graphs"><a href="#" onclick="app.openCollection('course', 'interview-4_trees_and_graphs');return false;">4 trees and graphs <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-5_bit_manipulation"><a href="#" onclick="app.openCollection('course', 'interview-5_bit_manipulation');return false;">5 bit manipulation <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-8_recursion_dynamic_programming"><a href="#" onclick="app.openCollection('course', 'interview-8_recursion_dynamic_programming');return false;">8 recursion dynamic programming <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-10_sorting_and_searching"><a href="#" onclick="app.openCollection('course', 'interview-10_sorting_and_searching');return false;">10 sorting and searching <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-16_moderate"><a href="#" onclick="app.openCollection('course', 'interview-16_moderate');return false;">16 moderate <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-17_hard"><a href="#" onclick="app.openCollection('course', 'interview-17_hard');return false;">17 hard <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-1_strings_and_arrays" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-1_strings_and_arrays');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/index.html">Overview</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/1_is_unique.html">Is Unique</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/2_check_permutation.html">Check Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/3_string_to_url.html">String To Url</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/4_palindrome_permutation.html">Palindrome Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/5_one_away.html">One Away</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/6_compress_string.html">Compress String</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/7_rotate_matrix.html">Rotate Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/8_zero_matrix.html">Zero Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/9_string_rotation.html">String Rotation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-2_linked_list" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-2_linked_list');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/2_linked_list/index.html">Overview</a></li><li class=""><a href="../course/interview/2_linked_list/1_remove_duplicate_node.html">Remove Duplicate Node</a></li><li class=""><a href="../course/interview/2_linked_list/2_kth_node_from_end.html">kth Node from End</a></li><li class=""><a href="../course/interview/2_linked_list/3_delete_middle_node.html">Delete Middle Node</a></li><li class=""><a href="../course/interview/2_linked_list/4_partition_list.html">Partition List</a></li><li class=""><a href="../course/interview/2_linked_list/5_sum_lists.html">Sum Lists</a></li><li class=""><a href="../course/interview/2_linked_list/6_palindrome_linked_list.html">Palindrome Linked List</a></li><li class=""><a href="../course/interview/2_linked_list/7_intersection_of_two_linked_lists.html">Intersection Of Two Linked<span class="sidebar-wrap-indent">Lists</span></a></li><li class=""><a href="../course/interview/2_linked_list/8_linked_list_cycle.html">Linked List Cycle</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-3_stacks_and_queues" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-3_stacks_and_queues');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/1_three_in_one.html">Three In One</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/2_min_stack.html">Min Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/3_stack_of_plates.html">Stack Of Plates</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/4_queue_via_stacks.html">Queue Via Stacks</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/5_sort_stack.html">Sort Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/6_animal_shelter.html">Animal Shelter</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-4_trees_and_graphs" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-4_trees_and_graphs');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/1_route_between_nodes.html">Route Between Nodes</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/2_minimum_height_tree.html">Minimum Height Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/3_list_of_depth.html">List Of Depth</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/4_check_balance.html">Check Balance</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/5_legal_binary_search_tree.html">Legal Binary Search Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/6_successor.html">Successor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/8_first_common_ancestor.html">First Common Ancestor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/9_bst_sequences.html">Bst Sequences</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/10_check_subtree.html">Check Subtree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/12_paths_with_sum.html">Paths With Sum</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-5_bit_manipulation" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-5_bit_manipulation');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/5_bit_manipulation/1_insert.html">Insert</a></li><li class=""><a href="../course/interview/5_bit_manipulation/2_binary_number_to_string.html">Binary Number To String</a></li><li class=""><a href="../course/interview/5_bit_manipulation/3_flip_bit_to_win.html">Flip Bit To Win</a></li><li class=""><a href="../course/interview/5_bit_manipulation/4_closed_number.html">Closed Number</a></li><li class=""><a href="../course/interview/5_bit_manipulation/6_number_of_1.html">Number Of 1</a></li><li class=""><a href="../course/interview/5_bit_manipulation/7_exchange.html">Exchange</a></li><li class=""><a href="../course/interview/5_bit_manipulation/8_draw_line.html">Draw Line</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-8_recursion_dynamic_programming" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-8_recursion_dynamic_programming');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/1_three_steps.html">Three Steps</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/2_robot_in_a_grid.html">Robot In A Grid</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/3_magic_index.html">Magic Index</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/4_power_set.html">Power Set</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/6_hanota.html">Hanota</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/7_permutation_i.html">Permutation I</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/8_permutation_ii.html">Permutation Ii</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/9_bracket.html">Bracket</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/10_color_fill.html">Color Fill</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/11_coin.html">Coin</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/12_eight_queens.html">Eight Queens</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/13_pile_box.html">Pile Box</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/14_boolean_evaluation.html">Boolean Evaluation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-10_sorting_and_searching" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-10_sorting_and_searching');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/1_sorted_merge.html">Sorted Merge</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/2_group_anagrams.html">Group Anagrams</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/3_search_rotate_array.html">Search Rotate Array</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/5_sparse_array_search.html">Sparse Array Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/9_sorted_matrix_search.html">Sorted Matrix Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/11_peaks_and_valleys.html">Peaks And Valleys</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-16_moderate" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-16_moderate');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/16_moderate/1_swap_numbers.html">Swap Numbers</a></li><li class=""><a href="../course/interview/16_moderate/2_words_frequency.html">Words Frequency</a></li><li class=""><a href="../course/interview/16_moderate/3_intersection.html">Intersection</a></li><li class=""><a href="../course/interview/16_moderate/4_tic_tac_toe.html">Tic Tac Toe</a></li><li class=""><a href="../course/interview/16_moderate/5_factorial_zeros.html">Factorial Zeros</a></li><li class=""><a href="../course/interview/16_moderate/6_smallest_difference.html">Smallest Difference</a></li><li class=""><a href="../course/interview/16_moderate/7_maximum.html">Maximum</a></li><li class=""><a href="../course/interview/16_moderate/8_english_int.html">English Int</a></li><li class=""><a href="../course/interview/16_moderate/9_operations.html">Operations</a></li><li class=""><a href="../course/interview/16_moderate/10_living_people.html">Living People</a></li><li class=""><a href="../course/interview/16_moderate/11_diving_board.html">Diving Board</a></li><li class=""><a href="../course/interview/16_moderate/13_bisect_squares.html">Bisect Squares</a></li><li class=""><a href="../course/interview/16_moderate/14_best_line.html">Best Line</a></li><li class=""><a href="../course/interview/16_moderate/15_master_mind.html">Master Mind</a></li><li class=""><a href="../course/interview/16_moderate/16_sub_sort.html">Sub Sort</a></li><li class=""><a href="../course/interview/16_moderate/17_contiguous_sequence.html">Contiguous Sequence</a></li><li class=""><a href="../course/interview/16_moderate/18_pattern_matching.html">Pattern Matching</a></li><li class=""><a href="../course/interview/16_moderate/19_pond_sizes.html">Pond Sizes</a></li><li class=""><a href="../course/interview/16_moderate/20_t9.html">T9</a></li><li class=""><a href="../course/interview/16_moderate/21_sum_swap.html">Sum Swap</a></li><li class=""><a href="../course/interview/16_moderate/22_langtons_ant.html">Langtons Ant</a></li><li class=""><a href="../course/interview/16_moderate/24_pairs_with_sum.html">Pairs With Sum</a></li><li class=""><a href="../course/interview/16_moderate/25_lru_cache.html">Lru Cache</a></li><li class=""><a href="../course/interview/16_moderate/26_calculator.html">Calculator</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-17_hard" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-17_hard');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/17_hard/1_add_without_plus.html">Add Without Plus</a></li><li class=""><a href="../course/interview/17_hard/4_missing_number.html">Missing Number</a></li><li class=""><a href="../course/interview/17_hard/5_find_longest_subarray.html">Find Longest Subarray</a></li><li class=""><a href="../course/interview/17_hard/6_number_of_2s_in_range.html">Number Of 2S In Range</a></li><li class=""><a href="../course/interview/17_hard/7_baby_names.html">Baby Names</a></li><li class=""><a href="../course/interview/17_hard/8_circus_tower.html">Circus Tower</a></li><li class=""><a href="../course/interview/17_hard/9_get_kth_magic_number.html">Get Kth Magic Number</a></li><li class=""><a href="../course/interview/17_hard/10_find_majority_element.html">Find Majority Element</a></li><li class=""><a href="../course/interview/17_hard/11_find_closest.html">Find Closest</a></li><li class=""><a href="../course/interview/17_hard/12_binode.html">Binode</a></li><li class=""><a href="../course/interview/17_hard/13_re_space.html">Re Space</a></li><li class=""><a href="../course/interview/17_hard/14_smallest_k.html">Smallest K</a></li><li class=""><a href="../course/interview/17_hard/15_longest_word.html">Longest Word</a></li><li class=""><a href="../course/interview/17_hard/16_the_masseuse.html">The Masseuse</a></li><li class=""><a href="../course/interview/17_hard/17_multi_search.html">Multi Search</a></li><li class=""><a href="../course/interview/17_hard/18_shortest_supersequence.html">Shortest Supersequence</a></li><li class=""><a href="../course/interview/17_hard/19_missing_two.html">Missing Two</a></li><li class=""><a href="../course/interview/17_hard/20_continuous_median.html">Continuous Median</a></li><li class=""><a href="../course/interview/17_hard/21_volume_of_histogram.html">Volume Of Histogram</a></li><li class=""><a href="../course/interview/17_hard/22_word_transformer.html">Word Transformer</a></li></ul>
+<li class="active"><a href="../course/problems.html">Problems<span class="sidebar-wrap-indent">Cross-Language Practice Set</span></a></li>
+<li class="nav-item nav-collection nav-basics"><a href="#" onclick="app.openCollection('course', 'basics');return false;">Basics <span class="collection-marker" aria-hidden="true"></span></a></li>
+<li class="nav-item nav-collection nav-interview"><a href="#" onclick="app.openCollection('course', 'interview');return false;">Interview <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-basics" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'basics');return false;">← Back to menu</a></li><li class=""><a href="../course/basics/index.html">Core Programming Concepts</a></li><li class=""><a href="../course/basics/data_structures.html">Data Structures</a></li><li class=""><a href="../course/basics/foundations_and_flow.html">Foundations & Flow</a></li><li class=""><a href="../course/basics/problem_solving_and_reliability.html">Problem Solving & Reliability</a></li><li class=""><a href="../course/basics/systems_and_io.html">Systems & I/O</a></li><li class=""><a href="../course/basics/types_and_modeling.html">Types & Modeling</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview');return false;">← Back to menu</a></li><li class="nav-item nav-collection nav-interview-1_strings_and_arrays"><a href="#" onclick="app.openCollection('course', 'interview-1_strings_and_arrays');return false;">1 strings and arrays <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-2_linked_list"><a href="#" onclick="app.openCollection('course', 'interview-2_linked_list');return false;">2 linked list <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-3_stacks_and_queues"><a href="#" onclick="app.openCollection('course', 'interview-3_stacks_and_queues');return false;">3 stacks and queues <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-4_trees_and_graphs"><a href="#" onclick="app.openCollection('course', 'interview-4_trees_and_graphs');return false;">4 trees and graphs <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-5_bit_manipulation"><a href="#" onclick="app.openCollection('course', 'interview-5_bit_manipulation');return false;">5 bit manipulation <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-8_recursion_dynamic_programming"><a href="#" onclick="app.openCollection('course', 'interview-8_recursion_dynamic_programming');return false;">8 recursion dynamic programming <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-10_sorting_and_searching"><a href="#" onclick="app.openCollection('course', 'interview-10_sorting_and_searching');return false;">10 sorting and searching <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-16_moderate"><a href="#" onclick="app.openCollection('course', 'interview-16_moderate');return false;">16 moderate <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-17_hard"><a href="#" onclick="app.openCollection('course', 'interview-17_hard');return false;">17 hard <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-1_strings_and_arrays" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-1_strings_and_arrays');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/index.html">Overview</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/1_is_unique.html">Is Unique</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/2_check_permutation.html">Check Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/3_string_to_url.html">String To Url</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/4_palindrome_permutation.html">Palindrome Permutation</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/5_one_away.html">One Away</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/6_compress_string.html">Compress String</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/7_rotate_matrix.html">Rotate Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/8_zero_matrix.html">Zero Matrix</a></li><li class=""><a href="../course/interview/1_strings_and_arrays/9_string_rotation.html">String Rotation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-2_linked_list" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-2_linked_list');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/2_linked_list/index.html">Overview</a></li><li class=""><a href="../course/interview/2_linked_list/1_remove_duplicate_node.html">Remove Duplicate Node</a></li><li class=""><a href="../course/interview/2_linked_list/2_kth_node_from_end.html">kth Node from End</a></li><li class=""><a href="../course/interview/2_linked_list/3_delete_middle_node.html">Delete Middle Node</a></li><li class=""><a href="../course/interview/2_linked_list/4_partition_list.html">Partition List</a></li><li class=""><a href="../course/interview/2_linked_list/5_sum_lists.html">Sum Lists</a></li><li class=""><a href="../course/interview/2_linked_list/6_palindrome_linked_list.html">Palindrome Linked List</a></li><li class=""><a href="../course/interview/2_linked_list/7_intersection_of_two_linked_lists.html">Intersection Of Two Linked<span class="sidebar-wrap-indent">Lists</span></a></li><li class=""><a href="../course/interview/2_linked_list/8_linked_list_cycle.html">Linked List Cycle</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-3_stacks_and_queues" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-3_stacks_and_queues');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/1_three_in_one.html">Three In One</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/2_min_stack.html">Min Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/3_stack_of_plates.html">Stack Of Plates</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/4_queue_via_stacks.html">Queue Via Stacks</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/5_sort_stack.html">Sort Stack</a></li><li class=""><a href="../course/interview/3_stacks_and_queues/6_animal_shelter.html">Animal Shelter</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-4_trees_and_graphs" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-4_trees_and_graphs');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/1_route_between_nodes.html">Route Between Nodes</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/2_minimum_height_tree.html">Minimum Height Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/3_list_of_depth.html">List Of Depth</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/4_check_balance.html">Check Balance</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/5_legal_binary_search_tree.html">Legal Binary Search Tree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/6_successor.html">Successor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/8_first_common_ancestor.html">First Common Ancestor</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/9_bst_sequences.html">Bst Sequences</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/10_check_subtree.html">Check Subtree</a></li><li class=""><a href="../course/interview/4_trees_and_graphs/12_paths_with_sum.html">Paths With Sum</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-5_bit_manipulation" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-5_bit_manipulation');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/5_bit_manipulation/1_insert.html">Insert</a></li><li class=""><a href="../course/interview/5_bit_manipulation/2_binary_number_to_string.html">Binary Number To String</a></li><li class=""><a href="../course/interview/5_bit_manipulation/3_flip_bit_to_win.html">Flip Bit To Win</a></li><li class=""><a href="../course/interview/5_bit_manipulation/4_closed_number.html">Closed Number</a></li><li class=""><a href="../course/interview/5_bit_manipulation/6_number_of_1.html">Number Of 1</a></li><li class=""><a href="../course/interview/5_bit_manipulation/7_exchange.html">Exchange</a></li><li class=""><a href="../course/interview/5_bit_manipulation/8_draw_line.html">Draw Line</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-8_recursion_dynamic_programming" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-8_recursion_dynamic_programming');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/1_three_steps.html">Three Steps</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/2_robot_in_a_grid.html">Robot In A Grid</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/3_magic_index.html">Magic Index</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/4_power_set.html">Power Set</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/6_hanota.html">Hanota</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/7_permutation_i.html">Permutation I</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/8_permutation_ii.html">Permutation Ii</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/9_bracket.html">Bracket</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/10_color_fill.html">Color Fill</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/11_coin.html">Coin</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/12_eight_queens.html">Eight Queens</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/13_pile_box.html">Pile Box</a></li><li class=""><a href="../course/interview/8_recursion_dynamic_programming/14_boolean_evaluation.html">Boolean Evaluation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-10_sorting_and_searching" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-10_sorting_and_searching');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/1_sorted_merge.html">Sorted Merge</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/2_group_anagrams.html">Group Anagrams</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/3_search_rotate_array.html">Search Rotate Array</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/5_sparse_array_search.html">Sparse Array Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/9_sorted_matrix_search.html">Sorted Matrix Search</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream</a></li><li class=""><a href="../course/interview/10_sorting_and_searching/11_peaks_and_valleys.html">Peaks And Valleys</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-16_moderate" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-16_moderate');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/16_moderate/1_swap_numbers.html">Swap Numbers</a></li><li class=""><a href="../course/interview/16_moderate/2_words_frequency.html">Words Frequency</a></li><li class=""><a href="../course/interview/16_moderate/3_intersection.html">Intersection</a></li><li class=""><a href="../course/interview/16_moderate/4_tic_tac_toe.html">Tic Tac Toe</a></li><li class=""><a href="../course/interview/16_moderate/5_factorial_zeros.html">Factorial Zeros</a></li><li class=""><a href="../course/interview/16_moderate/6_smallest_difference.html">Smallest Difference</a></li><li class=""><a href="../course/interview/16_moderate/7_maximum.html">Maximum</a></li><li class=""><a href="../course/interview/16_moderate/8_english_int.html">English Int</a></li><li class=""><a href="../course/interview/16_moderate/9_operations.html">Operations</a></li><li class=""><a href="../course/interview/16_moderate/10_living_people.html">Living People</a></li><li class=""><a href="../course/interview/16_moderate/11_diving_board.html">Diving Board</a></li><li class=""><a href="../course/interview/16_moderate/13_bisect_squares.html">Bisect Squares</a></li><li class=""><a href="../course/interview/16_moderate/14_best_line.html">Best Line</a></li><li class=""><a href="../course/interview/16_moderate/15_master_mind.html">Master Mind</a></li><li class=""><a href="../course/interview/16_moderate/16_sub_sort.html">Sub Sort</a></li><li class=""><a href="../course/interview/16_moderate/17_contiguous_sequence.html">Contiguous Sequence</a></li><li class=""><a href="../course/interview/16_moderate/18_pattern_matching.html">Pattern Matching</a></li><li class=""><a href="../course/interview/16_moderate/19_pond_sizes.html">Pond Sizes</a></li><li class=""><a href="../course/interview/16_moderate/20_t9.html">T9</a></li><li class=""><a href="../course/interview/16_moderate/21_sum_swap.html">Sum Swap</a></li><li class=""><a href="../course/interview/16_moderate/22_langtons_ant.html">Langtons Ant</a></li><li class=""><a href="../course/interview/16_moderate/24_pairs_with_sum.html">Pairs With Sum</a></li><li class=""><a href="../course/interview/16_moderate/25_lru_cache.html">Lru Cache</a></li><li class=""><a href="../course/interview/16_moderate/26_calculator.html">Calculator</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-17_hard" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-17_hard');return false;">← Back to Interview</a></li><li class=""><a href="../course/interview/17_hard/1_add_without_plus.html">Add Without Plus</a></li><li class=""><a href="../course/interview/17_hard/4_missing_number.html">Missing Number</a></li><li class=""><a href="../course/interview/17_hard/5_find_longest_subarray.html">Find Longest Subarray</a></li><li class=""><a href="../course/interview/17_hard/6_number_of_2s_in_range.html">Number Of 2S In Range</a></li><li class=""><a href="../course/interview/17_hard/7_baby_names.html">Baby Names</a></li><li class=""><a href="../course/interview/17_hard/8_circus_tower.html">Circus Tower</a></li><li class=""><a href="../course/interview/17_hard/9_get_kth_magic_number.html">Get Kth Magic Number</a></li><li class=""><a href="../course/interview/17_hard/10_find_majority_element.html">Find Majority Element</a></li><li class=""><a href="../course/interview/17_hard/11_find_closest.html">Find Closest</a></li><li class=""><a href="../course/interview/17_hard/12_binode.html">Binode</a></li><li class=""><a href="../course/interview/17_hard/13_re_space.html">Re Space</a></li><li class=""><a href="../course/interview/17_hard/14_smallest_k.html">Smallest K</a></li><li class=""><a href="../course/interview/17_hard/15_longest_word.html">Longest Word</a></li><li class=""><a href="../course/interview/17_hard/16_the_masseuse.html">The Masseuse</a></li><li class=""><a href="../course/interview/17_hard/17_multi_search.html">Multi Search</a></li><li class=""><a href="../course/interview/17_hard/18_shortest_supersequence.html">Shortest Supersequence</a></li><li class=""><a href="../course/interview/17_hard/19_missing_two.html">Missing Two</a></li><li class=""><a href="../course/interview/17_hard/20_continuous_median.html">Continuous Median</a></li><li class=""><a href="../course/interview/17_hard/21_volume_of_histogram.html">Volume Of Histogram</a></li><li class=""><a href="../course/interview/17_hard/22_word_transformer.html">Word Transformer</a></li></ul>
             </div>
         </aside>
         
         <main id="content">
             <div class="content-wrapper">
-                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../course/index.html">Course</a><span class="sep">/</span><span>Problems</span></nav>
-                <h2  class="">Problems</h2><p  class="">This section contains a collection of coding problems and challenges to test your skills.</p>
-                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../course/exercises.html">← Exercises</a><a class="pager-link next" href="../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream →</a></nav>
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../course/index.html">Course</a><span class="sep">/</span><span>Problems | Cross-Language Practice Set</span></nav>
+                <h2  class="">Problems</h2><p  class="">This page collects compact practice problems that are large enough to show real implementation tradeoffs but still small enough to compare comfortably across languages. The goal is not just to solve them, but to observe how different ecosystems express the same underlying idea.</p><div  class="note note-info "><div class="note-content">Some problems are pure algorithm exercises, while others simulate practical tasks such as file processing or concurrent work splitting. Use the language selector to compare API design, standard-library strengths, and code shape.</div></div><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="problem_clusters">
+            <div class="topic-header" onclick="app.toggleTopic('problem_clusters')">
+                <div class="topic-title-wrap"><h2>Problem Clusters</h2><a class="topic-permalink" href="#problem_clusters" aria-label="Link to Problem Clusters">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <ul class=""><li><b>Validation &amp; frequency analysis:</b> balanced bracket checking, word counting, and top-k frequency extraction.</li><li><b>Traversal &amp; graph reasoning:</b> shortest-path navigation through a grid using breadth-first search.</li><li><b>Systems-style tasks:</b> matrix multiplication, file aggregation, and chunked concurrent computation.</li></ul>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="validation_and_frequency">
+            <div class="topic-header" onclick="app.toggleTopic('validation_and_frequency')">
+                <div class="topic-title-wrap"><h2>Validation & Frequency Analysis</h2><a class="topic-permalink" href="#validation_and_frequency" aria-label="Link to Validation & Frequency Analysis">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section text_style  " id="balanced_brackets">
+            <div class="topic-header" onclick="app.toggleTopic('balanced_brackets')">
+                <div class="topic-title-wrap"><h3>Balanced Brackets</h3><a class="topic-permalink" href="#balanced_brackets" aria-label="Link to Balanced Brackets">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 valid: false.</p><div class="collapsible-code is-collapsed" data-snippet-id="problems/balanced_brackets" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+
+bool isBalanced(const std::string& s) {
+    static const std::unordered_map&lt;char, char&gt; closeToOpen = {
+        {')', '('},
+        {']', '['},
+        {'}', '{'}
+    };
+
+    std::vector&lt;char&gt; st;
+    st.reserve(s.size());
+
+    for (char ch : s) {
+        if (ch == '(' || ch == '[' || ch == '{') {
+            st.push_back(ch);
+        } else if (closeToOpen.count(ch)) {
+            if (st.empty() || st.back() != closeToOpen.at(ch)) {
+                return false;
+            }
+            st.pop_back();
+        }
+    }
+
+    return st.empty();
+}
+
+int main() {
+    const std::string input1 = "([{}])(()[]){}";
+    const std::string input2 = "([)]";
+
+    std::cout &lt;&lt; std::boolalpha;
+    std::cout &lt;&lt; "input_1 valid: " &lt;&lt; isBalanced(input1) &lt;&lt; '/n';
+    std::cout &lt;&lt; "input_2 valid: " &lt;&lt; isBalanced(input2) &lt;&lt; '/n';
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func isBalanced(s string) bool {
+	closeToOpen := map[rune]rune{
+		')': '(',
+		']': '[',
+		'}': '{',
+	}
+
+	stack := make([]rune, 0, len(s))
+	for _, ch := range s {
+		switch ch {
+		case '(', '[', '{':
+			stack = append(stack, ch)
+		case ')', ']', '}':
+			if len(stack) == 0 || stack[len(stack)-1] != closeToOpen[ch] {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+	}
+
+	return len(stack) == 0
+}
+
+func main() {
+	input1 := "([{}])(()[]){}"
+	input2 := "([)]"
+
+	fmt.Printf("input_1 valid: %v/n", isBalanced(input1))
+	fmt.Printf("input_2 valid: %v/n", isBalanced(input2))
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def is_balanced(s: str) -&gt; bool:
+    close_to_open = {")": "(", "]": "[", "}": "{"}
+    stack: list[str] = []
+
+    for ch in s:
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in close_to_open:
+            if not stack or stack[-1] != close_to_open[ch]:
+                return False
+            stack.pop()
+
+    return not stack
+
+
+def main() -&gt; None:
+    input_1 = "([{}])(()[]){}"
+    input_2 = "([)]"
+
+    print(f"input_1 valid: {str(is_balanced(input_1)).lower()}")
+    print(f"input_2 valid: {str(is_balanced(input_2)).lower()}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object BalancedBrackets {
+  def isBalanced(s: String): Boolean = {
+    val closeToOpen = Map(
+      ')' -&gt; '(',
+      ']' -&gt; '[',
+      '}' -&gt; '{'
+    )
+
+    val st = scala.collection.mutable.ArrayBuffer.empty[Char]
+    s.foreach { ch =&gt;
+      ch match {
+        case '(' | '[' | '{' =&gt; st += ch
+        case ')' | ']' | '}' =&gt;
+          if (st.isEmpty || st.last != closeToOpen(ch)) return false
+          st.remove(st.size - 1)
+        case _ =&gt;
+      }
+    }
+    st.isEmpty
+  }
+
+  def main(args: Array[String]): Unit = {
+    val input1 = "([{}])(()[]){}"
+    val input2 = "([)]"
+
+    println(s"input_1 valid: ${isBalanced(input1)}")
+    println(s"input_2 valid: ${isBalanced(input2)}")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object BalancedBrackets:
+  def isBalanced(s: String): Boolean =
+    val closeToOpen = Map(
+      ')' -&gt; '(',
+      ']' -&gt; '[',
+      '}' -&gt; '{'
+    )
+
+    val st = scala.collection.mutable.ArrayBuffer.empty[Char]
+    s.foreach { ch =&gt;
+      ch match {
+        case '(' | '[' | '{' =&gt; st += ch
+        case ')' | ']' | '}' =&gt;
+          if (st.isEmpty || st.last != closeToOpen(ch)) return false
+          st.remove(st.size - 1)
+        case _ =&gt;
+      }
+    }
+    st.isEmpty
+  }
+
+  @main def main(): Unit =
+    val input1 = "([{}])(()[]){}"
+    val input2 = "([)]"
+
+    println(s"input_1 valid: ${isBalanced(input1)}")
+    println(s"input_2 valid: ${isBalanced(input2)}")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">import { setImmediate } from "node:timers";
+
+function isBalanced(s: string): boolean {
+  const closeToOpen: Record&lt;string, string&gt; = {
+    ")": "(",
+    "]": "[",
+    "}": "{",
+  };
+
+  const stack: string[] = [];
+  for (const ch of s) {
+    if (ch === "(" || ch === "[" || ch === "{") {
+      stack.push(ch);
+    } else if (ch in closeToOpen) {
+      if (stack.length === 0 || stack[stack.length - 1] !== closeToOpen[ch]) {
+        return false;
+      }
+      stack.pop();
+    }
+  }
+
+  return stack.length === 0;
+}
+
+function main(): void {
+  const input1 = "([{}])(()[]){}";
+  const input2 = "([)]";
+
+  console.log(`input_1 valid: ${isBalanced(input1)}`);
+  console.log(`input_2 valid: ${isBalanced(input2)}`);
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="top_k_frequent">
+            <div class="topic-header" onclick="app.toggleTopic('top_k_frequent')">
+                <div class="topic-title-wrap"><h3>Top K Frequent Elements</h3><a class="topic-permalink" href="#top_k_frequent" aria-label="Link to Top K Frequent Elements">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent: 4 1.</p><div class="collapsible-code is-collapsed" data-snippet-id="problems/top_k_frequent" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;unordered_map&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+std::vector&lt;int&gt; topKFrequent(const std::vector&lt;int&gt;& nums, int k) {
+    std::unordered_map&lt;int, int&gt; freq;
+    for (int n : nums) {
+        ++freq[n];
+    }
+
+    using Entry = std::pair&lt;int, int&gt;;  // (frequency, value)
+    auto cmp = [](const Entry& a, const Entry& b) { return a.first &gt; b.first; };
+    std::priority_queue&lt;Entry, std::vector&lt;Entry&gt;, decltype(cmp)&gt; minHeap(cmp);
+
+    for (const auto& [value, count] : freq) {
+        minHeap.push({count, value});
+        if (static_cast&lt;int&gt;(minHeap.size()) &gt; k) {
+            minHeap.pop();
+        }
+    }
+
+    std::vector&lt;int&gt; result;
+    while (!minHeap.empty()) {
+        result.push_back(minHeap.top().second);
+        minHeap.pop();
+    }
+    std::reverse(result.begin(), result.end());
+    return result;
+}
+
+int main() {
+    const std::vector&lt;int&gt; nums = {1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5};
+    const int k = 2;
+
+    const auto result = topKFrequent(nums, k);
+    std::cout &lt;&lt; "top k frequent:";
+    for (int n : result) {
+        std::cout &lt;&lt; ' ' &lt;&lt; n;
+    }
+    std::cout &lt;&lt; '/n';
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"container/heap"
+	"fmt"
+)
+
+type entry struct {
+	count int
+	value int
+}
+
+type minHeap []entry
+
+func (h minHeap) Len() int { return len(h) }
+
+func (h minHeap) Less(i, j int) bool { return h[i].count &lt; h[j].count }
+
+func (h minHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
+
+func (h *minHeap) Push(x any) {
+	*h = append(*h, x.(entry))
+}
+
+func (h *minHeap) Pop() any {
+	old := *h
+	n := len(old)
+	out := old[n-1]
+	*h = old[:n-1]
+	return out
+}
+
+func topKFrequent(nums []int, k int) []int {
+	freq := map[int]int{}
+	for _, n := range nums {
+		freq[n]++
+	}
+
+	h := &minHeap{}
+	heap.Init(h)
+
+	for value, count := range freq {
+		heap.Push(h, entry{count: count, value: value})
+		if h.Len() &gt; k {
+			heap.Pop(h)
+		}
+	}
+
+	result := make([]int, h.Len())
+	for i := len(result) - 1; i &gt;= 0; i-- {
+		result[i] = heap.Pop(h).(entry).value
+	}
+	return result
+}
+
+func main() {
+	nums := []int{1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5}
+	k := 2
+	result := topKFrequent(nums, k)
+
+	fmt.Print("top k frequent:")
+	for _, v := range result {
+		fmt.Printf(" %d", v)
+	}
+	fmt.Println()
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import Counter
+import heapq
+
+
+def top_k_frequent(nums: list[int], k: int) -&gt; list[int]:
+    freq = Counter(nums)
+    heap: list[tuple[int, int]] = []
+
+    for value, count in freq.items():
+        heapq.heappush(heap, (count, value))
+        if len(heap) &gt; k:
+            heapq.heappop(heap)
+
+    # Highest-frequency values should be first in the final output.
+    return [value for _, value in sorted(heap, reverse=True)]
+
+
+def main() -&gt; None:
+    nums = [1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5]
+    k = 2
+    result = top_k_frequent(nums, k)
+    print("top k frequent:", *result)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object TopKFrequent {
+  def topKFrequent(nums: Vector[Int], k: Int): Vector[Int] = {
+    nums
+      .groupBy(identity)
+      .view
+      .mapValues(_.length)
+      .toVector
+      .sortBy { case (_, count) =&gt; -count }
+      .take(k)
+      .map { case (value, _) =&gt; value }
+  }
+
+  def main(args: Array[String]): Unit = {
+    val nums = Vector(1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5)
+    val k = 2
+    val result = topKFrequent(nums, k)
+
+    println("top k frequent: " + result.mkString(" "))
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object TopKFrequent:
+  def topKFrequent(nums: Vector[Int], k: Int): Vector[Int] =
+    nums
+      .groupBy(identity)
+      .view
+      .mapValues(_.length)
+      .toVector
+      .sortBy { case (_, count) =&gt; -count }
+      .take(k)
+      .map { case (value, _) =&gt; value }
+
+  @main def main(): Unit =
+    val nums = Vector(1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5)
+    val k = 2
+    val result = topKFrequent(nums, k)
+
+    println("top k frequent: " + result.mkString(" "))
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">function topKFrequent(nums: number[], k: number): number[] {
+  const freq = new Map&lt;number, number&gt;();
+  for (const n of nums) {
+    freq.set(n, (freq.get(n) ?? 0) + 1);
+  }
+
+  const pairs = Array.from(freq.entries()).map(([value, count]) =&gt; ({ value, count }));
+  pairs.sort((a, b) =&gt; b.count - a.count);
+
+  return pairs.slice(0, k).map((p) =&gt; p.value);
+}
+
+function main(): void {
+  const nums = [1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5, 5];
+  const k = 2;
+  const result = topKFrequent(nums, k);
+
+  console.log("top k frequent:", ...result);
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="word_count">
+            <div class="topic-header" onclick="app.toggleTopic('word_count')">
+                <div class="topic-title-wrap"><h3>Word Count</h3><a class="topic-permalink" href="#word_count" aria-label="Link to Word Count">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation.</p><div  class="note note-info "><div class="note-content">The original example expects a bundled sample input file; on this page you are comparing the implementation approach rather than executing the file-backed workflow.</div></div><div class="collapsible-code is-collapsed" data-snippet-id="problems/word_count" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cctype&gt;
+
+int main(int argc, char** argv) {
+    std::string path = (argc &gt; 1) ? argv[1] : "data.txt";
+    std::ifstream in(path);
+    if (!in) { std::cerr &lt;&lt; "Cannot open " &lt;&lt; path &lt;&lt; std::endl; return 1; }
+    std::unordered_map&lt;std::string,int&gt; counts;
+    std::string token;
+    while (in &gt;&gt; token) {
+        std::string w;
+        for (char ch : token) {
+            if (std::isalpha(static_cast&lt;unsigned char&gt;(ch))) w.push_back(std::tolower(static_cast&lt;unsigned char&gt;(ch)));
+        }
+        if (!w.empty()) ++counts[w];
+    }
+    std::vector&lt;std::pair&lt;std::string,int&gt;&gt; vec(counts.begin(), counts.end());
+    std::sort(vec.begin(), vec.end(), [](const auto& a, const auto& b){ return a.second &gt; b.second; });
+    for (const auto& p : vec) std::cout &lt;&lt; p.first &lt;&lt; ": " &lt;&lt; p.second &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "sort"
+    "strings"
+)
+
+func main() {
+    path := "data.txt"
+    if len(os.Args) &gt; 1 { path = os.Args[1] }
+    f, err := os.Open(path)
+    if err != nil { fmt.Println("Error:", err); os.Exit(1) }
+    defer f.Close()
+    scanner := bufio.NewScanner(f)
+    scanner.Split(bufio.ScanWords)
+    counts := map[string]int{}
+    for scanner.Scan() {
+        w := strings.ToLower(scanner.Text())
+        // keep only letters
+        filtered := ""
+        for _, r := range w { if (r &gt;= 'a' && r &lt;= 'z') || (r &gt;= '0' && r &lt;= '9') { filtered += string(r) } }
+        if filtered != "" { counts[filtered]++ }
+    }
+    type P struct{ K string; V int }
+    arr := make([]P, 0, len(counts))
+    for k, v := range counts { arr = append(arr, P{k, v}) }
+    sort.Slice(arr, func(i, j int) bool { return arr[i].V &gt; arr[j].V })
+    for _, p := range arr { fmt.Printf("%s: %d/n", p.K, p.V) }
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from collections import Counter
+import re
+import sys
+
+def word_count(path='data.txt'):
+    with open(path, 'r', encoding='utf-8') as fh:
+        text = fh.read().lower()
+    words = re.findall(r"/b/w+/b", text)
+    return Counter(words)
+
+def main():
+    path = sys.argv[1] if len(sys.argv) &gt; 1 else 'data.txt'
+    cnt = word_count(path)
+    for w, c in cnt.most_common():
+        print(f"{w}: {c}")
+
+if __name__ == '__main__':
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.io.Source
+
+object WordCount {
+  def main(args: Array[String]): Unit = {
+    val path = if (args.nonEmpty) args(0) else "data.txt"
+
+    val source = Source.fromFile(path)
+    val text = try source.mkString.toLowerCase finally source.close()
+
+    val words = "//w+".r.findAllIn(text).toList
+    val counts = words.groupBy(identity).view.mapValues(_.size).toSeq.sortBy(-_._2)
+    counts.foreach { case (w, c) =&gt; println(s"$w: $c") }
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.io.Source
+
+object WordCount:
+  @main def main(args: String*): Unit =
+    val path = if (args.nonEmpty) args(0) else "data.txt"
+
+    val source = Source.fromFile(path)
+    val text = try source.mkString.toLowerCase finally source.close()
+
+    val words = "//w+".r.findAllIn(text).toList
+    val counts = words.groupBy(identity).view.mapValues(_.size).toSeq.sortBy(-_._2)
+    counts.foreach { case (w, c) =&gt; println(s"$w: $c") }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+import { promises as fs } from 'fs';
+
+async function main() {
+    const path = process.argv[2] || 'data.txt';
+    const text = await fs.readFile(path, 'utf8');
+    const words = text.toLowerCase().match(//b/w+/b/g) || [];
+    const m = new Map&lt;string, number&gt;();
+    for (const w of words) m.set(w, (m.get(w) || 0) + 1);
+    const arr = Array.from(m.entries()).sort((a,b) =&gt; b[1] - a[1]);
+    for (const [k,v] of arr) console.log(`${k}: ${v}`);
+}
+
+main().catch(e =&gt; { console.error('Error:', e); process.exit(1); });
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="traversal_and_optimization">
+            <div class="topic-header" onclick="app.toggleTopic('traversal_and_optimization')">
+                <div class="topic-title-wrap"><h2>Traversal & Optimization</h2><a class="topic-permalink" href="#traversal_and_optimization" aria-label="Link to Traversal & Optimization">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section text_style  " id="grid_shortest_path">
+            <div class="topic-header" onclick="app.toggleTopic('grid_shortest_path')">
+                <div class="topic-title-wrap"><h3>Grid Shortest Path</h3><a class="topic-permalink" href="#grid_shortest_path" aria-label="Link to Grid Shortest Path">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Expected sample result: shortest steps: 8.</p><div class="collapsible-code is-collapsed" data-snippet-id="problems/grid_shortest_path" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+int shortestPathSteps(const std::vector&lt;std::vector&lt;int&gt;&gt;& grid) {
+    const int rows = static_cast&lt;int&gt;(grid.size());
+    const int cols = static_cast&lt;int&gt;(grid[0].size());
+    if (grid[0][0] == 1 || grid[rows - 1][cols - 1] == 1) {
+        return -1;
+    }
+
+    std::vector&lt;std::vector&lt;int&gt;&gt; dist(rows, std::vector&lt;int&gt;(cols, -1));
+    std::queue&lt;std::pair&lt;int, int&gt;&gt; q;
+    q.push({0, 0});
+    dist[0][0] = 0;
+
+    const std::array&lt;std::pair&lt;int, int&gt;, 4&gt; dirs = {{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}};
+
+    while (!q.empty()) {
+        auto [r, c] = q.front();
+        q.pop();
+
+        if (r == rows - 1 && c == cols - 1) {
+            return dist[r][c];
+        }
+
+        for (auto [dr, dc] : dirs) {
+            int nr = r + dr;
+            int nc = c + dc;
+            if (nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols) {
+                continue;
+            }
+            if (grid[nr][nc] == 1 || dist[nr][nc] != -1) {
+                continue;
+            }
+            dist[nr][nc] = dist[r][c] + 1;
+            q.push({nr, nc});
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    const std::vector&lt;std::vector&lt;int&gt;&gt; grid = {
+        {0, 0, 1, 0, 0},
+        {1, 0, 1, 0, 1},
+        {0, 0, 0, 0, 0},
+        {0, 1, 1, 1, 0},
+        {0, 0, 0, 1, 0}
+    };
+
+    std::cout &lt;&lt; "shortest steps: " &lt;&lt; shortestPathSteps(grid) &lt;&lt; '/n';
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type point struct {
+	r int
+	c int
+}
+
+func shortestPathSteps(grid [][]int) int {
+	rows := len(grid)
+	cols := len(grid[0])
+	if grid[0][0] == 1 || grid[rows-1][cols-1] == 1 {
+		return -1
+	}
+
+	dist := make([][]int, rows)
+	for r := 0; r &lt; rows; r++ {
+		dist[r] = make([]int, cols)
+		for c := 0; c &lt; cols; c++ {
+			dist[r][c] = -1
+		}
+	}
+
+	dirs := []point{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+	queue := []point{{0, 0}}
+	dist[0][0] = 0
+
+	for len(queue) &gt; 0 {
+		cur := queue[0]
+		queue = queue[1:]
+
+		if cur.r == rows-1 && cur.c == cols-1 {
+			return dist[cur.r][cur.c]
+		}
+
+		for _, d := range dirs {
+			nr := cur.r + d.r
+			nc := cur.c + d.c
+			if nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols {
+				continue
+			}
+			if grid[nr][nc] == 1 || dist[nr][nc] != -1 {
+				continue
+			}
+			dist[nr][nc] = dist[cur.r][cur.c] + 1
+			queue = append(queue, point{nr, nc})
+		}
+	}
+
+	return -1
+}
+
+func main() {
+	grid := [][]int{
+		{0, 0, 1, 0, 0},
+		{1, 0, 1, 0, 1},
+		{0, 0, 0, 0, 0},
+		{0, 1, 1, 1, 0},
+		{0, 0, 0, 1, 0},
+	}
+
+	fmt.Printf("shortest steps: %d/n", shortestPathSteps(grid))
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">from collections import deque
+
+
+def shortest_path_steps(grid: list[list[int]]) -&gt; int:
+    rows = len(grid)
+    cols = len(grid[0])
+
+    if grid[0][0] == 1 or grid[rows - 1][cols - 1] == 1:
+        return -1
+
+    dist = [[-1] * cols for _ in range(rows)]
+    q: deque[tuple[int, int]] = deque([(0, 0)])
+    dist[0][0] = 0
+
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    while q:
+        r, c = q.popleft()
+        if r == rows - 1 and c == cols - 1:
+            return dist[r][c]
+
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if nr &lt; 0 or nr &gt;= rows or nc &lt; 0 or nc &gt;= cols:
+                continue
+            if grid[nr][nc] == 1 or dist[nr][nc] != -1:
+                continue
+            dist[nr][nc] = dist[r][c] + 1
+            q.append((nr, nc))
+
+    return -1
+
+
+def main() -&gt; None:
+    grid = [
+        [0, 0, 1, 0, 0],
+        [1, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 1, 0],
+    ]
+
+    print(f"shortest steps: {shortest_path_steps(grid)}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object GridShortestPath {
+  private val dirs = List((1, 0), (-1, 0), (0, 1), (0, -1))
+
+  def shortestPathSteps(grid: Vector[Vector[Int]]): Int = {
+    val rows = grid.length
+    val cols = grid.head.length
+
+    if (grid(0)(0) == 1 || grid(rows - 1)(cols - 1) == 1) {
+      return -1
+    }
+
+    val dist = Array.fill(rows, cols)(-1)
+    val q = scala.collection.mutable.Queue[(Int, Int)]()
+    q.enqueue((0, 0))
+    dist(0)(0) = 0
+
+    while (q.nonEmpty) {
+      val (r, c) = q.dequeue()
+      if (r == rows - 1 && c == cols - 1) {
+        return dist(r)(c)
+      }
+
+      dirs.foreach { case (dr, dc) =&gt;
+        val nr = r + dr
+        val nc = c + dc
+        val inBounds = nr &gt;= 0 && nr &lt; rows && nc &gt;= 0 && nc &lt; cols
+        if (inBounds && grid(nr)(nc) == 0 && dist(nr)(nc) == -1) {
+          dist(nr)(nc) = dist(r)(c) + 1
+          q.enqueue((nr, nc))
+        }
+      }
+    }
+
+    -1
+  }
+
+  def main(args: Array[String]): Unit = {
+    val grid = Vector(
+      Vector(0, 0, 1, 0, 0),
+      Vector(1, 0, 1, 0, 1),
+      Vector(0, 0, 0, 0, 0),
+      Vector(0, 1, 1, 1, 0),
+      Vector(0, 0, 0, 1, 0)
+    )
+
+    println(s"shortest steps: ${shortestPathSteps(grid)}")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object GridShortestPath:
+  private val dirs = List((1, 0), (-1, 0), (0, 1), (0, -1))
+
+  def shortestPathSteps(grid: Vector[Vector[Int]]): Int =
+    val rows = grid.length
+    val cols = grid.head.length
+
+    if (grid(0)(0) == 1 || grid(rows - 1)(cols - 1) == 1) {
+      return -1
+    }
+
+    val dist = Array.fill(rows, cols)(-1)
+    val q = scala.collection.mutable.Queue[(Int, Int)]()
+    q.enqueue((0, 0))
+    dist(0)(0) = 0
+
+    while (q.nonEmpty) {
+      val (r, c) = q.dequeue()
+      if (r == rows - 1 && c == cols - 1) {
+        return dist(r)(c)
+      }
+
+      dirs.foreach { case (dr, dc) =&gt;
+        val nr = r + dr
+        val nc = c + dc
+        val inBounds = nr &gt;= 0 && nr &lt; rows && nc &gt;= 0 && nc &lt; cols
+        if (inBounds && grid(nr)(nc) == 0 && dist(nr)(nc) == -1) {
+          dist(nr)(nc) = dist(r)(c) + 1
+          q.enqueue((nr, nc))
+        }
+      }
+    }
+
+    -1
+
+  @main def main(): Unit =
+    val grid = Vector(
+      Vector(0, 0, 1, 0, 0),
+      Vector(1, 0, 1, 0, 1),
+      Vector(0, 0, 0, 0, 0),
+      Vector(0, 1, 1, 1, 0),
+      Vector(0, 0, 0, 1, 0)
+    )
+
+    println(s"shortest steps: ${shortestPathSteps(grid)}")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">type Point = { r: number; c: number };
+
+function shortestPathSteps(grid: number[][]): number {
+  const rows = grid.length;
+  const cols = grid[0].length;
+
+  if (grid[0][0] === 1 || grid[rows - 1][cols - 1] === 1) {
+    return -1;
+  }
+
+  const dist = Array.from({ length: rows }, () =&gt; Array(cols).fill(-1));
+  const queue: Point[] = [{ r: 0, c: 0 }];
+  dist[0][0] = 0;
+
+  const dirs: Point[] = [
+    { r: 1, c: 0 },
+    { r: -1, c: 0 },
+    { r: 0, c: 1 },
+    { r: 0, c: -1 },
+  ];
+
+  for (let head = 0; head &lt; queue.length; head++) {
+    const { r, c } = queue[head];
+
+    if (r === rows - 1 && c === cols - 1) {
+      return dist[r][c];
+    }
+
+    for (const d of dirs) {
+      const nr = r + d.r;
+      const nc = c + d.c;
+      if (nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols) {
+        continue;
+      }
+      if (grid[nr][nc] === 1 || dist[nr][nc] !== -1) {
+        continue;
+      }
+
+      dist[nr][nc] = dist[r][c] + 1;
+      queue.push({ r: nr, c: nc });
+    }
+  }
+
+  return -1;
+}
+
+function main(): void {
+  const grid = [
+    [0, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 1, 0],
+  ];
+
+  console.log(`shortest steps: ${shortestPathSteps(grid)}`);
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="matrix_mul">
+            <div class="topic-header" onclick="app.toggleTopic('matrix_mul')">
+                <div class="topic-title-wrap"><h3>Matrix Multiplication</h3><a class="topic-permalink" href="#matrix_mul" aria-label="Link to Matrix Multiplication">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions.</p><div class="collapsible-code is-collapsed" data-snippet-id="problems/matrix_mul" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;numeric&gt;
+
+int main() {
+    const int N = 200;
+    std::vector&lt;std::vector&lt;int&gt;&gt; A(N, std::vector&lt;int&gt;(N)), B(N, std::vector&lt;int&gt;(N)), C(N, std::vector&lt;int&gt;(N, 0));
+    for (int i = 0; i &lt; N; ++i)
+        for (int j = 0; j &lt; N; ++j) {
+            A[i][j] = i + j;
+            B[i][j] = i - j;
+        }
+    for (int i = 0; i &lt; N; ++i)
+        for (int k = 0; k &lt; N; ++k)
+            for (int j = 0; j &lt; N; ++j)
+                C[i][j] += A[i][k] * B[k][j];
+    std::cout &lt;&lt; C[0][0] &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    const N = 200
+    A := make([][]int, N)
+    B := make([][]int, N)
+    C := make([][]int, N)
+    for i := 0; i &lt; N; i++ {
+        A[i] = make([]int, N)
+        B[i] = make([]int, N)
+        C[i] = make([]int, N)
+        for j := 0; j &lt; N; j++ {
+            A[i][j] = i + j
+            B[i][j] = i - j
+        }
+    }
+    for i := 0; i &lt; N; i++ {
+        for k := 0; k &lt; N; k++ {
+            for j := 0; j &lt; N; j++ {
+                C[i][j] += A[i][k] * B[k][j]
+            }
+        }
+    }
+    fmt.Println(C[0][0])
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">def make_matrix(n, init):
+    return [[init(i, j) for j in range(n)] for i in range(n)]
+
+
+def main():
+    N = 200
+    A = make_matrix(N, lambda i, j: i + j)
+    B = make_matrix(N, lambda i, j: i - j)
+    C = [[0] * N for _ in range(N)]
+    for i in range(N):
+        for k in range(N):
+            aik = A[i][k]
+            for j in range(N):
+                C[i][j] += aik * B[k][j]
+    print(C[0][0])
+
+
+if __name__ == '__main__':
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object MatrixMul {
+  def main(args: Array[String]): Unit = {
+    val N = 200
+    val A = Array.tabulate(N, N)((i, j) =&gt; i + j)
+    val B = Array.tabulate(N, N)((i, j) =&gt; i - j)
+    val C = Array.ofDim[Int](N, N)
+    for (i &lt;- 0 until N)
+      for (k &lt;- 0 until N)
+        for (j &lt;- 0 until N)
+          C(i)(j) += A(i)(k) * B(k)(j)
+    println(C(0)(0))
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object MatrixMul:
+  @main def main(): Unit =
+    val N = 200
+    val A = Array.tabulate(N, N)((i, j) =&gt; i + j)
+    val B = Array.tabulate(N, N)((i, j) =&gt; i - j)
+    val C = Array.ofDim[Int](N, N)
+    for (i &lt;- 0 until N)
+      for (k &lt;- 0 until N)
+        for (j &lt;- 0 until N)
+          C(i)(j) += A(i)(k) * B(k)(j)
+    println(C(0)(0))
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">import { setImmediate } from "node:timers";
+
+function makeMatrix(n: number, fn: (i: number, j: number) =&gt; number): number[][] {
+  const M: number[][] = []
+  for (let i = 0; i &lt; n; i++) {
+    M[i] = []
+    for (let j = 0; j &lt; n; j++) M[i][j] = fn(i, j)
+  }
+  return M
+}
+
+async function main() {
+  const N = 200
+  const A = makeMatrix(N, (i, j) =&gt; i + j)
+  const B = makeMatrix(N, (i, j) =&gt; i - j)
+  const C: number[][] = Array.from({ length: N }, () =&gt; Array(N).fill(0))
+  for (let i = 0; i &lt; N; i++) {
+    for (let k = 0; k &lt; N; k++) {
+      const aik = A[i][k]
+      for (let j = 0; j &lt; N; j++) C[i][j] += aik * B[k][j]
+    }
+  }
+  await new Promise&lt;void&gt;((resolve) =&gt; setImmediate(resolve))
+  console.log(C[0][0])
+}
+
+main().catch((err) =&gt; {
+  console.error("Error:", err)
+  process.exit(1)
+})
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="real_world_programming_tasks">
+            <div class="topic-header" onclick="app.toggleTopic('real_world_programming_tasks')">
+                <div class="topic-title-wrap"><h2>Real-World Programming Tasks</h2><a class="topic-permalink" href="#real_world_programming_tasks" aria-label="Link to Real-World Programming Tasks">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <div  class="blocks-container ">
+        <div class="topic-section text_style  " id="file_aggregate">
+            <div class="topic-header" onclick="app.toggleTopic('file_aggregate')">
+                <div class="topic-title-wrap"><h3>File Aggregate</h3><a class="topic-permalink" href="#file_aggregate" aria-label="Link to File Aggregate">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting.</p><div  class="note note-info "><div class="note-content">The original snippet is designed to consume a sample input file. On this page the emphasis is the processing pipeline and code structure rather than the external file setup.</div></div><div class="collapsible-code is-collapsed" data-snippet-id="problems/file_aggregate" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;numeric&gt;
+#include &lt;algorithm&gt;
+#include &lt;future&gt;
+#include &lt;stdexcept&gt;
+#include &lt;optional&gt;
+
+struct Record {
+    std::string name;
+    int score;
+};
+
+class FileProcessor {
+public:
+    explicit FileProcessor(const std::string& path) : path_(path) {}
+    std::vector&lt;Record&gt; readAll() const {
+        std::ifstream in(path_);
+        if (!in) throw std::runtime_error("unable to open file");
+        std::vector&lt;Record&gt; out;
+        std::string line;
+        while (std::getline(in, line)) {
+            if (line.empty() || line[0] == '#') continue;
+            if (auto r = parseLine(line)) out.push_back(*r);
+        }
+        return out;
+    }
+private:
+    std::string path_;
+    static std::optional&lt;Record&gt; parseLine(const std::string& line) {
+        std::istringstream iss(line);
+        std::string name;
+        int score;
+        if (!std::getline(iss, name, ',')) return std::nullopt;
+        if (!(iss &gt;&gt; score)) return std::nullopt;
+        return Record{ name, score };
+    }
+};
+
+static double average(const std::vector&lt;int&gt;& v) {
+    if (v.empty()) return 0.0;
+    return std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+}
+
+int main(int argc, char** argv) {
+    try {
+        const std::string path = (argc &gt; 1) ? argv[1] : "data.txt";
+        FileProcessor fp(path);
+        auto records = fp.readAll();
+
+        std::map&lt;std::string, std::vector&lt;int&gt;&gt; buckets;
+        for (const auto& r : records) buckets[r.name].push_back(r.score);
+
+        std::vector&lt;std::future&lt;std::pair&lt;std::string, double&gt;&gt;&gt; futures;
+        for (const auto& p : buckets) {
+            auto name = p.first;
+            auto scores = p.second;
+            futures.push_back(std::async(std::launch::async,
+                [name, scores]() {
+                    return std::make_pair(name,
+                        average(scores));
+                }));
+        }
+
+        std::vector&lt;std::pair&lt;std::string, double&gt;&gt; results;
+        for (auto& f : futures) results.push_back(f.get());
+
+        std::sort(results.begin(), results.end(),
+            [](const auto& a, const auto& b){ return a.second &gt; b.second; });
+
+        for (const auto& r : results) {
+            std::cout &lt;&lt; r.first &lt;&lt; ": " &lt;&lt; r.second &lt;&lt; std::endl;
+        }
+    } catch (const std::exception& ex) {
+        std::cerr &lt;&lt; "Error: " &lt;&lt; ex.what() &lt;&lt; std::endl;
+        return 1;
+    }
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "strconv"
+    "strings"
+    "sync"
+    "sort"
+)
+
+type Record struct {
+    Name  string
+    Score int
+}
+
+func readAll(path string) ([]Record, error) {
+    f, err := os.Open(path)
+    if err != nil {
+        return nil, err
+    }
+    defer f.Close()
+    var out []Record
+    scanner := bufio.NewScanner(f)
+    for scanner.Scan() {
+        line := strings.TrimSpace(scanner.Text())
+        if line == "" || strings.HasPrefix(line, "#") {
+            continue
+        }
+        parts := strings.SplitN(line, ",", 2)
+        if len(parts) != 2 {
+            continue
+        }
+        name := strings.TrimSpace(parts[0])
+        s := strings.TrimSpace(parts[1])
+        score, err := strconv.Atoi(s)
+        if err != nil {
+            continue
+        }
+        out = append(out, Record{name, score})
+    }
+    if err := scanner.Err(); err != nil {
+        return nil, err
+    }
+    return out, nil
+}
+
+func average(nums []int) float64 {
+    if len(nums) == 0 {
+        return 0
+    }
+    sum := 0
+    for _, v := range nums {
+        sum += v
+    }
+    return float64(sum) / float64(len(nums))
+}
+
+func main() {
+    path := "data.txt"
+    if len(os.Args) &gt; 1 {
+        path = os.Args[1]
+    }
+    records, err := readAll(path)
+    if err != nil {
+        fmt.Println("Error:", err)
+        os.Exit(1)
+    }
+
+    buckets := map[string][]int{}
+    for _, r := range records {
+        buckets[r.Name] = append(buckets[r.Name], r.Score)
+    }
+
+    type Res struct {
+        Name string
+        Avg  float64
+    }
+
+    var wg sync.WaitGroup
+    ch := make(chan Res, len(buckets))
+    for name, scores := range buckets {
+        wg.Add(1)
+        go func(n string, s []int) {
+            defer wg.Done()
+            ch &lt;- Res{n, average(s)}
+        }(name, scores)
+    }
+    wg.Wait()
+    close(ch)
+
+    var results []Res
+    for r := range ch {
+        results = append(results, r)
+    }
+
+    sort.Slice(results, func(i, j int) bool { return results[i].Avg &gt; results[j].Avg })
+    for _, r := range results {
+        fmt.Printf("%s: %.2f/n", r.Name, r.Avg)
+    }
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from dataclasses import dataclass
+from typing import List, Dict
+from concurrent.futures import ThreadPoolExecutor
+import statistics
+import sys
+
+@dataclass
+class Record:
+    name: str
+    score: int
+
+class FileProcessor:
+    def __init__(self, path: str):
+        self.path = path
+
+    def read_all(self) -&gt; List[Record]:
+        records: List[Record] = []
+        with open(self.path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                try:
+                    name, s = [x.strip() for x in line.split(",", 1)]
+                    score = int(s)
+                    records.append(Record(name, score))
+                except Exception:
+                    continue
+        return records
+
+
+def average(scores: List[int]) -&gt; float:
+    return statistics.mean(scores) if scores else 0.0
+
+
+def main():
+    path = sys.argv[1] if len(sys.argv) &gt; 1 else "data.txt"
+    fp = FileProcessor(path)
+    try:
+        records = fp.read_all()
+        buckets: Dict[str, List[int]] = {}
+        for r in records:
+            buckets.setdefault(r.name, []).append(r.score)
+
+        results = []
+        with ThreadPoolExecutor() as ex:
+            futures = {ex.submit(average, scores): name for name, scores in buckets.items()}
+            for fut in futures:
+                name = futures[fut]
+                results.append((name, fut.result()))
+
+        results.sort(key=lambda x: x[1], reverse=True)
+        for name, avg in results:
+            print(f"{name}: {avg:.2f}")
+    except Exception as e:
+        print("Error:", e)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.io.Source
+import scala.concurrent.{Future, Await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.util.{Try, Success, Failure}
+
+case class Record(name: String, score: Int)
+
+object FileProcessor {
+  def readAll(path: String): List[Record] = {
+    val src = Source.fromFile(path)
+    try {
+      src.getLines().toList.flatMap { raw =&gt;
+        val line = raw.trim
+        if (line.isEmpty || line.startsWith("#")) None
+        else {
+          line.split(",", 2).toList match {
+            case name :: s :: Nil =&gt;
+              Try(s.trim.toInt) match {
+                case Success(v) =&gt; Some(Record(name.trim, v))
+                case Failure(_) =&gt; None
+              }
+            case _ =&gt; None
+          }
+        }
+      }
+    } finally {
+      src.close()
+    }
+  }
+}
+
+object Main extends App {
+  val path = if (args.nonEmpty) args(0) else "data.txt"
+  try {
+    val records = FileProcessor.readAll(path)
+    val buckets = records.groupBy(_.name).view.mapValues(_.map(_.score)).toMap
+    val futures = buckets.map { case (name, scores) =&gt;
+      Future { (name, if (scores.isEmpty) 0.0 else scores.sum.toDouble / scores.size) }
+    }
+    val aggregated = Future.sequence(futures.toList).map(_.sortBy(-_._2))
+    val results = Await.result(aggregated, Duration.Inf)
+    results.foreach { case (name, avg) =&gt; println(f"$name: $avg%.2f") }
+  } catch {
+    case ex: Throwable =&gt; System.err.println(s"Error: ${ex.getMessage}"); System.exit(1)
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.io.Source
+import scala.concurrent.{Future, Await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.util.{Try, Success, Failure}
+
+case class Record(name: String, score: Int)
+
+object FileProcessor:
+  def readAll(path: String): List[Record] =
+    val src = Source.fromFile(path)
+    try {
+      src.getLines().toList.flatMap { raw =&gt;
+        val line = raw.trim
+        if (line.isEmpty || line.startsWith("#")) None
+        else {
+          line.split(",", 2).toList match {
+            case name :: s :: Nil =&gt;
+              Try(s.trim.toInt) match {
+                case Success(v) =&gt; Some(Record(name.trim, v))
+                case Failure(_) =&gt; None
+              }
+            case _ =&gt; None
+          }
+        }
+      }
+    } finally {
+      src.close()
+    }
+
+  @main def main(args: String*): Unit =
+    val path = if (args.nonEmpty) args(0) else "data.txt"
+  try {
+    val records = FileProcessor.readAll(path)
+    val buckets = records.groupBy(_.name).view.mapValues(_.map(_.score)).toMap
+    val futures = buckets.map { case (name, scores) =&gt;
+      Future { (name, if (scores.isEmpty) 0.0 else scores.sum.toDouble / scores.size) }
+    }
+    val aggregated = Future.sequence(futures.toList).map(_.sortBy(-_._2))
+    val results = Await.result(aggregated, Duration.Inf)
+    results.foreach { case (name, avg) =&gt; println(f"$name: $avg%.2f") }
+  } catch {
+    case ex: Throwable =&gt; System.err.println(s"Error: ${ex.getMessage}"); System.exit(1)
+  }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+import * as fs from "fs/promises";
+
+type Record = { name: string; score: number };
+
+class FileProcessor {
+    path: string;
+    constructor(path: string) {
+        this.path = path;
+    }
+
+    async readAll(): Promise&lt;Record[]&gt; {
+        const text = await fs.readFile(this.path, { encoding: "utf8" });
+        const out: Record[] = [];
+        for (const raw of text.split(//r?/n/)) {
+            const line = raw.trim();
+            if (!line || line.startsWith("#")) continue;
+            const parts = line.split(",", 2);
+            if (parts.length &lt; 2) continue;
+            const name = parts[0].trim();
+            const score = Number(parts[1].trim());
+            if (Number.isNaN(score)) continue;
+            out.push({ name, score });
+        }
+        return out;
+    }
+}
+
+function average(nums: number[]): number {
+    if (nums.length === 0) return 0;
+    return nums.reduce((a, b) =&gt; a + b, 0) / nums.length;
+}
+
+async function main() {
+    const path = process.argv[2] || "data.txt";
+    try {
+        const fp = new FileProcessor(path);
+        const records = await fp.readAll();
+        const buckets = new Map&lt;string, number[]&gt;();
+        for (const r of records) {
+            if (!buckets.has(r.name)) buckets.set(r.name, []);
+            buckets.get(r.name)!.push(r.score);
+        }
+
+        const promises: Promise&lt;[string, number]&gt;[] = [];
+        for (const [name, scores] of buckets.entries()) {
+            promises.push(Promise.resolve([name, average(scores)]));
+        }
+        const results = (await Promise.all(promises)).sort((a, b) =&gt; b[1] - a[1]);
+        for (const [name, avg] of results) {
+            console.log(`${name}: ${avg.toFixed(2)}`);
+        }
+    } catch (err) {
+        console.error("Error:", err);
+        process.exit(1);
+    }
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="concurrency_demo">
+            <div class="topic-header" onclick="app.toggleTopic('concurrency_demo')">
+                <div class="topic-title-wrap"><h3>Concurrency Demo</h3><a class="topic-permalink" href="#concurrency_demo" aria-label="Link to Concurrency Demo">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing style. Expected sample result: Total: 500500.</p><div class="collapsible-code is-collapsed" data-snippet-id="problems/concurrency_demo" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Solution</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;numeric&gt;
+#include &lt;future&gt;
+#include &lt;thread&gt;
+#include &lt;algorithm&gt;
+
+int partial_sum(const std::vector&lt;int&gt;& v, size_t start, size_t len) {
+    return std::accumulate(v.begin() + start, v.begin() + start + len, 0);
+}
+
+int main() {
+    const size_t N = 1000;
+    std::vector&lt;int&gt; data(N);
+    std::iota(data.begin(), data.end(), 1);
+    size_t threads = std::thread::hardware_concurrency();
+    if (threads == 0) threads = 4;
+    size_t block = data.size() / threads;
+    std::vector&lt;std::future&lt;int&gt;&gt; futs;
+    for (size_t i = 0; i &lt; threads; ++i) {
+        size_t s = i * block;
+        size_t len = (i + 1 == threads) ? data.size() - s : block;
+        futs.push_back(std::async(std::launch::async, [s, len, &data]() {
+            return partial_sum(data, s, len);
+        }));
+    }
+    int total = 0;
+    for (auto &f : futs) total += f.get();
+    std::cout &lt;&lt; "Total: " &lt;&lt; total &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "runtime"
+    "sync"
+)
+
+func main() {
+    n := 1000
+    data := make([]int, n)
+    for i := 0; i &lt; n; i++ { data[i] = i + 1 }
+    threads := runtime.NumCPU()
+    if threads &lt; 1 { threads = 4 }
+    block := n / threads
+    var wg sync.WaitGroup
+    ch := make(chan int, threads)
+    for i := 0; i &lt; threads; i++ {
+        s := i * block
+        end := (i+1) * block
+        if i == threads-1 { end = n }
+        wg.Add(1)
+        go func(start, end int) {
+            defer wg.Done()
+            sum := 0
+            for j := start; j &lt; end; j++ { sum += data[j] }
+            ch &lt;- sum
+        }(s, end)
+    }
+    wg.Wait()
+    close(ch)
+    total := 0
+    for v := range ch { total += v }
+    fmt.Println("Total:", total)
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from concurrent.futures import ThreadPoolExecutor
+
+def partial_sum(slice_data):
+    return sum(slice_data)
+
+def main():
+    n = 1000
+    data = list(range(1, n+1))
+    threads = min(8, max(1, len(data) // 100))
+    chunk = len(data) // threads
+    chunks = [data[i*chunk:(i+1)*chunk] for i in range(threads-1)]
+    chunks.append(data[(threads-1)*chunk:])
+    with ThreadPoolExecutor(max_workers=threads) as ex:
+        results = list(ex.map(partial_sum, chunks))
+    print("Total:", sum(results))
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.concurrent.{Future, Await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+
+object ConcurrencyDemo {
+  def main(args: Array[String]): Unit = {
+  val n = 1000
+  val data = (1 to n).toArray
+  val threads = Runtime.getRuntime.availableProcessors()
+  val block = n / threads
+  val futures = (0 until threads).map { i =&gt;
+    Future {
+      val s = i * block
+      val e = if (i == threads - 1) n else (i + 1) * block
+      (s until e).map(j =&gt; data(j)).sum
+    }
+  }
+  val results = Await.result(Future.sequence(futures), Duration.Inf)
+  println("Total: " + results.sum)
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.concurrent.{Future, Await}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+
+object ConcurrencyDemo:
+  @main def main(): Unit =
+  val n = 1000
+  val data = (1 to n).toArray
+  val threads = Runtime.getRuntime.availableProcessors()
+  val block = n / threads
+  val futures = (0 until threads).map { i =&gt;
+    Future {
+      val s = i * block
+      val e = if (i == threads - 1) n else (i + 1) * block
+      (s until e).map(j =&gt; data(j)).sum
+    }
+  }
+  val results = Await.result(Future.sequence(futures), Duration.Inf)
+  println("Total: " + results.sum)
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function partialSum(arr: number[]): Promise&lt;number&gt; {
+  return new Promise((resolve) =&gt; {
+    setImmediate(() =&gt; {
+      resolve(arr.reduce((a, b) =&gt; a + b, 0));
+    });
+  });
+}
+
+async function main() {
+  const n = 1000;
+  const data = Array.from({ length: n }, (_, i) =&gt; i + 1);
+  const workers = Math.min(8, Math.max(1, Math.floor(n / 100)));
+  const chunk = Math.floor(n / workers);
+  const chunks: number[][] = [];
+
+  for (let i = 0; i &lt; workers; i++) {
+    const start = i * chunk;
+    const end = i + 1 === workers ? n : (i + 1) * chunk;
+    chunks.push(data.slice(start, end));
+  }
+
+  const results = await Promise.all(chunks.map((values) =&gt; partialSum(values)));
+  console.log("Total:", results.reduce((a, b) =&gt; a + b, 0));
+}
+
+main().catch((err) =&gt; {
+  console.error("Error:", err);
+  process.exit(1);
+});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+        </div>
+                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../course/exercises.html">← Exercises</a><a class="pager-link next" href="../course/basics/data_structures.html">Data Structures →</a></nav>
             </div>
         </main>
 
@@ -188,7 +1795,7 @@
                         <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
                     </div>
                 </div>
-                
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="problem_clusters" data-depth="1"><span onclick="app.focusTopic('problem_clusters')">Problem Clusters</span></li><li class="toc-item depth-1" data-topic-id="validation_and_frequency" data-depth="1"><span onclick="app.focusTopic('validation_and_frequency')">Validation & Frequency Analysis</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="balanced_brackets" data-depth="2"><span onclick="app.focusTopic('balanced_brackets')">Balanced Brackets</span></li><li class="toc-item depth-2" data-topic-id="top_k_frequent" data-depth="2"><span onclick="app.focusTopic('top_k_frequent')">Top K Frequent Elements</span></li><li class="toc-item depth-2" data-topic-id="word_count" data-depth="2"><span onclick="app.focusTopic('word_count')">Word Count</span></li></ul></li><li class="toc-item depth-1" data-topic-id="traversal_and_optimization" data-depth="1"><span onclick="app.focusTopic('traversal_and_optimization')">Traversal & Optimization</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="grid_shortest_path" data-depth="2"><span onclick="app.focusTopic('grid_shortest_path')">Grid Shortest Path</span></li><li class="toc-item depth-2" data-topic-id="matrix_mul" data-depth="2"><span onclick="app.focusTopic('matrix_mul')">Matrix Multiplication</span></li></ul></li><li class="toc-item depth-1" data-topic-id="real_world_programming_tasks" data-depth="1"><span onclick="app.focusTopic('real_world_programming_tasks')">Real-World Programming Tasks</span><ul class="nav-sublist"><li class="toc-item depth-2" data-topic-id="file_aggregate" data-depth="2"><span onclick="app.focusTopic('file_aggregate')">File Aggregate</span></li><li class="toc-item depth-2" data-topic-id="concurrency_demo" data-depth="2"><span onclick="app.focusTopic('concurrency_demo')">Concurrency Demo</span></li></ul></li></ul></div>
             </div>
         </aside>
     </div>

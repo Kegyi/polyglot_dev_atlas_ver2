@@ -1,0 +1,95 @@
+{
+    "title": "Types & Modeling",
+    "description": "Data modeling fundamentals across languages: classes, interfaces, enums, strings, and nullable values.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Example",
+        "is_collapse": true
+    },
+    "content": [
+        {
+            "type": "title",
+            "text": "Types & Modeling"
+        },
+        {
+            "type": "text",
+            "text": "Once you can control program flow, the next step is learning how languages describe state and behavior. These examples focus on the structures you use to model real domains cleanly."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "classes_and_objects",
+                    "title": "Classes and Objects",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Object-oriented code groups data with behavior. This comparison shows the surface syntax for defining types, constructing instances, and exposing methods."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/classes_and_objects"
+                        }
+                    ]
+                },
+                {
+                    "id": "interfaces_and_polymorphism",
+                    "title": "Interfaces and Polymorphism",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Polymorphism lets one abstraction drive multiple concrete behaviors. Use this topic to compare interface, protocol, and trait-style design."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/interfaces_and_polymorphism"
+                        }
+                    ]
+                },
+                {
+                    "id": "enums_and_constants",
+                    "title": "Enums and Constants",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Named constants reduce ambiguity and make state machines easier to read. This example highlights language support for enums and immutable values."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/enums_and_constants"
+                        }
+                    ]
+                },
+                {
+                    "id": "nullable_optional_values",
+                    "title": "Nullable and Optional Values",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Missing data is a universal problem. Compare how each language encodes absence, avoids null bugs, or forces explicit handling."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/nullable_optional_values"
+                        }
+                    ]
+                },
+                {
+                    "id": "strings",
+                    "title": "Strings",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "String processing appears everywhere, from parsing to formatting to validation. This sample is a good reference for common operations and interpolation style."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/strings"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

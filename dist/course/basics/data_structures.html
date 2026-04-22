@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#09090b">
+    <meta name="description" content="Polyglot Dev Atlas - Multi-language comparison framework for developers. Side-by-side code examples across C++, Go, Python, TypeScript, and Scala.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Polyglot Atlas">
+    <title>Data Structures</title>
+    
+    <!-- Web App Manifest for PWA installation -->
+    <link rel="manifest" href="../../assets/manifest.json">
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases or any collection open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../../assets/hljs/${hljsStyle}`;
+            
+            // 4. Setup Theme CSS path and store asset prefix globally
+            window.assetPrefix = '../../';
+            window.themeStylePath = `../../assets/css/themes/${savedTheme}.css`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <!-- Theme CSS (Light/Dark/High-Contrast) -->
+    <link id="theme-css" rel="stylesheet" href="">
+    <script>document.getElementById('theme-css').href = window.themeStylePath;</script>
+    <link rel="stylesheet" href="../../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-course  course-view">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <div class="logo-with-modes">
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="mode-switcher-current" id="app-mode-title">Course</span><span class="mode-switcher-underbar" aria-hidden="true"></span></summary><div class="mode-switcher-menu"><a href="../../index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Project</a><a href="../../atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../course/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Course</a><a href="../../meta/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Meta</a></div></details>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
+                </div>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
+                </div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../../course/index.html">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li>
+<li class=""><a href="../../course/exercises.html">Exercises</a></li>
+<li class=""><a href="../../course/problems.html">Problems<span class="sidebar-wrap-indent">Cross-Language Practice Set</span></a></li>
+<li class="nav-item nav-collection nav-basics"><a href="#" onclick="app.openCollection('course', 'basics');return false;">Basics <span class="collection-marker" aria-hidden="true"></span></a></li>
+<li class="nav-item nav-collection nav-interview"><a href="#" onclick="app.openCollection('course', 'interview');return false;">Interview <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-basics" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'basics');return false;">← Back to menu</a></li><li class=""><a href="../../course/basics/index.html">Core Programming Concepts</a></li><li class="active"><a href="../../course/basics/data_structures.html">Data Structures</a></li><li class=""><a href="../../course/basics/foundations_and_flow.html">Foundations & Flow</a></li><li class=""><a href="../../course/basics/problem_solving_and_reliability.html">Problem Solving & Reliability</a></li><li class=""><a href="../../course/basics/systems_and_io.html">Systems & I/O</a></li><li class=""><a href="../../course/basics/types_and_modeling.html">Types & Modeling</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview');return false;">← Back to menu</a></li><li class="nav-item nav-collection nav-interview-1_strings_and_arrays"><a href="#" onclick="app.openCollection('course', 'interview-1_strings_and_arrays');return false;">1 strings and arrays <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-2_linked_list"><a href="#" onclick="app.openCollection('course', 'interview-2_linked_list');return false;">2 linked list <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-3_stacks_and_queues"><a href="#" onclick="app.openCollection('course', 'interview-3_stacks_and_queues');return false;">3 stacks and queues <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-4_trees_and_graphs"><a href="#" onclick="app.openCollection('course', 'interview-4_trees_and_graphs');return false;">4 trees and graphs <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-5_bit_manipulation"><a href="#" onclick="app.openCollection('course', 'interview-5_bit_manipulation');return false;">5 bit manipulation <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-8_recursion_dynamic_programming"><a href="#" onclick="app.openCollection('course', 'interview-8_recursion_dynamic_programming');return false;">8 recursion dynamic programming <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-10_sorting_and_searching"><a href="#" onclick="app.openCollection('course', 'interview-10_sorting_and_searching');return false;">10 sorting and searching <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-16_moderate"><a href="#" onclick="app.openCollection('course', 'interview-16_moderate');return false;">16 moderate <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-17_hard"><a href="#" onclick="app.openCollection('course', 'interview-17_hard');return false;">17 hard <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-1_strings_and_arrays" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-1_strings_and_arrays');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/index.html">Overview</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/1_is_unique.html">Is Unique</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/2_check_permutation.html">Check Permutation</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/3_string_to_url.html">String To Url</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/4_palindrome_permutation.html">Palindrome Permutation</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/5_one_away.html">One Away</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/6_compress_string.html">Compress String</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/7_rotate_matrix.html">Rotate Matrix</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/8_zero_matrix.html">Zero Matrix</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/9_string_rotation.html">String Rotation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-2_linked_list" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-2_linked_list');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/2_linked_list/index.html">Overview</a></li><li class=""><a href="../../course/interview/2_linked_list/1_remove_duplicate_node.html">Remove Duplicate Node</a></li><li class=""><a href="../../course/interview/2_linked_list/2_kth_node_from_end.html">kth Node from End</a></li><li class=""><a href="../../course/interview/2_linked_list/3_delete_middle_node.html">Delete Middle Node</a></li><li class=""><a href="../../course/interview/2_linked_list/4_partition_list.html">Partition List</a></li><li class=""><a href="../../course/interview/2_linked_list/5_sum_lists.html">Sum Lists</a></li><li class=""><a href="../../course/interview/2_linked_list/6_palindrome_linked_list.html">Palindrome Linked List</a></li><li class=""><a href="../../course/interview/2_linked_list/7_intersection_of_two_linked_lists.html">Intersection Of Two Linked<span class="sidebar-wrap-indent">Lists</span></a></li><li class=""><a href="../../course/interview/2_linked_list/8_linked_list_cycle.html">Linked List Cycle</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-3_stacks_and_queues" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-3_stacks_and_queues');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/1_three_in_one.html">Three In One</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/2_min_stack.html">Min Stack</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/3_stack_of_plates.html">Stack Of Plates</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/4_queue_via_stacks.html">Queue Via Stacks</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/5_sort_stack.html">Sort Stack</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/6_animal_shelter.html">Animal Shelter</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-4_trees_and_graphs" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-4_trees_and_graphs');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/1_route_between_nodes.html">Route Between Nodes</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/2_minimum_height_tree.html">Minimum Height Tree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/3_list_of_depth.html">List Of Depth</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/4_check_balance.html">Check Balance</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/5_legal_binary_search_tree.html">Legal Binary Search Tree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/6_successor.html">Successor</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/8_first_common_ancestor.html">First Common Ancestor</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/9_bst_sequences.html">Bst Sequences</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/10_check_subtree.html">Check Subtree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/12_paths_with_sum.html">Paths With Sum</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-5_bit_manipulation" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-5_bit_manipulation');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/1_insert.html">Insert</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/2_binary_number_to_string.html">Binary Number To String</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/3_flip_bit_to_win.html">Flip Bit To Win</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/4_closed_number.html">Closed Number</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/6_number_of_1.html">Number Of 1</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/7_exchange.html">Exchange</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/8_draw_line.html">Draw Line</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-8_recursion_dynamic_programming" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-8_recursion_dynamic_programming');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/1_three_steps.html">Three Steps</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/2_robot_in_a_grid.html">Robot In A Grid</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/3_magic_index.html">Magic Index</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/4_power_set.html">Power Set</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/6_hanota.html">Hanota</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/7_permutation_i.html">Permutation I</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/8_permutation_ii.html">Permutation Ii</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/9_bracket.html">Bracket</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/10_color_fill.html">Color Fill</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/11_coin.html">Coin</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/12_eight_queens.html">Eight Queens</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/13_pile_box.html">Pile Box</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/14_boolean_evaluation.html">Boolean Evaluation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-10_sorting_and_searching" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-10_sorting_and_searching');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/1_sorted_merge.html">Sorted Merge</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/2_group_anagrams.html">Group Anagrams</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/3_search_rotate_array.html">Search Rotate Array</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/5_sparse_array_search.html">Sparse Array Search</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/9_sorted_matrix_search.html">Sorted Matrix Search</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/11_peaks_and_valleys.html">Peaks And Valleys</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-16_moderate" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-16_moderate');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/16_moderate/1_swap_numbers.html">Swap Numbers</a></li><li class=""><a href="../../course/interview/16_moderate/2_words_frequency.html">Words Frequency</a></li><li class=""><a href="../../course/interview/16_moderate/3_intersection.html">Intersection</a></li><li class=""><a href="../../course/interview/16_moderate/4_tic_tac_toe.html">Tic Tac Toe</a></li><li class=""><a href="../../course/interview/16_moderate/5_factorial_zeros.html">Factorial Zeros</a></li><li class=""><a href="../../course/interview/16_moderate/6_smallest_difference.html">Smallest Difference</a></li><li class=""><a href="../../course/interview/16_moderate/7_maximum.html">Maximum</a></li><li class=""><a href="../../course/interview/16_moderate/8_english_int.html">English Int</a></li><li class=""><a href="../../course/interview/16_moderate/9_operations.html">Operations</a></li><li class=""><a href="../../course/interview/16_moderate/10_living_people.html">Living People</a></li><li class=""><a href="../../course/interview/16_moderate/11_diving_board.html">Diving Board</a></li><li class=""><a href="../../course/interview/16_moderate/13_bisect_squares.html">Bisect Squares</a></li><li class=""><a href="../../course/interview/16_moderate/14_best_line.html">Best Line</a></li><li class=""><a href="../../course/interview/16_moderate/15_master_mind.html">Master Mind</a></li><li class=""><a href="../../course/interview/16_moderate/16_sub_sort.html">Sub Sort</a></li><li class=""><a href="../../course/interview/16_moderate/17_contiguous_sequence.html">Contiguous Sequence</a></li><li class=""><a href="../../course/interview/16_moderate/18_pattern_matching.html">Pattern Matching</a></li><li class=""><a href="../../course/interview/16_moderate/19_pond_sizes.html">Pond Sizes</a></li><li class=""><a href="../../course/interview/16_moderate/20_t9.html">T9</a></li><li class=""><a href="../../course/interview/16_moderate/21_sum_swap.html">Sum Swap</a></li><li class=""><a href="../../course/interview/16_moderate/22_langtons_ant.html">Langtons Ant</a></li><li class=""><a href="../../course/interview/16_moderate/24_pairs_with_sum.html">Pairs With Sum</a></li><li class=""><a href="../../course/interview/16_moderate/25_lru_cache.html">Lru Cache</a></li><li class=""><a href="../../course/interview/16_moderate/26_calculator.html">Calculator</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-17_hard" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-17_hard');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/17_hard/1_add_without_plus.html">Add Without Plus</a></li><li class=""><a href="../../course/interview/17_hard/4_missing_number.html">Missing Number</a></li><li class=""><a href="../../course/interview/17_hard/5_find_longest_subarray.html">Find Longest Subarray</a></li><li class=""><a href="../../course/interview/17_hard/6_number_of_2s_in_range.html">Number Of 2S In Range</a></li><li class=""><a href="../../course/interview/17_hard/7_baby_names.html">Baby Names</a></li><li class=""><a href="../../course/interview/17_hard/8_circus_tower.html">Circus Tower</a></li><li class=""><a href="../../course/interview/17_hard/9_get_kth_magic_number.html">Get Kth Magic Number</a></li><li class=""><a href="../../course/interview/17_hard/10_find_majority_element.html">Find Majority Element</a></li><li class=""><a href="../../course/interview/17_hard/11_find_closest.html">Find Closest</a></li><li class=""><a href="../../course/interview/17_hard/12_binode.html">Binode</a></li><li class=""><a href="../../course/interview/17_hard/13_re_space.html">Re Space</a></li><li class=""><a href="../../course/interview/17_hard/14_smallest_k.html">Smallest K</a></li><li class=""><a href="../../course/interview/17_hard/15_longest_word.html">Longest Word</a></li><li class=""><a href="../../course/interview/17_hard/16_the_masseuse.html">The Masseuse</a></li><li class=""><a href="../../course/interview/17_hard/17_multi_search.html">Multi Search</a></li><li class=""><a href="../../course/interview/17_hard/18_shortest_supersequence.html">Shortest Supersequence</a></li><li class=""><a href="../../course/interview/17_hard/19_missing_two.html">Missing Two</a></li><li class=""><a href="../../course/interview/17_hard/20_continuous_median.html">Continuous Median</a></li><li class=""><a href="../../course/interview/17_hard/21_volume_of_histogram.html">Volume Of Histogram</a></li><li class=""><a href="../../course/interview/17_hard/22_word_transformer.html">Word Transformer</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../../index.html">Home</a><span class="sep">/</span><a href="../../course/index.html">Course</a><span class="sep">/</span><a href="../../course/basics/index.html">Basics</a><span class="sep">/</span><span>Data Structures</span></nav>
+                <h2  class="">Data Structures</h2><p  class="">These topics focus on the containers and structural patterns that shape algorithm design. Use them to compare APIs, mutability rules, and traversal style across languages.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="maps_and_sets">
+            <div class="topic-header" onclick="app.toggleTopic('maps_and_sets')">
+                <div class="topic-title-wrap"><h2>Maps and Sets</h2><a class="topic-permalink" href="#maps_and_sets" aria-label="Link to Maps and Sets">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Key-value lookups and uniqueness checks are foundational in day-to-day programming. This example contrasts hash-based collection ergonomics across ecosystems.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/maps_and_sets" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+
+int main() {
+    std::map&lt;std::string, int&gt; counts;
+    counts["apple"] = 2;
+    counts["banana"] = 1;
+    counts["apple"] += 3;
+
+    std::set&lt;std::string&gt; tags{"fruit", "food"};
+    tags.insert("fresh");
+
+    std::cout &lt;&lt; "apple count: " &lt;&lt; counts["apple"] &lt;&lt; "/n";
+
+    std::cout &lt;&lt; "all map entries: ";
+    for (const auto& p : counts) {
+        std::cout &lt;&lt; "(" &lt;&lt; p.first &lt;&lt; "," &lt;&lt; p.second &lt;&lt; ") ";
+    }
+    std::cout &lt;&lt; "/n";
+
+    std::cout &lt;&lt; "all set entries: ";
+    for (const auto& t : tags) {
+        std::cout &lt;&lt; t &lt;&lt; ' ';
+    }
+    std::cout &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	counts := map[string]int{
+		"apple":  2,
+		"banana": 1,
+	}
+	counts["apple"] += 3
+
+	tags := map[string]struct{}{
+		"fruit": {},
+		"food":  {},
+	}
+	tags["fresh"] = struct{}{}
+
+	fmt.Println("apple count:", counts["apple"])
+	fmt.Println("all map entries:")
+	for k, v := range counts {
+		fmt.Printf("(%s,%d) ", k, v)
+	}
+	fmt.Println()
+
+	fmt.Println("all set entries:")
+	for t := range tags {
+		fmt.Printf("%s ", t)
+	}
+	fmt.Println()
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+
+def main() -&gt; None:
+    counts = {"apple": 2, "banana": 1}
+    counts["apple"] += 3
+
+    tags = {"fruit", "food"}
+    tags.add("fresh")
+
+    print("apple count:", counts["apple"])
+    print("all map entries:", sorted(counts.items()))
+    print("all set entries:", sorted(tags))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object MapsAndSetsBasics {
+  def main(args: Array[String]): Unit = {
+    val counts = scala.collection.mutable.Map("apple" -&gt; 2, "banana" -&gt; 1)
+    counts("apple") = counts("apple") + 3
+
+    val tags = scala.collection.mutable.Set("fruit", "food")
+    tags += "fresh"
+
+    println(s"apple count: ${counts("apple")}")
+    println(s"all map entries: ${counts.toSeq.sortBy(_._1)}")
+    println(s"all set entries: ${tags.toSeq.sorted}")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object MapsAndSetsBasics:
+  @main def main(): Unit =
+    val counts = scala.collection.mutable.Map("apple" -&gt; 2, "banana" -&gt; 1)
+    counts("apple") = counts("apple") + 3
+
+    val tags = scala.collection.mutable.Set("fruit", "food")
+    tags += "fresh"
+
+    println(s"apple count: ${counts("apple")}")
+    println(s"all map entries: ${counts.toSeq.sortBy(_._1)}")
+    println(s"all set entries: ${tags.toSeq.sorted}")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function main(): void {
+  const counts = new Map&lt;string, number&gt;([
+    ["apple", 2],
+    ["banana", 1],
+  ]);
+  counts.set("apple", (counts.get("apple") ?? 0) + 3);
+
+  const tags = new Set&lt;string&gt;(["fruit", "food"]);
+  tags.add("fresh");
+
+  console.log("apple count:", counts.get("apple"));
+  console.log("all map entries:", Array.from(counts.entries()));
+  console.log("all set entries:", Array.from(tags.values()));
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="linked_lists">
+            <div class="topic-header" onclick="app.toggleTopic('linked_lists')">
+                <div class="topic-title-wrap"><h2>Linked Lists</h2><a class="topic-permalink" href="#linked_lists" aria-label="Link to Linked Lists">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Linked structures teach reference management and pointer-like thinking. Even when rarely used directly, they sharpen how you reason about memory and mutation.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/linked_lists" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Node {
+    int value;
+    Node* next;
+    explicit Node(int v) : value(v), next(nullptr) {}
+};
+
+void printList(Node* head) {
+    for (Node* cur = head; cur; cur = cur-&gt;next) {
+        std::cout &lt;&lt; cur-&gt;value;
+        if (cur-&gt;next) std::cout &lt;&lt; " -&gt; ";
+    }
+    std::cout &lt;&lt; "/n";
+}
+
+Node* prepend(Node* head, int value) {
+    Node* node = new Node(value);
+    node-&gt;next = head;
+    return node;
+}
+
+Node* removeValue(Node* head, int value) {
+    if (!head) return nullptr;
+    if (head-&gt;value == value) {
+        Node* next = head-&gt;next;
+        delete head;
+        return next;
+    }
+    head-&gt;next = removeValue(head-&gt;next, value);
+    return head;
+}
+
+int main() {
+    Node* head = nullptr;
+    for (int v : {3, 2, 1}) head = prepend(head, v);  // 1 -&gt; 2 -&gt; 3
+    printList(head);
+    head = removeValue(head, 2);
+    printList(head);  // 1 -&gt; 3
+    while (head) { Node* next = head-&gt;next; delete head; head = next; }
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type Node struct {
+	value int
+	next  *Node
+}
+
+func printList(head *Node) {
+	for cur := head; cur != nil; cur = cur.next {
+		fmt.Print(cur.value)
+		if cur.next != nil {
+			fmt.Print(" -&gt; ")
+		}
+	}
+	fmt.Println()
+}
+
+func prepend(head *Node, value int) *Node {
+	return &Node{value: value, next: head}
+}
+
+func removeValue(head *Node, value int) *Node {
+	if head == nil {
+		return nil
+	}
+	if head.value == value {
+		return head.next
+	}
+	head.next = removeValue(head.next, value)
+	return head
+}
+
+func main() {
+	var head *Node
+	for _, v := range []int{3, 2, 1} {
+		head = prepend(head, v) // 1 -&gt; 2 -&gt; 3
+	}
+	printList(head)
+	head = removeValue(head, 2)
+	printList(head) // 1 -&gt; 3
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from __future__ import annotations
+from dataclasses import dataclass, field
+from typing import Optional
+
+
+@dataclass
+class Node:
+    value: int
+    next: Optional[Node] = field(default=None, repr=False)
+
+
+def print_list(head: Optional[Node]) -&gt; None:
+    parts: list[str] = []
+    cur = head
+    while cur:
+        parts.append(str(cur.value))
+        cur = cur.next
+    print(" -&gt; ".join(parts))
+
+
+def prepend(head: Optional[Node], value: int) -&gt; Node:
+    return Node(value=value, next=head)
+
+
+def remove_value(head: Optional[Node], value: int) -&gt; Optional[Node]:
+    if head is None:
+        return None
+    if head.value == value:
+        return head.next
+    head.next = remove_value(head.next, value)
+    return head
+
+
+def main() -&gt; None:
+    head: Optional[Node] = None
+    for v in [3, 2, 1]:
+        head = prepend(head, v)  # 1 -&gt; 2 -&gt; 3
+    print_list(head)
+    head = remove_value(head, 2)
+    print_list(head)  # 1 -&gt; 3
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object LinkedListBasics {
+  case class Node(value: Int, next: Option[Node] = None)
+
+  def printList(head: Option[Node]): Unit = {
+    val parts = Iterator.unfold(head) {
+      case None       =&gt; None
+      case Some(node) =&gt; Some((node.value.toString, node.next))
+    }
+    println(parts.mkString(" -&gt; "))
+  }
+
+  def prepend(head: Option[Node], value: Int): Node = Node(value, head)
+
+  def removeValue(head: Option[Node], value: Int): Option[Node] = head match {
+    case None                              =&gt; None
+    case Some(node) if node.value == value =&gt; node.next
+    case Some(node)                        =&gt; Some(node.copy(next = removeValue(node.next, value)))
+  }
+
+  def main(args: Array[String]): Unit = {
+    var head: Option[Node] = None
+    for (v &lt;- List(3, 2, 1)) head = Some(prepend(head, v))  // 1 -&gt; 2 -&gt; 3
+    printList(head)
+    head = removeValue(head, 2)
+    printList(head)  // 1 -&gt; 3
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object LinkedListBasics:
+  case class Node(value: Int, next: Option[Node] = None)
+
+  def printList(head: Option[Node]): Unit =
+    val parts = Iterator.unfold(head) {
+      case None       =&gt; None
+      case Some(node) =&gt; Some((node.value.toString, node.next))
+    }
+    println(parts.mkString(" -&gt; "))
+
+  def prepend(head: Option[Node], value: Int): Node = Node(value, head)
+
+  def removeValue(head: Option[Node], value: Int): Option[Node] = head match {
+    case None                              =&gt; None
+    case Some(node) if node.value == value =&gt; node.next
+    case Some(node)                        =&gt; Some(node.copy(next = removeValue(node.next, value)))
+  }
+
+  @main def main(): Unit =
+    var head: Option[Node] = None
+    for (v &lt;- List(3, 2, 1)) head = Some(prepend(head, v))  // 1 -&gt; 2 -&gt; 3
+    printList(head)
+    head = removeValue(head, 2)
+    printList(head)  // 1 -&gt; 3
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+interface Node {
+  value: number;
+  next: Node | null;
+}
+
+function makeNode(value: number, next: Node | null = null): Node {
+  return { value, next };
+}
+
+function printList(head: Node | null): void {
+  const parts: string[] = [];
+  for (let cur = head; cur !== null; cur = cur.next) {
+    parts.push(String(cur.value));
+  }
+  console.log(parts.join(" -&gt; "));
+}
+
+function prepend(head: Node | null, value: number): Node {
+  return makeNode(value, head);
+}
+
+function removeValue(head: Node | null, value: number): Node | null {
+  if (head === null) return null;
+  if (head.value === value) return head.next;
+  head.next = removeValue(head.next, value);
+  return head;
+}
+
+function main(): void {
+  let head: Node | null = null;
+  for (const v of [3, 2, 1]) head = prepend(head, v);  // 1 -&gt; 2 -&gt; 3
+  printList(head);
+  head = removeValue(head, 2);
+  printList(head);  // 1 -&gt; 3
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="stacks_and_queues">
+            <div class="topic-header" onclick="app.toggleTopic('stacks_and_queues')">
+                <div class="topic-title-wrap"><h2>Stacks and Queues</h2><a class="topic-permalink" href="#stacks_and_queues" aria-label="Link to Stacks and Queues">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">LIFO and FIFO structures appear in parsing, traversal, scheduling, and buffering. This comparison makes the API differences obvious at a glance.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/stacks_and_queues" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+
+int main() {
+    std::stack&lt;int&gt; stk;
+    for (int v : {1, 2, 3}) stk.push(v);
+    std::cout &lt;&lt; "stack top: " &lt;&lt; stk.top() &lt;&lt; "/n";  // 3 (LIFO)
+    stk.pop();
+    std::cout &lt;&lt; "after pop: " &lt;&lt; stk.top() &lt;&lt; "/n";  // 2
+
+    std::queue&lt;int&gt; q;
+    for (int v : {1, 2, 3}) q.push(v);
+    std::cout &lt;&lt; "queue front: " &lt;&lt; q.front() &lt;&lt; "/n";  // 1 (FIFO)
+    q.pop();
+    std::cout &lt;&lt; "after dequeue: " &lt;&lt; q.front() &lt;&lt; "/n";  // 2
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	// Stack: slice used as LIFO
+	stack := []int{}
+	for _, v := range []int{1, 2, 3} {
+		stack = append(stack, v)
+	}
+	fmt.Println("stack top:", stack[len(stack)-1]) // 3
+	stack = stack[:len(stack)-1]
+	fmt.Println("after pop:", stack[len(stack)-1]) // 2
+
+	// Queue: slice used as FIFO
+	queue := []int{}
+	for _, v := range []int{1, 2, 3} {
+		queue = append(queue, v)
+	}
+	fmt.Println("queue front:", queue[0]) // 1
+	queue = queue[1:]
+	fmt.Println("after dequeue:", queue[0]) // 2
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from collections import deque
+
+
+def main() -&gt; None:
+    # Stack: list used as LIFO
+    stack: list[int] = []
+    for v in [1, 2, 3]:
+        stack.append(v)
+    print("stack top:", stack[-1])  # 3
+    stack.pop()
+    print("after pop:", stack[-1])  # 2
+
+    # Queue: deque used as FIFO
+    queue: deque[int] = deque()
+    for v in [1, 2, 3]:
+        queue.append(v)
+    print("queue front:", queue[0])  # 1
+    queue.popleft()
+    print("after dequeue:", queue[0])  # 2
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+
+object StacksAndQueues {
+  def main(args: Array[String]): Unit = {
+    val stack = mutable.Stack[Int]()
+    List(1, 2, 3).foreach(stack.push)
+    println(s"stack top: ${stack.top}")  // 3 (LIFO)
+    stack.pop()
+    println(s"after pop: ${stack.top}")  // 2
+
+    val queue = mutable.Queue[Int]()
+    List(1, 2, 3).foreach(queue.enqueue)
+    println(s"queue front: ${queue.front}")  // 1 (FIFO)
+    queue.dequeue()
+    println(s"after dequeue: ${queue.front}")  // 2
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+
+object StacksAndQueues:
+  @main def main(): Unit =
+    val stack = mutable.Stack[Int]()
+    List(1, 2, 3).foreach(stack.push)
+    println(s"stack top: ${stack.top}")  // 3 (LIFO)
+    stack.pop()
+    println(s"after pop: ${stack.top}")  // 2
+
+    val queue = mutable.Queue[Int]()
+    List(1, 2, 3).foreach(queue.enqueue)
+    println(s"queue front: ${queue.front}")  // 1 (FIFO)
+    queue.dequeue()
+    println(s"after dequeue: ${queue.front}")  // 2
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+class Stack&lt;T&gt; {
+  private items: T[] = [];
+  push(v: T): void { this.items.push(v); }
+  pop(): void { this.items.pop(); }
+  top(): T { return this.items[this.items.length - 1]; }
+  isEmpty(): boolean { return this.items.length === 0; }
+}
+
+class Queue&lt;T&gt; {
+  private items: T[] = [];
+  enqueue(v: T): void { this.items.push(v); }
+  dequeue(): void { this.items.shift(); }
+  front(): T { return this.items[0]; }
+  isEmpty(): boolean { return this.items.length === 0; }
+}
+
+function main(): void {
+  const stk = new Stack&lt;number&gt;();
+  for (const v of [1, 2, 3]) stk.push(v);
+  console.log("stack top:", stk.top());  // 3 (LIFO)
+  stk.pop();
+  console.log("after pop:", stk.top());  // 2
+
+  const q = new Queue&lt;number&gt;();
+  for (const v of [1, 2, 3]) q.enqueue(v);
+  console.log("queue front:", q.front());  // 1 (FIFO)
+  q.dequeue();
+  console.log("after dequeue:", q.front());  // 2
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="heaps_and_priority_queues">
+            <div class="topic-header" onclick="app.toggleTopic('heaps_and_priority_queues')">
+                <div class="topic-title-wrap"><h2>Heaps and Priority Queues</h2><a class="topic-permalink" href="#heaps_and_priority_queues" aria-label="Link to Heaps and Priority Queues">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Priority-based retrieval is a core idea in scheduling and graph algorithms. Study how each language exposes heap operations and ordering customization.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/heaps_and_priority_queues" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+
+int main() {
+    // max-heap (default)
+    std::priority_queue&lt;int&gt; maxHeap;
+    for (int v : {3, 1, 4, 1, 5, 9}) maxHeap.push(v);
+    std::cout &lt;&lt; "max: " &lt;&lt; maxHeap.top() &lt;&lt; "/n";  // 9
+
+    // min-heap via greater&lt;&gt;
+    std::priority_queue&lt;int, std::vector&lt;int&gt;, std::greater&lt;int&gt;&gt; minHeap;
+    for (int v : {3, 1, 4, 1, 5, 9}) minHeap.push(v);
+    std::cout &lt;&lt; "drain min-heap: ";
+    while (!minHeap.empty()) {
+        std::cout &lt;&lt; minHeap.top() &lt;&lt; ' ';
+        minHeap.pop();
+    }
+    std::cout &lt;&lt; "/n";  // 1 1 3 4 5 9
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"container/heap"
+	"fmt"
+)
+
+// MinHeap implements heap.Interface for int
+type MinHeap []int
+
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i] &lt; h[j] }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *MinHeap) Push(v any)        { *h = append(*h, v.(int)) }
+func (h *MinHeap) Pop() any          { old := *h; n := len(old); v := old[n-1]; *h = old[:n-1]; return v }
+
+func main() {
+	data := []int{3, 1, 4, 1, 5, 9}
+
+	// max via negation
+	maxH := &MinHeap{}
+	for _, v := range data {
+		heap.Push(maxH, -v)
+	}
+	fmt.Println("max:", -(*maxH)[0]) // 9
+
+	// min-heap
+	minH := &MinHeap{}
+	for _, v := range data {
+		heap.Push(minH, v)
+	}
+	fmt.Print("drain min-heap: ")
+	for minH.Len() &gt; 0 {
+		fmt.Print(heap.Pop(minH).(int), " ")
+	}
+	fmt.Println() // 1 1 3 4 5 9
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+import heapq
+
+
+def main() -&gt; None:
+    data = [3, 1, 4, 1, 5, 9]
+
+    # min-heap (default)
+    min_heap: list[int] = []
+    for v in data:
+        heapq.heappush(min_heap, v)
+    print("min:", min_heap[0])  # 1
+    print("drain min-heap:", [heapq.heappop(min_heap) for _ in range(len(min_heap))])  # [1,1,3,4,5,9]
+
+    # max-heap via negation
+    max_heap: list[int] = []
+    for v in data:
+        heapq.heappush(max_heap, -v)
+    print("max:", -max_heap[0])  # 9
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+
+object HeapsAndPriorityQueues {
+  def main(args: Array[String]): Unit = {
+    val data = List(3, 1, 4, 1, 5, 9)
+
+    // max priority queue (default)
+    val maxPQ = mutable.PriorityQueue[Int]()
+    data.foreach(maxPQ.enqueue)
+    println(s"max: ${maxPQ.head}")  // 9
+
+    // min priority queue via reverse ordering
+    val minPQ = mutable.PriorityQueue[Int]()(Ordering[Int].reverse)
+    data.foreach(minPQ.enqueue)
+    print("drain min-heap: ")
+    while (minPQ.nonEmpty) print(s"${minPQ.dequeue()} ")
+    println()  // 1 1 3 4 5 9
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+
+object HeapsAndPriorityQueues:
+  @main def main(): Unit =
+    val data = List(3, 1, 4, 1, 5, 9)
+
+    // max priority queue (default)
+    val maxPQ = mutable.PriorityQueue[Int]()
+    data.foreach(maxPQ.enqueue)
+    println(s"max: ${maxPQ.head}")  // 9
+
+    // min priority queue via reverse ordering
+    val minPQ = mutable.PriorityQueue[Int]()(Ordering[Int].reverse)
+    data.foreach(minPQ.enqueue)
+    print("drain min-heap: ")
+    while (minPQ.nonEmpty) print(s"${minPQ.dequeue()} ")
+    println()  // 1 1 3 4 5 9
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+class MinHeap {
+  private data: number[] = [];
+
+  push(v: number): void {
+    this.data.push(v);
+    this.bubbleUp(this.data.length - 1);
+  }
+
+  pop(): number {
+    const top = this.data[0];
+    const last = this.data.pop()!;
+    if (this.data.length &gt; 0) { this.data[0] = last; this.sinkDown(0); }
+    return top;
+  }
+
+  peek(): number { return this.data[0]; }
+  size(): number { return this.data.length; }
+
+  private bubbleUp(i: number): void {
+    while (i &gt; 0) {
+      const parent = (i - 1) &gt;&gt; 1;
+      if (this.data[parent] &lt;= this.data[i]) break;
+      [this.data[parent], this.data[i]] = [this.data[i], this.data[parent]];
+      i = parent;
+    }
+  }
+
+  private sinkDown(i: number): void {
+    const n = this.data.length;
+    while (true) {
+      let min = i;
+      const l = 2 * i + 1, r = 2 * i + 2;
+      if (l &lt; n && this.data[l] &lt; this.data[min]) min = l;
+      if (r &lt; n && this.data[r] &lt; this.data[min]) min = r;
+      if (min === i) break;
+      [this.data[min], this.data[i]] = [this.data[i], this.data[min]];
+      i = min;
+    }
+  }
+}
+
+function main(): void {
+  const data = [3, 1, 4, 1, 5, 9];
+
+  // min-heap
+  const minHeap = new MinHeap();
+  for (const v of data) minHeap.push(v);
+  console.log("min:", minHeap.peek());  // 1
+  const drained: number[] = [];
+  while (minHeap.size() &gt; 0) drained.push(minHeap.pop());
+  console.log("drain min-heap:", drained);  // [1,1,3,4,5,9]
+
+  // max-heap via negation
+  const maxHeap = new MinHeap();
+  for (const v of data) maxHeap.push(-v);
+  console.log("max:", -maxHeap.peek());  // 9
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="sorting_and_searching">
+            <div class="topic-header" onclick="app.toggleTopic('sorting_and_searching')">
+                <div class="topic-title-wrap"><h2>Sorting and Searching</h2><a class="topic-permalink" href="#sorting_and_searching" aria-label="Link to Sorting and Searching">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Sorting and lookup routines reveal the standard library philosophy of each language. Compare comparator syntax, mutability expectations, and built-in helpers.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/sorting_and_searching" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::vector&lt;int&gt; values{9, 3, 7, 1, 5};
+    std::sort(values.begin(), values.end());
+
+    bool has_seven = std::binary_search(values.begin(), values.end(), 7);
+    auto it = std::lower_bound(values.begin(), values.end(), 7);
+    int index = (it != values.end() && *it == 7) ? static_cast&lt;int&gt;(it - values.begin()) : -1;
+
+    std::cout &lt;&lt; "sorted: ";
+    for (int v : values) {
+        std::cout &lt;&lt; v &lt;&lt; ' ';
+    }
+    std::cout &lt;&lt; "/ncontains 7: " &lt;&lt; has_seven &lt;&lt; "/nindex of 7: " &lt;&lt; index &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	values := []int{9, 3, 7, 1, 5}
+	sort.Ints(values)
+
+	index := sort.SearchInts(values, 7)
+	foundIndex := -1
+	if index &lt; len(values) && values[index] == 7 {
+		foundIndex = index
+	}
+
+	fmt.Println("sorted:", values)
+	fmt.Println("contains 7:", foundIndex &gt;= 0)
+	fmt.Println("index of 7:", foundIndex)
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from bisect import bisect_left
+
+
+def main() -&gt; None:
+    values = [9, 3, 7, 1, 5]
+    ordered = sorted(values)
+
+    index = bisect_left(ordered, 7)
+    found_index = index if index &lt; len(ordered) and ordered[index] == 7 else -1
+
+    print("sorted:", ordered)
+    print("contains 7:", 7 in ordered)
+    print("index of 7:", found_index)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object SortingAndSearchingBasics {
+  def main(args: Array[String]): Unit = {
+    val values = Vector(9, 3, 7, 1, 5).sorted
+    val index = values.indexOf(7)
+
+    println(s"sorted: $values")
+    println(s"contains 7: ${index &gt;= 0}")
+    println(s"index of 7: $index")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object SortingAndSearchingBasics:
+  @main def main(): Unit =
+    val values = Vector(9, 3, 7, 1, 5).sorted
+    val index = values.indexOf(7)
+
+    println(s"sorted: $values")
+    println(s"contains 7: ${index &gt;= 0}")
+    println(s"index of 7: $index")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function binarySearch(values: number[], target: number): number {
+  let left = 0;
+  let right = values.length - 1;
+
+  while (left &lt;= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (values[mid] === target) {
+      return mid;
+    }
+    if (values[mid] &lt; target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return -1;
+}
+
+function main(): void {
+  const values = [9, 3, 7, 1, 5].sort((a, b) =&gt; a - b);
+  const index = binarySearch(values, 7);
+
+  console.log("sorted:", values);
+  console.log("contains 7:", index &gt;= 0);
+  console.log("index of 7:", index);
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="trees_and_graphs">
+            <div class="topic-header" onclick="app.toggleTopic('trees_and_graphs')">
+                <div class="topic-title-wrap"><h2>Trees and Graphs</h2><a class="topic-permalink" href="#trees_and_graphs" aria-label="Link to Trees and Graphs">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Hierarchical and networked structures push you beyond flat collections. This topic shows typical node modeling and traversal setup in each language.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/trees_and_graphs" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+
+struct TreeNode {
+    int value;
+    TreeNode* left;
+    TreeNode* right;
+    explicit TreeNode(int v) : value(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* insert(TreeNode* root, int value) {
+    if (!root) return new TreeNode(value);
+    if (value &lt; root-&gt;value) root-&gt;left  = insert(root-&gt;left,  value);
+    else                     root-&gt;right = insert(root-&gt;right, value);
+    return root;
+}
+
+void inOrder(TreeNode* root) {
+    if (!root) return;
+    inOrder(root-&gt;left);
+    std::cout &lt;&lt; root-&gt;value &lt;&lt; ' ';
+    inOrder(root-&gt;right);
+}
+
+void bfs(TreeNode* root) {
+    if (!root) return;
+    std::queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode* node = q.front(); q.pop();
+        std::cout &lt;&lt; node-&gt;value &lt;&lt; ' ';
+        if (node-&gt;left)  q.push(node-&gt;left);
+        if (node-&gt;right) q.push(node-&gt;right);
+    }
+}
+
+int main() {
+    TreeNode* root = nullptr;
+    for (int v : {5, 3, 7, 1, 4}) root = insert(root, v);
+    std::cout &lt;&lt; "in-order: "; inOrder(root); std::cout &lt;&lt; "/n";  // 1 3 4 5 7
+    std::cout &lt;&lt; "bfs:      "; bfs(root);     std::cout &lt;&lt; "/n";  // 5 3 7 1 4
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+type TreeNode struct {
+	value       int
+	left, right *TreeNode
+}
+
+func insert(root *TreeNode, value int) *TreeNode {
+	if root == nil {
+		return &TreeNode{value: value}
+	}
+	if value &lt; root.value {
+		root.left = insert(root.left, value)
+	} else {
+		root.right = insert(root.right, value)
+	}
+	return root
+}
+
+func inOrder(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	inOrder(root.left)
+	fmt.Print(root.value, " ")
+	inOrder(root.right)
+}
+
+func bfs(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	queue := []*TreeNode{root}
+	for len(queue) &gt; 0 {
+		node := queue[0]
+		queue = queue[1:]
+		fmt.Print(node.value, " ")
+		if node.left != nil {
+			queue = append(queue, node.left)
+		}
+		if node.right != nil {
+			queue = append(queue, node.right)
+		}
+	}
+}
+
+func main() {
+	var root *TreeNode
+	for _, v := range []int{5, 3, 7, 1, 4} {
+		root = insert(root, v)
+	}
+	fmt.Print("in-order: ")
+	inOrder(root)
+	fmt.Println() // 1 3 4 5 7
+	fmt.Print("bfs:      ")
+	bfs(root)
+	fmt.Println() // 5 3 7 1 4
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from __future__ import annotations
+from collections import deque
+from dataclasses import dataclass, field
+from typing import Optional
+
+
+@dataclass
+class TreeNode:
+    value: int
+    left: Optional[TreeNode] = field(default=None, repr=False)
+    right: Optional[TreeNode] = field(default=None, repr=False)
+
+
+def insert(root: Optional[TreeNode], value: int) -&gt; TreeNode:
+    if root is None:
+        return TreeNode(value)
+    if value &lt; root.value:
+        root.left = insert(root.left, value)
+    else:
+        root.right = insert(root.right, value)
+    return root
+
+
+def in_order(root: Optional[TreeNode]) -&gt; list[int]:
+    if root is None:
+        return []
+    return in_order(root.left) + [root.value] + in_order(root.right)
+
+
+def bfs(root: Optional[TreeNode]) -&gt; list[int]:
+    if root is None:
+        return []
+    result: list[int] = []
+    queue: deque[TreeNode] = deque([root])
+    while queue:
+        node = queue.popleft()
+        result.append(node.value)
+        if node.left:  queue.append(node.left)
+        if node.right: queue.append(node.right)
+    return result
+
+
+def main() -&gt; None:
+    root: Optional[TreeNode] = None
+    for v in [5, 3, 7, 1, 4]:
+        root = insert(root, v)
+    print("in-order:", in_order(root))  # [1, 3, 4, 5, 7]
+    print("bfs:     ", bfs(root))       # [5, 3, 7, 1, 4]
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">import scala.collection.mutable
+
+object TreesAndGraphs {
+  case class TreeNode(value: Int, var left: Option[TreeNode] = None, var right: Option[TreeNode] = None)
+
+  def insert(root: Option[TreeNode], value: Int): TreeNode = root match {
+    case None =&gt; TreeNode(value)
+    case Some(node) =&gt;
+      if (value &lt; node.value) node.left  = Some(insert(node.left,  value))
+      else                    node.right = Some(insert(node.right, value))
+      node
+  }
+
+  def inOrder(root: Option[TreeNode]): List[Int] = root match {
+    case None       =&gt; Nil
+    case Some(node) =&gt; inOrder(node.left) ::: node.value :: inOrder(node.right)
+  }
+
+  def bfs(root: Option[TreeNode]): List[Int] = {
+    val queue  = mutable.Queue[TreeNode]()
+    val result = mutable.ListBuffer[Int]()
+    root.foreach(queue.enqueue)
+    while (queue.nonEmpty) {
+      val node = queue.dequeue()
+      result += node.value
+      node.left.foreach(queue.enqueue)
+      node.right.foreach(queue.enqueue)
+    }
+    result.toList
+  }
+
+  def main(args: Array[String]): Unit = {
+    var root: Option[TreeNode] = None
+    for (v &lt;- List(5, 3, 7, 1, 4)) root = Some(insert(root, v))
+    println(s"in-order: ${inOrder(root)}")  // List(1, 3, 4, 5, 7)
+    println(s"bfs:      ${bfs(root)}")      // List(5, 3, 7, 1, 4)
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">import scala.collection.mutable
+
+object TreesAndGraphs:
+  case class TreeNode(value: Int, var left: Option[TreeNode] = None, var right: Option[TreeNode] = None)
+
+  def insert(root: Option[TreeNode], value: Int): TreeNode = root match {
+    case None =&gt; TreeNode(value)
+    case Some(node) =&gt;
+      if (value &lt; node.value) node.left  = Some(insert(node.left,  value))
+      else                    node.right = Some(insert(node.right, value))
+      node
+  }
+
+  def inOrder(root: Option[TreeNode]): List[Int] = root match {
+    case None       =&gt; Nil
+    case Some(node) =&gt; inOrder(node.left) ::: node.value :: inOrder(node.right)
+  }
+
+  def bfs(root: Option[TreeNode]): List[Int] =
+    val queue  = mutable.Queue[TreeNode]()
+    val result = mutable.ListBuffer[Int]()
+    root.foreach(queue.enqueue)
+    while (queue.nonEmpty) {
+      val node = queue.dequeue()
+      result += node.value
+      node.left.foreach(queue.enqueue)
+      node.right.foreach(queue.enqueue)
+    }
+    result.toList
+
+  @main def main(): Unit =
+    var root: Option[TreeNode] = None
+    for (v &lt;- List(5, 3, 7, 1, 4)) root = Some(insert(root, v))
+    println(s"in-order: ${inOrder(root)}")  // List(1, 3, 4, 5, 7)
+    println(s"bfs:      ${bfs(root)}")      // List(5, 3, 7, 1, 4)
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+interface TreeNode {
+  value: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+}
+
+function makeNode(value: number): TreeNode {
+  return { value, left: null, right: null };
+}
+
+function insert(root: TreeNode | null, value: number): TreeNode {
+  if (root === null) return makeNode(value);
+  if (value &lt; root.value) root.left  = insert(root.left,  value);
+  else                    root.right = insert(root.right, value);
+  return root;
+}
+
+function inOrder(root: TreeNode | null): number[] {
+  if (root === null) return [];
+  return [...inOrder(root.left), root.value, ...inOrder(root.right)];
+}
+
+function bfs(root: TreeNode | null): number[] {
+  if (root === null) return [];
+  const result: number[] = [];
+  const queue: TreeNode[] = [root];
+  while (queue.length &gt; 0) {
+    const node = queue.shift()!;
+    result.push(node.value);
+    if (node.left)  queue.push(node.left);
+    if (node.right) queue.push(node.right);
+  }
+  return result;
+}
+
+function main(): void {
+  let root: TreeNode | null = null;
+  for (const v of [5, 3, 7, 1, 4]) root = insert(root, v);
+  console.log("in-order:", inOrder(root));  // [1, 3, 4, 5, 7]
+  console.log("bfs:     ", bfs(root));      // [5, 3, 7, 1, 4]
+}
+
+main();
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../../course/basics/index.html">← Core Programming Concepts</a><a class="pager-link next" href="../../course/basics/foundations_and_flow.html">Foundations & Flow →</a></nav>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="maps_and_sets" data-depth="1"><span onclick="app.focusTopic('maps_and_sets')">Maps and Sets</span></li><li class="toc-item depth-1" data-topic-id="linked_lists" data-depth="1"><span onclick="app.focusTopic('linked_lists')">Linked Lists</span></li><li class="toc-item depth-1" data-topic-id="stacks_and_queues" data-depth="1"><span onclick="app.focusTopic('stacks_and_queues')">Stacks and Queues</span></li><li class="toc-item depth-1" data-topic-id="heaps_and_priority_queues" data-depth="1"><span onclick="app.focusTopic('heaps_and_priority_queues')">Heaps and Priority Queues</span></li><li class="toc-item depth-1" data-topic-id="sorting_and_searching" data-depth="1"><span onclick="app.focusTopic('sorting_and_searching')">Sorting and Searching</span></li><li class="toc-item depth-1" data-topic-id="trees_and_graphs" data-depth="1"><span onclick="app.focusTopic('trees_and_graphs')">Trees and Graphs</span></li></ul></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../../assets/hljs/highlight.min.js"></script>
+    <script src="../../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../../assets/js/app.js"></script>
+    <script src="../../assets/js/selection_engine.js"></script>
+    <script src="../../assets/js/content_renderers.js"></script>
+    <script src="../../assets/js/search_ui.js"></script>
+    <script src="../../assets/js/permalinks.js"></script>
+</body>
+</html>

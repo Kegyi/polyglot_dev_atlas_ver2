@@ -1,0 +1,95 @@
+{
+    "title": "Foundations & Flow",
+    "description": "Core syntax and execution patterns: arrays, conditions, loops, functions, and command-line input.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Example",
+        "is_collapse": true
+    },
+    "content": [
+        {
+            "type": "title",
+            "text": "Foundations & Flow"
+        },
+        {
+            "type": "text",
+            "text": "These topics establish how programs store values, make decisions, repeat work, and receive basic input. Read them in order if you want a clean ramp from syntax to control flow."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "arrays_and_collections",
+                    "title": "Arrays and Collections",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Collections are the default way to hold many values at once. This example shows how each language represents ordered containers, adds values, and iterates over the result."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/arrays_and_collections"
+                        }
+                    ]
+                },
+                {
+                    "id": "conditions",
+                    "title": "Conditions",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Branching is the first step from linear scripts to real decision making. Compare the if/else syntax and boolean style used in each language."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/conditions"
+                        }
+                    ]
+                },
+                {
+                    "id": "loops",
+                    "title": "Loops",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Loop constructs express repetition, but each language balances index-driven loops, iterators, and functional-style traversal differently."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/loops"
+                        }
+                    ]
+                },
+                {
+                    "id": "functions_and_errors",
+                    "title": "Functions and Errors",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Functions package logic into reusable units. This sample also highlights how return values and error signaling differ between ecosystems."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/functions_and_errors"
+                        }
+                    ]
+                },
+                {
+                    "id": "command_line_args",
+                    "title": "Command-Line Arguments",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Many tools start by reading user input from the shell. This topic shows the canonical entry point for argument handling in each language."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/command_line_args"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

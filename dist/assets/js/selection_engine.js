@@ -64,8 +64,9 @@ function initSelectionEngine() {
 }
 
 function setupGlobalEvents() {
-    document.getElementById('view-single-btn')?.addEventListener('click', () => setViewMode('single'));
-    document.getElementById('view-double-btn')?.addEventListener('click', () => setViewMode('double'));
+    document.getElementById('selection-mode-btn')?.addEventListener('click', () => {
+        setViewMode(AtlasState.viewMode === 'single' ? 'double' : 'single');
+    });
     document.getElementById('swap-btn')?.addEventListener('click', swapLanguages);
 
     window.addEventListener('mouseup', () => { AtlasState.dragButton = null; });
@@ -187,8 +188,8 @@ function updateUI() {
     doc.setAttribute('data-secondary', AtlasState.secondaryLang || "");
 
     // 3. Navbar Visual States
-    document.getElementById('view-single-btn')?.classList.toggle('active', AtlasState.viewMode === 'single');
-    document.getElementById('view-double-btn')?.classList.toggle('active', AtlasState.viewMode === 'double');
+    const modeBtn = document.getElementById('selection-mode-btn');
+    if (modeBtn) modeBtn.textContent = AtlasState.viewMode === 'single' ? 'Single' : 'Double';
 
     // 4. Refresh dynamic language content, then content blocks display & highlights
     refreshDynamicLanguageContent();

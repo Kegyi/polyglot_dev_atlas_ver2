@@ -1,0 +1,105 @@
+{
+    "title": "Core Programming Concepts",
+    "description": "A guided tour through language fundamentals using side-by-side examples for control flow, data structures, modeling, I/O, and problem solving.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "content": [
+        {
+            "type": "title",
+            "text": "Programming Basics"
+        },
+        {
+            "type": "text",
+            "text": "This pathway turns the language-basics snippet library into a structured learning track. Each page groups related concepts so you can compare how the same idea is expressed in C++, Go, Python, TypeScript, Scala 2, and Scala 3."
+        },
+        {
+            "type": "note",
+            "variant": "info",
+            "text": "These lessons are selector-aware: the code examples follow the active language choices in the top bar, so you can study one language or compare two side by side."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "how_to_use_this_track",
+                    "title": "How to Use This Track",
+                    "content": [
+                        {
+                            "type": "list",
+                            "ordered": false,
+                            "items": [
+                                "Start with <b>Foundations &amp; Flow</b> if you are new to syntax and execution order.",
+                                "Use <b>Types &amp; Modeling</b> to understand how languages represent state, objects, and reusable abstractions.",
+                                "Visit <b>Data Structures</b> when you want practical examples of how collections and traversal patterns map across ecosystems.",
+                                "Study <b>Systems &amp; I/O</b> for file access, paths, environment variables, and serialization tasks common in real projects.",
+                                "Finish with <b>Problem Solving &amp; Reliability</b> to build fluency with recursion, randomness, bit tricks, and defensive programming."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "topic_clusters",
+                    "title": "Topic Clusters",
+                    "content": [
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "foundations_and_flow",
+                                    "title": "Foundations & Flow",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "types_and_modeling",
+                                    "title": "Types & Modeling",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Explore objects, interfaces, enums, nullable values, and string-heavy data modeling patterns."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "data_structures",
+                                    "title": "Data Structures",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Compare the core collection and traversal patterns used for everyday algorithmic thinking."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "systems_and_io",
+                                    "title": "Systems & I/O",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Practice the parts of programming that interact with the outside world: files, paths, env vars, time, and JSON."
+
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "problem_solving_and_reliability",
+                                    "title": "Problem Solving & Reliability",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Strengthen your problem-solving toolbox with recursion, error recovery, randomness, hashing, and bit-level reasoning."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

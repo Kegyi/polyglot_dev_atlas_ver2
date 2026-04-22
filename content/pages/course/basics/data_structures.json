@@ -1,0 +1,109 @@
+{
+    "title": "Data Structures",
+    "description": "Compare common collection-oriented building blocks: maps, sets, linked structures, stacks, queues, heaps, and trees.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Example",
+        "is_collapse": true
+    },
+    "content": [
+        {
+            "type": "title",
+            "text": "Data Structures"
+        },
+        {
+            "type": "text",
+            "text": "These topics focus on the containers and structural patterns that shape algorithm design. Use them to compare APIs, mutability rules, and traversal style across languages."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "maps_and_sets",
+                    "title": "Maps and Sets",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Key-value lookups and uniqueness checks are foundational in day-to-day programming. This example contrasts hash-based collection ergonomics across ecosystems."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/maps_and_sets"
+                        }
+                    ]
+                },
+                {
+                    "id": "linked_lists",
+                    "title": "Linked Lists",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Linked structures teach reference management and pointer-like thinking. Even when rarely used directly, they sharpen how you reason about memory and mutation."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/linked_lists"
+                        }
+                    ]
+                },
+                {
+                    "id": "stacks_and_queues",
+                    "title": "Stacks and Queues",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "LIFO and FIFO structures appear in parsing, traversal, scheduling, and buffering. This comparison makes the API differences obvious at a glance."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/stacks_and_queues"
+                        }
+                    ]
+                },
+                {
+                    "id": "heaps_and_priority_queues",
+                    "title": "Heaps and Priority Queues",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Priority-based retrieval is a core idea in scheduling and graph algorithms. Study how each language exposes heap operations and ordering customization."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/heaps_and_priority_queues"
+                        }
+                    ]
+                },
+                {
+                    "id": "sorting_and_searching",
+                    "title": "Sorting and Searching",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Sorting and lookup routines reveal the standard library philosophy of each language. Compare comparator syntax, mutability expectations, and built-in helpers."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/sorting_and_searching"
+                        }
+                    ]
+                },
+                {
+                    "id": "trees_and_graphs",
+                    "title": "Trees and Graphs",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hierarchical and networked structures push you beyond flat collections. This topic shows typical node modeling and traversal setup in each language."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/trees_and_graphs"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

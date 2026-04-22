@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view-mode="all" data-selection-mode="single" data-primary="" data-secondary="" data-global-style="round">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#09090b">
+    <meta name="description" content="Polyglot Dev Atlas - Multi-language comparison framework for developers. Side-by-side code examples across C++, Go, Python, TypeScript, and Scala.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Polyglot Atlas">
+    <title>Foundations & Flow</title>
+    
+    <!-- Web App Manifest for PWA installation -->
+    <link rel="manifest" href="../../assets/manifest.json">
+    
+    <!-- Blocking Anti-Flash & Root State Injection -->
+    <script>
+        (function() {
+            // 1. Load all persisted states from LocalStorage
+            const savedTheme = localStorage.getItem('atlas-theme') || 'dark';
+            const savedPalette = localStorage.getItem('atlas-palette') || 'zinc';
+            const savedTopicView = localStorage.getItem('atlas-view-mode') || 'all';
+            const savedSelectionMode = localStorage.getItem('atlas-selection-mode') || 'single';
+            const savedPrimary = localStorage.getItem('atlas-primary-lang') || '';
+            const savedSecondary = localStorage.getItem('atlas-secondary-lang') || '';
+            
+            // Phase 3: Global Design Style (Sharp, Round, Airy)
+            const savedGlobalStyle = localStorage.getItem('atlas-global-style') || 'round';
+
+            // 2. Set attributes on documentElement immediately. 
+            const doc = document.documentElement;
+            doc.setAttribute('data-theme', savedTheme);
+            doc.setAttribute('data-palette', savedPalette);
+            doc.setAttribute('data-view-mode', savedTopicView);
+            doc.setAttribute('data-selection-mode', savedSelectionMode);
+            doc.setAttribute('data-primary', savedPrimary);
+            doc.setAttribute('data-secondary', savedSecondary);
+            
+            // Phase 3 Attribute
+            doc.setAttribute('data-global-style', savedGlobalStyle);
+
+            // If the user had Showcases or any collection open previously, mark root early
+            try {
+                // Determine approximate mode from path for early restore
+                var path = window.location.pathname || '';
+                var modeKey = 'atlas';
+                if (path.indexOf('/meta/') !== -1 || path.indexOf('/meta') === 0) modeKey = 'meta';
+                else if (path.indexOf('/course/') !== -1 || path.indexOf('/course') === 0) modeKey = 'course';
+
+                // Legacy: Showcases-specific flag
+                if (localStorage.getItem(modeKey + '-showcases-open') === '1') doc.classList.add('showcases-open');
+
+                // New: Generic collection flags follow the pattern {mode}-collection-{key}-open
+                // If any such flag exists and is set, add a generic marker to prevent
+                // the main nav from flashing before JS runs to open the specific list.
+                for (var i = 0; i < localStorage.length; i++) {
+                    var k = localStorage.key(i);
+                    try {
+                        if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
+                            // Extract the collection key between modeKey + '-collection-' and '-open'
+                            var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
+                            // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
+                            var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
+                            var listId = 'toc-collection-' + modeKey + '-' + safe;
+                            // Add a class to hide the main nav immediately
+                            doc.classList.add('collection-open');
+                            // Also set a data attribute with the specific list id so JS/CSS
+                            // can target it. Inject a small style rule so the exact submenu
+                            // is visible immediately when the DOM renders.
+                            try {
+                                var css = '#' + listId + ' { display: block !important; }';
+                                var s = document.createElement('style');
+                                s.setAttribute('data-generated', 'collection-open-style');
+                                s.appendChild(document.createTextNode(css));
+                                document.head.appendChild(s);
+                                doc.setAttribute('data-collection-open', listId);
+                            } catch (e) {}
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+
+            // 3. Setup Syntax Highlighting CSS path
+            const hljsStyle = savedTheme === 'dark' ? 'atom-one-dark.min.css' : 'github.min.css';
+            window.hljsStylePath = `../../assets/hljs/${hljsStyle}`;
+            
+            // 4. Setup Theme CSS path and store asset prefix globally
+            window.assetPrefix = '../../';
+            window.themeStylePath = `../../assets/css/themes/${savedTheme}.css`;
+        })();
+    </script>
+
+    <!-- Syntax Highlighting Theme -->
+    <link id="hljs-theme" rel="stylesheet" href="">
+    <script>document.getElementById('hljs-theme').href = window.hljsStylePath;</script>
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <!-- Theme CSS (Light/Dark/High-Contrast) -->
+    <link id="theme-css" rel="stylesheet" href="">
+    <script>document.getElementById('theme-css').href = window.themeStylePath;</script>
+    <link rel="stylesheet" href="../../assets/css/ui_states.css">
+    
+</head>
+<body class="mode-course  course-view">
+    <div id="navbar">
+        <div class="nav-top">
+            <div class="nav-left">
+                <div class="logo-with-modes">
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="mode-switcher-current" id="app-mode-title">Course</span><span class="mode-switcher-underbar" aria-hidden="true"></span></summary><div class="mode-switcher-menu"><a href="../../index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Project</a><a href="../../atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="../../course/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Course</a><a href="../../meta/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Meta</a></div></details>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
+                </div>
+                <div class="atlas-search">
+                    <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
+                    <div id="atlas-search-results" class="search-results" hidden></div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
+                </div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="lang-selector-list">
+                <button class="lang-btn" data-lang-id="cpp" style="--lang-color: #00599C">C++</button><button class="lang-btn" data-lang-id="go" style="--lang-color: #00ADD8">Go</button><button class="lang-btn" data-lang-id="python" style="--lang-color: #3776AB">Python</button><button class="lang-btn" data-lang-id="typescript" style="--lang-color: #3178C6">TypeScript</button><button class="lang-btn" data-lang-id="scala2" style="--lang-color: #DE3423">Scala 2</button><button class="lang-btn" data-lang-id="scala3" style="--lang-color: #DE3423">Scala 3</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <aside id="sidebar-left">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-label">Navigation</div>
+                <ul class="nav-list" id="toc-main"><li class=""><a href="../../course/index.html">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li>
+<li class=""><a href="../../course/exercises.html">Exercises</a></li>
+<li class=""><a href="../../course/problems.html">Problems<span class="sidebar-wrap-indent">Cross-Language Practice Set</span></a></li>
+<li class="nav-item nav-collection nav-basics"><a href="#" onclick="app.openCollection('course', 'basics');return false;">Basics <span class="collection-marker" aria-hidden="true"></span></a></li>
+<li class="nav-item nav-collection nav-interview"><a href="#" onclick="app.openCollection('course', 'interview');return false;">Interview <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-basics" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'basics');return false;">← Back to menu</a></li><li class=""><a href="../../course/basics/index.html">Core Programming Concepts</a></li><li class=""><a href="../../course/basics/data_structures.html">Data Structures</a></li><li class="active"><a href="../../course/basics/foundations_and_flow.html">Foundations & Flow</a></li><li class=""><a href="../../course/basics/problem_solving_and_reliability.html">Problem Solving & Reliability</a></li><li class=""><a href="../../course/basics/systems_and_io.html">Systems & I/O</a></li><li class=""><a href="../../course/basics/types_and_modeling.html">Types & Modeling</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview');return false;">← Back to menu</a></li><li class="nav-item nav-collection nav-interview-1_strings_and_arrays"><a href="#" onclick="app.openCollection('course', 'interview-1_strings_and_arrays');return false;">1 strings and arrays <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-2_linked_list"><a href="#" onclick="app.openCollection('course', 'interview-2_linked_list');return false;">2 linked list <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-3_stacks_and_queues"><a href="#" onclick="app.openCollection('course', 'interview-3_stacks_and_queues');return false;">3 stacks and queues <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-4_trees_and_graphs"><a href="#" onclick="app.openCollection('course', 'interview-4_trees_and_graphs');return false;">4 trees and graphs <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-5_bit_manipulation"><a href="#" onclick="app.openCollection('course', 'interview-5_bit_manipulation');return false;">5 bit manipulation <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-8_recursion_dynamic_programming"><a href="#" onclick="app.openCollection('course', 'interview-8_recursion_dynamic_programming');return false;">8 recursion dynamic programming <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-10_sorting_and_searching"><a href="#" onclick="app.openCollection('course', 'interview-10_sorting_and_searching');return false;">10 sorting and searching <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-16_moderate"><a href="#" onclick="app.openCollection('course', 'interview-16_moderate');return false;">16 moderate <span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-interview-17_hard"><a href="#" onclick="app.openCollection('course', 'interview-17_hard');return false;">17 hard <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-1_strings_and_arrays" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-1_strings_and_arrays');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/index.html">Overview</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/1_is_unique.html">Is Unique</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/2_check_permutation.html">Check Permutation</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/3_string_to_url.html">String To Url</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/4_palindrome_permutation.html">Palindrome Permutation</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/5_one_away.html">One Away</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/6_compress_string.html">Compress String</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/7_rotate_matrix.html">Rotate Matrix</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/8_zero_matrix.html">Zero Matrix</a></li><li class=""><a href="../../course/interview/1_strings_and_arrays/9_string_rotation.html">String Rotation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-2_linked_list" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-2_linked_list');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/2_linked_list/index.html">Overview</a></li><li class=""><a href="../../course/interview/2_linked_list/1_remove_duplicate_node.html">Remove Duplicate Node</a></li><li class=""><a href="../../course/interview/2_linked_list/2_kth_node_from_end.html">kth Node from End</a></li><li class=""><a href="../../course/interview/2_linked_list/3_delete_middle_node.html">Delete Middle Node</a></li><li class=""><a href="../../course/interview/2_linked_list/4_partition_list.html">Partition List</a></li><li class=""><a href="../../course/interview/2_linked_list/5_sum_lists.html">Sum Lists</a></li><li class=""><a href="../../course/interview/2_linked_list/6_palindrome_linked_list.html">Palindrome Linked List</a></li><li class=""><a href="../../course/interview/2_linked_list/7_intersection_of_two_linked_lists.html">Intersection Of Two Linked<span class="sidebar-wrap-indent">Lists</span></a></li><li class=""><a href="../../course/interview/2_linked_list/8_linked_list_cycle.html">Linked List Cycle</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-3_stacks_and_queues" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-3_stacks_and_queues');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/1_three_in_one.html">Three In One</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/2_min_stack.html">Min Stack</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/3_stack_of_plates.html">Stack Of Plates</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/4_queue_via_stacks.html">Queue Via Stacks</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/5_sort_stack.html">Sort Stack</a></li><li class=""><a href="../../course/interview/3_stacks_and_queues/6_animal_shelter.html">Animal Shelter</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-4_trees_and_graphs" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-4_trees_and_graphs');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/1_route_between_nodes.html">Route Between Nodes</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/2_minimum_height_tree.html">Minimum Height Tree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/3_list_of_depth.html">List Of Depth</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/4_check_balance.html">Check Balance</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/5_legal_binary_search_tree.html">Legal Binary Search Tree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/6_successor.html">Successor</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/8_first_common_ancestor.html">First Common Ancestor</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/9_bst_sequences.html">Bst Sequences</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/10_check_subtree.html">Check Subtree</a></li><li class=""><a href="../../course/interview/4_trees_and_graphs/12_paths_with_sum.html">Paths With Sum</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-5_bit_manipulation" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-5_bit_manipulation');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/1_insert.html">Insert</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/2_binary_number_to_string.html">Binary Number To String</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/3_flip_bit_to_win.html">Flip Bit To Win</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/4_closed_number.html">Closed Number</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/6_number_of_1.html">Number Of 1</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/7_exchange.html">Exchange</a></li><li class=""><a href="../../course/interview/5_bit_manipulation/8_draw_line.html">Draw Line</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-8_recursion_dynamic_programming" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-8_recursion_dynamic_programming');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/1_three_steps.html">Three Steps</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/2_robot_in_a_grid.html">Robot In A Grid</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/3_magic_index.html">Magic Index</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/4_power_set.html">Power Set</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/6_hanota.html">Hanota</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/7_permutation_i.html">Permutation I</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/8_permutation_ii.html">Permutation Ii</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/9_bracket.html">Bracket</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/10_color_fill.html">Color Fill</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/11_coin.html">Coin</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/12_eight_queens.html">Eight Queens</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/13_pile_box.html">Pile Box</a></li><li class=""><a href="../../course/interview/8_recursion_dynamic_programming/14_boolean_evaluation.html">Boolean Evaluation</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-10_sorting_and_searching" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-10_sorting_and_searching');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/1_sorted_merge.html">Sorted Merge</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/2_group_anagrams.html">Group Anagrams</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/3_search_rotate_array.html">Search Rotate Array</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/5_sparse_array_search.html">Sparse Array Search</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/9_sorted_matrix_search.html">Sorted Matrix Search</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/10_rank_from_stream.html">Rank From Stream</a></li><li class=""><a href="../../course/interview/10_sorting_and_searching/11_peaks_and_valleys.html">Peaks And Valleys</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-16_moderate" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-16_moderate');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/16_moderate/1_swap_numbers.html">Swap Numbers</a></li><li class=""><a href="../../course/interview/16_moderate/2_words_frequency.html">Words Frequency</a></li><li class=""><a href="../../course/interview/16_moderate/3_intersection.html">Intersection</a></li><li class=""><a href="../../course/interview/16_moderate/4_tic_tac_toe.html">Tic Tac Toe</a></li><li class=""><a href="../../course/interview/16_moderate/5_factorial_zeros.html">Factorial Zeros</a></li><li class=""><a href="../../course/interview/16_moderate/6_smallest_difference.html">Smallest Difference</a></li><li class=""><a href="../../course/interview/16_moderate/7_maximum.html">Maximum</a></li><li class=""><a href="../../course/interview/16_moderate/8_english_int.html">English Int</a></li><li class=""><a href="../../course/interview/16_moderate/9_operations.html">Operations</a></li><li class=""><a href="../../course/interview/16_moderate/10_living_people.html">Living People</a></li><li class=""><a href="../../course/interview/16_moderate/11_diving_board.html">Diving Board</a></li><li class=""><a href="../../course/interview/16_moderate/13_bisect_squares.html">Bisect Squares</a></li><li class=""><a href="../../course/interview/16_moderate/14_best_line.html">Best Line</a></li><li class=""><a href="../../course/interview/16_moderate/15_master_mind.html">Master Mind</a></li><li class=""><a href="../../course/interview/16_moderate/16_sub_sort.html">Sub Sort</a></li><li class=""><a href="../../course/interview/16_moderate/17_contiguous_sequence.html">Contiguous Sequence</a></li><li class=""><a href="../../course/interview/16_moderate/18_pattern_matching.html">Pattern Matching</a></li><li class=""><a href="../../course/interview/16_moderate/19_pond_sizes.html">Pond Sizes</a></li><li class=""><a href="../../course/interview/16_moderate/20_t9.html">T9</a></li><li class=""><a href="../../course/interview/16_moderate/21_sum_swap.html">Sum Swap</a></li><li class=""><a href="../../course/interview/16_moderate/22_langtons_ant.html">Langtons Ant</a></li><li class=""><a href="../../course/interview/16_moderate/24_pairs_with_sum.html">Pairs With Sum</a></li><li class=""><a href="../../course/interview/16_moderate/25_lru_cache.html">Lru Cache</a></li><li class=""><a href="../../course/interview/16_moderate/26_calculator.html">Calculator</a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-course-interview-17_hard" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('course', 'interview-17_hard');return false;">← Back to Interview</a></li><li class=""><a href="../../course/interview/17_hard/1_add_without_plus.html">Add Without Plus</a></li><li class=""><a href="../../course/interview/17_hard/4_missing_number.html">Missing Number</a></li><li class=""><a href="../../course/interview/17_hard/5_find_longest_subarray.html">Find Longest Subarray</a></li><li class=""><a href="../../course/interview/17_hard/6_number_of_2s_in_range.html">Number Of 2S In Range</a></li><li class=""><a href="../../course/interview/17_hard/7_baby_names.html">Baby Names</a></li><li class=""><a href="../../course/interview/17_hard/8_circus_tower.html">Circus Tower</a></li><li class=""><a href="../../course/interview/17_hard/9_get_kth_magic_number.html">Get Kth Magic Number</a></li><li class=""><a href="../../course/interview/17_hard/10_find_majority_element.html">Find Majority Element</a></li><li class=""><a href="../../course/interview/17_hard/11_find_closest.html">Find Closest</a></li><li class=""><a href="../../course/interview/17_hard/12_binode.html">Binode</a></li><li class=""><a href="../../course/interview/17_hard/13_re_space.html">Re Space</a></li><li class=""><a href="../../course/interview/17_hard/14_smallest_k.html">Smallest K</a></li><li class=""><a href="../../course/interview/17_hard/15_longest_word.html">Longest Word</a></li><li class=""><a href="../../course/interview/17_hard/16_the_masseuse.html">The Masseuse</a></li><li class=""><a href="../../course/interview/17_hard/17_multi_search.html">Multi Search</a></li><li class=""><a href="../../course/interview/17_hard/18_shortest_supersequence.html">Shortest Supersequence</a></li><li class=""><a href="../../course/interview/17_hard/19_missing_two.html">Missing Two</a></li><li class=""><a href="../../course/interview/17_hard/20_continuous_median.html">Continuous Median</a></li><li class=""><a href="../../course/interview/17_hard/21_volume_of_histogram.html">Volume Of Histogram</a></li><li class=""><a href="../../course/interview/17_hard/22_word_transformer.html">Word Transformer</a></li></ul>
+            </div>
+        </aside>
+        
+        <main id="content">
+            <div class="content-wrapper">
+                <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="../../index.html">Home</a><span class="sep">/</span><a href="../../course/index.html">Course</a><span class="sep">/</span><a href="../../course/basics/index.html">Basics</a><span class="sep">/</span><span>Foundations & Flow</span></nav>
+                <h2  class="">Foundations & Flow</h2><p  class="">These topics establish how programs store values, make decisions, repeat work, and receive basic input. Read them in order if you want a clean ramp from syntax to control flow.</p><div  class="blocks-container ">
+        <div class="topic-section text_style  " id="arrays_and_collections">
+            <div class="topic-header" onclick="app.toggleTopic('arrays_and_collections')">
+                <div class="topic-title-wrap"><h2>Arrays and Collections</h2><a class="topic-permalink" href="#arrays_and_collections" aria-label="Link to Arrays and Collections">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Collections are the default way to hold many values at once. This example shows how each language represents ordered containers, adds values, and iterates over the result.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/arrays_and_collections" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;numeric&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::vector&lt;int&gt; values{1, 2, 3, 4, 5};
+
+    std::cout &lt;&lt; "original: ";
+    for (int v : values) {
+        std::cout &lt;&lt; v &lt;&lt; ' ';
+    }
+    std::cout &lt;&lt; "/n";
+
+    std::vector&lt;int&gt; doubled(values.size());
+    std::transform(values.begin(), values.end(), doubled.begin(), [](int x) {
+        return x * 2;
+    });
+
+    std::vector&lt;int&gt; evens;
+    std::copy_if(doubled.begin(), doubled.end(), std::back_inserter(evens), [](int x) {
+        return x % 2 == 0;
+    });
+
+    int total = std::accumulate(evens.begin(), evens.end(), 0);
+    std::cout &lt;&lt; "sum of evens in doubled: " &lt;&lt; total &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	values := []int{1, 2, 3, 4, 5}
+	fmt.Println("original:", values)
+
+	doubled := make([]int, 0, len(values))
+	for _, v := range values {
+		doubled = append(doubled, v*2)
+	}
+
+	evens := make([]int, 0, len(doubled))
+	total := 0
+	for _, v := range doubled {
+		if v%2 == 0 {
+			evens = append(evens, v)
+			total += v
+		}
+	}
+
+	fmt.Println("doubled:", doubled)
+	fmt.Println("evens:", evens)
+	fmt.Println("sum of evens in doubled:", total)
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+
+def main() -&gt; None:
+    values = [1, 2, 3, 4, 5]
+    print("original:", values)
+
+    doubled = [x * 2 for x in values]
+    evens = [x for x in doubled if x % 2 == 0]
+
+    print("doubled:", doubled)
+    print("evens:", evens)
+    print("sum of evens in doubled:", sum(evens))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object ArraysAndCollectionsBasics {
+  def main(args: Array[String]): Unit = {
+    val values = Vector(1, 2, 3, 4, 5)
+    println(s"original: $values")
+
+    val doubled = values.map(_ * 2)
+    val evens = doubled.filter(_ % 2 == 0)
+    val total = evens.sum
+
+    println(s"doubled: $doubled")
+    println(s"evens: $evens")
+    println(s"sum of evens in doubled: $total")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object ArraysAndCollectionsBasics:
+  @main def main(): Unit =
+    val values = Vector(1, 2, 3, 4, 5)
+    println(s"original: $values")
+
+    val doubled = values.map(_ * 2)
+    val evens = doubled.filter(_ % 2 == 0)
+    val total = evens.sum
+
+    println(s"doubled: $doubled")
+    println(s"evens: $evens")
+    println(s"sum of evens in doubled: $total")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function main(): void {
+  const values = [1, 2, 3, 4, 5];
+  console.log("original:", values);
+
+  const doubled = values.map((x) =&gt; x * 2);
+  const evens = doubled.filter((x) =&gt; x % 2 === 0);
+  const total = evens.reduce((sum, x) =&gt; sum + x, 0);
+
+  console.log("doubled:", doubled);
+  console.log("evens:", evens);
+  console.log("sum of evens in doubled:", total);
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="conditions">
+            <div class="topic-header" onclick="app.toggleTopic('conditions')">
+                <div class="topic-title-wrap"><h2>Conditions</h2><a class="topic-permalink" href="#conditions" aria-label="Link to Conditions">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Branching is the first step from linear scripts to real decision making. Compare the if/else syntax and boolean style used in each language.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/conditions" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+std::string grade_to_label(int grade) {
+    if (grade &gt;= 90) {
+        return "excellent";
+    } else if (grade &gt;= 75) {
+        return "good";
+    } else if (grade &gt;= 60) {
+        return "pass";
+    }
+    return "fail";
+}
+
+int main() {
+    const int grade = 82;
+    const int code = 2;
+
+    std::cout &lt;&lt; "if/else result: " &lt;&lt; grade_to_label(grade) &lt;&lt; "/n";
+
+    switch (code) {
+        case 1:
+            std::cout &lt;&lt; "switch: created/n";
+            break;
+        case 2:
+            std::cout &lt;&lt; "switch: updated/n";
+            break;
+        case 3:
+            std::cout &lt;&lt; "switch: deleted/n";
+            break;
+        default:
+            std::cout &lt;&lt; "switch: unknown/n";
+            break;
+    }
+
+    bool ready = grade &gt;= 60;
+    std::cout &lt;&lt; "ternary: " &lt;&lt; (ready ? "can continue" : "needs retry") &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func gradeToLabel(grade int) string {
+	if grade &gt;= 90 {
+		return "excellent"
+	} else if grade &gt;= 75 {
+		return "good"
+	} else if grade &gt;= 60 {
+		return "pass"
+	}
+	return "fail"
+}
+
+func main() {
+	grade := 82
+	code := 2
+
+	fmt.Println("if/else:", gradeToLabel(grade))
+
+	switch code {
+	case 1:
+		fmt.Println("switch: created")
+	case 2:
+		fmt.Println("switch: updated")
+	case 3:
+		fmt.Println("switch: deleted")
+	default:
+		fmt.Println("switch: unknown")
+	}
+
+	ready := grade &gt;= 60
+	if ready {
+		fmt.Println("decision: can continue")
+	} else {
+		fmt.Println("decision: needs retry")
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+
+def grade_to_label(grade: int) -&gt; str:
+    if grade &gt;= 90:
+        return "excellent"
+    if grade &gt;= 75:
+        return "good"
+    if grade &gt;= 60:
+        return "pass"
+    return "fail"
+
+
+def main() -&gt; None:
+    grade = 82
+    code = 2
+
+    print("if/elif/else:", grade_to_label(grade))
+
+    match code:
+        case 1:
+            print("match: created")
+        case 2:
+            print("match: updated")
+        case 3:
+            print("match: deleted")
+        case _:
+            print("match: unknown")
+
+    ready = grade &gt;= 60
+    print("conditional expression:", "can continue" if ready else "needs retry")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object ConditionsBasics {
+  def gradeToLabel(grade: Int): String = {
+    if (grade &gt;= 90) "excellent"
+    else if (grade &gt;= 75) "good"
+    else if (grade &gt;= 60) "pass"
+    else "fail"
+  }
+
+  def main(args: Array[String]): Unit = {
+    val grade = 82
+    val code = 2
+
+    println(s"if/else: ${gradeToLabel(grade)}")
+
+    code match {
+      case 1 =&gt; println("match: created")
+      case 2 =&gt; println("match: updated")
+      case 3 =&gt; println("match: deleted")
+      case _ =&gt; println("match: unknown")
+    }
+
+    val message = if (grade &gt;= 60) "can continue" else "needs retry"
+    println(s"if-expression: $message")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object ConditionsBasics:
+  def gradeToLabel(grade: Int): String =
+    if (grade &gt;= 90) "excellent"
+    else if (grade &gt;= 75) "good"
+    else if (grade &gt;= 60) "pass"
+    else "fail"
+
+  @main def main(): Unit =
+    val grade = 82
+    val code = 2
+
+    println(s"if/else: ${gradeToLabel(grade)}")
+
+    code match {
+      case 1 =&gt; println("match: created")
+      case 2 =&gt; println("match: updated")
+      case 3 =&gt; println("match: deleted")
+      case _ =&gt; println("match: unknown")
+    }
+
+    val message = if (grade &gt;= 60) "can continue" else "needs retry"
+    println(s"if-expression: $message")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function gradeToLabel(grade: number): string {
+  if (grade &gt;= 90) return "excellent";
+  if (grade &gt;= 75) return "good";
+  if (grade &gt;= 60) return "pass";
+  return "fail";
+}
+
+function main(): void {
+  const grade = 82;
+  const code = 2;
+
+  console.log("if/else:", gradeToLabel(grade));
+
+  switch (code) {
+    case 1:
+      console.log("switch: created");
+      break;
+    case 2:
+      console.log("switch: updated");
+      break;
+    case 3:
+      console.log("switch: deleted");
+      break;
+    default:
+      console.log("switch: unknown");
+  }
+
+  const ready = grade &gt;= 60;
+  console.log("ternary:", ready ? "can continue" : "needs retry");
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="loops">
+            <div class="topic-header" onclick="app.toggleTopic('loops')">
+                <div class="topic-title-wrap"><h2>Loops</h2><a class="topic-permalink" href="#loops" aria-label="Link to Loops">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Loop constructs express repetition, but each language balances index-driven loops, iterators, and functional-style traversal differently.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/loops" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::vector&lt;int&gt; values{1, 2, 3, 4, 5};
+
+    for (size_t i = 0; i &lt; values.size(); ++i) {
+        std::cout &lt;&lt; "for index: " &lt;&lt; i &lt;&lt; " -&gt; " &lt;&lt; values[i] &lt;&lt; "/n";
+    }
+
+    for (int v : values) {
+        if (v == 3) {
+            continue;
+        }
+        std::cout &lt;&lt; "range for: " &lt;&lt; v &lt;&lt; "/n";
+    }
+
+    int i = 0;
+    while (i &lt; static_cast&lt;int&gt;(values.size())) {
+        if (values[i] == 4) {
+            break;
+        }
+        std::cout &lt;&lt; "while: " &lt;&lt; values[i] &lt;&lt; "/n";
+        ++i;
+    }
+
+    int c = 0;
+    do {
+        std::cout &lt;&lt; "do-while iteration: " &lt;&lt; c &lt;&lt; "/n";
+        ++c;
+    } while (c &lt; 2);
+
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	values := []int{1, 2, 3, 4, 5}
+
+	for i := 0; i &lt; len(values); i++ {
+		fmt.Println("for index:", i, "-&gt;", values[i])
+	}
+
+	for _, v := range values {
+		if v == 3 {
+			continue
+		}
+		fmt.Println("range:", v)
+	}
+
+	i := 0
+	for i &lt; len(values) {
+		if values[i] == 4 {
+			break
+		}
+		fmt.Println("while-style:", values[i])
+		i++
+	}
+
+	c := 0
+	for {
+		fmt.Println("infinite-loop iteration:", c)
+		c++
+		if c &gt;= 2 {
+			break
+		}
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+
+def main() -&gt; None:
+    values = [1, 2, 3, 4, 5]
+
+    for i in range(len(values)):
+        print("for index:", i, "-&gt;", values[i])
+
+    for v in values:
+        if v == 3:
+            continue
+        print("for each:", v)
+
+    i = 0
+    while i &lt; len(values):
+        if values[i] == 4:
+            break
+        print("while:", values[i])
+        i += 1
+
+    c = 0
+    while True:
+        print("do-while style iteration:", c)
+        c += 1
+        if c &gt;= 2:
+            break
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object LoopsBasics {
+  def main(args: Array[String]): Unit = {
+    val values = Vector(1, 2, 3, 4, 5)
+
+    for (i &lt;- values.indices) {
+      println(s"for index: $i -&gt; ${values(i)}")
+    }
+
+    for (v &lt;- values) {
+      if (v != 3) println(s"for each: $v")
+    }
+
+    var i = 0
+    while (i &lt; values.length && values(i) != 4) {
+      println(s"while: ${values(i)}")
+      i += 1
+    }
+
+    var c = 0
+    do {
+      println(s"do-while iteration: $c")
+      c += 1
+    } while (c &lt; 2)
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">// Scala 3: indentation-based syntax, new while-do form; do-while was removed.
+@main def loopsBasics(): Unit =
+  val values = Vector(1, 2, 3, 4, 5)
+
+  // Index-based for loop
+  for i &lt;- values.indices do
+    println(s"for index: $i -&gt; ${values(i)}")
+
+  // For-each with guard
+  for v &lt;- values if v != 3 do
+    println(s"for each: $v")
+
+  // while loop (new `while cond do body` syntax)
+  var i = 0
+  while i &lt; values.length && values(i) != 4 do
+    println(s"while: ${values(i)}")
+    i += 1
+
+  // do-while equivalent in Scala 3 (do-while was removed)
+  // Pattern: put side effects + condition in the while block, body is ()
+  var c = 0
+  while
+    println(s"do-while iteration: $c")
+    c += 1
+    c &lt; 2
+  do ()
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function main(): void {
+  const values = [1, 2, 3, 4, 5];
+
+  for (let i = 0; i &lt; values.length; i++) {
+    console.log("for index:", i, "-&gt;", values[i]);
+  }
+
+  for (const v of values) {
+    if (v === 3) {
+      continue;
+    }
+    console.log("for...of:", v);
+  }
+
+  let i = 0;
+  while (i &lt; values.length) {
+    if (values[i] === 4) {
+      break;
+    }
+    console.log("while:", values[i]);
+    i++;
+  }
+
+  let c = 0;
+  do {
+    console.log("do...while iteration:", c);
+    c++;
+  } while (c &lt; 2);
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="functions_and_errors">
+            <div class="topic-header" onclick="app.toggleTopic('functions_and_errors')">
+                <div class="topic-title-wrap"><h2>Functions and Errors</h2><a class="topic-permalink" href="#functions_and_errors" aria-label="Link to Functions and Errors">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Functions package logic into reusable units. This sample also highlights how return values and error signaling differ between ecosystems.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/functions_and_errors" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;optional&gt;
+#include &lt;stdexcept&gt;
+
+int add(int a, int b) {
+    return a + b;
+}
+
+std::optional&lt;double&gt; safe_div(double a, double b) {
+    if (b == 0.0) {
+        return std::nullopt;
+    }
+    return a / b;
+}
+
+int main() {
+    std::cout &lt;&lt; "add(2, 3): " &lt;&lt; add(2, 3) &lt;&lt; "/n";
+
+    if (auto result = safe_div(10, 2)) {
+        std::cout &lt;&lt; "safe_div(10, 2): " &lt;&lt; *result &lt;&lt; "/n";
+    }
+
+    try {
+        auto bad = safe_div(10, 0);
+        if (!bad) {
+            throw std::runtime_error("division by zero");
+        }
+    } catch (const std::exception& ex) {
+        std::cerr &lt;&lt; "error: " &lt;&lt; ex.what() &lt;&lt; "/n";
+    }
+
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func add(a, b int) int {
+	return a + b
+}
+
+func safeDiv(a, b float64) (float64, error) {
+	if b == 0 {
+		return 0, errors.New("division by zero")
+	}
+	return a / b, nil
+}
+
+func main() {
+	fmt.Println("add(2, 3):", add(2, 3))
+
+	if v, err := safeDiv(10, 2); err == nil {
+		fmt.Println("safeDiv(10, 2):", v)
+	}
+
+	if _, err := safeDiv(10, 0); err != nil {
+		fmt.Println("error:", err)
+	}
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+from typing import Optional
+
+
+def add(a: int, b: int) -&gt; int:
+    return a + b
+
+
+def safe_div(a: float, b: float) -&gt; Optional[float]:
+    if b == 0:
+        return None
+    return a / b
+
+
+def strict_div(a: float, b: float) -&gt; float:
+    if b == 0:
+        raise ValueError("division by zero")
+    return a / b
+
+
+def main() -&gt; None:
+    print("add(2, 3):", add(2, 3))
+    print("safe_div(10, 2):", safe_div(10, 2))
+
+    try:
+        print("strict_div(10, 0):", strict_div(10, 0))
+    except ValueError as err:
+        print("error:", err)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object FunctionsAndErrorsBasics {
+  def add(a: Int, b: Int): Int = a + b
+
+  def safeDiv(a: Double, b: Double): Option[Double] = {
+    if (b == 0) None else Some(a / b)
+  }
+
+  def strictDiv(a: Double, b: Double): Double = {
+    if (b == 0) throw new IllegalArgumentException("division by zero")
+    a / b
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(s"add(2, 3): ${add(2, 3)}")
+    println(s"safeDiv(10, 2): ${safeDiv(10, 2)}")
+
+    try {
+      println(s"strictDiv(10, 0): ${strictDiv(10, 0)}")
+    } catch {
+      case ex: IllegalArgumentException =&gt; println(s"error: ${ex.getMessage}")
+    }
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object FunctionsAndErrorsBasics:
+  def add(a: Int, b: Int): Int = a + b
+
+  def safeDiv(a: Double, b: Double): Option[Double] =
+    if (b == 0) None else Some(a / b)
+
+  def strictDiv(a: Double, b: Double): Double =
+    if (b == 0) throw new IllegalArgumentException("division by zero")
+    a / b
+
+  @main def main(): Unit =
+    println(s"add(2, 3): ${add(2, 3)}")
+    println(s"safeDiv(10, 2): ${safeDiv(10, 2)}")
+
+    try {
+      println(s"strictDiv(10, 0): ${strictDiv(10, 0)}")
+    } catch {
+      case ex: IllegalArgumentException =&gt; println(s"error: ${ex.getMessage}")
+    }
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+function safeDiv(a: number, b: number): number | null {
+  if (b === 0) return null;
+  return a / b;
+}
+
+function strictDiv(a: number, b: number): number {
+  if (b === 0) throw new Error("division by zero");
+  return a / b;
+}
+
+function main(): void {
+  console.log("add(2, 3):", add(2, 3));
+  console.log("safeDiv(10, 2):", safeDiv(10, 2));
+
+  try {
+    console.log("strictDiv(10, 0):", strictDiv(10, 0));
+  } catch (err) {
+    console.error("error:", err);
+  }
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        
+        <div class="topic-section text_style  " id="command_line_args">
+            <div class="topic-header" onclick="app.toggleTopic('command_line_args')">
+                <div class="topic-title-wrap"><h2>Command-Line Arguments</h2><a class="topic-permalink" href="#command_line_args" aria-label="Link to Command-Line Arguments">#</a></div>
+                <div class="arrow">^</div>
+            </div>
+            <div class="topic-body ">
+                <p  class="">Many tools start by reading user input from the shell. This topic shows the canonical entry point for argument handling in each language.</p><div class="collapsible-code is-collapsed" data-snippet-id="language_basics/command_line_args" data-diff-mode="false" data-fragment-key="" data-highlight-ranges=""><div class="collapsible-header"><div class="code-label">Example</div><button class="collapse-toggle" aria-expanded="false">▸</button></div><div class="code-comparison-grid"><div class="code-block" data-lang="cpp" data-fragment-key=""><div class="block-header-tag">CPP</div><pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main(int argc, char** argv) {
+    std::string name = argc &gt; 1 ? argv[1] : "world";
+    bool excited = argc &gt; 2 && std::string(argv[2]) == "--excited";
+
+    std::cout &lt;&lt; "Hello, " &lt;&lt; name;
+    if (excited) {
+        std::cout &lt;&lt; "!";
+    }
+    std::cout &lt;&lt; "/n";
+    return 0;
+}
+</code></pre></div><div class="code-block" data-lang="go" data-fragment-key=""><div class="block-header-tag">GO</div><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	name := "world"
+	if len(os.Args) &gt; 1 {
+		name = os.Args[1]
+	}
+
+	excited := len(os.Args) &gt; 2 && os.Args[2] == "--excited"
+	message := fmt.Sprintf("Hello, %s", name)
+	if excited {
+		message += "!"
+	}
+
+	fmt.Println(message)
+}
+</code></pre></div><div class="code-block" data-lang="python" data-fragment-key=""><div class="block-header-tag">PYTHON</div><pre><code class="language-python">#!/usr/bin/env python3
+import sys
+
+
+def main() -&gt; None:
+    name = sys.argv[1] if len(sys.argv) &gt; 1 else "world"
+    excited = len(sys.argv) &gt; 2 and sys.argv[2] == "--excited"
+
+    message = f"Hello, {name}"
+    if excited:
+        message += "!"
+    print(message)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div><div class="code-block" data-lang="scala2" data-fragment-key=""><div class="block-header-tag">SCALA2</div><pre><code class="language-scala">object CommandLineArgsBasics {
+  def main(args: Array[String]): Unit = {
+    val name = if (args.nonEmpty) args(0) else "world"
+    val excited = args.contains("--excited")
+
+    val suffix = if (excited) "!" else ""
+    println(s"Hello, $name$suffix")
+  }
+}
+</code></pre></div><div class="code-block" data-lang="scala3" data-fragment-key=""><div class="block-header-tag">SCALA3</div><pre><code class="language-scala">object CommandLineArgsBasics:
+  @main def main(args: String*): Unit =
+    val name = if (args.nonEmpty) args(0) else "world"
+    val excited = args.contains("--excited")
+
+    val suffix = if (excited) "!" else ""
+    println(s"Hello, $name$suffix")
+</code></pre></div><div class="code-block" data-lang="typescript" data-fragment-key=""><div class="block-header-tag">TYPESCRIPT</div><pre><code class="language-ts">#!/usr/bin/env ts-node
+
+import { setImmediate } from "node:timers";
+
+function main(): void {
+  const args = process.argv.slice(2);
+  const name = args[0] ?? "world";
+  const excited = args.includes("--excited");
+
+  let message = `Hello, ${name}`;
+  if (excited) {
+    message += "!";
+  }
+
+  console.log(message);
+}
+
+main();
+setImmediate(() =&gt; {});
+</code></pre></div></div></div>
+            </div>
+        </div>
+        </div>
+                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../../course/basics/data_structures.html">← Data Structures</a><a class="pager-link next" href="../../course/basics/problem_solving_and_reliability.html">Problem Solving & Reliability →</a></nav>
+            </div>
+        </main>
+
+        <aside id="sidebar-right">
+            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
+            <div class="sidebar-content">
+                <div class="sidebar-header-row">
+                    <div class="sidebar-label">Topics</div>
+                    <div class="density-controls">
+                        <!-- Phase 2: Density Toggle -->
+                        <button id="density-toggle-btn" class="mini-toggle" onclick="app.toggleSidebarDensity()">Detailed</button>
+                        <!-- View Mode Toggle -->
+                        <button id="view-mode-btn" class="mini-toggle" onclick="app.toggleViewMode()">All</button>
+                    </div>
+                </div>
+                <div class="topic-sidebar-container"><ul class="nav-list" id="toc"><li class="toc-item depth-1" data-topic-id="arrays_and_collections" data-depth="1"><span onclick="app.focusTopic('arrays_and_collections')">Arrays and Collections</span></li><li class="toc-item depth-1" data-topic-id="conditions" data-depth="1"><span onclick="app.focusTopic('conditions')">Conditions</span></li><li class="toc-item depth-1" data-topic-id="loops" data-depth="1"><span onclick="app.focusTopic('loops')">Loops</span></li><li class="toc-item depth-1" data-topic-id="functions_and_errors" data-depth="1"><span onclick="app.focusTopic('functions_and_errors')">Functions and Errors</span></li><li class="toc-item depth-1" data-topic-id="command_line_args" data-depth="1"><span onclick="app.focusTopic('command_line_args')">Command-Line Arguments</span></li></ul></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Syntax Highlighter Core and Language Definitions -->
+    <script src="../../assets/hljs/highlight.min.js"></script>
+    <script src="../../assets/hljs/languages/scala.min.js"></script>
+    
+    <!-- App Logic & Selection Engine -->
+    <script src="../../assets/js/app.js"></script>
+    <script src="../../assets/js/selection_engine.js"></script>
+    <script src="../../assets/js/content_renderers.js"></script>
+    <script src="../../assets/js/search_ui.js"></script>
+    <script src="../../assets/js/permalinks.js"></script>
+</body>
+</html>

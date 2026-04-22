@@ -1,0 +1,95 @@
+{
+    "title": "Systems & I/O",
+    "description": "Working with the outside world: files, paths, environment variables, dates, and JSON serialization.",
+    "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Example",
+        "is_collapse": true
+    },
+    "content": [
+        {
+            "type": "title",
+            "text": "Systems & I/O"
+        },
+        {
+            "type": "text",
+            "text": "Programming becomes useful when it leaves the sandbox and interacts with files, clocks, processes, and structured data. These examples cover the cross-language essentials for that boundary."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "file_io",
+                    "title": "File I/O",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Reading and writing files is one of the first real-world tasks every developer encounters. Compare standard file-opening patterns, buffering, and resource cleanup."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/file_io"
+                        }
+                    ]
+                },
+                {
+                    "id": "file_paths_and_directories",
+                    "title": "File Paths and Directories",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Path manipulation becomes error-prone quickly if you treat it as raw strings. This topic highlights the safer path APIs and directory helpers each language prefers."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/file_paths_and_directories"
+                        }
+                    ]
+                },
+                {
+                    "id": "environment_variables",
+                    "title": "Environment Variables",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Configuration often comes from the host process rather than source code. Use this snippet set to compare how runtime configuration is discovered safely."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/environment_variables"
+                        }
+                    ]
+                },
+                {
+                    "id": "dates_and_time",
+                    "title": "Dates and Time",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Time handling reveals a lot about library design: some languages hide complexity, others force precision. This example gives a fast comparison of the defaults."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/dates_and_time"
+                        }
+                    ]
+                },
+                {
+                    "id": "json_and_serialization",
+                    "title": "JSON and Serialization",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Modern programs exchange structured data constantly. This sample shows how each language encodes and decodes JSON-like payloads and where boilerplate tends to appear."
+                        },
+                        {
+                            "type": "code",
+                            "path": "language_basics/json_and_serialization"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

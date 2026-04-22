@@ -563,6 +563,94 @@
   {
     "id": "index",
     "mode": "course",
+    "title": "Core Programming Concepts",
+    "description": "A guided tour through language fundamentals using side-by-side examples for control flow, data structures, modeling, I/O, and problem solving.",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Programming Basics This pathway turns the language-basics snippet library into a structured learning track. Each page groups related concepts so you can compare how the same idea is expressed in C++, Go, Python, TypeScript, Scala 2, and Sca",
+    "search_text": "Programming Basics This pathway turns the language-basics snippet library into a structured learning track. Each page groups related concepts so you can compare how the same idea is expressed in C++, Go, Python, TypeScript, Scala 2, and Scala 3. These lessons are selector-aware: the code examples follow the active language choices in the top bar, so you can study one language or compare two side by side. info How to Use This Track Start with <b>Foundations &amp; Flow</b> if you are new to syntax and execution order. Use <b>Types &amp; Modeling</b> to understand how languages represent state, objects, and reusable abstractions. Visit <b>Data Structures</b> when you want practical examples of how collections and traversal patterns map across ecosystems. Study <b>Systems &amp; I/O</b> for file access, paths, environment variables, and serialization tasks common in real projects. Finish with <b>Problem Solving &amp; Reliability</b> to build fluency with recursion, randomness, bit tricks, and defensive programming. Topic Clusters Foundations & Flow Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input. Types & Modeling Explore objects, interfaces, enums, nullable values, and string-heavy data modeling patterns. Data Structures Compare the core collection and traversal patterns used for everyday algorithmic thinking. Systems & I/O Practice the parts of programming that interact with the outside world: files, paths, env vars, time, and JSON. Problem Solving & Reliability Strengthen your problem-solving toolbox with recursion, error recovery, randomness, hashing, and bit-level reasoning.",
+    "block_id": null
+  },
+  {
+    "id": "how_to_use_this_track",
+    "mode": "course",
+    "title": "How to Use This Track",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "How to Use This Track Start with <b>Foundations &amp; Flow</b> if you are new to syntax and execution order. Use <b>Types &amp; Modeling</b> to understand how languages represent state, objects, and reusable abstractions. Visit <b>Data Stru",
+    "search_text": "How to Use This Track Start with <b>Foundations &amp; Flow</b> if you are new to syntax and execution order. Use <b>Types &amp; Modeling</b> to understand how languages represent state, objects, and reusable abstractions. Visit <b>Data Structures</b> when you want practical examples of how collections and traversal patterns map across ecosystems. Study <b>Systems &amp; I/O</b> for file access, paths, environment variables, and serialization tasks common in real projects. Finish with <b>Problem Solving &amp; Reliability</b> to build fluency with recursion, randomness, bit tricks, and defensive programming.",
+    "block_id": "how_to_use_this_track"
+  },
+  {
+    "id": "topic_clusters",
+    "mode": "course",
+    "title": "Topic Clusters",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Topic Clusters Foundations & Flow Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input. Types & Modeling Explore objects, interfaces, enums, nullable value",
+    "search_text": "Topic Clusters Foundations & Flow Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input. Types & Modeling Explore objects, interfaces, enums, nullable values, and string-heavy data modeling patterns. Data Structures Compare the core collection and traversal patterns used for everyday algorithmic thinking. Systems & I/O Practice the parts of programming that interact with the outside world: files, paths, env vars, time, and JSON. Problem Solving & Reliability Strengthen your problem-solving toolbox with recursion, error recovery, randomness, hashing, and bit-level reasoning.",
+    "block_id": "topic_clusters"
+  },
+  {
+    "id": "foundations_and_flow",
+    "mode": "course",
+    "title": "Foundations & Flow",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Foundations & Flow Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input.",
+    "search_text": "Foundations & Flow Learn the building blocks of program execution: working with sequences, branching, repetition, reusable functions, and command-line input.",
+    "block_id": "foundations_and_flow"
+  },
+  {
+    "id": "types_and_modeling",
+    "mode": "course",
+    "title": "Types & Modeling",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Types & Modeling Explore objects, interfaces, enums, nullable values, and string-heavy data modeling patterns.",
+    "search_text": "Types & Modeling Explore objects, interfaces, enums, nullable values, and string-heavy data modeling patterns.",
+    "block_id": "types_and_modeling"
+  },
+  {
+    "id": "data_structures",
+    "mode": "course",
+    "title": "Data Structures",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Data Structures Compare the core collection and traversal patterns used for everyday algorithmic thinking.",
+    "search_text": "Data Structures Compare the core collection and traversal patterns used for everyday algorithmic thinking.",
+    "block_id": "data_structures"
+  },
+  {
+    "id": "systems_and_io",
+    "mode": "course",
+    "title": "Systems & I/O",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Systems & I/O Practice the parts of programming that interact with the outside world: files, paths, env vars, time, and JSON.",
+    "search_text": "Systems & I/O Practice the parts of programming that interact with the outside world: files, paths, env vars, time, and JSON.",
+    "block_id": "systems_and_io"
+  },
+  {
+    "id": "problem_solving_and_reliability",
+    "mode": "course",
+    "title": "Problem Solving & Reliability",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/index.html",
+    "excerpt": "Problem Solving & Reliability Strengthen your problem-solving toolbox with recursion, error recovery, randomness, hashing, and bit-level reasoning.",
+    "search_text": "Problem Solving & Reliability Strengthen your problem-solving toolbox with recursion, error recovery, randomness, hashing, and bit-level reasoning.",
+    "block_id": "problem_solving_and_reliability"
+  },
+  {
+    "id": "index",
+    "mode": "course",
     "title": "Overview",
     "description": "A collection of interview tasks focused on strings and arrays, covering common problems and their solutions.",
     "tags": [],
@@ -625,17 +713,6 @@
     "excerpt": "kth Node from End Given a linked list, find the kth node from the end of the list. View Task",
     "search_text": "kth Node from End Given a linked list, find the kth node from the end of the list. View Task",
     "block_id": "kth_node_from_end"
-  },
-  {
-    "id": "basics",
-    "mode": "course",
-    "title": "Basics",
-    "description": "Fundamental programming concepts and techniques.",
-    "tags": [],
-    "url": "course/basics.html",
-    "excerpt": "Basics This section covers fundamental programming concepts and techniques.",
-    "search_text": "Basics This section covers fundamental programming concepts and techniques.",
-    "block_id": null
   },
   {
     "id": "exercises",
@@ -1168,13 +1245,475 @@
   {
     "id": "problems",
     "mode": "course",
-    "title": "Problems",
-    "description": "A collection of coding problems and challenges to test your skills.",
+    "title": "Problems | Cross-Language Practice Set",
+    "description": "A curated set of practical algorithmic and data-processing problems with side-by-side solutions across the supported languages.",
     "tags": [],
     "url": "course/problems.html",
-    "excerpt": "Problems This section contains a collection of coding problems and challenges to test your skills.",
-    "search_text": "Problems This section contains a collection of coding problems and challenges to test your skills.",
+    "excerpt": "Problems This page collects compact practice problems that are large enough to show real implementation tradeoffs but still small enough to compare comfortably across languages. The goal is not just to solve them, but to observe how differe",
+    "search_text": "Problems This page collects compact practice problems that are large enough to show real implementation tradeoffs but still small enough to compare comfortably across languages. The goal is not just to solve them, but to observe how different ecosystems express the same underlying idea. Some problems are pure algorithm exercises, while others simulate practical tasks such as file processing or concurrent work splitting. Use the language selector to compare API design, standard-library strengths, and code shape. info Problem Clusters <b>Validation &amp; frequency analysis:</b> balanced bracket checking, word counting, and top-k frequency extraction. <b>Traversal &amp; graph reasoning:</b> shortest-path navigation through a grid using breadth-first search. <b>Systems-style tasks:</b> matrix multiplication, file aggregation, and chunked concurrent computation. Validation & Frequency Analysis Balanced Brackets Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 valid: false. Top K Frequent Elements Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent: 4 1. Word Count Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation. The original example expects a bundled sample input file; on this page you are comparing the implementation approach rather than executing the file-backed workflow. info Traversal & Optimization Grid Shortest Path Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Expected sample result: shortest steps: 8. Matrix Multiplication Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions. Real-World Programming Tasks File Aggregate Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting. The original snippet is designed to consume a sample input file. On this page the emphasis is the processing pipeline and code structure rather than the external file setup. info Concurrency Demo Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing style. Expected sample result: Total: 500500.",
     "block_id": null
+  },
+  {
+    "id": "problem_clusters",
+    "mode": "course",
+    "title": "Problem Clusters",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Problem Clusters <b>Validation &amp; frequency analysis:</b> balanced bracket checking, word counting, and top-k frequency extraction. <b>Traversal &amp; graph reasoning:</b> shortest-path navigation through a grid using breadth-first searc",
+    "search_text": "Problem Clusters <b>Validation &amp; frequency analysis:</b> balanced bracket checking, word counting, and top-k frequency extraction. <b>Traversal &amp; graph reasoning:</b> shortest-path navigation through a grid using breadth-first search. <b>Systems-style tasks:</b> matrix multiplication, file aggregation, and chunked concurrent computation.",
+    "block_id": "problem_clusters"
+  },
+  {
+    "id": "validation_and_frequency",
+    "mode": "course",
+    "title": "Validation & Frequency Analysis",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Validation & Frequency Analysis Balanced Brackets Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result",
+    "search_text": "Validation & Frequency Analysis Balanced Brackets Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 valid: false. Top K Frequent Elements Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent: 4 1. Word Count Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation. The original example expects a bundled sample input file; on this page you are comparing the implementation approach rather than executing the file-backed workflow. info",
+    "block_id": "validation_and_frequency"
+  },
+  {
+    "id": "balanced_brackets",
+    "mode": "course",
+    "title": "Balanced Brackets",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Balanced Brackets Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 v",
+    "search_text": "Balanced Brackets Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 valid: false.",
+    "block_id": "balanced_brackets"
+  },
+  {
+    "id": "top_k_frequent",
+    "mode": "course",
+    "title": "Top K Frequent Elements",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Top K Frequent Elements Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent",
+    "search_text": "Top K Frequent Elements Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent: 4 1.",
+    "block_id": "top_k_frequent"
+  },
+  {
+    "id": "word_count",
+    "mode": "course",
+    "title": "Word Count",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Word Count Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation. The original",
+    "search_text": "Word Count Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation. The original example expects a bundled sample input file; on this page you are comparing the implementation approach rather than executing the file-backed workflow. info",
+    "block_id": "word_count"
+  },
+  {
+    "id": "traversal_and_optimization",
+    "mode": "course",
+    "title": "Traversal & Optimization",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Traversal & Optimization Grid Shortest Path Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to",
+    "search_text": "Traversal & Optimization Grid Shortest Path Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Expected sample result: shortest steps: 8. Matrix Multiplication Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions.",
+    "block_id": "traversal_and_optimization"
+  },
+  {
+    "id": "grid_shortest_path",
+    "mode": "course",
+    "title": "Grid Shortest Path",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Grid Shortest Path Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Ex",
+    "search_text": "Grid Shortest Path Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Expected sample result: shortest steps: 8.",
+    "block_id": "grid_shortest_path"
+  },
+  {
+    "id": "matrix_mul",
+    "mode": "course",
+    "title": "Matrix Multiplication",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Matrix Multiplication Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions.",
+    "search_text": "Matrix Multiplication Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions.",
+    "block_id": "matrix_mul"
+  },
+  {
+    "id": "real_world_programming_tasks",
+    "mode": "course",
+    "title": "Real-World Programming Tasks",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Real-World Programming Tasks File Aggregate Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sor",
+    "search_text": "Real-World Programming Tasks File Aggregate Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting. The original snippet is designed to consume a sample input file. On this page the emphasis is the processing pipeline and code structure rather than the external file setup. info Concurrency Demo Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing style. Expected sample result: Total: 500500.",
+    "block_id": "real_world_programming_tasks"
+  },
+  {
+    "id": "file_aggregate",
+    "mode": "course",
+    "title": "File Aggregate",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "File Aggregate Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting. The ori",
+    "search_text": "File Aggregate Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting. The original snippet is designed to consume a sample input file. On this page the emphasis is the processing pipeline and code structure rather than the external file setup. info",
+    "block_id": "file_aggregate"
+  },
+  {
+    "id": "concurrency_demo",
+    "mode": "course",
+    "title": "Concurrency Demo",
+    "description": "",
+    "tags": [],
+    "url": "course/problems.html",
+    "excerpt": "Concurrency Demo Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing ",
+    "search_text": "Concurrency Demo Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing style. Expected sample result: Total: 500500.",
+    "block_id": "concurrency_demo"
+  },
+  {
+    "id": "data_structures",
+    "mode": "course",
+    "title": "Data Structures",
+    "description": "Compare common collection-oriented building blocks: maps, sets, linked structures, stacks, queues, heaps, and trees.",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Data Structures These topics focus on the containers and structural patterns that shape algorithm design. Use them to compare APIs, mutability rules, and traversal style across languages. Maps and Sets Key-value lookups and uniqueness check",
+    "search_text": "Data Structures These topics focus on the containers and structural patterns that shape algorithm design. Use them to compare APIs, mutability rules, and traversal style across languages. Maps and Sets Key-value lookups and uniqueness checks are foundational in day-to-day programming. This example contrasts hash-based collection ergonomics across ecosystems. Linked Lists Linked structures teach reference management and pointer-like thinking. Even when rarely used directly, they sharpen how you reason about memory and mutation. Stacks and Queues LIFO and FIFO structures appear in parsing, traversal, scheduling, and buffering. This comparison makes the API differences obvious at a glance. Heaps and Priority Queues Priority-based retrieval is a core idea in scheduling and graph algorithms. Study how each language exposes heap operations and ordering customization. Sorting and Searching Sorting and lookup routines reveal the standard library philosophy of each language. Compare comparator syntax, mutability expectations, and built-in helpers. Trees and Graphs Hierarchical and networked structures push you beyond flat collections. This topic shows typical node modeling and traversal setup in each language.",
+    "block_id": null
+  },
+  {
+    "id": "maps_and_sets",
+    "mode": "course",
+    "title": "Maps and Sets",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Maps and Sets Key-value lookups and uniqueness checks are foundational in day-to-day programming. This example contrasts hash-based collection ergonomics across ecosystems.",
+    "search_text": "Maps and Sets Key-value lookups and uniqueness checks are foundational in day-to-day programming. This example contrasts hash-based collection ergonomics across ecosystems.",
+    "block_id": "maps_and_sets"
+  },
+  {
+    "id": "linked_lists",
+    "mode": "course",
+    "title": "Linked Lists",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Linked Lists Linked structures teach reference management and pointer-like thinking. Even when rarely used directly, they sharpen how you reason about memory and mutation.",
+    "search_text": "Linked Lists Linked structures teach reference management and pointer-like thinking. Even when rarely used directly, they sharpen how you reason about memory and mutation.",
+    "block_id": "linked_lists"
+  },
+  {
+    "id": "stacks_and_queues",
+    "mode": "course",
+    "title": "Stacks and Queues",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Stacks and Queues LIFO and FIFO structures appear in parsing, traversal, scheduling, and buffering. This comparison makes the API differences obvious at a glance.",
+    "search_text": "Stacks and Queues LIFO and FIFO structures appear in parsing, traversal, scheduling, and buffering. This comparison makes the API differences obvious at a glance.",
+    "block_id": "stacks_and_queues"
+  },
+  {
+    "id": "heaps_and_priority_queues",
+    "mode": "course",
+    "title": "Heaps and Priority Queues",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Heaps and Priority Queues Priority-based retrieval is a core idea in scheduling and graph algorithms. Study how each language exposes heap operations and ordering customization.",
+    "search_text": "Heaps and Priority Queues Priority-based retrieval is a core idea in scheduling and graph algorithms. Study how each language exposes heap operations and ordering customization.",
+    "block_id": "heaps_and_priority_queues"
+  },
+  {
+    "id": "sorting_and_searching",
+    "mode": "course",
+    "title": "Sorting and Searching",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Sorting and Searching Sorting and lookup routines reveal the standard library philosophy of each language. Compare comparator syntax, mutability expectations, and built-in helpers.",
+    "search_text": "Sorting and Searching Sorting and lookup routines reveal the standard library philosophy of each language. Compare comparator syntax, mutability expectations, and built-in helpers.",
+    "block_id": "sorting_and_searching"
+  },
+  {
+    "id": "trees_and_graphs",
+    "mode": "course",
+    "title": "Trees and Graphs",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/data_structures.html",
+    "excerpt": "Trees and Graphs Hierarchical and networked structures push you beyond flat collections. This topic shows typical node modeling and traversal setup in each language.",
+    "search_text": "Trees and Graphs Hierarchical and networked structures push you beyond flat collections. This topic shows typical node modeling and traversal setup in each language.",
+    "block_id": "trees_and_graphs"
+  },
+  {
+    "id": "foundations_and_flow",
+    "mode": "course",
+    "title": "Foundations & Flow",
+    "description": "Core syntax and execution patterns: arrays, conditions, loops, functions, and command-line input.",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Foundations & Flow These topics establish how programs store values, make decisions, repeat work, and receive basic input. Read them in order if you want a clean ramp from syntax to control flow. Arrays and Collections Collections are the d",
+    "search_text": "Foundations & Flow These topics establish how programs store values, make decisions, repeat work, and receive basic input. Read them in order if you want a clean ramp from syntax to control flow. Arrays and Collections Collections are the default way to hold many values at once. This example shows how each language represents ordered containers, adds values, and iterates over the result. Conditions Branching is the first step from linear scripts to real decision making. Compare the if/else syntax and boolean style used in each language. Loops Loop constructs express repetition, but each language balances index-driven loops, iterators, and functional-style traversal differently. Functions and Errors Functions package logic into reusable units. This sample also highlights how return values and error signaling differ between ecosystems. Command-Line Arguments Many tools start by reading user input from the shell. This topic shows the canonical entry point for argument handling in each language.",
+    "block_id": null
+  },
+  {
+    "id": "arrays_and_collections",
+    "mode": "course",
+    "title": "Arrays and Collections",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Arrays and Collections Collections are the default way to hold many values at once. This example shows how each language represents ordered containers, adds values, and iterates over the result.",
+    "search_text": "Arrays and Collections Collections are the default way to hold many values at once. This example shows how each language represents ordered containers, adds values, and iterates over the result.",
+    "block_id": "arrays_and_collections"
+  },
+  {
+    "id": "conditions",
+    "mode": "course",
+    "title": "Conditions",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Conditions Branching is the first step from linear scripts to real decision making. Compare the if/else syntax and boolean style used in each language.",
+    "search_text": "Conditions Branching is the first step from linear scripts to real decision making. Compare the if/else syntax and boolean style used in each language.",
+    "block_id": "conditions"
+  },
+  {
+    "id": "loops",
+    "mode": "course",
+    "title": "Loops",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Loops Loop constructs express repetition, but each language balances index-driven loops, iterators, and functional-style traversal differently.",
+    "search_text": "Loops Loop constructs express repetition, but each language balances index-driven loops, iterators, and functional-style traversal differently.",
+    "block_id": "loops"
+  },
+  {
+    "id": "functions_and_errors",
+    "mode": "course",
+    "title": "Functions and Errors",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Functions and Errors Functions package logic into reusable units. This sample also highlights how return values and error signaling differ between ecosystems.",
+    "search_text": "Functions and Errors Functions package logic into reusable units. This sample also highlights how return values and error signaling differ between ecosystems.",
+    "block_id": "functions_and_errors"
+  },
+  {
+    "id": "command_line_args",
+    "mode": "course",
+    "title": "Command-Line Arguments",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/foundations_and_flow.html",
+    "excerpt": "Command-Line Arguments Many tools start by reading user input from the shell. This topic shows the canonical entry point for argument handling in each language.",
+    "search_text": "Command-Line Arguments Many tools start by reading user input from the shell. This topic shows the canonical entry point for argument handling in each language.",
+    "block_id": "command_line_args"
+  },
+  {
+    "id": "problem_solving_and_reliability",
+    "mode": "course",
+    "title": "Problem Solving & Reliability",
+    "description": "Algorithmic thinking and robustness topics: recursion, randomness, exceptions, hashing, and bit manipulation.",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Problem Solving & Reliability These topics train the habits that make code both capable and dependable: solving recursive problems, handling failure, producing random values correctly, and reasoning about data at a lower level. Recursion Re",
+    "search_text": "Problem Solving & Reliability These topics train the habits that make code both capable and dependable: solving recursive problems, handling failure, producing random values correctly, and reasoning about data at a lower level. Recursion Recursion helps you express divide-and-conquer logic and tree traversal elegantly. This page shows the baseline shape of a recursive solution in each language. Random Numbers Randomness looks simple but often hides subtle API choices around seeding, ranges, and reproducibility. Compare the defaults before using them in simulations or tests. Exceptions and Recovery Robust programs define what should happen when things go wrong. This example contrasts exception-based and error-value-based recovery strategies. Hashing and Checksums Hashing appears in security, caching, deduplication, and integrity checks. Use this snippet as a fast reference for standard hashing APIs across languages. Bit Manipulation Bitwise operations train precision and are common in performance-sensitive code, systems work, and interview problems. This comparison highlights syntax differences and operator semantics.",
+    "block_id": null
+  },
+  {
+    "id": "recursion",
+    "mode": "course",
+    "title": "Recursion",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Recursion Recursion helps you express divide-and-conquer logic and tree traversal elegantly. This page shows the baseline shape of a recursive solution in each language.",
+    "search_text": "Recursion Recursion helps you express divide-and-conquer logic and tree traversal elegantly. This page shows the baseline shape of a recursive solution in each language.",
+    "block_id": "recursion"
+  },
+  {
+    "id": "random_numbers",
+    "mode": "course",
+    "title": "Random Numbers",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Random Numbers Randomness looks simple but often hides subtle API choices around seeding, ranges, and reproducibility. Compare the defaults before using them in simulations or tests.",
+    "search_text": "Random Numbers Randomness looks simple but often hides subtle API choices around seeding, ranges, and reproducibility. Compare the defaults before using them in simulations or tests.",
+    "block_id": "random_numbers"
+  },
+  {
+    "id": "exceptions_and_recovery",
+    "mode": "course",
+    "title": "Exceptions and Recovery",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Exceptions and Recovery Robust programs define what should happen when things go wrong. This example contrasts exception-based and error-value-based recovery strategies.",
+    "search_text": "Exceptions and Recovery Robust programs define what should happen when things go wrong. This example contrasts exception-based and error-value-based recovery strategies.",
+    "block_id": "exceptions_and_recovery"
+  },
+  {
+    "id": "hashing_and_checksums",
+    "mode": "course",
+    "title": "Hashing and Checksums",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Hashing and Checksums Hashing appears in security, caching, deduplication, and integrity checks. Use this snippet as a fast reference for standard hashing APIs across languages.",
+    "search_text": "Hashing and Checksums Hashing appears in security, caching, deduplication, and integrity checks. Use this snippet as a fast reference for standard hashing APIs across languages.",
+    "block_id": "hashing_and_checksums"
+  },
+  {
+    "id": "bit_manipulation",
+    "mode": "course",
+    "title": "Bit Manipulation",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/problem_solving_and_reliability.html",
+    "excerpt": "Bit Manipulation Bitwise operations train precision and are common in performance-sensitive code, systems work, and interview problems. This comparison highlights syntax differences and operator semantics.",
+    "search_text": "Bit Manipulation Bitwise operations train precision and are common in performance-sensitive code, systems work, and interview problems. This comparison highlights syntax differences and operator semantics.",
+    "block_id": "bit_manipulation"
+  },
+  {
+    "id": "systems_and_io",
+    "mode": "course",
+    "title": "Systems & I/O",
+    "description": "Working with the outside world: files, paths, environment variables, dates, and JSON serialization.",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "Systems & I/O Programming becomes useful when it leaves the sandbox and interacts with files, clocks, processes, and structured data. These examples cover the cross-language essentials for that boundary. File I/O Reading and writing files i",
+    "search_text": "Systems & I/O Programming becomes useful when it leaves the sandbox and interacts with files, clocks, processes, and structured data. These examples cover the cross-language essentials for that boundary. File I/O Reading and writing files is one of the first real-world tasks every developer encounters. Compare standard file-opening patterns, buffering, and resource cleanup. File Paths and Directories Path manipulation becomes error-prone quickly if you treat it as raw strings. This topic highlights the safer path APIs and directory helpers each language prefers. Environment Variables Configuration often comes from the host process rather than source code. Use this snippet set to compare how runtime configuration is discovered safely. Dates and Time Time handling reveals a lot about library design: some languages hide complexity, others force precision. This example gives a fast comparison of the defaults. JSON and Serialization Modern programs exchange structured data constantly. This sample shows how each language encodes and decodes JSON-like payloads and where boilerplate tends to appear.",
+    "block_id": null
+  },
+  {
+    "id": "file_io",
+    "mode": "course",
+    "title": "File I/O",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "File I/O Reading and writing files is one of the first real-world tasks every developer encounters. Compare standard file-opening patterns, buffering, and resource cleanup.",
+    "search_text": "File I/O Reading and writing files is one of the first real-world tasks every developer encounters. Compare standard file-opening patterns, buffering, and resource cleanup.",
+    "block_id": "file_io"
+  },
+  {
+    "id": "file_paths_and_directories",
+    "mode": "course",
+    "title": "File Paths and Directories",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "File Paths and Directories Path manipulation becomes error-prone quickly if you treat it as raw strings. This topic highlights the safer path APIs and directory helpers each language prefers.",
+    "search_text": "File Paths and Directories Path manipulation becomes error-prone quickly if you treat it as raw strings. This topic highlights the safer path APIs and directory helpers each language prefers.",
+    "block_id": "file_paths_and_directories"
+  },
+  {
+    "id": "environment_variables",
+    "mode": "course",
+    "title": "Environment Variables",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "Environment Variables Configuration often comes from the host process rather than source code. Use this snippet set to compare how runtime configuration is discovered safely.",
+    "search_text": "Environment Variables Configuration often comes from the host process rather than source code. Use this snippet set to compare how runtime configuration is discovered safely.",
+    "block_id": "environment_variables"
+  },
+  {
+    "id": "dates_and_time",
+    "mode": "course",
+    "title": "Dates and Time",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "Dates and Time Time handling reveals a lot about library design: some languages hide complexity, others force precision. This example gives a fast comparison of the defaults.",
+    "search_text": "Dates and Time Time handling reveals a lot about library design: some languages hide complexity, others force precision. This example gives a fast comparison of the defaults.",
+    "block_id": "dates_and_time"
+  },
+  {
+    "id": "json_and_serialization",
+    "mode": "course",
+    "title": "JSON and Serialization",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/systems_and_io.html",
+    "excerpt": "JSON and Serialization Modern programs exchange structured data constantly. This sample shows how each language encodes and decodes JSON-like payloads and where boilerplate tends to appear.",
+    "search_text": "JSON and Serialization Modern programs exchange structured data constantly. This sample shows how each language encodes and decodes JSON-like payloads and where boilerplate tends to appear.",
+    "block_id": "json_and_serialization"
+  },
+  {
+    "id": "types_and_modeling",
+    "mode": "course",
+    "title": "Types & Modeling",
+    "description": "Data modeling fundamentals across languages: classes, interfaces, enums, strings, and nullable values.",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Types & Modeling Once you can control program flow, the next step is learning how languages describe state and behavior. These examples focus on the structures you use to model real domains cleanly. Classes and Objects Object-oriented code ",
+    "search_text": "Types & Modeling Once you can control program flow, the next step is learning how languages describe state and behavior. These examples focus on the structures you use to model real domains cleanly. Classes and Objects Object-oriented code groups data with behavior. This comparison shows the surface syntax for defining types, constructing instances, and exposing methods. Interfaces and Polymorphism Polymorphism lets one abstraction drive multiple concrete behaviors. Use this topic to compare interface, protocol, and trait-style design. Enums and Constants Named constants reduce ambiguity and make state machines easier to read. This example highlights language support for enums and immutable values. Nullable and Optional Values Missing data is a universal problem. Compare how each language encodes absence, avoids null bugs, or forces explicit handling. Strings String processing appears everywhere, from parsing to formatting to validation. This sample is a good reference for common operations and interpolation style.",
+    "block_id": null
+  },
+  {
+    "id": "classes_and_objects",
+    "mode": "course",
+    "title": "Classes and Objects",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Classes and Objects Object-oriented code groups data with behavior. This comparison shows the surface syntax for defining types, constructing instances, and exposing methods.",
+    "search_text": "Classes and Objects Object-oriented code groups data with behavior. This comparison shows the surface syntax for defining types, constructing instances, and exposing methods.",
+    "block_id": "classes_and_objects"
+  },
+  {
+    "id": "interfaces_and_polymorphism",
+    "mode": "course",
+    "title": "Interfaces and Polymorphism",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Interfaces and Polymorphism Polymorphism lets one abstraction drive multiple concrete behaviors. Use this topic to compare interface, protocol, and trait-style design.",
+    "search_text": "Interfaces and Polymorphism Polymorphism lets one abstraction drive multiple concrete behaviors. Use this topic to compare interface, protocol, and trait-style design.",
+    "block_id": "interfaces_and_polymorphism"
+  },
+  {
+    "id": "enums_and_constants",
+    "mode": "course",
+    "title": "Enums and Constants",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Enums and Constants Named constants reduce ambiguity and make state machines easier to read. This example highlights language support for enums and immutable values.",
+    "search_text": "Enums and Constants Named constants reduce ambiguity and make state machines easier to read. This example highlights language support for enums and immutable values.",
+    "block_id": "enums_and_constants"
+  },
+  {
+    "id": "nullable_optional_values",
+    "mode": "course",
+    "title": "Nullable and Optional Values",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Nullable and Optional Values Missing data is a universal problem. Compare how each language encodes absence, avoids null bugs, or forces explicit handling.",
+    "search_text": "Nullable and Optional Values Missing data is a universal problem. Compare how each language encodes absence, avoids null bugs, or forces explicit handling.",
+    "block_id": "nullable_optional_values"
+  },
+  {
+    "id": "strings",
+    "mode": "course",
+    "title": "Strings",
+    "description": "",
+    "tags": [],
+    "url": "course/basics/types_and_modeling.html",
+    "excerpt": "Strings String processing appears everywhere, from parsing to formatting to validation. This sample is a good reference for common operations and interpolation style.",
+    "search_text": "Strings String processing appears everywhere, from parsing to formatting to validation. This sample is a good reference for common operations and interpolation style.",
+    "block_id": "strings"
   },
   {
     "id": "10_rank_from_stream",
@@ -3427,8 +3966,8 @@
     "description": "Determine if a string has all unique characters.",
     "tags": [],
     "url": "course/interview/1_strings_and_arrays/1_is_unique.html",
-    "excerpt": "Is Unique Determine if a string has all unique characters. Problem Statement Given a string, determine if it contains all unique characters. Return true if all characters are unique, and false otherwise. Example Cases \"abcde\" -> true (all c",
-    "search_text": "Is Unique Determine if a string has all unique characters. Problem Statement Given a string, determine if it contains all unique characters. Return true if all characters are unique, and false otherwise. Example Cases \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters) Code Example interview_lcci_01_01_is_unique",
+    "excerpt": "Is Unique Determine if a string has all unique characters. Problem Statement Given a string, determine if it contains all unique characters. Return true if all characters are unique, and false otherwise. Code Example interview_lcci_01_01_is",
+    "search_text": "Is Unique Determine if a string has all unique characters. Problem Statement Given a string, determine if it contains all unique characters. Return true if all characters are unique, and false otherwise. Code Example interview_lcci_01_01_is_unique Example Output \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters)",
     "block_id": null
   },
   {
@@ -3443,17 +3982,6 @@
     "block_id": "problem_statement"
   },
   {
-    "id": "example_cases",
-    "mode": "course",
-    "title": "Example Cases",
-    "description": "",
-    "tags": [],
-    "url": "course/interview/1_strings_and_arrays/1_is_unique.html",
-    "excerpt": "Example Cases \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters)",
-    "search_text": "Example Cases \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters)",
-    "block_id": "example_cases"
-  },
-  {
     "id": "code_example",
     "mode": "course",
     "title": "Code Example",
@@ -3465,6 +3993,17 @@
     "block_id": "code_example"
   },
   {
+    "id": "example_output",
+    "mode": "course",
+    "title": "Example Output",
+    "description": "",
+    "tags": [],
+    "url": "course/interview/1_strings_and_arrays/1_is_unique.html",
+    "excerpt": "Example Output \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters)",
+    "search_text": "Example Output \"abcde\" -> true (all characters are unique) \"hello\" -> false (character 'l' is repeated) \"\" -> true (empty string has no repeated characters)",
+    "block_id": "example_output"
+  },
+  {
     "id": "2_check_permutation",
     "mode": "course",
     "title": "Check Permutation",
@@ -3472,7 +4011,7 @@
     "tags": [],
     "url": "course/interview/1_strings_and_arrays/2_check_permutation.html",
     "excerpt": "Check Permutation Given two strings, determine if one is a permutation of the other. Problem Statement Given two strings, write a method to decide if one is a permutation of the other. A permutation is a rearrangement of letters. The string",
-    "search_text": "Check Permutation Given two strings, determine if one is a permutation of the other. Problem Statement Given two strings, write a method to decide if one is a permutation of the other. A permutation is a rearrangement of letters. The string \"abc\" has the following permutations: \"abc\", \"acb\", \"bac\", \"bca\", \"cab\", and \"cba\". Example Cases \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts) Code Example interview_lcci_01_02_check_permutation",
+    "search_text": "Check Permutation Given two strings, determine if one is a permutation of the other. Problem Statement Given two strings, write a method to decide if one is a permutation of the other. A permutation is a rearrangement of letters. The string \"abc\" has the following permutations: \"abc\", \"acb\", \"bac\", \"bca\", \"cab\", and \"cba\". Code Example interview_lcci_01_02_check_permutation Example Output \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts)",
     "block_id": null
   },
   {
@@ -3487,17 +4026,6 @@
     "block_id": "problem_statement"
   },
   {
-    "id": "example_cases",
-    "mode": "course",
-    "title": "Example Cases",
-    "description": "",
-    "tags": [],
-    "url": "course/interview/1_strings_and_arrays/2_check_permutation.html",
-    "excerpt": "Example Cases \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts)",
-    "search_text": "Example Cases \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts)",
-    "block_id": "example_cases"
-  },
-  {
     "id": "code_example",
     "mode": "course",
     "title": "Code Example",
@@ -3507,6 +4035,17 @@
     "excerpt": "Code Example interview_lcci_01_02_check_permutation",
     "search_text": "Code Example interview_lcci_01_02_check_permutation",
     "block_id": "code_example"
+  },
+  {
+    "id": "example_output",
+    "mode": "course",
+    "title": "Example Output",
+    "description": "",
+    "tags": [],
+    "url": "course/interview/1_strings_and_arrays/2_check_permutation.html",
+    "excerpt": "Example Output \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts)",
+    "search_text": "Example Output \"abc\" and \"bca\" -> true (permutations of each other) \"hello\" and \"oellh\" -> true (permutations of each other) \"test\" and \"tseta\" -> false (not permutations due to different character counts)",
+    "block_id": "example_output"
   },
   {
     "id": "3_string_to_url",
@@ -3823,8 +4362,8 @@
     "description": "Given a linked list, remove all duplicate nodes from the list.",
     "tags": [],
     "url": "course/interview/2_linked_list/1_remove_duplicate_node.html",
-    "excerpt": "Remove Duplicate Node Given a linked list, remove all duplicate nodes from the list. Problem Statement Given a linked list, remove all duplicate nodes from the list. Return the head of the modified linked list. Example Cases \"1 -> 2 -> 3 ->",
-    "search_text": "Remove Duplicate Node Given a linked list, remove all duplicate nodes from the list. Problem Statement Given a linked list, remove all duplicate nodes from the list. Return the head of the modified linked list. Example Cases \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged) Code Example interview_lcci_02_01_remove_duplicate_node",
+    "excerpt": "Remove Duplicate Node Given a linked list, remove all duplicate nodes from the list. Problem Statement Given a linked list, remove all duplicate nodes from the list. Return the head of the modified linked list. Code Example interview_lcci_0",
+    "search_text": "Remove Duplicate Node Given a linked list, remove all duplicate nodes from the list. Problem Statement Given a linked list, remove all duplicate nodes from the list. Return the head of the modified linked list. Code Example interview_lcci_02_01_remove_duplicate_node Example Output \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged)",
     "block_id": null
   },
   {
@@ -3839,17 +4378,6 @@
     "block_id": "problem_statement"
   },
   {
-    "id": "example_cases",
-    "mode": "course",
-    "title": "Example Cases",
-    "description": "",
-    "tags": [],
-    "url": "course/interview/2_linked_list/1_remove_duplicate_node.html",
-    "excerpt": "Example Cases \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged)",
-    "search_text": "Example Cases \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged)",
-    "block_id": "example_cases"
-  },
-  {
     "id": "code_example",
     "mode": "course",
     "title": "Code Example",
@@ -3861,14 +4389,25 @@
     "block_id": "code_example"
   },
   {
+    "id": "example_output",
+    "mode": "course",
+    "title": "Example Output",
+    "description": "",
+    "tags": [],
+    "url": "course/interview/2_linked_list/1_remove_duplicate_node.html",
+    "excerpt": "Example Output \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged)",
+    "search_text": "Example Output \"1 -> 2 -> 3 -> 2 -> 4\" -> \"1 -> 2 -> 3 -> 4\" (duplicate '2' is removed) \"1 -> 1 -> 1\" -> \"1\" (all duplicates are removed, leaving one instance) \"\" -> \"\" (empty list remains unchanged)",
+    "block_id": "example_output"
+  },
+  {
     "id": "2_kth_node_from_end",
     "mode": "course",
     "title": "kth Node from End",
     "description": "Given a linked list, find the kth node from the end of the list.",
     "tags": [],
     "url": "course/interview/2_linked_list/2_kth_node_from_end.html",
-    "excerpt": "kth Node from End Given a linked list, find the kth node from the end of the list. Problem Statement Given a linked list, find the kth node from the end of the list. Return the node if it exists, otherwise return null. Example Cases \"1 -> 2",
-    "search_text": "kth Node from End Given a linked list, find the kth node from the end of the list. Problem Statement Given a linked list, find the kth node from the end of the list. Return the node if it exists, otherwise return null. Example Cases \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length) Code Example interview_lcci_02_02_kth_node_from_end",
+    "excerpt": "kth Node from End Given a linked list, find the kth node from the end of the list. Problem Statement Given a linked list, find the kth node from the end of the list. Return the node if it exists, otherwise return null. Code Example intervie",
+    "search_text": "kth Node from End Given a linked list, find the kth node from the end of the list. Problem Statement Given a linked list, find the kth node from the end of the list. Return the node if it exists, otherwise return null. Code Example interview_lcci_02_02_kth_node_from_end Example Output \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)",
     "block_id": null
   },
   {
@@ -3883,17 +4422,6 @@
     "block_id": "problem_statement"
   },
   {
-    "id": "example_cases",
-    "mode": "course",
-    "title": "Example Cases",
-    "description": "",
-    "tags": [],
-    "url": "course/interview/2_linked_list/2_kth_node_from_end.html",
-    "excerpt": "Example Cases \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)",
-    "search_text": "Example Cases \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)",
-    "block_id": "example_cases"
-  },
-  {
     "id": "code_example",
     "mode": "course",
     "title": "Code Example",
@@ -3903,6 +4431,17 @@
     "excerpt": "Code Example interview_lcci_02_02_kth_node_from_end",
     "search_text": "Code Example interview_lcci_02_02_kth_node_from_end",
     "block_id": "code_example"
+  },
+  {
+    "id": "example_output",
+    "mode": "course",
+    "title": "Example Output",
+    "description": "",
+    "tags": [],
+    "url": "course/interview/2_linked_list/2_kth_node_from_end.html",
+    "excerpt": "Example Output \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)",
+    "search_text": "Example Output \"1 -> 2 -> 3 -> 4 -> 5\", k = 2 -> \"4\" (2nd node from the end is 4) \"1 -> 2 -> 3\", k = 1 -> \"3\" (1st node from the end is 3) \"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)",
+    "block_id": "example_output"
   },
   {
     "id": "3_delete_middle_node",

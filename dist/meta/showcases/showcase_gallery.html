@@ -116,34 +116,39 @@
                 </div>
             </div>
             <div class="nav-center">
-                <div class="toggle-group view-toggles">
-                    <button id="view-single-btn" class="toggle">Single</button>
-                    <button id="view-double-btn" class="toggle">Double</button>
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
                 </div>
-                <button id="swap-btn" class="icon-btn" aria-label="Swap languages">&#8646;</button>
                 <div class="atlas-search">
                     <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
                     <div id="atlas-search-results" class="search-results" hidden></div>
                 </div>
             </div>
             <div class="nav-right">
-                <!-- Phase 3: Global Geometric Style Picker -->
-                <div class="style-picker">
-                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
-                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
-                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
                 </div>
-
-                <div class="palette-picker">
-                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
-                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
-                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
-                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
-                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
-                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
-                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
-                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
-                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
                 </div>
                 <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
             </div>
@@ -195,7 +200,7 @@
             </div>
         </div>
         </div>
-                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../../meta/insights_test.html">← Insight Blocks Test</a><a class="pager-link next" href="../../meta/showcases/showcase_ide.html">IDE Style Showcase →</a></nav>
+                <nav class="pager-nav" aria-label="Previous and Next"><a class="pager-link prev" href="../../meta/showcases/index.html">← All Showcases</a><a class="pager-link next" href="../../meta/showcases/showcase_ide.html">IDE Style Showcase →</a></nav>
             </div>
         </main>
 

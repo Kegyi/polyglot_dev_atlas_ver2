@@ -63,6 +63,8 @@ const app = {
     setPalette: function(pal) {
         document.documentElement.setAttribute('data-palette', pal);
         localStorage.setItem('atlas-palette', pal);
+        const panel = document.getElementById('palette-picker-panel');
+        if (panel) panel.hidden = true;
     },
 
     /**
@@ -72,11 +74,33 @@ const app = {
     setGlobalStyle: function(style) {
         document.documentElement.setAttribute('data-global-style', style);
         localStorage.setItem('atlas-global-style', style);
+        const btn = document.getElementById('style-picker-btn');
+        if (btn && this.icons.style[style]) btn.innerHTML = this.icons.style[style];
+        const panel = document.getElementById('style-picker-panel');
+        if (panel) panel.hidden = true;
     },
 
     /**
      * Collapses or Expands Sidebars.
      */
+    toggleStylePicker: function() {
+        const panel = document.getElementById('style-picker-panel');
+        if (!panel) return;
+        const opening = panel.hidden;
+        const palPanel = document.getElementById('palette-picker-panel');
+        if (palPanel) palPanel.hidden = true;
+        panel.hidden = !opening;
+    },
+
+    togglePalettePicker: function() {
+        const panel = document.getElementById('palette-picker-panel');
+        if (!panel) return;
+        const opening = panel.hidden;
+        const stylePanel = document.getElementById('style-picker-panel');
+        if (stylePanel) stylePanel.hidden = true;
+        panel.hidden = !opening;
+    },
+
     toggleSidebar: function(side) {
         const el = document.getElementById(`sidebar-${side}`);
         if (!el) return;
@@ -713,6 +737,23 @@ const app = {
         document.querySelectorAll('.style-dot').forEach(btn => {
             const s = btn.dataset.style;
             if (s && this.icons.style[s]) btn.innerHTML = this.icons.style[s];
+        });
+
+        // Init style picker trigger icon to current style
+        const currentStyle = document.documentElement.getAttribute('data-global-style') || 'sharp';
+        const styleBtn = document.getElementById('style-picker-btn');
+        if (styleBtn && this.icons.style[currentStyle]) styleBtn.innerHTML = this.icons.style[currentStyle];
+
+        // Close picker dropdowns on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.style-picker-dropdown')) {
+                const p = document.getElementById('style-picker-panel');
+                if (p) p.hidden = true;
+            }
+            if (!e.target.closest('.palette-picker-dropdown')) {
+                const p = document.getElementById('palette-picker-panel');
+                if (p) p.hidden = true;
+            }
         });
 
         if (window.hljs) {

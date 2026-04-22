@@ -9,27 +9,25 @@ The app is a **static site** (no server needed): a Python build pipeline reads J
 
 1. [Project Overview](#1-project-overview)
 2. [Architecture at a Glance](#2-architecture-at-a-glance)
-3. [Getting Started](#3-getting-started)
-4. [File & Directory Reference](#4-file--directory-reference)
-   - [Root files](#41-root-files)
-   - [build_system/](#42-build_system)
-   - [content/](#43-content)
-   - [assets/](#44-assets)
-   - [templates/](#45-templates)
-   - [scripts/](#46-scripts)
-   - [tools/](#47-tools)
-   - [.github/workflows/](#48-githubworkflows)
-   - [dist/](#49-dist)
-   - [Obsolete / Dead files](#410-obsolete--dead-files)
-5. [Content System Deep Dive](#5-content-system-deep-dive)
-   - [Page JSON format](#51-page-json-format)
-   - [Block types](#52-block-types)
-   - [$ref resolution](#53-ref-resolution)
-   - [Code snippets](#54-code-snippets)
-6. [Build System Deep Dive](#6-build-system-deep-dive)
-7. [Frontend Architecture](#7-frontend-architecture)
-8. [CI/CD](#8-cicd)
-9. [Migration Status](#9-migration-status)
+3. [Installation & Usage (Production)](#3-installation--usage-production)
+4. [Getting Started (Development)](#4-getting-started-development)
+5. [File & Directory Reference](#5-file--directory-reference)
+   - [Root files](#51-root-files)
+   - [build_system/](#52-build_system)
+   - [content/](#53-content)
+   - [assets/](#54-assets)
+   - [templates/](#55-templates)
+   - [scripts/](#56-scripts)
+   - [.github/workflows/](#57-githubworkflows)
+   - [dist/](#58-dist)
+6. [Content System Deep Dive](#6-content-system-deep-dive)
+   - [Page JSON format](#61-page-json-format)
+   - [Block types](#62-block-types)
+   - [$ref resolution](#63-ref-resolution)
+   - [Code snippets](#64-code-snippets)
+7. [Build System Deep Dive](#7-build-system-deep-dive)
+8. [Frontend Architecture](#8-frontend-architecture)
+9. [CI/CD](#9-cicd)
 10. [Known Issues & Next Steps](#10-known-issues--next-steps)
 
 ---
@@ -41,7 +39,7 @@ The Atlas has **three modes**, each served as a section of the same static site:
 | Mode | URL prefix | Purpose |
 |------|------------|---------|
 | **Atlas** | `/atlas/` | Quick-reference: design patterns, principles, workflow, keyword grids |
-| **Course** | `/course/` | Learning curriculum: language basics, interview prep (17 chapters), exercises |
+| **Course** | `/course/` | Learning curriculum: language basics (5 chapters), problems, interview prep (9 chapter groups), exercises |
 | **Meta** | `/meta/` | Documentation about the app itself: block types, showcases, customization guide |
 
 All content lives in **JSON files** under `content/pages/`. The Python builder reads those files, resolves `$ref` pointers to shared definitions and raw code snippets, renders every page to HTML, assembles navigation, and writes the output to `dist/`.
@@ -59,7 +57,7 @@ build_system/core.py  (AtlasBuilder)
     │  • validate JSON schema
     │  • resolve $ref pointers
     │  • render 20+ block types to HTML
-    │  • assemble navigation / breadcrumbs
+    │  • assemble navigation / breadcrumbs / pager
     │  • generate search-index.json
     │  • copy & inline assets
     │
@@ -72,15 +70,50 @@ assets/js + assets/css  (loaded at runtime in the browser)
 
 ---
 
-## 3. Getting Started
+## 3. Installation & Usage (Production)
 
-**Requirements:** Python 3.10+
+This section is for people who want to **use** the app (not develop it).
+
+### Option A — Use prebuilt output locally (PC / tablet)
+
+1. Download a packaged build that contains the `dist/` folder.
+2. Extract it anywhere on your device.
+3. Open `dist/index.html` in a browser.
+
+Windows:
+```bash
+start dist/index.html
+```
+
+macOS / Linux:
+```bash
+open dist/index.html
+```
+
+This works fully offline after files are present.
+
+### Option B — Use as installed PWA (PC / tablet / phone)
+
+Host `dist/` on any static hosting (for example GitHub Pages). Then open the hosted URL and install:
+- Chrome / Edge (desktop or Android): use the install icon in the address bar/menu
+- Safari on iPhone/iPad: Share -> Add to Home Screen
+
+After install, Atlas opens like an app and can be used offline after first load.
+
+### Device guidance
+
+- PC/Laptop: best experience for side-by-side code comparison
+- Tablet: good usability, especially in landscape mode
+- Phone: usable for reading, but multi-column code comparison is limited by screen width
+
+For phones, landscape orientation is recommended when viewing code-heavy pages.
+
+---
+
+## 4. Getting Started (Development)
 
 ```bash
-# Install optional but recommended dependencies
-pip install -r requirements.txt   # jsonschema, watchdog
-
-# Run a full build
+# Full build
 python build.py
 
 # Validate content without producing output
@@ -90,96 +123,90 @@ python build_system/core.py --validate-only
 python build_system/core.py --watch
 ```
 
-After a successful build, open `dist/index.html` in a browser — no server needed.
+**Editing content:** all page content lives in `content/pages/` as JSON files. After any edit, re-run `python build.py` and refresh the browser.
+
+**Editing styles or JS:** edit files under `assets/css/` or `assets/js/`. Run the build to copy them to `dist/assets/`.
 
 ---
 
-## 4. File & Directory Reference
+## 5. File & Directory Reference
 
-### 4.1 Root files
+### 5.1 Root files
 
 | File | Purpose |
 |------|---------|
 | `build.py` | **Main entry point.** Imports `AtlasBuilder` from `build_system/core.py` and calls `builder.build()`. Handles top-level error reporting and prints a success summary. |
-| `requirements.txt` | Two optional Python dependencies: `jsonschema>=4.0.0` (page validation) and `watchdog>=2.0.0` (watch mode). The build works without them but produces no validation or hot-reload. |
-| `build_run.log` | Last build's stdout/stderr output. Useful for debugging failed builds. Not committed; regenerated on each run. |
-| `CI_CD_GUIDE.md` | Documents all three GitHub Actions workflows and how to trigger them manually. |
-| `IMPROVEMENTS.md` | Original six-phase improvement roadmap (Phase 1–6). Kept as a reference spec document. |
-| `IMPROVEMENTS_PROGRESS.md` | Running status snapshot of what has been implemented. Updated manually. |
-| `MIGRATION_COVERAGE_PLAN.md` | Maps every legacy v1 JSON file to its v2 equivalent and documents remaining gaps. |
-| `PHASE_1_IMPLEMENTATION.md` | Detailed notes on what was built during Phase 1 (schema normalization, `$ref` resolution, core schema files). |
+| `requirements.txt` | Two optional Python dependencies: `jsonschema>=4.0.0` and `watchdog>=2.0.0`. |
+| `CI_CD_GUIDE.md` | Documents all GitHub Actions workflows and how to trigger them manually. |
+| `README.md` | Project documentation (this file). |
 | `.gitignore` | Standard Python + build output ignores. |
 
 ---
 
-### 4.2 `build_system/`
+### 5.2 `build_system/`
 
-The Python build pipeline. All files here are imported as a package — never run directly except `core.py` (which also accepts CLI flags).
+The Python build pipeline. All files here are imported as a package.
 
 #### `build_system/config.py`
 Defines all **path constants** used across the build:
 - `BASE_DIR`, `CONTENT_DIR`, `ASSETS_DIR`, `TEMPLATES_DIR`, `DIST_DIR`
 - `SETTINGS` dict with site title, base template filename, and paths to locales/modules
-- Creates `dist/` if it does not exist
-
-Anything that needs a path should import from here rather than hardcoding strings.
 
 #### `build_system/core.py`
-The **heart of the system** (~3000 lines). Contains a single class `AtlasBuilder` with these major responsibilities:
+The **heart of the system** (~3 000 lines). Contains a single class `AtlasBuilder`:
 
 | Method group | What it does |
 |---|---|
-| `__init__` | Sets up all path references, initializes `site_registry`, warning list, and the renderer registry |
+| `__init__` | Sets up path references, initializes `site_registry`, warning list, and the renderer registry |
 | `_build_renderer_registry()` | Returns a `dict[str, callable]` mapping every block `type` string to its render function |
 | `_resolve_json_ref(ref)` | Resolves `@core/`, `@keywords/`, `@snippets/`, `@images/`, and `#/json/pointer` references |
-| `_load_json(path)` | Reads and parses a JSON file with error handling |
 | `_render_*()` methods | One method per block type — each receives a block dict and returns an HTML string |
-| `_render_blocks()` | Recursive block container; calculates the correct heading level (`h2`–`h6`) based on nesting depth |
+| `_render_blocks()` | Recursive block container; calculates heading level (`h2`–`h6`) based on nesting depth |
 | `_render_dynamic()` | Renders `dynamic`/`lang_content` blocks — content that varies per selected language |
 | `_render_keyword_grid()` | Renders a language-aware keyword comparison table |
-| `scan_pages()` | Walks `content/pages/` and registers every `.json` file in `site_registry` with its mode (atlas/course/meta) |
-| `build_navigation()` | Assembles sidebar HTML and prev/next paging from the registry |
-| `generate_search_index()` | Extracts title/description/text from all pages and writes `dist/content/search-index.json` |
+| `scan_pages()` | Walks `content/pages/` and registers every `.json` file in `site_registry` |
+| `assemble_navigation()` | Assembles sidebar HTML from the registry; folder-local for nested sections |
+| `assemble_prev_next()` | Builds prev/next pager; stays within submenu folders for nested pages |
+| `generate_search_index()` | Extracts title/description/text and writes `dist/content/search-index.json` |
 | `build()` | Orchestrates the entire pipeline in order |
 
-The builder also accepts CLI flags via `argparse`:
+CLI flags via `argparse`:
 - `--validate-only` — runs scan + schema validation, exits without writing to `dist/`
 - `--watch` — starts a `watchdog` observer to re-run `build()` on file changes
 
 #### `build_system/dead_link_checker.py`
-Standalone validator that crawls all `.json` page files, extracts every HTTP/HTTPS URL (from both plain text and markdown `[text](url)` syntax), and HEAD-requests each one to check for broken links. Used by the `dead-links.yml` CI workflow.
-
-Key class: `DeadLinkChecker`  
-Key methods: `_extract_urls_from_text()`, `check_page()`, `run()`, `print_report()`
-
-> ~~`build_system/core.py.broken`~~ — **OBSOLETE.** A broken backup snapshot of `core.py` created during a failed refactor. Safe to delete.
+Standalone validator that crawls all `.json` page files, extracts every HTTP/HTTPS URL, and HEAD-requests each one to check for broken links. Used by the `dead-links.yml` CI workflow.
 
 ---
 
-### 4.3 `content/`
+### 5.3 `content/`
 
 All source content. Nothing here is served directly — everything is processed by the build system.
 
 #### `content/pages/`
 
-The **main content tree.** 126 JSON files organised into three subdirectories that map directly to the three app modes.
+The **main content tree.** JSON files organised into three subdirectories mapping to the three app modes.
 
 ```
 content/pages/
-├── index.json              Home page (the root / of the app)
+├── index.json                  Home page
 ├── atlas/
-│   ├── index.json          Atlas mode landing page
+│   ├── index.json              Atlas mode landing page
 │   ├── design_patterns.json
 │   ├── principles.json
 │   ├── workflow.json
-│   ├── keywords.json       Keyword index (links to per-language pages)
-│   └── keywords/
-│       ├── index.json
-│       └── cpp.json        (only C++ keyword page exists so far)
+│   └── keywords.json           Dynamic keyword page (language-aware)
 ├── course/
-│   ├── index.json          Course mode landing page
-│   ├── basics.json         Language basics (placeholder level)
-│   ├── problems.json       Problems section (placeholder level)
+│   ├── index.json              Course mode landing page
+│   ├── basics.json             Language basics landing (links to 5 sub-chapters)
+│   ├── basics/
+│   │   ├── index.json
+│   │   ├── foundations_and_flow.json
+│   │   ├── types_and_modeling.json
+│   │   ├── data_structures.json
+│   │   ├── systems_and_io.json
+│   │   └── problem_solving_and_reliability.json
+│   ├── problems.json           Cross-language problem set (7 problems)
 │   ├── exercises.json
 │   └── interview/
 │       ├── 1_strings_and_arrays/
@@ -194,25 +221,19 @@ content/pages/
 └── meta/
     ├── index.json
     ├── getting_started.json
-    ├── content_types.json   Documents every supported block type
-    ├── blocks_nesting.json  Demonstrates nested blocks
+    ├── content_types.json
+    ├── blocks_nesting.json
     ├── customization.json
     ├── external_links_test.json
     ├── insights_test.json
     └── showcases/
 ```
 
-> `content/pages/course/exercieses.json` has already been renamed to `exercises.json` and references were updated.
->
-> `content/pages/course/exercieses.json.bak` was deleted during cleanup.
->
-> Interview content currently uses `8_recursion_dynamic_programming/` as the canonical folder.
-
 #### `content/schemas/`
 
 | File | Purpose |
 |---|---|
-| `page_schema.json` | JSON Schema (draft-07) for every page file. Defines required fields (`title`), optional fields (`description`, `category`, `template`, `body_class`, `extra_assets`, `style`, `schema_version`, `code_defaults`), and the `content` array structure. Used by `AtlasBuilder` when `jsonschema` is installed. |
+| `page_schema.json` | JSON Schema (draft-07) for every page file. Used by `AtlasBuilder` when `jsonschema` is installed. |
 
 #### `content/core/`
 
@@ -220,24 +241,21 @@ Shared JSON fragments referenced by pages via `"$ref": "@core/<name>"`.
 
 | File | Purpose |
 |---|---|
-| `base_block.json` | JSON Schema for a single content block. Defines the `id`, `title`, `type`, `content`, `style`, `is_collapsible`, and `$ref` fields. All block renderers are expected to accept objects matching this schema. |
-| `page_base.json` | Root page schema — the authoritative definition used by `page_schema.json`. |
-| `language_icons.json` | Single source of truth for per-language icon SVG paths. Pages pull this in via `$ref` instead of duplicating it. |
+| `base_block.json` | JSON Schema for a single content block |
+| `page_base.json` | Root page schema |
+| `language_icons.json` | Per-language icon SVG paths |
 
 #### `content/definitions/`
 
 | File | Purpose |
 |---|---|
-| `languages.json` | **Master language registry.** Object keyed by language ID (`cpp`, `go`, `python`, `typescript`, `scala2`, `scala3`). Each entry contains `name`, `color`, `icon` path, file `extension`, `prism_class` for syntax highlighting, `tagline`, and `paradigm` tags. Read by the builder to know which languages exist and by the JS selection engine to populate the language picker. |
-| `keywords/` | Per-language keyword definition files (`cpp.json`, `go.json`, `python.json`, `typescript.json`, `scala2.json`, `scala3.json`). Each maps keyword names to definitions and language-specific notes. Consumed by `_render_keyword_grid()`. |
-| `schema/` | Additional JSON schemas for definitions (supplementary, not the primary validation path). |
-| `possible_future_language_options.txt` | Removed during cleanup (it was an obsolete planning note superseded by `languages.json`). |
+| `languages.json` | **Master language registry.** Each entry has `name`, `color`, `icon`, `extension`, `prism_class`, `tagline`, and `paradigm`. Read by builder and JS selection engine. |
 
 #### `content/keywords/`
 
-Per-language keyword data in JSON format, mirroring `content/definitions/keywords/`. These are the files actually read at build time via `@keywords/<lang>` references.
+Per-language keyword data read at build time via `@keywords/<lang>` references.
 
-| File | What it contains |
+| File | Contents |
 |---|---|
 | `cpp.json` | C++ keywords with descriptions |
 | `go.json` | Go keywords |
@@ -245,70 +263,55 @@ Per-language keyword data in JSON format, mirroring `content/definitions/keyword
 | `typescript.json` | TypeScript keywords |
 | `scala2.json` | Scala 2 keywords |
 | `scala3.json` | Scala 3 keywords |
-| `designs/` | Keyword sets scoped to design-pattern vocabulary (in progress) |
 
 #### `content/snippets/`
 
-Raw source code files organised by language then category. The builder scans this tree and generates multi-language comparison grids.
+Raw source code files organised by language then category.
 
 ```
 content/snippets/
 ├── cpp/
-│   ├── language_basics/
+│   ├── language_basics/    26 topics
 │   ├── design_patterns/
-│   ├── problems/
+│   ├── problems/           7 cross-language problems
 │   ├── interview_lcci/
-│   ├── exercises/
-│   └── rename_map.csv    ← migration mapping, safe to delete after migration
-├── go/       (same structure)
-├── python/   (same structure)
+│   └── exercises/
+├── go/        (same structure)
+├── python/    (same structure)
 ├── typescript/
 ├── scala2/
 └── scala3/
 ```
 
-Each file is a plain source code file (`.cpp`, `.go`, `.py`, `.ts`, `.scala`). File names are used as the comparison key — files with the same name across languages are grouped into a side-by-side comparison block.
+Files with the same name across languages are grouped into a side-by-side comparison block.
 
 #### `content/modules/`
 
-Reusable **HTML fragment templates** used during the build to scaffold comparison sections. These are not full pages — the builder pastes them into generated pages and then substitutes `[[COMPARE:category]]` placeholders with the actual snippet grid.
-
-| File | Purpose |
-|---|---|
-| `comparison.html` | Template for a `<section class="comparison-section">` with a `[[COMPARE:syntax_basics]]` placeholder. |
-| `hero.html` | Hero/banner section template. |
-| `atlas-grid.html` | Layout skeleton for the Atlas side-by-side grid view. |
-| `syntax_overview.html` | Template for a syntax overview section. |
-
-> These files may be partially superseded by inline rendering in `core.py`. Review which are still referenced before modifying.
-
-#### `content/locales/`
-
-Locale stub files were removed during cleanup. i18n is currently not implemented, and UI strings are hardcoded in templates and JS.
+Reusable HTML fragment templates used during the build for comparison section scaffolding. May be partially superseded by inline rendering in `core.py`.
 
 ---
 
-### 4.4 `assets/`
+### 5.4 `assets/`
 
 Static frontend resources. Copied verbatim to `dist/assets/` by the builder.
 
 #### `assets/css/`
 
-All styling is written in plain CSS using custom properties (CSS variables). No preprocessor.
+All styling is plain CSS using custom properties. No preprocessor.
 
 | File | Purpose |
 |---|---|
-| `main.css` | **Core styles.** Defines the palette system (`--accent` per `data-palette`), theme tokens (`--bg`, `--panel`, `--border`, `--text`), the three geometric design modes (Sharp / Round / Airy via `data-global-style`), layout grid, sidebar, and navigation. |
-| `ui_states.css` | Styles for interactive states: active/hover on nav items, collapsed blocks, hash-target flash animation, permalink icon visibility. |
-| `accessible.css` | Accessibility overrides: focus rings, reduced-motion media query, screen-reader utilities. |
-| `ide.css` | Code block presentation styles: line numbers, copy button, diff highlighting, line-range highlight. |
-| `gallery.css` | Grid layout for language selection gallery / comparison card grid. |
-| `meta.css` | Styles specific to Meta mode pages (documentation showcase). |
-| `reference.css` | Styles for Atlas mode reference pages (keyword tables, principle cards). |
-| `tutorial.css` | Styles for Course mode tutorial pages (step indicators, exercise panels). |
-| `playground.css` | Styles for potential future interactive playground pages. |
+| `main.css` | Core styles: palette system, theme tokens, geometric design modes (Sharp/Round/Airy), layout grid, sidebar, navigation |
+| `ui_states.css` | Interactive states: view-mode control, swap button, active/hover nav, collapsed blocks |
+| `accessible.css` | Accessibility overrides: focus rings, reduced-motion, screen-reader utilities |
+| `ide.css` | Code block presentation: line numbers, copy button, diff highlighting |
+| `gallery.css` | Grid layout for language comparison cards |
+| `meta.css` | Meta mode page styles |
+| `reference.css` | Atlas mode reference styles (keyword tables, principle cards) |
+| `tutorial.css` | Course mode styles (step indicators, exercise panels) |
+| `playground.css` | Future interactive playground styles |
 
-**`assets/css/themes/`** — One file per theme, each overriding the CSS variables set in `main.css`.
+**`assets/css/themes/`**
 
 | File | Theme |
 |---|---|
@@ -316,84 +319,60 @@ All styling is written in plain CSS using custom properties (CSS variables). No 
 | `light.css` | Light theme |
 | `high-contrast.css` | High-contrast accessibility theme |
 
-**`assets/css/modules/`** — Component-level CSS modules (loaded per-page via `extra_assets` in page JSON).
+Each theme defines `--on-accent` (text color on accent backgrounds) in addition to the standard color tokens.
+
+**`assets/css/modules/`** — Component-level CSS modules: `variables.css`, `nav.css`, `sidebar.css`, `layout.css`, `components.css`, `content_blocks.css`, `insights.css`, `collections.css`.
 
 #### `assets/js/`
 
-Vanilla JavaScript — no build step, no frameworks, no bundler. All files are included in every page via `<script>` tags in `templates/base.html`.
+Vanilla JavaScript — no build step, no frameworks.
 
 | File | Responsibility |
 |---|---|
-| `app.js` | **General UI controller.** Theme cycling (Dark→Light→High-Contrast), palette picker, Global Design Style (Sharp/Round/Airy), sidebar open/close, view-mode toggle (Show All / Primary Only / Compare), scroll-spy for active nav highlighting, and mode-specific last-page persistence in `localStorage`. |
-| `selection_engine.js` | **Language picker logic.** Manages the `AtlasState` object (`viewMode`, `primaryLang`, `secondaryLang`). Handles left-click (set primary), right-click (set secondary), drag selection, and `data-lang-*` CSS class toggling that shows/hides language columns. Persists state to `localStorage` for zero-flicker reload. |
-| `polyglot_filter.js` | **Multi-select language filter.** Allows hiding specific language columns in comparison grids (independent of the primary/secondary selection). Saves selected set to `localStorage` under key `atlas-filter-langs`. |
-| `search_ui.js` | **Client-side search.** Loads `dist/content/search-index.json` lazily on first focus, filters results by title/description/text, and renders a dropdown of matching pages with links. |
-| `content_renderers.js` | **Phase 2 runtime helpers.** Adds behaviour to server-rendered blocks: sheet transpose toggle (swap rows/columns), line-range highlighting in code blocks, diff-mode visual presentation, and fragment vertical alignment across visible language columns. |
-| `permalinks.js` | **Permalink UX.** Attaches click handlers to `<a class="permalink">` anchors so clicking copies the full absolute URL to clipboard. Also handles hash-target flash animation on page load and `hashchange`. |
-| `service_worker.js` | **PWA offline cache.** Caches critical assets on install (CSS, JS, HLJS themes). Uses cache-first for static assets and network-first for content JSON. Cache version: `atlas-v1`. |
+| `app.js` | Theme cycling, palette picker, geometric style picker (dropdown), sidebar open/close, view-mode toggle, scroll-spy, mode-specific page persistence |
+| `selection_engine.js` | Language picker: manages `AtlasState` (`viewMode`, `primaryLang`, `secondaryLang`), single/double toggle, swap button, drag-select, `localStorage` persistence |
+| `polyglot_filter.js` | Multi-select language column filter independent of primary/secondary selection |
+| `search_ui.js` | Client-side search against pre-built `search-index.json` |
+| `content_renderers.js` | Runtime block enhancements: sheet transpose, line-range highlighting, diff mode |
+| `permalinks.js` | Click-to-copy permalink anchors, hash-target flash |
+| `service_worker.js` | PWA offline cache (cache-first for static assets, network-first for content) |
 
 #### `assets/hljs/`
 
-Bundled [Highlight.js](https://highlightjs.org/) distribution for syntax highlighting in code blocks. Includes language packs and two themes:
-- `atom-one-dark.min.css` (used in dark and high-contrast mode)
-- `github.min.css` (used in light mode)
+Bundled Highlight.js with `atom-one-dark.min.css` (dark/high-contrast) and `github.min.css` (light).
 
 #### `assets/icons/`
 
-SVG icons for each supported language. Named by language ID: `cpp.svg`, `go.svg`, `python.svg`, `typescript.svg`, `scala.svg`.
+SVG icons per language: `cpp.svg`, `go.svg`, `python.svg`, `typescript.svg`, `scala.svg`.
 
 #### `assets/manifest.json`
 
-Web App Manifest enabling PWA installation. Defines app name, `start_url`, `display: standalone`, theme color (`#09090b`), and inline SVG icons (no external image dependencies). Categories: productivity, education.
+Web App Manifest for PWA installation (standalone display, offline capable).
 
 ---
 
-### 4.5 `templates/`
+### 5.5 `templates/`
 
 #### `templates/base.html`
 
-The **single HTML template** for all pages. The builder performs string substitution on `{{ title }}`, `{{ asset_prefix }}`, `{{ sidebar_html }}`, `{{ content_html }}`, and other template variables.
+The **single HTML template** for all pages. Builder substitutes `{{ title }}`, `{{ asset_prefix }}`, `{{ mode_switcher }}`, `{{ navigation_sidebar }}`, `{{ content }}`, `{{ breadcrumbs }}`, `{{ pager_nav }}`, and other placeholders.
 
 Key structural elements:
-- **Anti-flash script** (inline, blocking): reads `localStorage` and sets `data-theme`, `data-palette`, `data-global-style`, `data-selection-mode`, `data-primary`, `data-secondary` on `<html>` before first paint.
-- `<link id="theme-css">` for the active theme stylesheet (swapped by `app.js`)
-- `<link id="hljs-theme">` for the active HLJS theme
-- `<nav class="sidebar">` (populated by `{{ sidebar_html }}`)
-- `<main class="content-area">` (populated by `{{ content_html }}`)
-- All JS files included at end of `<body>`
+- **Anti-flash script** (inline, blocking): reads `localStorage` and sets theme/palette/style/selection attributes on `<html>` before first paint
+- `<link id="theme-css">` for active theme stylesheet (swapped by `app.js`)
+- `<link id="hljs-theme">` for active HLJS theme
+- Navbar with: logo + mode-switcher dropdown, single/double view control with inline swap, style picker dropdown, palette picker dropdown, theme toggle
+- Left sidebar (navigation), main content area, right sidebar (topic TOC)
 
 ---
 
-### 4.6 `scripts/`
+### 5.6 `scripts/`
 
-One-time **migration helper scripts** used during the v1→v2 migration. These are no longer needed for routine development. Keep in version control for historical reference but do not rely on them.
-
-| File | What it did |
-|---|---|
-| `migrate_snippets.py` | Migrated v1 code snippets to the new folder structure |
-| `generate_interview_pages_from_legacy.py` | Scaffolded the 100+ interview chapter JSON pages from legacy content |
-| `normalize_exercises_structure.py` | Normalised exercise JSON to the v2 block schema |
-| `restructure_exercises.py` | Restructured exercise file organisation |
-| `fix_exercises_json_paths.py` | Fixed snippet `$ref` paths in exercise pages after folder renames |
-| `auto_fix_exercises_json_paths.py` | Automated version of the above |
-| `apply_group_difficulty_to_exercises_json.py` | Added `difficulty` metadata to exercise blocks |
-| `cleanup_remove_duplicate_code_defaults.py` | Removed duplicated `code_defaults` entries introduced by earlier migration steps |
-| `move_intermediate_to_advanced.py` | Reclassified some exercise difficulty levels |
-| `update_design_patterns_paths.py` | Updated snippet paths in design patterns pages after snippet reorganisation |
-
-> Most of these are one-time helpers and can be removed after final audit/cleanup.
+The folder currently exists but is empty (all migration helper scripts were removed after migration cleanup).
 
 ---
 
-### 4.7 `tools/`
-
-| File | Purpose |
-|---|---|
-| `copy_typescript_snippets.ps1` | PowerShell script that copies TypeScript snippet files from one location to another. One-time helper used during snippet migration. Safe to delete after verifying TypeScript snippet coverage. |
-
----
-
-### 4.8 `.github/workflows/`
+### 5.7 `.github/workflows/`
 
 Three GitHub Actions workflows — see `CI_CD_GUIDE.md` for full documentation.
 
@@ -401,56 +380,30 @@ Three GitHub Actions workflows — see `CI_CD_GUIDE.md` for full documentation.
 |---|---|---|
 | `build.yml` | Push to main/develop, PRs | Full build + schema validation + dead link check + deploy to GitHub Pages |
 | `dead-links.yml` | Daily 2AM UTC, manual | Checks all external URLs; opens a GitHub issue if broken links are found |
-| `validate-pr.yml` | PR opened/updated | Validates JSON schema of changed content files only (faster than full build) |
+| `validate-pr.yml` | PR opened/updated | Validates JSON schema of changed content files only |
 
 ---
 
-### 4.9 `dist/`
+### 5.8 `dist/`
 
 **Build output — do not edit manually.** Regenerated on every `python build.py` run.
 
 ```
 dist/
 ├── index.html              Home page
-├── atlas/                  One .html per atlas page
-├── course/                 One .html per course page (110+ files)
-├── meta/                   One .html per meta page
+├── atlas/                  Atlas pages
+├── course/                 Course pages (150+ files including interview chapters)
+├── meta/                   Meta pages
 ├── content/
 │   └── search-index.json   Full-text search index (generated at build time)
 └── assets/                 Copied from assets/
 ```
 
-The `dist/` directory is committed to the repository (GitHub Pages deployment reads from it). The `build.yml` CI workflow also uploads it as an artifact.
-
 ---
 
-### 4.10 Obsolete / Dead files
+## 6. Content System Deep Dive
 
-The following files are no longer part of the active development workflow. They are either v1 artifacts, one-time migration helpers, or broken backups.
-
-| File / Directory | Reason | Recommended action |
-|---|---|---|
-| ~~`legacy_build.py`~~ | Original v1 builder; completely replaced by `build_system/core.py` | **Deleted** |
-| ~~`legacy_index.html`~~ | v1 bundled single-file output; superseded by `dist/` | **Deleted** |
-| ~~`legacy_content/`~~ | 500+ v1-format content files; some still referenced as migration source, rest are dead | **Archive** (zip and remove from working tree once migration reaches 100%) |
-| ~~`debug_mockup.html`~~ | HTML mockup used to prototype UI layout | **Deleted** |
-| ~~`index_mock.html`~~ | Another UI prototype mockup | **Deleted** |
-| ~~`build_system/core.py.broken`~~ | Broken backup created during a failed refactor | **Deleted** |
-| ~~`content/pages/course/exercieses.json`~~ | Misspelled filename (`exercieses` vs `exercises`) | **Renamed** to `exercises.json` |
-| ~~`content/pages/course/exercieses.json.bak`~~ | Backup of the misspelled file | **Deleted** |
-| ~~`content/definitions/possible_future_language_options.txt`~~ | Plain-text brainstorm note; superseded by `languages.json` and the roadmap | **Deleted** |
-| ~~`content/locales/en.json`~~ | Empty i18n stub | **Deleted** |
-| ~~`content/locales/hu.json`~~ | Empty i18n stub | **Deleted** |
-| ~~`content/snippets/cpp/rename_map.csv`~~ | Migration mapping file; no longer needed once snippets are settled | **Delete** |
-| ~~`scripts/*.py`~~ (all 10 files) | One-time migration helpers | **Delete** after final audit |
-| ~~`scripts/copy_typescript_snippets.ps1`~~ | One-time snippet copy script moved from `tools/` into the audit bucket | **Delete** after final script audit |
-| ~~`tmp/LAYOUT.md`~~ | Temporary layout planning note | **Delete** |
-
----
-
-## 5. Content System Deep Dive
-
-### 5.1 Page JSON format
+### 6.1 Page JSON format
 
 Every page is a JSON file under `content/pages/`. Minimal valid page:
 
@@ -473,32 +426,28 @@ Full set of top-level fields:
 | `body_class` | string | | Extra CSS classes on `<body>` |
 | `extra_assets` | string[] | | Additional CSS/JS to include on this page |
 | `style` | string | | Page-level style preset |
-| `code_defaults` | object | | Default language/theme for code blocks on this page |
+| `code_defaults` | object | | Default `display_name` and `is_collapse` for code blocks |
 | `content` | array | | Array of block objects |
 
-### 5.2 Block types
-
-The builder's renderer registry maps `type` strings to render functions. All supported types:
+### 6.2 Block types
 
 | Type | Renders as | Notes |
 |---|---|---|
-| `title` | `<h1>` with page-title styling | Use once per page at the top |
-| `h1`–`h6` | `<h1>`–`<h6>` | Nesting depth inside `blocks` auto-adjusts the actual tag level |
+| `title` | `<h1>` | Use once per page at the top |
+| `h1`–`h6` | `<h1>`–`<h6>` | Nesting inside `blocks` auto-adjusts the tag level |
 | `text` | `<p>` | Supports inline markdown (bold, italic, `code`, links) |
 | `note` | Styled callout box | For warnings, tips, important notices |
 | `insight` | Highlighted insight card | For pro-tips and key takeaways |
 | `link` | `<a>` | Explicit link block |
-| `code` | Syntax-highlighted `<pre><code>` | Supports `language`, `lines` (range), `diff` fields |
+| `code` | Syntax-highlighted `<pre><code>` | Supports `language`, `path` (snippet), `lines` (range), `diff` |
 | `image` | `<img>` | Supports `@images/` refs (base64-inlined) |
 | `list` | `<ul>` or `<ol>` | Nested lists supported |
 | `blocks` | `<section>` container | **Recursive.** Each nested `blocks` becomes a collapsible section. |
-| `table` / `sheet` / `matrix` | `<table>` | 2D data. The `content_renderers.js` adds a Transpose toggle at runtime. |
-| `dynamic` / `lang_content` | Per-language variants | Content that changes based on the selected language |
-| `keyword_grid` | Comparison table | Renders keyword definitions side-by-side across languages |
+| `table` / `sheet` / `matrix` | `<table>` | 2D data. `content_renderers.js` adds a Transpose toggle at runtime. |
+| `dynamic` / `lang_content` | Per-language variants | Content that changes based on selected language |
+| `keyword_grid` | Keyword comparison table | Renders keyword definitions side-by-side across languages |
 
-### 5.3 `$ref` resolution
-
-Any field in a block can be a `$ref` pointer instead of inline data. The builder resolves these at build time:
+### 6.3 `$ref` resolution
 
 | Prefix | Resolves to |
 |---|---|
@@ -508,45 +457,43 @@ Any field in a block can be a `$ref` pointer instead of inline data. The builder
 | `@images/<name>` | Base64-encoded content of `assets/images/<name>` |
 | `#/json/pointer` | JSON Pointer into the same page document |
 
-### 5.4 Code snippets
+### 6.4 Code snippets
 
 Snippets live in `content/snippets/<lang>/<category>/<filename>.<ext>`.  
-The builder groups files **by name across languages** to produce comparison columns. For example:
+The builder groups files **by name across languages** to produce comparison columns. A code block references them with `"path": "<category>/<filename>"`.
 
+Example — all four files below produce a single four-column block:
 ```
-content/snippets/
-  cpp/language_basics/variables.cpp
-  go/language_basics/variables.go
-  python/language_basics/variables.py
-  typescript/language_basics/variables.ts
+content/snippets/cpp/language_basics/variables.cpp
+content/snippets/go/language_basics/variables.go
+content/snippets/python/language_basics/variables.py
+content/snippets/typescript/language_basics/variables.ts
 ```
-
-These four files produce a single four-column comparison block titled "variables".
 
 ---
 
-## 6. Build System Deep Dive
+## 7. Build System Deep Dive
 
 The build runs in this order inside `AtlasBuilder.build()`:
 
 1. **Clean** `dist/` (selective — preserves `.git` if present)
 2. **Copy assets** from `assets/` to `dist/assets/`
-3. **Scan pages** — walks `content/pages/`, builds `site_registry` mapping each page JSON to its output HTML path and navigation position
+3. **Scan pages** — walks `content/pages/`, builds `site_registry`
 4. **For each page:**
    a. Load and validate JSON against `content/schemas/page_schema.json`
    b. Resolve all `$ref` pointers recursively
    c. Render each block in the `content` array to HTML
-   d. Build sidebar HTML (highlighting the current page)
-   e. Build breadcrumbs and prev/next links
+   d. Build sidebar HTML (highlighting the current page; folder-local for nested sections)
+   e. Build breadcrumbs and folder-local prev/next pager links
    f. Substitute all variables into `templates/base.html`
-   g. Write the resulting HTML to `dist/<mode>/<page>.html`
+   g. Write to `dist/<mode>/<page>.html`
 5. **Generate search index** — writes `dist/content/search-index.json`
-6. **Validate internal links** — checks all `href` and `src` in generated HTML resolve to a file in `dist/`
-7. **Print summary** — page count, warning count, any validation errors
+6. **Validate internal links** — checks all `href` and `src` in generated HTML
+7. **Print summary** — page count, warning count, any errors
 
 ---
 
-## 7. Frontend Architecture
+## 8. Frontend Architecture
 
 The app is a **single-page-style experience built from static HTML**. There is no client-side routing — each page is a full HTML document. JavaScript only adds:
 
@@ -561,11 +508,18 @@ The app is a **single-page-style experience built from static HTML**. There is n
 
 **Theme system:** `data-theme` on `<html>` drives CSS variable values via attribute selectors in `main.css` + `themes/*.css`. Switching themes updates the attribute and swaps the `<link id="theme-css">` href — no page reload needed.
 
+**Header controls:**
+- Mode switcher: dropdown on the app title, links to each mode's index
+- View toggle: merged Single/Double pill — click label to toggle, click `⇄` to swap languages in double mode
+- Style picker: dropdown showing current geometric style icon (Sharp/Round/Airy)
+- Palette picker: dropdown showing current accent color dot (9 palettes)
+- Theme toggle: cycles Dark → Light → High-Contrast
+
 ---
 
-## 8. CI/CD
+## 9. CI/CD
 
-See `CI_CD_GUIDE.md` for full documentation. Summary:
+See `CI_CD_GUIDE.md` for full documentation.
 
 | Workflow | When | What |
 |---|---|---|
@@ -575,26 +529,10 @@ See `CI_CD_GUIDE.md` for full documentation. Summary:
 
 ---
 
-## 9. Migration Status
-
-As of 2026-04-22, interview migration for the currently present chapter folders is largely complete.
-
-**Completed:**
-- Core cleanup pass: legacy root files removed, misnamed exercises page renamed, empty locale stubs removed
-- Interview chapter content migration completed for: `1`, `2`, `3`, `4`, `5`, `8`, `10`, `16`, `17`
-- Most interview pages now use `Example Output` positioned after `Code Example`
-- Core build infrastructure (schema, `$ref` resolution, renderer registry, search index, CI/CD)
-
-**Remaining migration/content tasks:**
-- `course/basics.json` and `course/problems.json` are still high-level placeholders
-
-See `MIGRATION_COVERAGE_PLAN.md` for broader gap tracking.
-
----
-
 ## 10. Known Issues & Next Steps
 
 | Issue | File(s) | Action |
 |---|---|---|
-| Remaining one-time migration helpers | `scripts/` | Delete after final audit |
+| Missing `exercises/intermediate/*` snippets | `content/snippets/*/exercises/` | Author intermediate exercise snippets |
+| Missing `example-setup` snippet | `content/pages/meta/getting_started.json` | Add snippet or remove the reference |
 

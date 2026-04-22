@@ -1120,16 +1120,15 @@ class AtlasBuilder:
         nav_html += '<ul class="nav-list" id="toc-main">'
         is_home_page = active_mode == 'atlas' and current_page_url == 'index.html'
         if is_home_page:
-            # On home, expose each discovered mode as its own collection,
-            # instead of a single aggregated "Modes" entry.
+            # On home, expose each discovered mode as a direct link so entering
+            # a mode immediately uses that mode's normal sidebar/navigation.
             for mode_name in ordered_modes:
-                mode_key = f"mode-{re.sub(r'[^a-zA-Z0-9_-]', '-', mode_name)}"
                 mode_label = mode_name.capitalize()
+                mode_index_url = f"{prefix}{mode_name}/index.html"
                 nav_html += (
-                    f'<li class="nav-item nav-collection nav-{mode_key}">'
-                    f'<a href="#" onclick="app.openCollection(\'{active_mode}\', \'{mode_key}\', {{ noNavigate: true }});return false;">'
-                    f'<span class="nav-collection-label">{mode_label}</span><span class="collection-marker" aria-hidden="true"></span>'
-                    f'</a></li>'
+                    f'<li class="nav-item nav-mode-link nav-{mode_name}">'
+                    f'<a href="{mode_index_url}" onclick="app.prepareModeSwitch()">{mode_label}</a>'
+                    f'</li>'
                 )
         else:
             nav_html += render_node(root, [])
@@ -1229,30 +1228,6 @@ class AtlasBuilder:
 
         if not (active_mode == 'atlas' and current_page_url == 'index.html'):
             emit_submenus(root, [])
-
-        if is_home_page:
-            def mode_page_sort_key(entry):
-                pid = entry.get('id', entry.get('title', ''))
-                m = re.match(r'^(\d+)[_\- ]?(.*)$', pid)
-                if m:
-                    return (0 if pid == 'index' else 1, 0, int(m.group(1)), (m.group(2) or '').lower())
-                return (0 if pid == 'index' else 1, 1, 0, str(pid).lower())
-
-            for mode_name in ordered_modes:
-                mode_key = f"mode-{re.sub(r'[^a-zA-Z0-9_-]', '-', mode_name)}"
-                list_id = f'toc-collection-{active_mode}-{mode_key}'
-                nav_html += f'<ul class="nav-list nav-collection-list nav-modes-list" id="{list_id}" style="display:none">'
-                nav_html += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{mode_key}\');return false;">← Back to Home</a></li>'
-
-                mode_pages = [
-                    p for p in self.site_registry.get(mode_name, [])
-                    if (p.get('rel_path', '').replace('\\', '/') == mode_name)
-                ]
-                for p in sorted(mode_pages, key=mode_page_sort_key):
-                    safe_title = format_title_for_sidebar(p.get('title', ''))
-                    nav_html += f'<li class="nav-item"><a href="{prefix}{p.get("url", "")}" onclick="app.prepareModeSwitch()">{safe_title}</a></li>'
-
-                nav_html += '</ul>'
 
         return nav_html
 
@@ -1440,24 +1415,61 @@ class AtlasBuilder:
     def assemble_prev_next(self, mode, current_page_url, prefix):
         """Build previous/next links from a content-page sequence.
 
-        Nested folder index pages are navigation containers, not content pages.
-        Excluding them avoids jumps like chapter page -> chapter index in pager.
+        For nested folders, use a folder-local sequence so index and child pages
+        navigate within the submenu context.
         """
         all_pages = self.site_registry.get(mode, [])
         if not all_pages:
             return ''
 
-        def is_nested_index(entry):
-            return entry.get('id') == 'index' and (entry.get('rel_path') or '') != mode
+        current_entry = next((p for p in all_pages if p.get('url') == current_page_url), None)
+        if not current_entry:
+            return ''
 
-        pages = [p for p in all_pages if not is_nested_index(p)]
+        def nav_sort_key(entry):
+            pid = entry.get('id', entry.get('title', ''))
+            m = re.match(r'^(\d+)[_\- ]?(.*)$', str(pid))
+            if m:
+                return (0, int(m.group(1)), (m.group(2) or '').lower())
+            return (1, str(pid).lower())
 
-        idx = -1
-        for i, entry in enumerate(pages):
-            if entry.get('url') == current_page_url:
-                idx = i
-                break
+        def order_folder_pages(folder_pages):
+            ordered = []
+            index_entry = next((p for p in folder_pages if p.get('id') == 'index'), None)
+            listed_ids = []
 
+            if index_entry:
+                ordered.append(index_entry)
+                try:
+                    idx_data = self._load_json(index_entry.get('path', ''), required=False) or {}
+                    pl = idx_data.get('page_list', [])
+                    if isinstance(pl, list):
+                        listed_ids = [str(x) for x in pl]
+                except Exception:
+                    listed_ids = []
+
+            if listed_ids:
+                for pid in listed_ids:
+                    match = next((p for p in folder_pages if p.get('id') == pid and p not in ordered), None)
+                    if match:
+                        ordered.append(match)
+
+            remaining = [p for p in folder_pages if p not in ordered]
+            ordered.extend(sorted(remaining, key=nav_sort_key))
+            return ordered
+
+        current_rel = (current_entry.get('rel_path') or '').replace('\\', '/')
+        if current_rel and current_rel != mode:
+            # Nested section: keep pager within this folder, including index.
+            folder_pages = [p for p in all_pages if (p.get('rel_path') or '').replace('\\', '/') == current_rel]
+            pages = order_folder_pages(folder_pages)
+        else:
+            # Mode root: sequence excludes nested folder indices.
+            def is_nested_index(entry):
+                return entry.get('id') == 'index' and (entry.get('rel_path') or '') != mode
+            pages = [p for p in all_pages if not is_nested_index(p)]
+
+        idx = next((i for i, entry in enumerate(pages) if entry.get('url') == current_page_url), -1)
         if idx == -1:
             return ''
 

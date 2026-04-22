@@ -15,12 +15,12 @@
             "type": "dynamic",
             "id": "keywords-reference",
             "variants": {
-                "cpp":        [{ "$ref": "@keywords/cpp"        }],
-                "go":         [{ "$ref": "@keywords/go"         }],
-                "python":     [{ "$ref": "@keywords/python"     }],
-                "typescript": [{ "$ref": "@keywords/typescript" }],
-                "scala2":     [{ "$ref": "@keywords/scala2"     }],
-                "scala3":     [{ "$ref": "@keywords/scala3"     }]
+                "cpp":        [{ "type": "keyword_grid", "$ref": "@keywords/cpp"        }],
+                "go":         [{ "type": "keyword_grid", "$ref": "@keywords/go"         }],
+                "python":     [{ "type": "keyword_grid", "$ref": "@keywords/python"     }],
+                "typescript": [{ "type": "keyword_grid", "$ref": "@keywords/typescript" }],
+                "scala2":     [{ "type": "keyword_grid", "$ref": "@keywords/scala2"     }],
+                "scala3":     [{ "type": "keyword_grid", "$ref": "@keywords/scala3"     }]
             },
             "fallback": [
                 {

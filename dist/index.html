@@ -116,34 +116,39 @@
                 </div>
             </div>
             <div class="nav-center">
-                <div class="toggle-group view-toggles">
-                    <button id="view-single-btn" class="toggle">Single</button>
-                    <button id="view-double-btn" class="toggle">Double</button>
+                <div id="view-mode-control" class="view-mode-control">
+                    <button id="selection-mode-btn" class="view-mode-label">Single</button>
+                    <button id="swap-btn" class="swap-inline" aria-label="Swap languages">&#8646;</button>
                 </div>
-                <button id="swap-btn" class="icon-btn" aria-label="Swap languages">&#8646;</button>
                 <div class="atlas-search">
                     <input id="atlas-search-input" type="search" placeholder="Search atlas (/ or Ctrl+K)" autocomplete="off">
                     <div id="atlas-search-results" class="search-results" hidden></div>
                 </div>
             </div>
             <div class="nav-right">
-                <!-- Phase 3: Global Geometric Style Picker -->
-                <div class="style-picker">
-                    <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
-                    <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
-                    <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                <div class="style-picker-dropdown">
+                    <button id="style-picker-btn" class="picker-trigger" title="Geometric style" onclick="app.toggleStylePicker()"></button>
+                    <div id="style-picker-panel" class="picker-panel" hidden>
+                        <button class="style-dot" data-style="sharp" title="Sharp" onclick="app.setGlobalStyle('sharp')"></button>
+                        <button class="style-dot" data-style="round" title="Round" onclick="app.setGlobalStyle('round')"></button>
+                        <button class="style-dot" data-style="airy" title="Airy" onclick="app.setGlobalStyle('airy')"></button>
+                    </div>
                 </div>
-
-                <div class="palette-picker">
-                    <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
-                    <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
-                    <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
-                    <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
-                    <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
-                    <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
-                    <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
-                    <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
-                    <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                <div class="palette-picker-dropdown">
+                    <button id="palette-picker-btn" class="picker-trigger" title="Color palette" onclick="app.togglePalettePicker()">
+                        <span id="palette-current-dot" class="color-dot-preview"></span>
+                    </button>
+                    <div id="palette-picker-panel" class="picker-panel" hidden>
+                        <div class="color-dot" style="background: #71717a" title="Zinc" onclick="app.setPalette('zinc')"></div>
+                        <div class="color-dot" style="background: #ef4444" title="Red" onclick="app.setPalette('red')"></div>
+                        <div class="color-dot" style="background: #fb923c" title="Orange" onclick="app.setPalette('orange')"></div>
+                        <div class="color-dot" style="background: #f59e0b" title="Yellow" onclick="app.setPalette('yellow')"></div>
+                        <div class="color-dot" style="background: #10b981" title="Green" onclick="app.setPalette('green')"></div>
+                        <div class="color-dot" style="background: #38bdf8" title="Ocean" onclick="app.setPalette('ocean')"></div>
+                        <div class="color-dot" style="background: #3b82f6" title="Blue" onclick="app.setPalette('blue')"></div>
+                        <div class="color-dot" style="background: #6366f1" title="Indigo" onclick="app.setPalette('indigo')"></div>
+                        <div class="color-dot" style="background: #8b5cf6" title="Violet" onclick="app.setPalette('violet')"></div>
+                    </div>
                 </div>
                 <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()"></button>
             </div>
@@ -160,7 +165,7 @@
             <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
-                <ul class="nav-list" id="toc-main"><li class="nav-item nav-collection nav-mode-atlas"><a href="#" onclick="app.openCollection('atlas', 'mode-atlas', { noNavigate: true });return false;"><span class="nav-collection-label">Atlas</span><span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-mode-course"><a href="#" onclick="app.openCollection('atlas', 'mode-course', { noNavigate: true });return false;"><span class="nav-collection-label">Course</span><span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-mode-meta"><a href="#" onclick="app.openCollection('atlas', 'mode-meta', { noNavigate: true });return false;"><span class="nav-collection-label">Meta</span><span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-atlas" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-atlas');return false;">← Back to Home</a></li><li class="nav-item"><a href="./atlas/index.html" onclick="app.prepareModeSwitch()">Atlas Mode<span class="sidebar-wrap-indent">Polyglot Dev App</span></a></li><li class="nav-item"><a href="./atlas/design_patterns.html" onclick="app.prepareModeSwitch()">Design Patterns</a></li><li class="nav-item"><a href="./atlas/keywords.html" onclick="app.prepareModeSwitch()">Keywords</a></li><li class="nav-item"><a href="./atlas/principles.html" onclick="app.prepareModeSwitch()">principles</a></li><li class="nav-item"><a href="./atlas/workflow.html" onclick="app.prepareModeSwitch()">Workflow</a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-course" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-course');return false;">← Back to Home</a></li><li class="nav-item"><a href="./course/index.html" onclick="app.prepareModeSwitch()">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li><li class="nav-item"><a href="./course/basics.html" onclick="app.prepareModeSwitch()">Basics</a></li><li class="nav-item"><a href="./course/exercises.html" onclick="app.prepareModeSwitch()">Exercises</a></li><li class="nav-item"><a href="./course/problems.html" onclick="app.prepareModeSwitch()">Problems</a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-meta" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-meta');return false;">← Back to Home</a></li><li class="nav-item"><a href="./meta/index.html" onclick="app.prepareModeSwitch()">Welcome<span class="sidebar-wrap-indent">Polyglot Guide</span></a></li><li class="nav-item"><a href="./meta/blocks_nesting.html" onclick="app.prepareModeSwitch()">Hierarchical Structure</a></li><li class="nav-item"><a href="./meta/content_types.html" onclick="app.prepareModeSwitch()">Content Element Library</a></li><li class="nav-item"><a href="./meta/customization.html" onclick="app.prepareModeSwitch()">Styling & Customization</a></li><li class="nav-item"><a href="./meta/external_links_test.html" onclick="app.prepareModeSwitch()">External Links Test</a></li><li class="nav-item"><a href="./meta/getting_started.html" onclick="app.prepareModeSwitch()">Meta: Getting Started</a></li><li class="nav-item"><a href="./meta/insights_test.html" onclick="app.prepareModeSwitch()">Insight Blocks Test</a></li></ul>
+                <ul class="nav-list" id="toc-main"><li class="nav-item nav-mode-link nav-atlas"><a href="./atlas/index.html" onclick="app.prepareModeSwitch()">Atlas</a></li><li class="nav-item nav-mode-link nav-course"><a href="./course/index.html" onclick="app.prepareModeSwitch()">Course</a></li><li class="nav-item nav-mode-link nav-meta"><a href="./meta/index.html" onclick="app.prepareModeSwitch()">Meta</a></li></ul>
             </div>
         </aside>
         

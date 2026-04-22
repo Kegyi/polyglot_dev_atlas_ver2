@@ -154,3 +154,61 @@
 }
 .nav-list a:hover, .toc-item span:hover { background: rgba(255,255,255,0.05); color: var(--text); }
 .nav-list .active > a, .nav-list li.active > span { color: var(--accent); font-weight: bold; background: var(--accent-glow); }
+
+/* --- Picker Dropdowns (Style + Palette) --- */
+.style-picker-dropdown,
+.palette-picker-dropdown {
+    position: relative;
+}
+
+.picker-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: var(--border-w) solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    transition: 0.2s;
+    height: 34px;
+    min-width: 34px;
+}
+
+.picker-trigger:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.picker-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 10px;
+    background: var(--panel);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    z-index: 70;
+    min-width: max-content;
+}
+
+.picker-panel[hidden] {
+    display: none;
+}
+
+.color-dot-preview {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    flex-shrink: 0;
+    pointer-events: none;
+}

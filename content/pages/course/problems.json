@@ -1,7 +1,12 @@
 {
-    "title": "Problems",
-    "description": "A collection of coding problems and challenges to test your skills.",
+    "title": "Problems | Cross-Language Practice Set",
+    "description": "A curated set of practical algorithmic and data-processing problems with side-by-side solutions across the supported languages.",
     "style": "text_style",
+    "body_class": "course-view",
+    "code_defaults": {
+        "display_name": "Solution",
+        "is_collapse": true
+    },
     "content": [
         {
             "type": "title",
@@ -9,7 +14,173 @@
         },
         {
             "type": "text",
-            "text": "This section contains a collection of coding problems and challenges to test your skills."
+            "text": "This page collects compact practice problems that are large enough to show real implementation tradeoffs but still small enough to compare comfortably across languages. The goal is not just to solve them, but to observe how different ecosystems express the same underlying idea."
+        },
+        {
+            "type": "note",
+            "variant": "info",
+            "text": "Some problems are pure algorithm exercises, while others simulate practical tasks such as file processing or concurrent work splitting. Use the language selector to compare API design, standard-library strengths, and code shape."
+        },
+        {
+            "type": "blocks",
+            "blocks": [
+                {
+                    "id": "problem_clusters",
+                    "title": "Problem Clusters",
+                    "content": [
+                        {
+                            "type": "list",
+                            "ordered": false,
+                            "items": [
+                                "<b>Validation &amp; frequency analysis:</b> balanced bracket checking, word counting, and top-k frequency extraction.",
+                                "<b>Traversal &amp; graph reasoning:</b> shortest-path navigation through a grid using breadth-first search.",
+                                "<b>Systems-style tasks:</b> matrix multiplication, file aggregation, and chunked concurrent computation."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "validation_and_frequency",
+                    "title": "Validation & Frequency Analysis",
+                    "content": [
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "balanced_brackets",
+                                    "title": "Balanced Brackets",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Check whether a bracket sequence is balanced using a stack. This is a small but useful reference for stack operations, matching-pair logic, and early failure handling. Expected sample result: input_1 valid: true, input_2 valid: false."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/balanced_brackets"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "top_k_frequent",
+                                    "title": "Top K Frequent Elements",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Return the k most frequent values in an integer list. This example is useful for comparing map counting, heap usage, sorting shortcuts, and standard-library convenience methods. Expected sample result: top k frequent: 4 1."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/top_k_frequent"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "word_count",
+                                    "title": "Word Count",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Tokenize a text file and print words ranked by frequency. This problem sits halfway between text processing and real tooling, so it is a strong comparison point for file I/O, tokenization, and dictionary aggregation."
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "info",
+                                            "text": "The original example expects a bundled sample input file; on this page you are comparing the implementation approach rather than executing the file-backed workflow."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/word_count"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "traversal_and_optimization",
+                    "title": "Traversal & Optimization",
+                    "content": [
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "grid_shortest_path",
+                                    "title": "Grid Shortest Path",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Find the shortest route from the top-left corner of a grid to the bottom-right corner using breadth-first search. This makes queue handling, neighbor generation, and visited-state tracking easy to compare side by side. Expected sample result: shortest steps: 8."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/grid_shortest_path"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "matrix_mul",
+                                    "title": "Matrix Multiplication",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Multiply two square matrices with the classic triple-loop approach. It is intentionally straightforward, which makes it a good baseline for loops, indexing style, and raw numeric performance discussions."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/matrix_mul"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "real_world_programming_tasks",
+                    "title": "Real-World Programming Tasks",
+                    "content": [
+                        {
+                            "type": "blocks",
+                            "blocks": [
+                                {
+                                    "id": "file_aggregate",
+                                    "title": "File Aggregate",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Read a score file, group values by name, compute average score per person, and print the results in descending order. This problem shows a realistic pipeline: parsing, validation, aggregation, sorting, and formatting."
+                                        },
+                                        {
+                                            "type": "note",
+                                            "variant": "info",
+                                            "text": "The original snippet is designed to consume a sample input file. On this page the emphasis is the processing pipeline and code structure rather than the external file setup."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/file_aggregate"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "concurrency_demo",
+                                    "title": "Concurrency Demo",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Split the sum of numbers 1 through 1000 into chunks and process those chunks concurrently before combining the partial totals. This is a compact way to compare threads, goroutines, async tasks, futures, and message-passing style. Expected sample result: Total: 500500."
+                                        },
+                                        {
+                                            "type": "code",
+                                            "path": "problems/concurrency_demo"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
