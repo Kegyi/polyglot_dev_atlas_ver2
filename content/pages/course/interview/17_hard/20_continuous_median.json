@@ -1,6 +1,6 @@
 {
     "title": "Continuous Median",
-    "description": "Continuous Median",
+    "description": "Numbers are randomly generated and passed to a method.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Continuous Median"
+            "text": "Numbers are randomly generated and passed to a method."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/20_continuous_median/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Numbers are randomly generated and passed to a method. Write a program to find and maintain the median value as new values are generated. Implement `MedianFinder`: `addNum(num)` and `findMedian()`."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_20_continuous_median"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

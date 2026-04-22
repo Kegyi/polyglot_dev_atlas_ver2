@@ -1,6 +1,6 @@
 {
     "title": "Hanota",
-    "description": "Hanota",
+    "description": "In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Hanota"
+            "text": "In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/06_hanota/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower. The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e., each disk sits on top of an even larger one). You have the following constraints: 1. Only one disk can be moved at a time. 2. A disk is slid off the top of one tower onto another tower. 3. A disk cannot be placed on top of a smaller disk. Write a program to move the disks from the first tower to the last using stacks. **Example:** ``` Input: A = [2, 1, 0], B = [], C = [] Output: A = [], B = [], C = [2, 1, 0] ``` **Note:** `A.length <= 14`"
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_06_hanota"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "A: []"
+                        },
+                        {
+                            "type": "text",
+                            "text": "B: []"
+                        },
+                        {
+                            "type": "text",
+                            "text": "C: [2,1,0]"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "Permutation I",
-    "description": "Permutation I",
+    "description": "Write a method to compute all permutations of a string of unique characters.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Permutation I"
+            "text": "Write a method to compute all permutations of a string of unique characters."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/07_permutation_i/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write a method to compute all permutations of a string of unique characters. **Example:** ``` Input: S = \"qwe\" Output: [\"qwe\",\"qew\",\"wqe\",\"weq\",\"ewq\",\"eqw\"] ``` **Note:** All characters in the string are unique. The length of the string won't exceed 8."
                         }
                     ]
                 },
@@ -41,6 +31,36 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_07_permutation_i"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "eqw"
+                        },
+                        {
+                            "type": "text",
+                            "text": "ewq"
+                        },
+                        {
+                            "type": "text",
+                            "text": "qew"
+                        },
+                        {
+                            "type": "text",
+                            "text": "qwe"
+                        },
+                        {
+                            "type": "text",
+                            "text": "weq"
+                        },
+                        {
+                            "type": "text",
+                            "text": "wqe"
                         }
                     ]
                 }

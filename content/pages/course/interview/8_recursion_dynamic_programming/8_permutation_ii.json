@@ -1,6 +1,6 @@
 {
     "title": "Permutation Ii",
-    "description": "Permutation Ii",
+    "description": "Write a method to compute all permutations of a string whose characters are not necessarily unique.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Permutation Ii"
+            "text": "Write a method to compute all permutations of a string whose characters are not necessarily unique."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/08_permutation_ii/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write a method to compute all permutations of a string whose characters are not necessarily unique. The list of permutations should not have duplicates. **Example:** ``` Input: S = \"qqe\" Output: [\"eqq\",\"qeq\",\"qqe\"] ``` **Note:** All permutations of the string should be in lexicographic order. The length of the string won't exceed 8."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_08_permutation_ii"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "eqq"
+                        },
+                        {
+                            "type": "text",
+                            "text": "qeq"
+                        },
+                        {
+                            "type": "text",
+                            "text": "qqe"
                         }
                     ]
                 }

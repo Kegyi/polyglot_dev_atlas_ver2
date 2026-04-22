@@ -1,6 +1,6 @@
 {
     "title": "Intersection Of Two Linked Lists",
-    "description": "Intersection Of Two Linked Lists",
+    "description": "Find the first node where two singly linked lists intersect by reference.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Intersection Of Two Linked Lists"
+            "text": "Find the first node where two singly linked lists intersect by reference."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/02/07_intersection_of_two_linked_lists/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given two singly linked lists, determine if the two lists intersect. Return the intersecting node. Intersection is defined based on reference, not value. Two-pointer trick: each pointer traverses both lists; if an intersection exists, the pointers align after at most two passes. If not, both reach null."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_02_07_intersection_of_two_linked_lists"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "8"
                         }
                     ]
                 }

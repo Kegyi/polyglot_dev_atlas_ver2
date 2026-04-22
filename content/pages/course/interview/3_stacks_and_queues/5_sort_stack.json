@@ -1,6 +1,6 @@
 {
     "title": "Sort Stack",
-    "description": "Sort Stack",
+    "description": "Sort a stack so the smallest items are on top, using only one additional temporary stack.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Sort Stack"
+            "text": "Sort a stack so the smallest items are on top, using only one additional temporary stack."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/05_sort_stack/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write a program to sort a stack such that the smallest items are on the top. You may use one additional temporary stack, but you may not copy elements into any other data structure. Use an insertion-sort style process: pop elements from the input stack and find their correct sorted position in the auxiliary stack."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_05_sort_stack"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1 2 3 4"
                         }
                     ]
                 }

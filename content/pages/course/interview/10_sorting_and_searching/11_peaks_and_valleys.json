@@ -1,6 +1,6 @@
 {
     "title": "Peaks And Valleys",
-    "description": "Peaks And Valleys",
+    "description": "Reorder an array into an alternating sequence of peaks and valleys, where a peak is greater than or equal to its neighbors and a valley is less than or equal to its neighbors.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Peaks And Valleys"
+            "text": "Reorder an array into an alternating sequence of peaks and valleys, where a peak is greater than or equal to its neighbors and a valley is less than or equal to its neighbors."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/11_peaks_and_valleys/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Reorder an array into an alternating sequence of peaks and valleys, where a peak is greater than or equal to its neighbors and a valley is less than or equal to its neighbors. **Example:** ``` Input: [5, 3, 1, 2, 3] One valid output: [2, 1, 3, 3, 5] ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_11_peaks_and_valleys"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[2, 1, 3, 3, 5]"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "String To Url",
-    "description": "String To Url",
+    "description": "Replace all spaces in a string with '%20', operating only on the first trueLength characters.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "String To Url"
+            "text": "Replace all spaces in a string with '%20', operating only on the first trueLength characters."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/01/03_string_to_url/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a string with a true length, replace all spaces within the first trueLength characters with '%20'. The buffer may have extra trailing space to support in-place replacement; ignore it. Handle multiple consecutive spaces correctly."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_01_03_string_to_url"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "\"Mr John Smith\" (trueLength 13) -> Mr%20John%20Smith"
                         }
                     ]
                 }

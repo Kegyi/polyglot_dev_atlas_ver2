@@ -1,6 +1,6 @@
 {
     "title": "Eight Queens",
-    "description": "Eight Queens",
+    "description": "Write an algorithm to print all ways of arranging n queens on an n×n chess board so that none of them share the same row, column, or diagonal.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Eight Queens"
+            "text": "Write an algorithm to print all ways of arranging n queens on an n×n chess board so that none of them share the same row, column, or diagonal."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/12_eight_queens/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write an algorithm to print all ways of arranging n queens on an n×n chess board so that none of them share the same row, column, or diagonal. Write a method to return the arrangement as an array of strings. **Example:** ``` Input: n = 4 Output: [ [\".Q..\",\"...Q\",\"Q...\",\"..Q.\"], [\"..Q.\",\"Q...\",\"...Q\",\".Q..\"] ] ``` **Note:** `1 <= n <= 9`"
                         }
                     ]
                 },
@@ -41,6 +31,48 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_12_eight_queens"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2 solutions"
+                        },
+                        {
+                            "type": "text",
+                            "text": ".Q.."
+                        },
+                        {
+                            "type": "text",
+                            "text": "...Q"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Q..."
+                        },
+                        {
+                            "type": "text",
+                            "text": "..Q."
+                        },
+                        {
+                            "type": "text",
+                            "text": "..Q."
+                        },
+                        {
+                            "type": "text",
+                            "text": "Q..."
+                        },
+                        {
+                            "type": "text",
+                            "text": "...Q"
+                        },
+                        {
+                            "type": "text",
+                            "text": ".Q.."
                         }
                     ]
                 }

@@ -1,0 +1,80 @@
+{
+    "type": "keyword_grid",
+    "id": "python-keyword-grid",
+    "groups": [
+        {
+            "id": "py-values",
+            "label": "Values",
+            "description": "Built-in singleton values",
+            "keywords": ["False", "None", "True"]
+        },
+        {
+            "id": "py-declarations",
+            "label": "Declarations",
+            "description": "Defining functions, classes, and types",
+            "keywords": [
+                { "word": "class", "note": "Defines a new class" },
+                { "word": "def", "note": "Defines a function or method" },
+                { "word": "lambda", "note": "Creates an anonymous inline function" },
+                { "word": "type", "note": "Creates a type alias (Python 3.12+)" }
+            ]
+        },
+        {
+            "id": "py-control-flow",
+            "label": "Control Flow",
+            "description": "Branching, looping, and early exits",
+            "keywords": ["break", "continue", "elif", "else", "for", "if", "pass", "return", "while"]
+        },
+        {
+            "id": "py-error-handling",
+            "label": "Error Handling",
+            "description": "Exception management",
+            "keywords": [
+                { "word": "assert", "note": "Tests a condition and raises AssertionError on failure" },
+                "except", "finally", "raise", "try"
+            ]
+        },
+        {
+            "id": "py-operators",
+            "label": "Operator Keywords",
+            "description": "Keyword-form operators",
+            "keywords": [
+                "and",
+                { "word": "in", "note": "Tests membership or iterates in a for loop" },
+                { "word": "is", "note": "Tests object identity (not equality)" },
+                "not", "or"
+            ]
+        },
+        {
+            "id": "py-scope",
+            "label": "Scope",
+            "description": "Variable scope and lifecycle",
+            "keywords": [
+                { "word": "del", "note": "Deletes a name binding or collection item" },
+                { "word": "global", "note": "Declares a name refers to the module-level scope" },
+                { "word": "nonlocal", "note": "Declares a name refers to the nearest enclosing scope" }
+            ]
+        },
+        {
+            "id": "py-async",
+            "label": "Async",
+            "description": "Asynchronous programming",
+            "keywords": [
+                { "word": "async", "note": "Marks a function as a coroutine or an async for/with block" },
+                { "word": "await", "note": "Suspends a coroutine until the awaitable finishes" }
+            ]
+        },
+        {
+            "id": "py-imports-context",
+            "label": "Imports & Context",
+            "description": "Module system and context managers",
+            "keywords": [
+                { "word": "as", "note": "Binds an import, exception, or context manager to a name" },
+                { "word": "from", "note": "Imports specific names from a module" },
+                "import",
+                { "word": "with", "note": "Runs a block under a context manager's __enter__/__exit__" },
+                { "word": "yield", "note": "Produces a value from a generator and suspends it" }
+            ]
+        }
+    ]
+}

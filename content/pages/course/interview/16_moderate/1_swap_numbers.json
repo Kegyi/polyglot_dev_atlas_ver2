@@ -1,6 +1,6 @@
 {
     "title": "Swap Numbers",
-    "description": "Swap Numbers",
+    "description": "Write a function to swap two numbers and return them.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Swap Numbers"
+            "text": "Write a function to swap two numbers and return them."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/01_swap_numbers/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write a function to swap two numbers and return them. **Example:** ``` Input: [1, 2] Output: [2, 1] ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_01_swap_numbers"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[2, 1]"
                         }
                     ]
                 }

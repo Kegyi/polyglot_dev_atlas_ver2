@@ -1,6 +1,6 @@
 {
     "title": "Smallest K",
-    "description": "Smallest K",
+    "description": "Design an algorithm to find the smallest K numbers in an array.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Smallest K"
+            "text": "Design an algorithm to find the smallest K numbers in an array."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/14_smallest_k/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Design an algorithm to find the smallest K numbers in an array. Return these numbers in any order."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_14_smallest_k"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

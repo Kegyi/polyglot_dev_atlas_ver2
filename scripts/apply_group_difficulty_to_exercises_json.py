@@ -2,7 +2,7 @@ import os
 import json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercieses.json')
+PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercises.json')
 
 with open(PAGE, 'r', encoding='utf-8') as f:
     data = json.load(f)

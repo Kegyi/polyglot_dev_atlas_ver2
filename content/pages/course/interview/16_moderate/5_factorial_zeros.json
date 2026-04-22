@@ -1,6 +1,6 @@
 {
     "title": "Factorial Zeros",
-    "description": "Factorial Zeros",
+    "description": "Count the number of trailing zeros in `n!`.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Factorial Zeros"
+            "text": "Count the number of trailing zeros in `n!`."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/05_factorial_zeros/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Count the number of trailing zeros in `n!`."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_05_factorial_zeros"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "0"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
                         }
                     ]
                 }

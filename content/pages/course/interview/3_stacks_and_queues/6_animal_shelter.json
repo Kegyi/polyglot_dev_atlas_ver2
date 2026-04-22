@@ -1,6 +1,6 @@
 {
     "title": "Animal Shelter",
-    "description": "Animal Shelter",
+    "description": "Model an animal shelter queue that dequeues the oldest animal overall or the oldest of a specific type.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Animal Shelter"
+            "text": "Model an animal shelter queue that dequeues the oldest animal overall or the oldest of a specific type."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/06_animal_shelter/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "An animal shelter holds only dogs and cats and operates on a strictly first in, first out basis. People must adopt either the oldest animal at the shelter, or they can select whether they prefer a dog or cat and receive the oldest animal of that type. Keep separate queues for dogs and cats with a global arrival timestamp; dequeueAny compares queue fronts."
                         }
                     ]
                 },
@@ -41,6 +31,28 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_06_animal_shelter"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "3"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-1"
                         }
                     ]
                 }

@@ -1,0 +1,50 @@
+{
+    "type": "keyword_grid",
+    "id": "go-keyword-grid",
+    "groups": [
+        {
+            "id": "go-declarations",
+            "label": "Declarations",
+            "description": "Defining types, functions, and variables",
+            "keywords": [
+                { "word": "const", "note": "Declares a constant value" },
+                { "word": "func", "note": "Declares a function or method" },
+                { "word": "interface", "note": "Declares a set of method signatures" },
+                { "word": "map", "note": "Built-in hash map type" },
+                { "word": "struct", "note": "Declares a composite data type" },
+                { "word": "type", "note": "Declares a new named type or type alias" },
+                { "word": "var", "note": "Declares one or more variables" }
+            ]
+        },
+        {
+            "id": "go-control-flow",
+            "label": "Control Flow",
+            "description": "Branching, looping, and jumps",
+            "keywords": [
+                "break", "case", "continue", "default", "else",
+                { "word": "fallthrough", "note": "Forces execution to continue into the next switch case" },
+                "for", "goto", "if", "range", "return", "switch"
+            ]
+        },
+        {
+            "id": "go-concurrency",
+            "label": "Concurrency",
+            "description": "Goroutines, channels, and synchronisation",
+            "keywords": [
+                { "word": "chan", "note": "Declares a channel type for goroutine communication" },
+                { "word": "defer", "note": "Schedules a function call to run when the surrounding function returns" },
+                { "word": "go", "note": "Starts a new goroutine" },
+                { "word": "select", "note": "Waits on multiple channel operations" }
+            ]
+        },
+        {
+            "id": "go-packages",
+            "label": "Packages",
+            "description": "Code organisation and visibility",
+            "keywords": [
+                { "word": "import", "note": "Brings external packages into scope" },
+                { "word": "package", "note": "Declares the package this file belongs to" }
+            ]
+        }
+    ]
+}

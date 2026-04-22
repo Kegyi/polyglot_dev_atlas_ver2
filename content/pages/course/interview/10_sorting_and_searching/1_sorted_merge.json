@@ -1,6 +1,6 @@
 {
     "title": "Sorted Merge",
-    "description": "Sorted Merge",
+    "description": "You are given two sorted arrays, `A` and `B`, where `A` has a large enough buffer at the end to hold `B`.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Sorted Merge"
+            "text": "You are given two sorted arrays, `A` and `B`, where `A` has a large enough buffer at the end to hold `B`."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/01_sorted_merge/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "You are given two sorted arrays, `A` and `B`, where `A` has a large enough buffer at the end to hold `B`. Initially the number of valid elements in `A` and `B` are `m` and `n`. Merge `B` into `A` in sorted order. **Example:** ``` Input: A = [1,2,3,0,0,0], m = 3 B = [2,5,6], n = 3 Output: [1,2,2,3,5,6] ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_01_sorted_merge"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[1, 2, 2, 3, 5, 6]"
                         }
                     ]
                 }

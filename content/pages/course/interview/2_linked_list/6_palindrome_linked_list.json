@@ -1,6 +1,6 @@
 {
     "title": "Palindrome Linked List",
-    "description": "Palindrome Linked List",
+    "description": "Check whether a singly linked list is a palindrome.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Palindrome Linked List"
+            "text": "Check whether a singly linked list is a palindrome."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/02/06_palindrome_linked_list/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Implement a function to check if a linked list is a palindrome. Use slow/fast pointers to locate the midpoint, reverse the second half in-place, and compare both halves node by node."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_02_06_palindrome_linked_list"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "true"
                         }
                     ]
                 }

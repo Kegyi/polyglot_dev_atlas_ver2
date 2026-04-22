@@ -1,6 +1,6 @@
 {
     "title": "Paths With Sum",
-    "description": "Paths With Sum",
+    "description": "Count downward paths in a binary tree whose sum equals a target.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Paths With Sum"
+            "text": "Count downward paths in a binary tree whose sum equals a target."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/12_paths_with_sum/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Count downward paths in a binary tree whose sum equals a target. This maps to LCCI 4.12. Typical interview angle: Naive restart DFS at each node is $O(n^2)$ in skewed trees. Prefix-sum + hash map gives $O(n)$ average time. Carefully backtrack prefix frequencies during recursion unwind."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_12_paths_with_sum"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "3"
                         }
                     ]
                 }

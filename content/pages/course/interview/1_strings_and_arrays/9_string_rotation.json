@@ -1,6 +1,6 @@
 {
     "title": "String Rotation",
-    "description": "String Rotation",
+    "description": "Check if one string is a rotation of another using a single substring test.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "String Rotation"
+            "text": "Check if one string is a rotation of another using a single substring test."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/01/09_string_rotation/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Assume you have a method isSubstring which checks if one word is a substring of another. Given two strings s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring. If s2 is a rotation of s1, s2 will always appear as a substring in s1+s1 after confirming equal lengths."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_01_09_string_rotation"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "waterbottle vs erbottlewat -> true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "aa vs aba -> false"
                         }
                     ]
                 }

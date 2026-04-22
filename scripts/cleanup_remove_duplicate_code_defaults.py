@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-PAGE_PATH = Path(__file__).resolve().parent.parent / "content" / "pages" / "course" / "exercieses.json"
+PAGE_PATH = Path(__file__).resolve().parent.parent / "content" / "pages" / "course" / "exercises.json"
 BACKUP_PATH = PAGE_PATH.with_suffix('.json.bak')
 
 def clean_item(obj, defaults):

@@ -1,6 +1,6 @@
 {
     "title": "Langtons Ant",
-    "description": "Langtons Ant",
+    "description": "Simulate Langton's ant for `K` moves on an infinite white grid.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Langtons Ant"
+            "text": "Simulate Langton's ant for `K` moves on an infinite white grid."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/22_langtons_ant/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Simulate Langton's ant for `K` moves on an infinite white grid. - White cell: flip to black, turn right, move forward - Black cell: flip to white, turn left, move forward Return the smallest board containing all black cells and the ant, where the ant is represented by one of `R`, `D`, `L`, `U`."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_22_langtons_ant"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[_X, LX]"
                         }
                     ]
                 }

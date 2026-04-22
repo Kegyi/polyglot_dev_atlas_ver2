@@ -1,6 +1,6 @@
 {
     "title": "Find Longest Subarray",
-    "description": "Find Longest Subarray",
+    "description": "Given an array filled with letters and numbers, find the longest subarray with an equal number of letters and numbers.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Find Longest Subarray"
+            "text": "Given an array filled with letters and numbers, find the longest subarray with an equal number of letters and numbers."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/05_find_longest_subarray/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given an array filled with letters and numbers, find the longest subarray with an equal number of letters and numbers. Return the subarray. If there are multiple answers, return the one that occurs first. **Example 1:** ``` Input: [\"A\",\"1\",\"B\",\"C\",\"D\",\"2\",\"3\",\"4\",\"E\",\"5\",\"F\",\"G\",\"6\",\"7\",\"H\",\"I\",\"J\",\"K\",\"L\",\"M\"] Output: [\"A\",\"1\",\"B\",\"C\",\"D\",\"2\",\"3\",\"4\",\"E\",\"5\",\"F\",\"G\",\"6\",\"7\"] ``` **Example 2:** ``` Input: [\"A\",\"A\"] Output: [] ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_05_find_longest_subarray"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

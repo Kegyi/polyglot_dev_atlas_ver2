@@ -59,6 +59,10 @@
                         if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
                             // Extract the collection key between modeKey + '-collection-' and '-open'
                             var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
                             // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
                             var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
                             var listId = 'toc-collection-' + modeKey + '-' + safe;
@@ -107,16 +111,11 @@
         <div class="nav-top">
             <div class="nav-left">
                 <div class="logo-with-modes">
-                    <span class="logo" id="app-mode-title">POLYGLOT <span class="accent">PROJECT</span></span>
-                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="chevron">▼</span></summary><div class="mode-switcher-menu"><a href="../index.html" class="mode-switcher-link" onclick="app.prepareModeSwitch()">Project</a><a href="../atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Meta</a></div></details>
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="mode-switcher-current" id="app-mode-title">Meta</span><span class="mode-switcher-underbar" aria-hidden="true"></span></summary><div class="mode-switcher-menu"><a href="../index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Project</a><a href="../atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="../course/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Course</a><a href="../meta/index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Meta</a></div></details>
                 </div>
             </div>
             <div class="nav-center">
-                <div id="home-modes-nav" class="home-modes-nav" style="display:none;">
-                    <a href="./atlas/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Atlas</a>
-                    <a href="./course/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Course</a>
-                    <a href="./meta/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Meta</a>
-                </div>
                 <div class="toggle-group view-toggles">
                     <button id="view-single-btn" class="toggle">Single</button>
                     <button id="view-double-btn" class="toggle">Double</button>
@@ -168,7 +167,7 @@
 <li class=""><a href="../meta/external_links_test.html">External Links Test</a></li>
 <li class=""><a href="../meta/getting_started.html">Meta: Getting Started</a></li>
 <li class=""><a href="../meta/insights_test.html">Insight Blocks Test</a></li>
-<li class="nav-item nav-collection nav-showcases"><a href="#" onclick="app.openCollection('meta', 'showcases');return false;">Showcases <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-meta-showcases" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('meta', 'showcases');return false;">← Back</a></li><li class=""><a href="../meta/showcases/index.html">All Showcases</a></li><li class=""><a href="../meta/showcases/showcase_gallery.html">Gallery Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_ide.html">IDE Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_playground.html">Playground Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_reference.html">Reference Style Showcase</a></li></ul>
+<li class="nav-item nav-collection nav-showcases"><a href="#" onclick="app.openCollection('meta', 'showcases');return false;">Showcases <span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list" id="toc-collection-meta-showcases" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('meta', 'showcases');return false;">← Back to menu</a></li><li class=""><a href="../meta/showcases/index.html">All Showcases</a></li><li class=""><a href="../meta/showcases/showcase_gallery.html">Gallery Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_ide.html">IDE Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_playground.html">Playground Style Showcase</a></li><li class=""><a href="../meta/showcases/showcase_reference.html">Reference Style Showcase</a></li></ul>
             </div>
         </aside>
         
@@ -380,25 +379,5 @@ console.log(Config.instance().env);</code></pre></div></div></div><div  class="n
     <script src="../assets/js/content_renderers.js"></script>
     <script src="../assets/js/search_ui.js"></script>
     <script src="../assets/js/permalinks.js"></script>
-    <script>
-        (function() {
-            var logo = document.getElementById("app-mode-title");
-            var homeModesNav = document.getElementById("home-modes-nav");
-            if (!logo) return;
-            
-            var path = (window.location.pathname || "").toLowerCase();
-            var mode = "atlas";
-            if (path.indexOf("/course/") !== -1 || path.indexOf("/course") === 0) mode = "course";
-            else if (path.indexOf("/meta/") !== -1 || path.indexOf("/meta") === 0) mode = "meta";
-            var isHome = mode === "atlas" && /\/index\.html$/.test(path) && path.indexOf("/atlas/") === -1;
-            
-            var label = isHome ? "PROJECT" : (mode === "course" ? "COURSE" : (mode === "meta" ? "META" : "ATLAS"));
-            logo.innerHTML = "POLYGLOT <span class=\"accent\">" + label + "</span>";
-            
-            // Show home modes nav only on home page
-            if (homeModesNav) {
-                homeModesNav.style.display = isHome ? "flex" : "none";
-            }
-        })();
-    </script></body>
+</body>
 </html>

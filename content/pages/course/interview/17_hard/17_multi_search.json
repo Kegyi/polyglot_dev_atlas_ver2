@@ -1,6 +1,6 @@
 {
     "title": "Multi Search",
-    "description": "Multi Search",
+    "description": "Given a string `big` and an array of small strings `smalls`, design a method to find the location of each small string in `big`.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Multi Search"
+            "text": "Given a string `big` and an array of small strings `smalls`, design a method to find the location of each small string in `big`."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/17_multi_search/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a string `big` and an array of small strings `smalls`, design a method to find the location of each small string in `big`. Return an array of lists of locations, where `locations[i]` is all locations of `smalls[i]`."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_17_multi_search"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

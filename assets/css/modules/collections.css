@@ -1,57 +1,44 @@
 /* --- MODULE: collections.css --- */
 /* Sublist, collection toggles and showcase specific tweaks */
-.nav-list.nav-showcase-list .active > a, .nav-list.nav-showcase-list li.active > span {
-    background: transparent;
-    color: var(--accent);
-    font-weight: 700;
-    border-left: none;
-    padding-left: 12px;
-}
-
-.nav-list.nav-showcase-list li > a,
-.nav-list.nav-showcase-list li > span { display: block; padding-left: 12px; }
-
 .nav-item.nav-collection > a {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: var(--text-dim);
-    font-weight: 650;
-    padding: 7px 10px;
-    border: 1px solid transparent;
-    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent 75%);
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
 }
 
 .nav-item.nav-collection > a .collection-marker {
-    order: -1;
-    margin-right: 6px;
-    width: 14px;
-    height: 14px;
-    flex: 0 0 14px;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
     border: 1px solid rgba(128, 128, 128, 0.55);
-    box-shadow: none;
+    border-radius: 999px;
+    background: var(--bg);
 }
 
 .nav-item.nav-collection > a .collection-marker::after {
-    content: '›';
+    content: '';
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 10px;
-    height: 10px;
-    font-size: 10px;
-    line-height: 1;
-    color: var(--accent);
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
 }
 
 .nav-item.nav-collection > a:hover {
-    color: var(--text);
-    border-color: rgba(128, 128, 128, 0.45);
-    background: linear-gradient(90deg, var(--accent-glow), transparent 78%);
+    border-color: rgba(128, 128, 128, 0.7);
+    background: linear-gradient(180deg, var(--accent-glow), rgba(255,255,255,0.01));
 }
 
 .nav-item.nav-collection > a:focus-visible {
@@ -59,28 +46,60 @@
     outline-offset: 2px;
 }
 
-:root[data-global-style="sharp"] .nav-item.nav-collection > a .collection-marker { border-radius: 4px; }
-:root[data-global-style="round"] .nav-item.nav-collection > a .collection-marker { border-radius: 999px; }
-:root[data-global-style="airy"] .nav-item.nav-collection > a .collection-marker { border-radius: 6px; width: 14px; height: 12px; flex: 0 0 14px; }
+:root[data-global-style="sharp"] .nav-item.nav-collection > a,
+:root[data-global-style="sharp"] .nav-list.nav-collection-list { border-radius: 4px; }
 
-:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06); }
+:root[data-global-style="round"] .nav-item.nav-collection > a,
+:root[data-global-style="round"] .nav-list.nav-collection-list { border-radius: 12px; }
+
+:root[data-global-style="airy"] .nav-item.nav-collection > a,
+:root[data-global-style="airy"] .nav-list.nav-collection-list { border-radius: 10px; }
+
+:root[data-theme="light"] .nav-item.nav-collection > a .collection-marker {
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06);
+}
 
 .nav-list.nav-collection-list {
-    padding-top: 2px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
 }
 
 .nav-list.nav-collection-list > li {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .nav-list.nav-collection-list .nav-item.nav-back > a {
-    font-weight: 600;
-    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    background: var(--bg);
 }
 
 .nav-list.nav-collection-list .nav-item.nav-back > a:hover {
     color: var(--text);
-    background: rgba(255,255,255,0.05);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.nav-list.nav-collection-list .nav-item > a {
+    text-indent: 0;
+    padding: 7px 12px;
+}
+
+.nav-list.nav-collection-list .active > a {
+    font-weight: 800;
+}
+
+.nav-list.nav-modes-list .nav-item:not(.nav-back) > a {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.79rem;
+    font-weight: 700;
 }
 
 .nav-sublist {

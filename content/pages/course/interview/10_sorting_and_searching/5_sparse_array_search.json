@@ -1,6 +1,6 @@
 {
     "title": "Sparse Array Search",
-    "description": "Sparse Array Search",
+    "description": "Given a sorted array of strings interspersed with empty strings, find the index of `s`.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Sparse Array Search"
+            "text": "Given a sorted array of strings interspersed with empty strings, find the index of `s`."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/05_sparse_array_search/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a sorted array of strings interspersed with empty strings, find the index of `s`. **Example 1:** ``` Input: words = [\"at\", \"\", \"\", \"\", \"ball\", \"\", \"\", \"car\", \"\", \"\", \"dad\", \"\", \"\"], s = \"ta\" Output: -1 ``` **Example 2:** ``` Input: words = [\"at\", \"\", \"\", \"\", \"ball\", \"\", \"\", \"car\", \"\", \"\", \"dad\", \"\", \"\"], s = \"ball\" Output: 4 ```"
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_05_sparse_array_search"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "-1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "4"
                         }
                     ]
                 }

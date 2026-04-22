@@ -1,6 +1,6 @@
 {
     "title": "Rank From Stream",
-    "description": "Rank From Stream",
+    "description": "Read integers from a stream and support two operations: - `track(x)`: record a new number - `getRankOfNumber(x)`: return how many tracked numbers are less than or equal to `x` **Example:** ``` Input: [\"StreamRank\", \"getRankOfNumber\", \"track\", \"getRankOfNumber\"] [[], [1], [0], [0]] Output: [null, 0, null, 1] ``` **Notes:** - `x <= 50000` - At most `2000` calls are made in total.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Rank From Stream"
+            "text": "Read integers from a stream and support two operations: - `track(x)`: record a new number - `getRankOfNumber(x)`: return how many tracked numbers are less than or equal to `x` **Example:** ``` Input: [\"StreamRank\", \"getRankOfNumber\", \"track\", \"getRankOfNumber\"] [[], [1], [0], [0]] Output: [null, 0, null, 1] ``` **Notes:** - `x <= 50000` - At most `2000` calls are made in total."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/10_rank_from_stream/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Read integers from a stream and support two operations: - `track(x)`: record a new number - `getRankOfNumber(x)`: return how many tracked numbers are less than or equal to `x` **Example:** ``` Input: [\"StreamRank\", \"getRankOfNumber\", \"track\", \"getRankOfNumber\"] [[], [1], [0], [0]] Output: [null, 0, null, 1] ``` **Notes:** - `x <= 50000` - At most `2000` calls are made in total."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_10_rank_from_stream"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "0"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
                         }
                     ]
                 }

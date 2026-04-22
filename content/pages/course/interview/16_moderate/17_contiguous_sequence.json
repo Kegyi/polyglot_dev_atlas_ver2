@@ -1,6 +1,6 @@
 {
     "title": "Contiguous Sequence",
-    "description": "Contiguous Sequence",
+    "description": "Return the largest sum of a contiguous subarray.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Contiguous Sequence"
+            "text": "Return the largest sum of a contiguous subarray."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/17_contiguous_sequence/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Return the largest sum of a contiguous subarray."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_17_contiguous_sequence"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "6"
                         }
                     ]
                 }

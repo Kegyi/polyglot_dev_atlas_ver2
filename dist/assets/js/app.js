@@ -174,138 +174,6 @@ const app = {
         return 'atlas';
     },
 
-    isProjectMode: function() {
-        const p = (window.location.pathname || '').toLowerCase();
-        return document.body.classList.contains('home-view') ||
-            (this.getCurrentMode() === 'atlas' && /\/index\.html$/.test(p) && p.indexOf('/atlas/') === -1);
-    },
-
-    getDisplayedMode: function() {
-        return this.isProjectMode() ? 'project' : this.getCurrentMode();
-    },
-
-    getModeLabel: function(mode) {
-        if (mode === 'project') return 'PROJECT';
-        if (mode === 'course') return 'COURSE';
-        if (mode === 'meta') return 'META';
-        return 'ATLAS';
-    },
-
-    updateModeTitle: function(mode) {
-        const logo = document.getElementById('app-mode-title');
-        if (!logo) return;
-        const label = this.getModeLabel(mode || this.getDisplayedMode());
-        logo.innerHTML = `POLYGLOT <span class="accent">${label}</span>`;
-    },
-
-    getModeRootPrefix: function() {
-        const script = document.querySelector('script[src*="assets/js/app.js"]');
-        if (!script) return './';
-        const src = script.getAttribute('src') || './assets/js/app.js';
-        const marker = 'assets/js/app.js';
-        const idx = src.indexOf(marker);
-        if (idx === -1) return './';
-        return src.substring(0, idx) || './';
-    },
-
-    getModeLinkDefs: function() {
-        const modeSwitcherLinks = Array.from(document.querySelectorAll('.mode-switcher .mode-switcher-link'));
-        if (modeSwitcherLinks.length > 0) {
-            return modeSwitcherLinks
-                .map(link => {
-                    const label = (link.textContent || '').trim();
-                    if (!label) return null;
-                    return { label, href: link.getAttribute('href') || '#' };
-                })
-                .filter(Boolean);
-        }
-
-        const prefix = this.getModeRootPrefix();
-        return [
-            { label: 'Project', href: `${prefix}index.html` },
-            { label: 'Atlas', href: `${prefix}atlas/index.html` },
-            { label: 'Course', href: `${prefix}course/index.html` },
-            { label: 'Meta', href: `${prefix}meta/index.html` }
-        ];
-    },
-
-    bindModeTitleSync: function(root) {
-        if (!root) return;
-        root.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                const label = (link.textContent || '').trim().toLowerCase();
-                this.updateModeTitle(label || this.getDisplayedMode());
-            });
-        });
-    },
-
-    ensureModeSwitcher: function() {
-        const modeSwitcher = document.querySelector('.mode-switcher');
-        if (!modeSwitcher) return;
-
-        const summary = modeSwitcher.querySelector('.mode-switcher-trigger') || modeSwitcher.querySelector('summary');
-        if (summary && !summary.innerHTML.trim()) {
-            summary.innerHTML = '<span class="chevron">▼</span>';
-        }
-
-        let menu = modeSwitcher.querySelector('.mode-switcher-menu');
-        if (!menu) {
-            menu = document.createElement('div');
-            menu.className = 'mode-switcher-menu';
-            modeSwitcher.appendChild(menu);
-        }
-
-        if (menu.querySelectorAll('.mode-switcher-link').length === 0) {
-            const current = this.getDisplayedMode();
-            const defs = this.getModeLinkDefs();
-            menu.innerHTML = defs.map(def => {
-                const lower = def.label.toLowerCase();
-                const active = lower === current ? ' active' : '';
-                return `<a href="${def.href}" class="mode-switcher-link${active}" onclick="app.prepareModeSwitch()">${def.label}</a>`;
-            }).join('');
-        }
-
-        modeSwitcher.style.display = '';
-        this.bindModeTitleSync(menu);
-        this.positionModeMenuUnderModeLabel();
-    },
-
-    positionModeMenuUnderModeLabel: function() {
-        const logo = document.getElementById('app-mode-title');
-        const accent = document.querySelector('#app-mode-title .accent');
-        const modeSwitcher = document.querySelector('.mode-switcher');
-        if (!logo || !accent || !modeSwitcher) return;
-
-        const accentRect = accent.getBoundingClientRect();
-        const switcherRect = modeSwitcher.getBoundingClientRect();
-        const left = Math.round(accentRect.left - switcherRect.left);
-        modeSwitcher.style.setProperty('--mode-menu-left', `${left}px`);
-    },
-
-    setupProjectSidebarModes: function() {
-        if (!this.isProjectMode()) return;
-        const tocMain = document.getElementById('toc-main');
-        if (!tocMain) return;
-        if (tocMain.querySelector('.nav-mode-group')) return;
-
-        const defs = this.getModeLinkDefs();
-        const modeItems = defs.map(def => {
-            const lower = def.label.toLowerCase();
-            const active = lower === 'project' ? ' class="active"' : '';
-            return `<li${active}><a href="${def.href}" onclick="app.prepareModeSwitch()">${def.label}</a></li>`;
-        }).join('');
-
-        const html = `<li class="nav-mode-group"><span>Modes</span></li>${modeItems}`;
-        tocMain.insertAdjacentHTML('afterbegin', html);
-    },
-
-    hideTopModeLinks: function() {
-        const homeModesNav = document.getElementById('home-modes-nav');
-        if (homeModesNav) {
-            homeModesNav.style.display = 'none';
-        }
-    },
-
     updateViewModeUI: function(mode) {
         const btn = document.getElementById('view-mode-btn');
         if (btn) btn.innerText = mode === 'all' ? 'All' : 'Focus';
@@ -472,13 +340,6 @@ const app = {
             if (!shows || !main) return;
             const prevKey = `${mode}-collection-${key}-prev-path`;
             const prev = localStorage.getItem(prevKey);
-            if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
-                localStorage.removeItem(prevKey);
-                localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
-                localStorage.removeItem(`${mode}-collection-${key}-open`);
-                window.location.href = prev;
-                return;
-            }
 
             // If this collection is nested, show its parent collection instead
             // of returning immediately to the main list.
@@ -490,17 +351,6 @@ const app = {
 
             // Clear the explicit open flag for this collection
             try { localStorage.removeItem(`${mode}-collection-${key}-open`); } catch (e) {}
-
-            // If opened via navigation and we have a prev path, return to it.
-            if (openedViaNav) {
-                try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
-                if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
-                    localStorage.removeItem(prevKey);
-                    localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
-                    window.location.href = prev;
-                    return;
-                }
-            }
 
             // Not navigating back: close this collection and show nearest parent
             shows.style.display = 'none';
@@ -519,8 +369,21 @@ const app = {
                 const candidate = segs.join('-');
                 const parentList = document.getElementById(`toc-collection-${mode}-${candidate}`);
                 if (parentList) {
+                    try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
                     try { localStorage.setItem(`${mode}-collection-${candidate}-open`, '1'); } catch (e) {}
                     parentList.style.display = '';
+                    return;
+                }
+            }
+
+            // No parent submenu to restore; if this collection was opened by
+            // navigating into it from another page, return to that page.
+            if (openedViaNav) {
+                try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
+                if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
+                    localStorage.removeItem(prevKey);
+                    localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
+                    window.location.href = prev;
                     return;
                 }
             }
@@ -822,16 +685,14 @@ const app = {
             }
         });
         
-        // Wire up logo click to toggle mode switcher details.
+        // Wire up logo click to toggle mode switcher details on non-Home pages
         const logo = document.querySelector('.logo-with-modes .logo');
         const modeSwitcher = document.querySelector('.mode-switcher');
-        if (logo && modeSwitcher) {
+        if (logo && modeSwitcher && modeSwitcher.style.display !== 'none') {
             logo.addEventListener('click', (e) => {
                 e.preventDefault();
                 modeSwitcher.open = !modeSwitcher.open;
             });
-
-            window.addEventListener('resize', () => this.positionModeMenuUnderModeLabel());
         }
     },
 
@@ -860,10 +721,6 @@ const app = {
 
         this.setupScrollSpy();
         this.saveCurrentPageState();
-        this.updateModeTitle(this.getDisplayedMode());
-        this.ensureModeSwitcher();
-        this.setupProjectSidebarModes();
-        this.hideTopModeLinks();
         this.setupPersistentModeSwitcher();
 
         // If the user had the Showcases nav open, restore it on page load so

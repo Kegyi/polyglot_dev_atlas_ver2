@@ -1,6 +1,6 @@
 {
     "title": "Binary Number To String",
-    "description": "Binary Number To String",
+    "description": "Convert a decimal fraction between 0 and 1 to its binary string.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Binary Number To String"
+            "text": "Convert a decimal fraction between 0 and 1 to its binary string."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/05/02_binary_number_to_string/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Convert a decimal fraction between 0 and 1 to its binary string. Return \"ERROR\" if it cannot be represented in 32 bits. This maps to LCCI 5.2. Typical interview angle: Repeatedly double and take the integer part as the next bit. Terminate when the fraction reaches zero. Bound the loop to detect non-terminating representations."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_05_02_binary_number_to_string"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "0.101"
+                        },
+                        {
+                            "type": "text",
+                            "text": "ERROR"
                         }
                     ]
                 }

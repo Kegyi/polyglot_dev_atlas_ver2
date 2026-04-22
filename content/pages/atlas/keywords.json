@@ -1,0 +1,34 @@
+{
+    "title": "Keywords",
+    "description": "Language-aware keyword reference that follows the active selection.",
+    "style": "text_style",
+    "content": [
+        {
+            "type": "title",
+            "text": "Keywords"
+        },
+        {
+            "type": "text",
+            "text": "This page is language-aware. Pick one language to inspect its keyword reference, or switch to double view to compare two language-specific keyword sets side by side. Hover over a dashed keyword chip to read a short description."
+        },
+        {
+            "type": "dynamic",
+            "id": "keywords-reference",
+            "variants": {
+                "cpp":        [{ "$ref": "@keywords/cpp"        }],
+                "go":         [{ "$ref": "@keywords/go"         }],
+                "python":     [{ "$ref": "@keywords/python"     }],
+                "typescript": [{ "$ref": "@keywords/typescript" }],
+                "scala2":     [{ "$ref": "@keywords/scala2"     }],
+                "scala3":     [{ "$ref": "@keywords/scala3"     }]
+            },
+            "fallback": [
+                {
+                    "type": "note",
+                    "variant": "info",
+                    "text": "A keyword reference has not been authored yet for the selected language."
+                }
+            ]
+        }
+    ]
+}

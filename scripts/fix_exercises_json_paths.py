@@ -2,7 +2,7 @@ import os
 import json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercieses.json')
+PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercises.json')
 CPP_EX = os.path.join(ROOT, 'content', 'snippets', 'cpp', 'exercises')
 
 if not os.path.exists(PAGE):

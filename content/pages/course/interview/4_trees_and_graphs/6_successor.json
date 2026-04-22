@@ -1,6 +1,6 @@
 {
     "title": "Successor",
-    "description": "Successor",
+    "description": "Find the in-order successor of a node in a BST.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Successor"
+            "text": "Find the in-order successor of a node in a BST."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/06_successor/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Find the in-order successor of a node in a BST. This maps to LCCI 4.6. Typical interview angle: If searching by value from root, track latest greater ancestor. If node has right child, successor is leftmost in right subtree. Be explicit when successor does not exist."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_06_successor"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "4"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-1"
                         }
                     ]
                 }

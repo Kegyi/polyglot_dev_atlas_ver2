@@ -1,6 +1,6 @@
 {
     "title": "Check Balance",
-    "description": "Check Balance",
+    "description": "Check whether a binary tree is height-balanced.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Check Balance"
+            "text": "Check whether a binary tree is height-balanced."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/04_check_balance/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Check whether a binary tree is height-balanced. This maps to LCCI 4.4. Typical interview angle: Post-order recursion returns subtree height. Use sentinel (like -1) for early failure. Avoid recomputing heights repeatedly."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_04_check_balance"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

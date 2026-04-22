@@ -1,6 +1,6 @@
 {
     "title": "Minimum Height Tree",
-    "description": "Minimum Height Tree",
+    "description": "Given a sorted array, build a binary search tree with minimal height.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Minimum Height Tree"
+            "text": "Given a sorted array, build a binary search tree with minimal height."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/02_minimum_height_tree/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a sorted array, build a binary search tree with minimal height. This maps to LCCI 4.2. Typical interview angle: Pick middle element as root recursively. Build left and right subtrees from halves. Validate with inorder traversal."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_02_minimum_height_tree"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1 2 3 4 5 6 7"
                         }
                     ]
                 }

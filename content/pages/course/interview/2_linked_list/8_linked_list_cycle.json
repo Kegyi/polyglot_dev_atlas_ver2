@@ -1,6 +1,6 @@
 {
     "title": "Linked List Cycle",
-    "description": "Linked List Cycle",
+    "description": "Detect whether a linked list contains a cycle using Floyd's tortoise-and-hare algorithm.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Linked List Cycle"
+            "text": "Detect whether a linked list contains a cycle using Floyd's tortoise-and-hare algorithm."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/02/08_linked_list_cycle/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Determine whether a linked list contains a cycle. Use Floyd's tortoise-and-hare algorithm: advance one pointer by 1 step and another by 2 steps; if they ever meet, a cycle exists. The algorithm uses O(1) extra space and works without modifying node values."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_02_08_linked_list_cycle"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

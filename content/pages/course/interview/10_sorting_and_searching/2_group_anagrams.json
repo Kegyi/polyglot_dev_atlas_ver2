@@ -1,6 +1,6 @@
 {
     "title": "Group Anagrams",
-    "description": "Group Anagrams",
+    "description": "Sort an array of strings so that all anagrams are grouped together.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Group Anagrams"
+            "text": "Sort an array of strings so that all anagrams are grouped together."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/02_group_anagrams/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Sort an array of strings so that all anagrams are grouped together. **Example:** ``` Input: [\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"] Output: [ [\"ate\", \"eat\", \"tea\"], [\"bat\"], [\"nat\", \"tan\"] ] ``` **Notes:** - All inputs are lowercase. - Output order does not matter."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_02_group_anagrams"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[[ate, eat, tea], [bat], [nat, tan]]"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "Insert",
-    "description": "Insert",
+    "description": "Insert bits of integer M into N, replacing bits i through j.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Insert"
+            "text": "Insert bits of integer M into N, replacing bits i through j."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/05/01_insert/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Insert bits of integer M into N, replacing bits i through j. This maps to LCCI 5.1. Typical interview angle: Clear target bits in N with a masked complement. Shift M into position and OR with cleared N. Handle edge cases when j - i + 1 equals the word width."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_05_01_insert"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1100"
+                        },
+                        {
+                            "type": "text",
+                            "text": "19"
                         }
                     ]
                 }

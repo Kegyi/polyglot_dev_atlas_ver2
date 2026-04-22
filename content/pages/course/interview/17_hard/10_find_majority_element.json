@@ -1,6 +1,6 @@
 {
     "title": "Find Majority Element",
-    "description": "Find Majority Element",
+    "description": "Given an integer array, return the majority element.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Find Majority Element"
+            "text": "Given an integer array, return the majority element."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/10_find_majority_element/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given an integer array, return the majority element. A majority element is an element that appears more than `n / 2` times. If no such element exists, return `-1`. **Example 1:** ``` Input: [1,2,5,9,5,9,5,5,5] Output: 5 ``` **Example 2:** ``` Input: [3,2] Output: -1 ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_10_find_majority_element"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

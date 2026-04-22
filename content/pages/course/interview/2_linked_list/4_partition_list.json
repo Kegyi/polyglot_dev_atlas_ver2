@@ -1,6 +1,6 @@
 {
     "title": "Partition List",
-    "description": "Partition List",
+    "description": "Partition a linked list so nodes less than x appear before those greater than or equal to x.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Partition List"
+            "text": "Partition a linked list so nodes less than x appear before those greater than or equal to x."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/02/04_partition_list/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes greater than or equal to x. If x is contained within the list, the values of x only need to appear after elements less than x. Build two temporary sub-lists (less / greater-or-equal), preserve relative order, then reconnect and terminate the tail safely."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_02_04_partition_list"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "3->5->8->5->10->2->1 with x=5 -> 3 2 1 5 8 5 10"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "Master Mind",
-    "description": "Master Mind",
+    "description": "Given `solution` and `guess`, return `[hits, pseudoHits]`: - `hits`: correct color in correct position - `pseudoHits`: correct color in wrong position",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Master Mind"
+            "text": "Given `solution` and `guess`, return `[hits, pseudoHits]`: - `hits`: correct color in correct position - `pseudoHits`: correct color in wrong position"
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/15_master_mind/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given `solution` and `guess`, return `[hits, pseudoHits]`: - `hits`: correct color in correct position - `pseudoHits`: correct color in wrong position"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_15_master_mind"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[1, 1]"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "Binode",
-    "description": "Binode",
+    "description": "Given a binary search tree, convert it to a sorted linked list in-place.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Binode"
+            "text": "Given a binary search tree, convert it to a sorted linked list in-place."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/12_binode/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a binary search tree, convert it to a sorted linked list in-place. Use the right pointer as the next pointer and set all left pointers to `null`. **Example:** ``` Input:  BST nodes [4,2,5,1,3,null,6,0] Output: 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_12_binode"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

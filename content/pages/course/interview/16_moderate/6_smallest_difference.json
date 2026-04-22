@@ -1,6 +1,6 @@
 {
     "title": "Smallest Difference",
-    "description": "Smallest Difference",
+    "description": "Given two integer arrays, return the smallest absolute difference between any pair `(a, b)` where `a` comes from the first array and `b` from the second.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Smallest Difference"
+            "text": "Given two integer arrays, return the smallest absolute difference between any pair `(a, b)` where `a` comes from the first array and `b` from the second."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/06_smallest_difference/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given two integer arrays, return the smallest absolute difference between any pair `(a, b)` where `a` comes from the first array and `b` from the second."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_06_smallest_difference"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "3"
                         }
                     ]
                 }

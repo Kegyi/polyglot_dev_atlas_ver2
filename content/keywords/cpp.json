@@ -1,0 +1,123 @@
+{
+    "type": "keyword_grid",
+    "id": "cpp-keyword-grid",
+    "groups": [
+        {
+            "id": "cpp-primitive-types",
+            "label": "Primitive Types",
+            "description": "Built-in fundamental types",
+            "keywords": ["bool", "char", "char8_t", "char16_t", "char32_t", "double", "float", "int", "long", "short", "signed", "unsigned", "void", "wchar_t"]
+        },
+        {
+            "id": "cpp-literals",
+            "label": "Literals & Constants",
+            "description": "Built-in value keywords",
+            "keywords": ["false", "nullptr", "true"]
+        },
+        {
+            "id": "cpp-control-flow",
+            "label": "Control Flow",
+            "description": "Branching, looping, and jumps",
+            "keywords": ["break", "case", "continue", "default", "do", "else", "for", "goto", "if", "return", "switch", "while"]
+        },
+        {
+            "id": "cpp-storage-linkage",
+            "label": "Storage & Linkage",
+            "description": "Lifetime, scope, and linkage specifiers",
+            "keywords": ["auto", "const", "extern", "inline", "mutable", "register", "static", "thread_local", "typedef", "volatile"]
+        },
+        {
+            "id": "cpp-compile-time",
+            "label": "Compile-time",
+            "description": "Constant expressions and compile-time assertions",
+            "keywords": [
+                { "word": "consteval", "note": "Immediate function — must be evaluated at compile time (C++20)" },
+                { "word": "constexpr", "note": "May be evaluated at compile time" },
+                { "word": "constinit", "note": "Guarantees constant initialization of static/thread-local variables (C++20)" },
+                { "word": "static_assert", "note": "Compile-time assertion" }
+            ]
+        },
+        {
+            "id": "cpp-oop",
+            "label": "OOP & Classes",
+            "description": "Object-oriented programming constructs",
+            "keywords": ["class", "explicit", "friend", "namespace", "operator", "private", "protected", "public", "struct", "this", "union", "using", "virtual"]
+        },
+        {
+            "id": "cpp-memory",
+            "label": "Memory",
+            "description": "Dynamic allocation and object introspection",
+            "keywords": [
+                { "word": "alignas", "note": "Sets the alignment requirement of a type or variable" },
+                { "word": "alignof", "note": "Queries alignment requirement of a type" },
+                "delete", "new",
+                { "word": "sizeof", "note": "Queries the size of a type or object in bytes" }
+            ]
+        },
+        {
+            "id": "cpp-type-system",
+            "label": "Type System",
+            "description": "Type declarations, inspection, and deduction",
+            "keywords": [
+                { "word": "decltype", "note": "Deduces the type of an expression without evaluating it" },
+                "enum", "export", "template", "typename",
+                { "word": "typeid", "note": "Returns a type_info reference for run-time type identification" }
+            ]
+        },
+        {
+            "id": "cpp-concepts",
+            "label": "Concepts & Modules",
+            "description": "C++20 template constraints and module system",
+            "keywords": [
+                { "word": "concept", "note": "Defines a named constraint on template parameters (C++20)" },
+                { "word": "export", "note": "Marks declarations visible outside a module unit (C++20)" },
+                { "word": "requires", "note": "Introduces a requires-clause or requires-expression (C++20)" }
+            ]
+        },
+        {
+            "id": "cpp-coroutines",
+            "label": "Coroutines",
+            "description": "C++20 coroutine keywords",
+            "keywords": [
+                { "word": "co_await", "note": "Suspends a coroutine until the awaitable completes" },
+                { "word": "co_return", "note": "Finalizes a coroutine's return value and suspends it permanently" },
+                { "word": "co_yield", "note": "Suspends a coroutine and produces an intermediate value" }
+            ]
+        },
+        {
+            "id": "cpp-exceptions",
+            "label": "Exception Handling",
+            "description": "Error propagation via exceptions",
+            "keywords": [
+                "catch", 
+                { "word": "noexcept", "note": "Specifies that a function does not throw or queries whether it can" },
+                "throw", "try"
+            ]
+        },
+        {
+            "id": "cpp-casts",
+            "label": "Type Casts",
+            "description": "Named casts for explicit type conversions",
+            "keywords": [
+                { "word": "const_cast", "note": "Removes const/volatile qualifiers" },
+                { "word": "dynamic_cast", "note": "Safe downcast with run-time type check" },
+                { "word": "reinterpret_cast", "note": "Bit-level reinterpretation of a pointer or integer" },
+                { "word": "static_cast", "note": "Compile-time checked conversion" }
+            ]
+        },
+        {
+            "id": "cpp-alternative-tokens",
+            "label": "Alternative Tokens",
+            "description": "ISO-standard keyword synonyms for logical/bitwise operators",
+            "keywords": ["and", "and_eq", "bitand", "bitor", "compl", "not", "not_eq", "or", "or_eq", "xor", "xor_eq"]
+        },
+        {
+            "id": "cpp-low-level",
+            "label": "Low Level",
+            "description": "Direct hardware and assembly access",
+            "keywords": [
+                { "word": "asm", "note": "Embeds inline assembly code" }
+            ]
+        }
+    ]
+}

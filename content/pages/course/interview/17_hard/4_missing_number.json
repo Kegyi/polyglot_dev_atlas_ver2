@@ -1,6 +1,6 @@
 {
     "title": "Missing Number",
-    "description": "Missing Number",
+    "description": "An array contains all the integers from 0 to n, except for one number which is missing.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Missing Number"
+            "text": "An array contains all the integers from 0 to n, except for one number which is missing."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/04_missing_number/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "An array contains all the integers from 0 to n, except for one number which is missing. Write code to find the missing integer. Can you do it in O(n) time? **Example 1:** ``` Input: [3,0,1] Output: 2 ``` **Example 2:** ``` Input: [9,6,4,2,3,5,7,0,1] Output: 8 ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_04_missing_number"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

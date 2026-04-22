@@ -1,6 +1,6 @@
 {
     "title": "Number Of 1",
-    "description": "Number Of 1",
+    "description": "Count the number of bits you must flip to convert integer A to integer B.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Number Of 1"
+            "text": "Count the number of bits you must flip to convert integer A to integer B."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/05/06_number_of_1/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Count the number of bits you must flip to convert integer A to integer B. This maps to LCCI 5.6. Typical interview angle: XOR A and B to isolate differing bits. Count 1s in the XOR result (popcount). Use `x & (x-1)` trick or language built-in for efficiency."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_05_06_number_of_1"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
                         }
                     ]
                 }

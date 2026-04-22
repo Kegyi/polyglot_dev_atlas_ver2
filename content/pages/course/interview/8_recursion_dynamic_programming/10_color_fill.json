@@ -1,6 +1,6 @@
 {
     "title": "Color Fill",
-    "description": "Color Fill",
+    "description": "Implement the \"paint fill\" function that one might see on many image editing programs.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Color Fill"
+            "text": "Implement the \"paint fill\" function that one might see on many image editing programs."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/10_color_fill/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Implement the \"paint fill\" function that one might see on many image editing programs. That is, given a screen (represented by a two-dimensional array of colors), a point, and a new color, fill in the surrounding area until the color changes from the original color. **Example:** ``` Input: image = [[1,1,1],[1,1,0],[1,0,1]] sr = 1, sc = 1, newColor = 2 Output: [[2,2,2],[2,2,0],[2,0,1]] ``` **Note:** The length of `image` and `image[0]` will be in the range `[1, 50]`."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_10_color_fill"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[2,2,2]"
+                        },
+                        {
+                            "type": "text",
+                            "text": "[2,2,0]"
+                        },
+                        {
+                            "type": "text",
+                            "text": "[2,0,1]"
                         }
                     ]
                 }

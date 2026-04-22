@@ -1,6 +1,6 @@
 {
     "title": "Rotate Matrix",
-    "description": "Rotate Matrix",
+    "description": "Rotate an N x N matrix 90 degrees clockwise in place.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Rotate Matrix"
+            "text": "Rotate an N x N matrix 90 degrees clockwise in place."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/01/07_rotate_matrix/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given an image represented by an N x N matrix, write a method to rotate the image by 90 degrees clockwise. You must rotate the image in place. Work layer by layer from the outer ring inward, performing four-way swaps per step with O(1) extra memory."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_01_07_rotate_matrix"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "7 4 1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "8 5 2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "9 6 3"
                         }
                     ]
                 }

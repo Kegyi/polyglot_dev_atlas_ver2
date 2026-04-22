@@ -190,7 +190,8 @@ function updateUI() {
     document.getElementById('view-single-btn')?.classList.toggle('active', AtlasState.viewMode === 'single');
     document.getElementById('view-double-btn')?.classList.toggle('active', AtlasState.viewMode === 'double');
 
-    // 4. Refresh Content Blocks Display & Highlights
+    // 4. Refresh dynamic language content, then content blocks display & highlights
+    refreshDynamicLanguageContent();
     refreshContentBlocks();
 
     // Notify optional feature modules (e.g., Phase 2 render helpers).
@@ -256,4 +257,83 @@ function setupCollapsibleCodeToggles() {
             if (innerBtn) innerBtn.setAttribute('aria-expanded', String(!isCollapsed));
         }
     });
+}
+
+function refreshDynamicLanguageContent() {
+    const blocks = document.querySelectorAll('.dynamic-language-block');
+
+    blocks.forEach(block => {
+        renderDynamicLanguageSlot(block, 'primary', AtlasState.primaryLang);
+
+        const secondarySlot = block.querySelector('.dynamic-language-slot[data-slot="secondary"]');
+        const shouldShowSecondary = AtlasState.viewMode === 'double' && Boolean(AtlasState.secondaryLang);
+
+        if (secondarySlot) {
+            secondarySlot.classList.toggle('is-hidden', !shouldShowSecondary);
+        }
+
+        if (shouldShowSecondary) {
+            renderDynamicLanguageSlot(block, 'secondary', AtlasState.secondaryLang);
+        }
+    });
+}
+
+function renderDynamicLanguageSlot(block, slotName, langId) {
+    const slot = block.querySelector(`.dynamic-language-slot[data-slot="${slotName}"]`);
+    if (!slot) return;
+
+    const slotNameEl = slot.querySelector('.dynamic-language-slot-name');
+    const slotBody = slot.querySelector('.dynamic-language-slot-body');
+    if (!slotBody) return;
+
+    const variantTemplate = findDynamicVariantTemplate(block, langId);
+    const fallbackTemplate = block.querySelector('template[data-dynamic-fallback="true"]');
+    const langLabel = getLanguageLabel(langId);
+    const langColor = getLanguageColor(langId);
+
+    if (slotNameEl) {
+        slotNameEl.textContent = langLabel;
+    }
+
+    if (langColor) {
+        slot.style.setProperty('--active-lang-color', langColor);
+    } else {
+        slot.style.removeProperty('--active-lang-color');
+    }
+
+    if (variantTemplate) {
+        slotBody.innerHTML = variantTemplate.innerHTML;
+        return;
+    }
+
+    if (fallbackTemplate) {
+        slotBody.innerHTML = fallbackTemplate.innerHTML;
+        return;
+    }
+
+    slotBody.innerHTML = `<div class="dynamic-language-empty"><p>No authored content is available for ${langLabel} yet.</p></div>`;
+}
+
+function findDynamicVariantTemplate(block, langId) {
+    const templates = block.querySelectorAll('template[data-dynamic-variant]');
+    for (const template of templates) {
+        if (template.dataset.dynamicVariant === langId) {
+            return template;
+        }
+    }
+    return null;
+}
+
+function getLanguageButton(langId) {
+    return document.querySelector(`.lang-btn[data-lang-id="${langId}"]`);
+}
+
+function getLanguageLabel(langId) {
+    const button = getLanguageButton(langId);
+    return button?.textContent?.trim() || langId || 'Selected language';
+}
+
+function getLanguageColor(langId) {
+    const button = getLanguageButton(langId);
+    return button?.style?.getPropertyValue('--lang-color')?.trim() || '';
 }

@@ -1,6 +1,6 @@
 {
     "title": "Palindrome Permutation",
-    "description": "Palindrome Permutation",
+    "description": "Determine if any permutation of the input string can form a palindrome.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Palindrome Permutation"
+            "text": "Determine if any permutation of the input string can form a palindrome."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/01/04_palindrome_permutation/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a string, write a function to check if it is a permutation of a palindrome. A palindrome does not need to be limited to just dictionary words. The key property is that at most one character may have an odd frequency."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_01_04_palindrome_permutation"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "tact coa -> true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "daily -> false"
                         }
                     ]
                 }

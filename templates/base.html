@@ -111,16 +111,11 @@
         <div class="nav-top">
             <div class="nav-left">
                 <div class="logo-with-modes">
-                    <span class="logo" id="app-mode-title">POLYGLOT <span class="accent">PROJECT</span></span>
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
                     {{ mode_switcher }}
                 </div>
             </div>
             <div class="nav-center">
-                <div id="home-modes-nav" class="home-modes-nav" style="display:none;">
-                    <a href="./atlas/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Atlas</a>
-                    <a href="./course/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Course</a>
-                    <a href="./meta/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Meta</a>
-                </div>
                 <div class="toggle-group view-toggles">
                     <button id="view-single-btn" class="toggle">Single</button>
                     <button id="view-double-btn" class="toggle">Double</button>
@@ -204,25 +199,5 @@
     <script src="{{ asset_prefix }}assets/js/content_renderers.js"></script>
     <script src="{{ asset_prefix }}assets/js/search_ui.js"></script>
     <script src="{{ asset_prefix }}assets/js/permalinks.js"></script>
-    <script>
-        (function() {
-            var logo = document.getElementById("app-mode-title");
-            var homeModesNav = document.getElementById("home-modes-nav");
-            if (!logo) return;
-            
-            var path = (window.location.pathname || "").toLowerCase();
-            var mode = "atlas";
-            if (path.indexOf("/course/") !== -1 || path.indexOf("/course") === 0) mode = "course";
-            else if (path.indexOf("/meta/") !== -1 || path.indexOf("/meta") === 0) mode = "meta";
-            var isHome = mode === "atlas" && /\/index\.html$/.test(path) && path.indexOf("/atlas/") === -1;
-            
-            var label = isHome ? "PROJECT" : (mode === "course" ? "COURSE" : (mode === "meta" ? "META" : "ATLAS"));
-            logo.innerHTML = "POLYGLOT <span class=\"accent\">" + label + "</span>";
-            
-            // Show home modes nav only on home page
-            if (homeModesNav) {
-                homeModesNav.style.display = isHome ? "flex" : "none";
-            }
-        })();
-    </script></body>
+</body>
 </html>

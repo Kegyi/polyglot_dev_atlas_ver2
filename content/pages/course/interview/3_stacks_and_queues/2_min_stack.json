@@ -1,6 +1,6 @@
 {
     "title": "Min Stack",
-    "description": "Min Stack",
+    "description": "Design a stack that supports push, pop, top, and min all in O(1) time.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Min Stack"
+            "text": "Design a stack that supports push, pop, top, and min all in O(1) time."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/02_min_stack/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Design a stack which, in addition to push and pop, has a function min that returns the minimum element. Push, pop, and min should all operate in O(1) time. Maintain a second auxiliary stack of minimum values; push duplicate minima so pops stay correct."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_02_min_stack"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "3"
                         }
                     ]
                 }

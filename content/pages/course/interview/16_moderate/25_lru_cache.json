@@ -1,6 +1,6 @@
 {
     "title": "Lru Cache",
-    "description": "Lru Cache",
+    "description": "Design and implement an LRU (least recently used) cache with `get` and `put` in O(1).",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Lru Cache"
+            "text": "Design and implement an LRU (least recently used) cache with `get` and `put` in O(1)."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/25_lru_cache/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Design and implement an LRU (least recently used) cache with `get` and `put` in O(1)."
                         }
                     ]
                 },
@@ -41,6 +31,32 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_25_lru_cache"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "3"
+                        },
+                        {
+                            "type": "text",
+                            "text": "4"
                         }
                     ]
                 }

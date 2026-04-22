@@ -3,6 +3,9 @@
     "description": "Home page for the Polyglot Dev App. Explore Atlas, Course, and Meta modes from the left navigation.",
     "template": "base.html",
     "body_class": "home-view",
+    "navigation": {
+        "mode_order": ["atlas", "course", "meta"]
+    },
     "content": [
         {
             "type": "blocks",

@@ -3,7 +3,7 @@ import os
 import shutil
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
-PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercieses.json')
+PAGE = os.path.join(ROOT, 'content', 'pages', 'course', 'exercises.json')
 SNIPPETS = os.path.join(ROOT, 'content', 'snippets')
 
 with open(PAGE, 'r', encoding='utf-8') as f:
@@ -78,9 +78,9 @@ for item in data['content']:
 if changed:
     with open(PAGE, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
-    print('Updated exercieses.json; removed duplicate intermediate entries.')
+    print('Updated exercises.json; removed duplicate intermediate entries.')
 else:
-    print('No changes to exercieses.json needed.')
+    print('No changes to exercises.json needed.')
 
 # Move snippet files from intermediate -> advanced for each language
 moved = []

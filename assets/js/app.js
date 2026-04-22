@@ -340,13 +340,6 @@ const app = {
             if (!shows || !main) return;
             const prevKey = `${mode}-collection-${key}-prev-path`;
             const prev = localStorage.getItem(prevKey);
-            if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
-                localStorage.removeItem(prevKey);
-                localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
-                localStorage.removeItem(`${mode}-collection-${key}-open`);
-                window.location.href = prev;
-                return;
-            }
 
             // If this collection is nested, show its parent collection instead
             // of returning immediately to the main list.
@@ -358,17 +351,6 @@ const app = {
 
             // Clear the explicit open flag for this collection
             try { localStorage.removeItem(`${mode}-collection-${key}-open`); } catch (e) {}
-
-            // If opened via navigation and we have a prev path, return to it.
-            if (openedViaNav) {
-                try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
-                if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
-                    localStorage.removeItem(prevKey);
-                    localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
-                    window.location.href = prev;
-                    return;
-                }
-            }
 
             // Not navigating back: close this collection and show nearest parent
             shows.style.display = 'none';
@@ -387,8 +369,21 @@ const app = {
                 const candidate = segs.join('-');
                 const parentList = document.getElementById(`toc-collection-${mode}-${candidate}`);
                 if (parentList) {
+                    try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
                     try { localStorage.setItem(`${mode}-collection-${candidate}-open`, '1'); } catch (e) {}
                     parentList.style.display = '';
+                    return;
+                }
+            }
+
+            // No parent submenu to restore; if this collection was opened by
+            // navigating into it from another page, return to that page.
+            if (openedViaNav) {
+                try { localStorage.removeItem(openedViaNavKey); } catch (e) {}
+                if (prev && prev !== (window.location.pathname + window.location.search + window.location.hash)) {
+                    localStorage.removeItem(prevKey);
+                    localStorage.removeItem(`${mode}-collection-${key}-prev-topic`);
+                    window.location.href = prev;
                     return;
                 }
             }

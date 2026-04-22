@@ -1,6 +1,6 @@
 {
     "title": "Living People",
-    "description": "Living People",
+    "description": "Given birth/death years (1900-2000, death year inclusive), return the year with the most living people.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Living People"
+            "text": "Given birth/death years (1900-2000, death year inclusive), return the year with the most living people."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/10_living_people/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given birth/death years (1900-2000, death year inclusive), return the year with the most living people. If tied, return the earliest year."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_10_living_people"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1901"
                         }
                     ]
                 }

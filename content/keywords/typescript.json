@@ -1,0 +1,111 @@
+{
+    "type": "keyword_grid",
+    "id": "ts-keyword-grid",
+    "groups": [
+        {
+            "id": "ts-types",
+            "label": "Type Names",
+            "description": "Built-in TypeScript type keywords",
+            "keywords": [
+                { "word": "any", "note": "Opts out of type checking for a value" },
+                { "word": "bigint", "note": "Arbitrary-precision integer primitive type" },
+                { "word": "boolean", "note": "true / false primitive type" },
+                { "word": "never", "note": "Represents values that can never occur" },
+                { "word": "number", "note": "64-bit floating-point numeric primitive type" },
+                { "word": "object", "note": "Non-primitive value type" },
+                { "word": "string", "note": "UTF-16 text primitive type" },
+                { "word": "symbol", "note": "Unique, immutable primitive created with Symbol()" },
+                { "word": "undefined", "note": "The type of the undefined value" },
+                { "word": "unknown", "note": "Type-safe counterpart of any — must be narrowed before use" },
+                { "word": "void", "note": "Absence of a type — used as function return type" }
+            ]
+        },
+        {
+            "id": "ts-declarations",
+            "label": "Declarations",
+            "description": "Defining structures, functions, and variables",
+            "keywords": [
+                { "word": "abstract", "note": "Marks a class or member as requiring a concrete subclass implementation" },
+                "class", "const",
+                { "word": "declare", "note": "Ambient declaration — tells the compiler a value exists without emitting code" },
+                "enum", "function",
+                { "word": "interface", "note": "Describes the shape of an object type" },
+                "let",
+                { "word": "namespace", "note": "Groups related declarations under a named scope" },
+                { "word": "type", "note": "Creates a type alias" },
+                "var"
+            ]
+        },
+        {
+            "id": "ts-control-flow",
+            "label": "Control Flow",
+            "description": "Branching, looping, and jumps",
+            "keywords": ["break", "case", "continue", "default", "do", "else", "for", "if", "of", "return", "switch", "while"]
+        },
+        {
+            "id": "ts-oop",
+            "label": "OOP",
+            "description": "Object-oriented constructs",
+            "keywords": [
+                "extends",
+                { "word": "implements", "note": "States that a class satisfies an interface contract" },
+                { "word": "override", "note": "Explicitly marks a method as overriding a base-class method" },
+                "private", "protected", "public",
+                { "word": "readonly", "note": "Prevents reassignment of a property after initialization" },
+                "static", "super", "this"
+            ]
+        },
+        {
+            "id": "ts-async",
+            "label": "Async",
+            "description": "Asynchronous programming with Promises",
+            "keywords": [
+                { "word": "async", "note": "Marks a function as returning a Promise" },
+                { "word": "await", "note": "Unwraps a Promise inside an async function" }
+            ]
+        },
+        {
+            "id": "ts-type-operators",
+            "label": "Type Operators",
+            "description": "TypeScript-specific type-level keywords",
+            "keywords": [
+                { "word": "as", "note": "Type assertion — tells the compiler to treat a value as a specific type" },
+                { "word": "asserts", "note": "Assertion function signature — narrows a type in calling scope" },
+                { "word": "infer", "note": "Captures a type variable inside a conditional type" },
+                { "word": "is", "note": "Type predicate return type annotation" },
+                { "word": "keyof", "note": "Produces a union of all keys of a type" },
+                { "word": "satisfies", "note": "Validates a value against a type without widening it (TS 4.9+)" },
+                "typeof",
+                { "word": "unique", "note": "Used with symbol to create a unique symbol type" }
+            ]
+        },
+        {
+            "id": "ts-error-handling",
+            "label": "Error Handling",
+            "description": "Exception management",
+            "keywords": ["catch", "finally", "throw", "try"]
+        },
+        {
+            "id": "ts-modules",
+            "label": "Modules",
+            "description": "Code organisation and exports",
+            "keywords": [
+                "export",
+                { "word": "from", "note": "Specifies the module source in an import or re-export statement" },
+                "import",
+                { "word": "module", "note": "Ambient module declaration" }
+            ]
+        },
+        {
+            "id": "ts-other",
+            "label": "Other",
+            "description": "Remaining JS/TS keywords",
+            "keywords": [
+                { "word": "debugger", "note": "Pauses execution in a connected debugger" },
+                "delete", "false", "in", "instanceof", "new", "null", "true",
+                { "word": "using", "note": "Explicit resource management — calls Symbol.dispose on exit (TC39)" },
+                "typeof", "void", "yield"
+            ]
+        }
+    ]
+}

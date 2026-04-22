@@ -1,6 +1,6 @@
 {
     "title": "Number Of 2S In Range",
-    "description": "Number Of 2S In Range",
+    "description": "Write a method to count the number of 2s between 0 and n (inclusive).",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Number Of 2S In Range"
+            "text": "Write a method to count the number of 2s between 0 and n (inclusive)."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/06_number_of_2s_in_range/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Write a method to count the number of 2s between 0 and n (inclusive). **Example:** ``` Input: n = 25 Output: 9 ``` **Explanation:** 2, 12, 20, 21, 22, 23, 24, 25 contain digit 2; 22 has two 2s."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_06_number_of_2s_in_range"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

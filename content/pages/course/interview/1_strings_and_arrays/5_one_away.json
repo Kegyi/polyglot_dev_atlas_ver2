@@ -1,6 +1,6 @@
 {
     "title": "One Away",
-    "description": "One Away",
+    "description": "Check if two strings are at most one edit (insert, delete, or replace) apart.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "One Away"
+            "text": "Check if two strings are at most one edit (insert, delete, or replace) apart."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/01/05_one_away/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "There are three types of edits that can be performed on strings: insert a character, remove a character, or replace a character. Given two strings, write a function to check if they are zero or one edit apart. Handle equal-length and length-diff-by-one cases separately; stop early after a second mismatch."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_01_05_one_away"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "pale vs ple -> true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "pales vs pale -> true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "pale vs bake -> false"
                         }
                     ]
                 }

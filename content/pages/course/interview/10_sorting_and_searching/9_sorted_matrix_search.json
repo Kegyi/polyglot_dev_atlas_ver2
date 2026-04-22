@@ -1,6 +1,6 @@
 {
     "title": "Sorted Matrix Search",
-    "description": "Sorted Matrix Search",
+    "description": "Given an `M x N` matrix in which each row and each column is sorted in ascending order, determine whether `target` exists.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Sorted Matrix Search"
+            "text": "Given an `M x N` matrix in which each row and each column is sorted in ascending order, determine whether `target` exists."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/10/09_sorted_matrix_search/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given an `M x N` matrix in which each row and each column is sorted in ascending order, determine whether `target` exists. **Example:** ``` Matrix: [ [1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30] ] Target = 5  -> true Target = 20 -> false ```"
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_10_09_sorted_matrix_search"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

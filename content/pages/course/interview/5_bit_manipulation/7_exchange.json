@@ -1,6 +1,6 @@
 {
     "title": "Exchange",
-    "description": "Exchange",
+    "description": "Swap all odd and even bits of an integer with as few instructions as possible.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Exchange"
+            "text": "Swap all odd and even bits of an integer with as few instructions as possible."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/05/07_exchange/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Swap all odd and even bits of an integer with as few instructions as possible. This maps to LCCI 5.7. Typical interview angle: Mask odd-indexed bits (0xAAAA…) and shift right. Mask even-indexed bits (0x5555…) and shift left. OR the two halves together."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_05_07_exchange"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "3"
                         }
                     ]
                 }

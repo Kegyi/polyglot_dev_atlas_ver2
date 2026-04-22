@@ -1,6 +1,6 @@
 {
     "title": "Closed Number",
-    "description": "Closed Number",
+    "description": "Find the next smaller and next larger integers with the same number of 1 bits.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Closed Number"
+            "text": "Find the next smaller and next larger integers with the same number of 1 bits."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/05/04_closed_number/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Find the next smaller and next larger integers with the same number of 1 bits. This maps to LCCI 5.4. Typical interview angle: For next larger: find rightmost \"01\" pattern and swap to \"10\". For next smaller: find rightmost \"10\" pattern and swap to \"01\". Edge cases: all-1 bit sequences and numbers like powers of 2."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_05_04_closed_number"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "4"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 {
     "title": "Legal Binary Search Tree",
-    "description": "Legal Binary Search Tree",
+    "description": "Determine whether a binary tree satisfies BST ordering rules.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Legal Binary Search Tree"
+            "text": "Determine whether a binary tree satisfies BST ordering rules."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/05_legal_binary_search_tree/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Determine whether a binary tree satisfies BST ordering rules. This maps to LCCI 4.5. Typical interview angle: Carry valid (low, high) bounds recursively. Every node must satisfy strict inequality. Catch deeper violations, not only parent-child checks."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_05_legal_binary_search_tree"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

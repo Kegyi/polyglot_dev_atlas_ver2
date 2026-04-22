@@ -1,0 +1,116 @@
+{
+    "type": "keyword_grid",
+    "id": "scala3-keyword-grid",
+    "groups": [
+        {
+            "id": "scala3-values",
+            "label": "Values",
+            "description": "Built-in literal keywords",
+            "keywords": ["false", "null", "true"]
+        },
+        {
+            "id": "scala3-declarations",
+            "label": "Declarations",
+            "description": "Defining types, functions, and values",
+            "keywords": [
+                { "word": "class", "note": "Defines a reference type with a constructor" },
+                { "word": "def", "note": "Defines a method or function" },
+                { "word": "enum", "note": "Defines an algebraic data type with named cases (Scala 3)" },
+                { "word": "lazy", "note": "Delays evaluation of a val until first access" },
+                { "word": "object", "note": "Singleton object — combines class and its only instance" },
+                { "word": "opaque", "note": "Defines an opaque type alias — hides the underlying type from callers (Scala 3)" },
+                { "word": "trait", "note": "Abstract interface that can contain concrete members" },
+                { "word": "type", "note": "Declares a type alias or abstract type member" },
+                { "word": "val", "note": "Immutable value binding" },
+                { "word": "var", "note": "Mutable variable binding" }
+            ]
+        },
+        {
+            "id": "scala3-control-flow",
+            "label": "Control Flow",
+            "description": "Branching, looping, and pattern matching",
+            "keywords": [
+                "do", "else",
+                { "word": "end", "note": "Optional block terminator for indentation-style syntax (Scala 3)" },
+                { "word": "for", "note": "For-comprehension — sequences flatMap/map/filter/foreach" },
+                "if",
+                { "word": "match", "note": "Pattern-match expression — exhaustive switch on value structure" },
+                "return",
+                { "word": "then", "note": "Separates the condition from the branch body in if-then-else (Scala 3)" },
+                "while",
+                { "word": "yield", "note": "Collects for-comprehension results into a collection" }
+            ]
+        },
+        {
+            "id": "scala3-oop",
+            "label": "OOP",
+            "description": "Object-oriented and trait composition",
+            "keywords": [
+                { "word": "abstract", "note": "Marks a class or member as requiring a concrete implementation" },
+                "case", "class",
+                { "word": "derives", "note": "Auto-generates typeclass instances for a type (Scala 3)" },
+                "extends",
+                { "word": "final", "note": "Prevents subclassing or overriding" },
+                "new",
+                { "word": "object", "note": "Singleton; companion objects share the namespace with a class" },
+                { "word": "open", "note": "Explicitly allows subclassing outside the defining file (Scala 3)" },
+                { "word": "override", "note": "Required keyword when redefining a member from a superclass" },
+                "protected", "private",
+                { "word": "sealed", "note": "Restricts subclassing to the same compilation unit" },
+                "super", "this", "trait",
+                { "word": "with", "note": "Mixes in additional traits" }
+            ]
+        },
+        {
+            "id": "scala3-error-handling",
+            "label": "Error Handling",
+            "description": "Exception management",
+            "keywords": ["catch", "finally", "throw", "try"]
+        },
+        {
+            "id": "scala3-modifiers",
+            "label": "Modifiers",
+            "description": "Declaration modifiers",
+            "keywords": [
+                { "word": "abstract", "note": "Declares an abstract class or member" },
+                { "word": "erased", "note": "Marks a parameter as erased at compile-time — has no runtime representation (Scala 3)" },
+                { "word": "final", "note": "Prevents subclassing or member override" },
+                { "word": "inline", "note": "Forces inlining of a method or value at each call site (Scala 3)" },
+                { "word": "lazy", "note": "Defers initialisation until first use" },
+                { "word": "open", "note": "Allows subclassing from other files (Scala 3)" },
+                { "word": "override", "note": "Required when shadowing a supertype member" },
+                { "word": "sealed", "note": "Limits direct subclasses to the current source file" },
+                { "word": "transparent", "note": "Allows the compiler to see through the inline body for type inference (Scala 3)" }
+            ]
+        },
+        {
+            "id": "scala3-givens",
+            "label": "Givens & Contextual",
+            "description": "Scala 3 replacement for implicits",
+            "keywords": [
+                { "word": "derives", "note": "Requests automatic typeclass derivation for a type" },
+                { "word": "given", "note": "Declares a contextual instance (replaces implicit val/def)" },
+                { "word": "infix", "note": "Allows a method to be called in infix notation" },
+                { "word": "using", "note": "Passes contextual parameters (replaces implicit parameter lists)" }
+            ]
+        },
+        {
+            "id": "scala3-packages",
+            "label": "Packages",
+            "description": "Module system",
+            "keywords": [
+                { "word": "export", "note": "Re-exports selected members of an object under the current scope (Scala 3)" },
+                "import",
+                { "word": "package", "note": "Declares the package this file belongs to" }
+            ]
+        },
+        {
+            "id": "scala3-special",
+            "label": "Special",
+            "description": "Wildcards and pattern identifiers",
+            "keywords": [
+                { "word": "_", "note": "Wildcard: anonymous variable, import all, placeholder in partial functions" }
+            ]
+        }
+    ]
+}

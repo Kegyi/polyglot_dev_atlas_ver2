@@ -1,6 +1,6 @@
 {
     "title": "Queue Via Stacks",
-    "description": "Queue Via Stacks",
+    "description": "Implement a queue using two stacks with amortized O(1) per operation.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Queue Via Stacks"
+            "text": "Implement a queue using two stacks with amortized O(1) per operation."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/04_queue_via_stacks/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Implement a queue using two stacks. The queue should support peek, pop, push, and empty operations. Push elements into an input stack; move all elements to an output stack lazily when dequeuing. Each element is moved at most once, giving amortized O(1) per operation."
                         }
                     ]
                 },
@@ -41,6 +31,28 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_04_queue_via_stacks"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

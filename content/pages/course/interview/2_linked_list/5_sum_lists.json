@@ -1,6 +1,6 @@
 {
     "title": "Sum Lists",
-    "description": "Sum Lists",
+    "description": "Add two numbers represented as reversed linked lists and return the result as a reversed linked list.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Sum Lists"
+            "text": "Add two numbers represented as reversed linked lists and return the result as a reversed linked list."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/02/05_sum_lists/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in reverse order, such that the 1's digit is at the head. Write a function that adds the two numbers and returns the sum as a linked list in the same reverse order. Handle different lengths and trailing carry."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_02_05_sum_lists"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "(7->1->6) + (5->9->2) = 912 -> 2 1 9"
                         }
                     ]
                 }

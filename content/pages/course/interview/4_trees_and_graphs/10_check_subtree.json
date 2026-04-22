@@ -1,6 +1,6 @@
 {
     "title": "Check Subtree",
-    "description": "Check Subtree",
+    "description": "Determine whether one tree is a subtree of another.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Check Subtree"
+            "text": "Determine whether one tree is a subtree of another."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/10_check_subtree/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Determine whether one tree is a subtree of another. This maps to LCCI 4.10. Typical interview angle: Walk the larger tree and compare structure/value matches. Use a same-tree helper for exact subtree checks. Consider null subtree behavior explicitly."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_10_check_subtree"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

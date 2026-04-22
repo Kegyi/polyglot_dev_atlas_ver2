@@ -1,6 +1,6 @@
 {
     "title": "Route Between Nodes",
-    "description": "Route Between Nodes",
+    "description": "Given a directed graph, determine whether there is a route from node A to node B.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Route Between Nodes"
+            "text": "Given a directed graph, determine whether there is a route from node A to node B."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/04/01_route_between_nodes/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a directed graph, determine whether there is a route from node A to node B. This maps to LCCI 4.1. Typical interview angle: Build adjacency lists. Use BFS/DFS with visited tracking. Avoid infinite loops in cyclic graphs."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_04_01_route_between_nodes"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "true"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

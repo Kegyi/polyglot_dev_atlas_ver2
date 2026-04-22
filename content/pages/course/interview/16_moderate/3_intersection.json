@@ -1,6 +1,6 @@
 {
     "title": "Intersection",
-    "description": "Intersection",
+    "description": "Given two line segments (`start1` to `end1`, and `start2` to `end2`), return their intersection point if it exists.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Intersection"
+            "text": "Given two line segments (`start1` to `end1`, and `start2` to `end2`), return their intersection point if it exists."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/03_intersection/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given two line segments (`start1` to `end1`, and `start2` to `end2`), return their intersection point if it exists. If there are multiple points (overlap), return the point with the smallest `x`, then smallest `y`."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_03_intersection"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[0.5, 0.0]"
                         }
                     ]
                 }

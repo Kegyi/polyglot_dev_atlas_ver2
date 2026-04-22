@@ -59,6 +59,10 @@
                         if (k && k.indexOf(modeKey + '-collection-') === 0 && k.endsWith('-open') && localStorage.getItem(k) === '1') {
                             // Extract the collection key between modeKey + '-collection-' and '-open'
                             var middle = k.substring((modeKey + '-collection-').length, k.length - '-open'.length);
+                            var collectionPath = '/' + modeKey + '/' + middle.replace(/-/g, '/') + '/';
+                            if (path.toLowerCase().indexOf(collectionPath.toLowerCase()) === -1) {
+                                continue;
+                            }
                             // Sanitize to match the builder's safe_key (non-alphanumerics -> '-')
                             var safe = middle.replace(/[^a-zA-Z0-9_-]/g, '-');
                             var listId = 'toc-collection-' + modeKey + '-' + safe;
@@ -107,16 +111,11 @@
         <div class="nav-top">
             <div class="nav-left">
                 <div class="logo-with-modes">
-                    <span class="logo" id="app-mode-title">POLYGLOT <span class="accent">PROJECT</span></span>
-                    <details class="mode-switcher" style="display:none;"><summary class="mode-switcher-trigger"></summary></details>
+                    <span class="logo" id="app-main-title">POLYGLOT</span>
+                    <details class="mode-switcher"><summary class="mode-switcher-trigger"><span class="mode-switcher-current" id="app-mode-title">Project</span><span class="mode-switcher-underbar" aria-hidden="true"></span></summary><div class="mode-switcher-menu"><a href="./index.html" class="mode-switcher-link active" onclick="app.prepareModeSwitch()">Project</a><a href="./atlas/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Atlas</a><a href="./course/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Course</a><a href="./meta/index.html" class="mode-switcher-link " onclick="app.prepareModeSwitch()">Meta</a></div></details>
                 </div>
             </div>
             <div class="nav-center">
-                <div id="home-modes-nav" class="home-modes-nav" style="display:none;">
-                    <a href="./atlas/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Atlas</a>
-                    <a href="./course/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Course</a>
-                    <a href="./meta/index.html" class="nav-mode-btn" onclick="app.prepareModeSwitch()">Meta</a>
-                </div>
                 <div class="toggle-group view-toggles">
                     <button id="view-single-btn" class="toggle">Single</button>
                     <button id="view-double-btn" class="toggle">Double</button>
@@ -161,7 +160,7 @@
             <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
-                <ul class="nav-list" id="toc-main"></ul>
+                <ul class="nav-list" id="toc-main"><li class="nav-item nav-collection nav-mode-atlas"><a href="#" onclick="app.openCollection('atlas', 'mode-atlas', { noNavigate: true });return false;"><span class="nav-collection-label">Atlas</span><span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-mode-course"><a href="#" onclick="app.openCollection('atlas', 'mode-course', { noNavigate: true });return false;"><span class="nav-collection-label">Course</span><span class="collection-marker" aria-hidden="true"></span></a></li><li class="nav-item nav-collection nav-mode-meta"><a href="#" onclick="app.openCollection('atlas', 'mode-meta', { noNavigate: true });return false;"><span class="nav-collection-label">Meta</span><span class="collection-marker" aria-hidden="true"></span></a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-atlas" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-atlas');return false;">← Back to Home</a></li><li class="nav-item"><a href="./atlas/index.html" onclick="app.prepareModeSwitch()">Atlas Mode<span class="sidebar-wrap-indent">Polyglot Dev App</span></a></li><li class="nav-item"><a href="./atlas/design_patterns.html" onclick="app.prepareModeSwitch()">Design Patterns</a></li><li class="nav-item"><a href="./atlas/keywords.html" onclick="app.prepareModeSwitch()">Keywords</a></li><li class="nav-item"><a href="./atlas/principles.html" onclick="app.prepareModeSwitch()">principles</a></li><li class="nav-item"><a href="./atlas/workflow.html" onclick="app.prepareModeSwitch()">Workflow</a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-course" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-course');return false;">← Back to Home</a></li><li class="nav-item"><a href="./course/index.html" onclick="app.prepareModeSwitch()">Course Mode<span class="sidebar-wrap-indent">Learning Pathways</span></a></li><li class="nav-item"><a href="./course/basics.html" onclick="app.prepareModeSwitch()">Basics</a></li><li class="nav-item"><a href="./course/exercises.html" onclick="app.prepareModeSwitch()">Exercises</a></li><li class="nav-item"><a href="./course/problems.html" onclick="app.prepareModeSwitch()">Problems</a></li></ul><ul class="nav-list nav-collection-list nav-modes-list" id="toc-collection-atlas-mode-meta" style="display:none"><li class="nav-item nav-back"><a href="#" onclick="app.closeCollection('atlas', 'mode-meta');return false;">← Back to Home</a></li><li class="nav-item"><a href="./meta/index.html" onclick="app.prepareModeSwitch()">Welcome<span class="sidebar-wrap-indent">Polyglot Guide</span></a></li><li class="nav-item"><a href="./meta/blocks_nesting.html" onclick="app.prepareModeSwitch()">Hierarchical Structure</a></li><li class="nav-item"><a href="./meta/content_types.html" onclick="app.prepareModeSwitch()">Content Element Library</a></li><li class="nav-item"><a href="./meta/customization.html" onclick="app.prepareModeSwitch()">Styling & Customization</a></li><li class="nav-item"><a href="./meta/external_links_test.html" onclick="app.prepareModeSwitch()">External Links Test</a></li><li class="nav-item"><a href="./meta/getting_started.html" onclick="app.prepareModeSwitch()">Meta: Getting Started</a></li><li class="nav-item"><a href="./meta/insights_test.html" onclick="app.prepareModeSwitch()">Insight Blocks Test</a></li></ul>
             </div>
         </aside>
         
@@ -230,25 +229,5 @@
     <script src="./assets/js/content_renderers.js"></script>
     <script src="./assets/js/search_ui.js"></script>
     <script src="./assets/js/permalinks.js"></script>
-    <script>
-        (function() {
-            var logo = document.getElementById("app-mode-title");
-            var homeModesNav = document.getElementById("home-modes-nav");
-            if (!logo) return;
-            
-            var path = (window.location.pathname || "").toLowerCase();
-            var mode = "atlas";
-            if (path.indexOf("/course/") !== -1 || path.indexOf("/course") === 0) mode = "course";
-            else if (path.indexOf("/meta/") !== -1 || path.indexOf("/meta") === 0) mode = "meta";
-            var isHome = mode === "atlas" && /\/index\.html$/.test(path) && path.indexOf("/atlas/") === -1;
-            
-            var label = isHome ? "PROJECT" : (mode === "course" ? "COURSE" : (mode === "meta" ? "META" : "ATLAS"));
-            logo.innerHTML = "POLYGLOT <span class=\"accent\">" + label + "</span>";
-            
-            // Show home modes nav only on home page
-            if (homeModesNav) {
-                homeModesNav.style.display = isHome ? "flex" : "none";
-            }
-        })();
-    </script></body>
+</body>
 </html>

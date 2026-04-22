@@ -1,6 +1,6 @@
 {
     "title": "Stack Of Plates",
-    "description": "Stack Of Plates",
+    "description": "Implement a set of stacks where each sub-stack has a fixed capacity, exposing a single push/pop interface.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Stack Of Plates"
+            "text": "Implement a set of stacks where each sub-stack has a fixed capacity, exposing a single push/pop interface."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/03_stack_of_plates/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Imagine a literal stack of plates. If the stack gets too high, it might topple. In real life, we would start a new stack when the previous stack exceeds some threshold. Implement a SetOfStacks data structure that starts a new internal stack when the previous one reaches capacity. Push and pop should behave identically to a single stack. Remove empty sub-stacks after a pop or popAt."
                         }
                     ]
                 },
@@ -41,6 +31,28 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_03_stack_of_plates"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "4"
+                        },
+                        {
+                            "type": "text",
+                            "text": "3"
+                        },
+                        {
+                            "type": "text",
+                            "text": "1"
                         }
                     ]
                 }

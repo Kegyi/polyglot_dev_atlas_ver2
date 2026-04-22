@@ -1,6 +1,6 @@
 {
     "title": "Boolean Evaluation",
-    "description": "Boolean Evaluation",
+    "description": "Given a boolean expression consisting of the symbols `0` (false), `1` (true), `&` (AND), `|` (OR), and `^` (XOR), and a desired result value `result`, implement a function to count the number of ways of parenthesizing the expression such that it evaluates to `result`.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Boolean Evaluation"
+            "text": "Given a boolean expression consisting of the symbols `0` (false), `1` (true), `&` (AND), `|` (OR), and `^` (XOR), and a desired result value `result`, implement a function to count the number of ways of parenthesizing the expression such that it evaluates to `result`."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/14_boolean_evaluation/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a boolean expression consisting of the symbols `0` (false), `1` (true), `&` (AND), `|` (OR), and `^` (XOR), and a desired result value `result`, implement a function to count the number of ways of parenthesizing the expression such that it evaluates to `result`. The answer may overflow, return it mod 1000000007. **Example 1:** ``` Input: s = \"1^0|0|1\", result = 0 Output: 2 ``` **Example 2:** ``` Input: s = \"0&0&0&1^1|0\", result = 1 Output: 10 ```"
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_14_boolean_evaluation"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "10"
                         }
                     ]
                 }

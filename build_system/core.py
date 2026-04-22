@@ -27,6 +27,7 @@ class AtlasBuilder:
         self._page_schema_cache = None
         self._jsonschema_checked = False
         self._jsonschema_available = False
+        self._language_defs_cache = None
 
     def _build_renderer_registry(self):
         return {
@@ -40,6 +41,7 @@ class AtlasBuilder:
             "text": self._render_text,
             "note": self._render_note,
             "insight": self._render_insight,
+            "link": self._render_link,
             "code": self._render_code,
             "image": self._render_image,
             "list": self._render_list,
@@ -47,6 +49,9 @@ class AtlasBuilder:
             "table": self._render_sheet,
             "sheet": self._render_sheet,
             "matrix": self._render_sheet,
+            "dynamic": self._render_dynamic,
+            "lang_content": self._render_dynamic,
+            "keyword_grid": self._render_keyword_grid,
         }
 
     def _resolve_json_ref(self, ref, base_path=None):
@@ -60,6 +65,12 @@ class AtlasBuilder:
             core_path = os.path.join(self.content_dir, 'core', f'{core_name}.json')
             return self._load_json(core_path)
         
+        # Handle @keywords/ aliases
+        if ref.startswith('@keywords/'):
+            kw_name = ref.replace('@keywords/', '').replace('.json', '')
+            kw_path = os.path.join(self.content_dir, 'keywords', f'{kw_name}.json')
+            return self._load_json(kw_path)
+
         # Handle @snippets/ aliases
         if ref.startswith('@snippets/'):
             snippet_name = ref.replace('@snippets/', '')
@@ -124,6 +135,24 @@ class AtlasBuilder:
                 # Recursively process nested content
                 if 'content' in item and isinstance(item['content'], list):
                     item['content'] = self._process_content_with_refs(item['content'], page_path)
+
+                for key in ('variants', 'by_lang'):
+                    variants = item.get(key)
+                    if isinstance(variants, dict):
+                        processed_variants = {}
+                        for variant_key, variant_content in variants.items():
+                            if isinstance(variant_content, list):
+                                processed_variants[variant_key] = self._process_content_with_refs(variant_content, page_path)
+                            elif isinstance(variant_content, dict):
+                                processed_variants[variant_key] = self._process_content_with_refs([variant_content], page_path)
+                            else:
+                                processed_variants[variant_key] = variant_content
+                        item[key] = processed_variants
+
+                if isinstance(item.get('fallback'), list):
+                    item['fallback'] = self._process_content_with_refs(item['fallback'], page_path)
+                elif isinstance(item.get('fallback'), dict):
+                    item['fallback'] = self._process_content_with_refs([item['fallback']], page_path)
                 
                 # Recursively process blocks
                 if 'blocks' in item and isinstance(item['blocks'], list):
@@ -145,6 +174,24 @@ class AtlasBuilder:
             yield item
             if isinstance(item.get('content'), list):
                 for sub in self._iter_content_items(item.get('content')):
+                    yield sub
+            for key in ('variants', 'by_lang'):
+                variants = item.get(key)
+                if not isinstance(variants, dict):
+                    continue
+                for variant_content in variants.values():
+                    if isinstance(variant_content, list):
+                        for sub in self._iter_content_items(variant_content):
+                            yield sub
+                    elif isinstance(variant_content, dict):
+                        for sub in self._iter_content_items([variant_content]):
+                            yield sub
+            fallback = item.get('fallback')
+            if isinstance(fallback, list):
+                for sub in self._iter_content_items(fallback):
+                    yield sub
+            elif isinstance(fallback, dict):
+                for sub in self._iter_content_items([fallback]):
                     yield sub
             if isinstance(item.get('blocks'), list):
                 for block in item.get('blocks'):
@@ -480,6 +527,31 @@ class AtlasBuilder:
             self._log_warning(f"Malformed JSON in {path}: {str(e)}")
             return {}
 
+    def _get_ordered_modes(self):
+        """Return discovered modes ordered by JSON configuration, then discovery order."""
+        discovered_modes = list(self.site_registry.keys()) if self.site_registry else []
+        if not discovered_modes:
+            return []
+
+        home_index_path = os.path.join(self.pages_dir, 'index.json')
+        home_data = self._load_json(home_index_path, required=False)
+        navigation = home_data.get('navigation', {}) if isinstance(home_data, dict) else {}
+
+        configured_order = []
+        if isinstance(navigation, dict):
+            configured_order = navigation.get('mode_order', []) or []
+        elif isinstance(home_data, dict):
+            configured_order = home_data.get('mode_order', []) or []
+
+        normalized_config = []
+        for mode_name in configured_order:
+            if not isinstance(mode_name, str):
+                continue
+            if mode_name in discovered_modes and mode_name not in normalized_config:
+                normalized_config.append(mode_name)
+
+        return normalized_config + [m for m in discovered_modes if m not in normalized_config]
+
     # --- RECURSIVE SCHEMA RENDERER ---
 
     def render_content(self, content_list, depth=2, inherited_style="", context=None):
@@ -502,6 +574,9 @@ class AtlasBuilder:
         item_id = item.get("id", "")
         return f'id="{item_id}"' if item_id else ""
 
+    def _escape(self, text):
+        return str(text).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
     def _render_title(self, item, depth=2, inherited_style="", context=None):
         tag = f"h{min(depth, 6)}"
         item_id = item.get("id", "")
@@ -516,6 +591,11 @@ class AtlasBuilder:
 
     def _render_text(self, item, depth=2, inherited_style="", context=None):
         return f'<p {self._id_attr(item)} class="{item.get("class", "")}">{item.get("text", "")}</p>'
+
+    def _render_link(self, item, depth=2, inherited_style="", context=None):
+        href = item.get("href", "#")
+        text = item.get("text", href)
+        return f'<p {self._id_attr(item)} class="{item.get("class", "")}"><a href="{href}">{text}</a></p>'
 
     def _render_note(self, item, depth=2, inherited_style="", context=None):
         variant = item.get("variant", "info")
@@ -578,6 +658,100 @@ class AtlasBuilder:
         tag = "ol" if item.get("ordered") else "ul"
         list_items = "".join([f"<li>{i}</li>" for i in item.get("items", [])])
         return f'<{tag} class="{item.get("class", "")}">{list_items}</{tag}>'
+
+    def _get_language_definitions(self):
+        if self._language_defs_cache is None:
+            data = self._load_json(self.lang_def_path, required=False)
+            self._language_defs_cache = data if isinstance(data, dict) else {}
+        return self._language_defs_cache
+
+    def _coerce_content_list(self, value):
+        if isinstance(value, list):
+            return value
+        if isinstance(value, dict):
+            return [value]
+        return []
+
+    def _render_dynamic(self, item, depth=2, inherited_style="", context=None):
+        variants = item.get("variants")
+        if not isinstance(variants, dict) or not variants:
+            variants = item.get("by_lang", {})
+
+        if not isinstance(variants, dict) or not variants:
+            return '<!-- Dynamic content missing variants -->'
+
+        language_defs = self._get_language_definitions()
+        fallback_blocks = self._coerce_content_list(item.get("fallback"))
+        primary_role = item.get("primary_label", "Selected language")
+        secondary_role = item.get("secondary_label", "Comparison language")
+        wrapper_class = item.get("class", "")
+
+        templates = []
+        for lang_id, variant_content in variants.items():
+            blocks = self._coerce_content_list(variant_content)
+            lang_name = language_defs.get(lang_id, {}).get("name", lang_id)
+            rendered = self.render_content(blocks, depth=depth + 1, inherited_style=inherited_style, context=context)
+            templates.append(
+                f'<template data-dynamic-variant="{lang_id}" data-lang-name="{lang_name}">{rendered}</template>'
+            )
+
+        fallback_html = ''
+        if fallback_blocks:
+            rendered_fallback = self.render_content(fallback_blocks, depth=depth + 1, inherited_style=inherited_style, context=context)
+            fallback_html = f'<template data-dynamic-fallback="true">{rendered_fallback}</template>'
+
+        return (
+            f'<section {self._id_attr(item)} class="dynamic-language-block {wrapper_class}" '
+            f'data-primary-label="{primary_role}" data-secondary-label="{secondary_role}">'
+            f'<div class="dynamic-language-grid">'
+            f'<article class="dynamic-language-slot" data-slot="primary">'
+            f'<header class="dynamic-language-slot-header">'
+            f'<span class="dynamic-language-slot-role">{primary_role}</span>'
+            f'<span class="dynamic-language-slot-name"></span>'
+            f'</header>'
+            f'<div class="dynamic-language-slot-body"></div>'
+            f'</article>'
+            f'<article class="dynamic-language-slot" data-slot="secondary">'
+            f'<header class="dynamic-language-slot-header">'
+            f'<span class="dynamic-language-slot-role">{secondary_role}</span>'
+            f'<span class="dynamic-language-slot-name"></span>'
+            f'</header>'
+            f'<div class="dynamic-language-slot-body"></div>'
+            f'</article>'
+            f'</div>'
+            f'{"".join(templates)}{fallback_html}'
+            f'</section>'
+        )
+
+    def _render_keyword_grid(self, item, depth=2, inherited_style="", context=None):
+        groups = item.get('groups', [])
+        if not groups:
+            return '<!-- keyword_grid: no groups defined -->'
+        cards_html = ''
+        for group in groups:
+            label = self._escape(group.get('label', ''))
+            desc = group.get('description', '')
+            keywords = group.get('keywords', [])
+            desc_html = f'<p class="kw-group-desc">{self._escape(desc)}</p>' if desc else ''
+            chips_html = ''
+            for kw in keywords:
+                if isinstance(kw, str):
+                    word, note = kw, ''
+                else:
+                    word = kw.get('word', '')
+                    note = kw.get('note', '')
+                note_attr = f' title="{self._escape(note)}"' if note else ''
+                noted_cls = ' kw-chip--noted' if note else ''
+                chips_html += f'<span class="kw-chip{noted_cls}"{note_attr}>{self._escape(word)}</span>'
+            group_id = group.get('id', '')
+            id_attr = f' id="{self._escape(group_id)}"' if group_id else ''
+            cards_html += (
+                f'<div class="kw-group-card"{id_attr}>'
+                f'<div class="kw-group-header"><span class="kw-group-label">{label}</span>{desc_html}</div>'
+                f'<div class="kw-group-chips">{chips_html}</div>'
+                f'</div>'
+            )
+        return f'<div {self._id_attr(item)} class="keyword-grid">{cards_html}</div>'
 
     def _render_blocks(self, item, depth=2, inherited_style="", context=None):
         block_html = ""
@@ -941,13 +1115,25 @@ class AtlasBuilder:
 
             return '\n'.join(html_parts)
 
-        # Root home is only a launcher for modes, not the Atlas navigation tree.
-        if active_mode == 'atlas' and current_page_url == 'index.html':
-            nav_html += '<ul class="nav-list" id="toc-main"></ul>'
+        ordered_modes = self._get_ordered_modes()
+
+        nav_html += '<ul class="nav-list" id="toc-main">'
+        is_home_page = active_mode == 'atlas' and current_page_url == 'index.html'
+        if is_home_page:
+            # On home, expose each discovered mode as its own collection,
+            # instead of a single aggregated "Modes" entry.
+            for mode_name in ordered_modes:
+                mode_key = f"mode-{re.sub(r'[^a-zA-Z0-9_-]', '-', mode_name)}"
+                mode_label = mode_name.capitalize()
+                nav_html += (
+                    f'<li class="nav-item nav-collection nav-{mode_key}">'
+                    f'<a href="#" onclick="app.openCollection(\'{active_mode}\', \'{mode_key}\', {{ noNavigate: true }});return false;">'
+                    f'<span class="nav-collection-label">{mode_label}</span><span class="collection-marker" aria-hidden="true"></span>'
+                    f'</a></li>'
+                )
         else:
-            nav_html += '<ul class="nav-list" id="toc-main">'
             nav_html += render_node(root, [])
-            nav_html += '</ul>'
+        nav_html += '</ul>'
 
         # Emit submenus recursively
         def emit_submenus(node, path_parts=None):
@@ -961,12 +1147,45 @@ class AtlasBuilder:
                     rest = m.group(2) or ''
                     return (0, num, rest.lower())
                 return (1, name.lower())
+            
+            # Helper to check if parent has an index page
+            def parent_has_index(parent_parts):
+                if not parent_parts:
+                    return True  # Root always exists
+                # Build the expected rel_path for parent folder
+                parent_rel_path = f"{active_mode}/{'/'.join(parent_parts)}".replace('\\', '/')
+                # Check if any page has this rel_path and id='index'
+                for p in self.site_registry.get(active_mode, []):
+                    p_rel = (p.get('rel_path', '') or '').replace('\\', '/')
+                    if p_rel == parent_rel_path and p.get('id') == 'index':
+                        return True
+                return False
+            
+            # Helper to get parent index URL
+            def get_parent_index_url(parent_parts):
+                if not parent_parts:
+                    return f"{prefix}index.html"
+                parent_rel_path = f"{active_mode}/{'/'.join(parent_parts)}"
+                return f"{prefix}{parent_rel_path}/index.html"
 
             for child_key, child_node in sorted(node['children'].items(), key=lambda kv: nav_sort_key_name(kv[0])):
                 safe_full = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in (path_parts + [child_key])])
                 list_id = f'toc-collection-{active_mode}-{safe_full}'
                 nav_html_local = f'<ul class="nav-list nav-collection-list" id="{list_id}" style="display:none">'
-                nav_html_local += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{safe_full}\');return false;">← Back</a></li>'
+                if path_parts:
+                    parent_key = path_parts[-1]
+                    parent_label = parent_key.replace('_', ' ').capitalize()
+                    parent_safe = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in path_parts])
+                    # Check if parent has index page
+                    if parent_has_index(path_parts):
+                        # Navigate to parent's index page
+                        parent_url = get_parent_index_url(path_parts)
+                        nav_html_local += f'<li class="nav-item nav-back"><a href="{parent_url}">← Back to {parent_label}</a></li>'
+                    else:
+                        # Just close current submenu (menu-only update), don't navigate
+                        nav_html_local += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{safe_full}\');return false;">← Back to {parent_label}</a></li>'
+                else:
+                    nav_html_local += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{safe_full}\');return false;">← Back to menu</a></li>'
                 # Render pages at this child level honoring index -> page_list -> numeric ordering
                 pages = list(child_node['pages'])
                 ordered_pages = []
@@ -999,6 +1218,7 @@ class AtlasBuilder:
                     safe_gc = re.sub(r'[^a-zA-Z0-9_-]', '-', gc_key)
                     gc_full = '-'.join([re.sub(r'[^a-zA-Z0-9_-]', '-', p) for p in (path_parts + [child_key, gc_key])])
                     label = gc_key.replace('_', ' ').capitalize()
+                    gc_parent_label = child_key.replace('_', ' ').capitalize()
                     nav_html_local += f'<li class="nav-item nav-collection nav-{gc_full}"><a href="#" onclick="app.openCollection(\'{active_mode}\', \'{gc_full}\');return false;">{label} <span class="collection-marker" aria-hidden="true"></span></a></li>'
 
                 nav_html_local += '</ul>'
@@ -1009,6 +1229,30 @@ class AtlasBuilder:
 
         if not (active_mode == 'atlas' and current_page_url == 'index.html'):
             emit_submenus(root, [])
+
+        if is_home_page:
+            def mode_page_sort_key(entry):
+                pid = entry.get('id', entry.get('title', ''))
+                m = re.match(r'^(\d+)[_\- ]?(.*)$', pid)
+                if m:
+                    return (0 if pid == 'index' else 1, 0, int(m.group(1)), (m.group(2) or '').lower())
+                return (0 if pid == 'index' else 1, 1, 0, str(pid).lower())
+
+            for mode_name in ordered_modes:
+                mode_key = f"mode-{re.sub(r'[^a-zA-Z0-9_-]', '-', mode_name)}"
+                list_id = f'toc-collection-{active_mode}-{mode_key}'
+                nav_html += f'<ul class="nav-list nav-collection-list nav-modes-list" id="{list_id}" style="display:none">'
+                nav_html += f'<li class="nav-item nav-back"><a href="#" onclick="app.closeCollection(\'{active_mode}\', \'{mode_key}\');return false;">← Back to Home</a></li>'
+
+                mode_pages = [
+                    p for p in self.site_registry.get(mode_name, [])
+                    if (p.get('rel_path', '').replace('\\', '/') == mode_name)
+                ]
+                for p in sorted(mode_pages, key=mode_page_sort_key):
+                    safe_title = format_title_for_sidebar(p.get('title', ''))
+                    nav_html += f'<li class="nav-item"><a href="{prefix}{p.get("url", "")}" onclick="app.prepareModeSwitch()">{safe_title}</a></li>'
+
+                nav_html += '</ul>'
 
         return nav_html
 
@@ -1132,21 +1376,22 @@ class AtlasBuilder:
 
     def assemble_mode_switcher(self, active_mode, prefix, current_page_url):
         is_root_home = active_mode == 'atlas' and current_page_url == 'index.html'
+        current_label = 'Project' if is_root_home else active_mode.capitalize()
 
-        preferred_modes = ['atlas', 'course', 'meta']
-        discovered_modes = sorted(self.site_registry.keys()) if self.site_registry else ['atlas']
-        ordered_modes = [m for m in preferred_modes if m in discovered_modes] + [m for m in discovered_modes if m not in preferred_modes]
-
-        if is_root_home:
-            # Home page: only render trigger (modes will be shown in nav-center)
-            return '<details class="mode-switcher" style="display:none;"><summary class="mode-switcher-trigger"></summary></details>'
+        ordered_modes = self._get_ordered_modes()
 
         html = '<details class="mode-switcher">'
-        html += '<summary class="mode-switcher-trigger"><span class="chevron">▼</span></summary>'
+        html += (
+            f'<summary class="mode-switcher-trigger">'
+            f'<span class="mode-switcher-current" id="app-mode-title">{current_label}</span>'
+            f'<span class="mode-switcher-underbar" aria-hidden="true"></span>'
+            f'</summary>'
+        )
         html += '<div class="mode-switcher-menu">'
-        html += f'<a href="{prefix}index.html" class="mode-switcher-link" onclick="app.prepareModeSwitch()">Project</a>'
+        project_active = 'active' if is_root_home else ''
+        html += f'<a href="{prefix}index.html" class="mode-switcher-link {project_active}" onclick="app.prepareModeSwitch()">Project</a>'
         for mode_name in ordered_modes:
-            active = 'active' if mode_name == active_mode else ''
+            active = 'active' if (mode_name == active_mode and not is_root_home) else ''
             target_url = prefix + f'{mode_name}/index.html'
             html += f'<a href="{target_url}" class="mode-switcher-link {active}" onclick="app.prepareModeSwitch()">{mode_name.capitalize()}</a>'
         html += '</div></details>'

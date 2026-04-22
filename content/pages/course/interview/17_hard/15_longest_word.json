@@ -1,6 +1,6 @@
 {
     "title": "Longest Word",
-    "description": "Longest Word",
+    "description": "Given a list of words, write a program to find the longest word made of other words in the list.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Longest Word"
+            "text": "Given a list of words, write a program to find the longest word made of other words in the list."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/15_longest_word/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a list of words, write a program to find the longest word made of other words in the list. If there are more than one answer, return the one that has the smaller lexicographical order. If no answer, return an empty string."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_15_longest_word"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

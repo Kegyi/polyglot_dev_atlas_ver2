@@ -1,6 +1,6 @@
 {
     "title": "T9",
-    "description": "T9",
+    "description": "Given a digit string and a dictionary, return all words that match the T9 keypad mapping.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "T9"
+            "text": "Given a digit string and a dictionary, return all words that match the T9 keypad mapping."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/20_t9/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given a digit string and a dictionary, return all words that match the T9 keypad mapping."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_20_t9"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[tree, used]"
                         }
                     ]
                 }

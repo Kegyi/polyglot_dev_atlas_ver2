@@ -1,6 +1,6 @@
 {
     "title": "Three In One",
-    "description": "Three In One",
+    "description": "Implement three independent stacks using a single fixed-size array.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Three In One"
+            "text": "Implement three independent stacks using a single fixed-size array."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/03/01_three_in_one/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Describe how you could use a single array to implement three stacks. Reserve equal-capacity segments for each stack and maintain a top pointer per stack. Return a sentinel value for underflow conditions."
                         }
                     ]
                 },
@@ -41,6 +31,32 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_03_01_three_in_one"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "11"
+                        },
+                        {
+                            "type": "text",
+                            "text": "11"
+                        },
+                        {
+                            "type": "text",
+                            "text": "10"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-1"
+                        },
+                        {
+                            "type": "text",
+                            "text": "false"
                         }
                     ]
                 }

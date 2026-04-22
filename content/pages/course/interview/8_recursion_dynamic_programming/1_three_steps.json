@@ -1,6 +1,6 @@
 {
     "title": "Three Steps",
-    "description": "Three Steps",
+    "description": "A child is running up a staircase with n steps and can hop either 1 step, 2 steps, or 3 steps at a time.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Three Steps"
+            "text": "A child is running up a staircase with n steps and can hop either 1 step, 2 steps, or 3 steps at a time."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/08/01_three_steps/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "A child is running up a staircase with n steps and can hop either 1 step, 2 steps, or 3 steps at a time. Implement a method to count how many possible ways the child can run up the stairs. The result may be large, so return it modulo 1000000007. **Example 1:** ``` Input: n = 3 Output: 4 ``` **Example 2:** ``` Input: n = 5 Output: 13 ``` **Note:** `1 <= n <= 1000000`"
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_08_01_three_steps"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "4"
+                        },
+                        {
+                            "type": "text",
+                            "text": "13"
                         }
                     ]
                 }

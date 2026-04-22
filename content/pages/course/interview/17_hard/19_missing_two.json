@@ -1,6 +1,6 @@
 {
     "title": "Missing Two",
-    "description": "Missing Two",
+    "description": "You are given an array with all the numbers from 1 to N appearing exactly once, except for two numbers that are missing.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Missing Two"
+            "text": "You are given an array with all the numbers from 1 to N appearing exactly once, except for two numbers that are missing."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/19_missing_two/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "You are given an array with all the numbers from 1 to N appearing exactly once, except for two numbers that are missing. Find the two missing numbers."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_19_missing_two"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }

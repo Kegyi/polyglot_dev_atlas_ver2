@@ -1,6 +1,6 @@
 {
     "title": "English Int",
-    "description": "English Int",
+    "description": "Convert an integer into English words.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "English Int"
+            "text": "Convert an integer into English words."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/08_english_int/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Convert an integer into English words."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_08_english_int"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "One Hundred Twenty Three"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Twelve Thousand Three Hundred Forty Five"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Negative One Million Ten"
                         }
                     ]
                 }

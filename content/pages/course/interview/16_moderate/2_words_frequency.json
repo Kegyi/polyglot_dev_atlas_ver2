@@ -1,6 +1,6 @@
 {
     "title": "Words Frequency",
-    "description": "Words Frequency",
+    "description": "Design a data structure that receives a book (list of words) and supports querying how many times a word appears.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Words Frequency"
+            "text": "Design a data structure that receives a book (list of words) and supports querying how many times a word appears."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/02_words_frequency/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Design a data structure that receives a book (list of words) and supports querying how many times a word appears."
                         }
                     ]
                 },
@@ -41,6 +31,20 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_02_words_frequency"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "0"
                         }
                     ]
                 }

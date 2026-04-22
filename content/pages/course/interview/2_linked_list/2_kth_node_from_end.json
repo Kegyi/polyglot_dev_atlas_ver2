@@ -25,8 +25,18 @@
                     ]
                 },
                 {
-                    "id": "example_cases",
-                    "title": "Example Cases",
+                    "id": "code_example",
+                    "title": "Code Example",
+                    "content": [
+                        {
+                            "type": "code",
+                            "name": "interview_lcci_02_02_kth_node_from_end"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
                     "content": [
                         {
                             "type": "text",
@@ -39,16 +49,6 @@
                         {
                             "type": "text",
                             "text": "\"1 -> 2 -> 3\", k = 4 -> null (k is larger than the list length)"
-                        }
-                    ]
-                },
-                {
-                    "id": "code_example",
-                    "title": "Code Example",
-                    "content": [
-                        {
-                            "type": "code",
-                            "name": "interview_lcci_02_02_kth_node_from_end"
                         }
                     ]
                 }

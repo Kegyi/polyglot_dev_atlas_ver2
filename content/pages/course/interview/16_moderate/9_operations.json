@@ -1,6 +1,6 @@
 {
     "title": "Operations",
-    "description": "Operations",
+    "description": "Implement `minus`, `multiply`, and `divide` for integers.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Operations"
+            "text": "Implement `minus`, `multiply`, and `divide` for integers."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/09_operations/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Implement `minus`, `multiply`, and `divide` for integers."
                         }
                     ]
                 },
@@ -41,6 +31,24 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_09_operations"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "7"
+                        },
+                        {
+                            "type": "text",
+                            "text": "-24"
+                        },
+                        {
+                            "type": "text",
+                            "text": "4"
                         }
                     ]
                 }

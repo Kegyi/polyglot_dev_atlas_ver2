@@ -7,116 +7,95 @@
 .nav-top, .nav-bottom { display: flex; align-items: center; padding: 10px 20px; flex: 1; }
 .nav-top { justify-content: space-between; border-bottom: 1px solid rgba(128, 128, 128, 0.1); }
 .nav-left, .nav-center, .nav-right { display: flex; align-items: center; gap: 15px; }
-.logo-with-modes { position: relative; display: flex; align-items: center; gap: 8px; }
-.logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; cursor: pointer; user-select: none; }
-.logo .accent { color: var(--accent); }
-
-.home-modes-nav {
+.logo-with-modes {
+    position: relative;
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 12px;
 }
 
-.nav-mode-btn {
-    text-decoration: none;
-    color: var(--text-dim);
-    border: var(--border-w) solid var(--border);
-    border-radius: var(--radius);
-    background: var(--bg);
-    padding: 6px 10px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    transition: all 0.2s;
-}
-
-.nav-mode-btn:hover {
+.logo {
+    font-weight: 900;
+    font-size: 1.08rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
     color: var(--text);
-    border-color: var(--accent);
-    background: var(--accent-glow);
+    cursor: pointer;
+    user-select: none;
 }
-
-/* Mode home links removed - now in nav-center as home-modes-nav */
 
 .mode-switcher {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 4px;
-    margin-left: -8px;
+    position: relative;
 }
 
 .mode-switcher-trigger {
-    display: flex;
-    align-items: center;
-    gap: 6px;
     list-style: none;
     cursor: pointer;
-    border: var(--border-w) solid var(--border);
-    background: var(--bg);
-    color: var(--text-dim);
-    border-radius: var(--radius);
-    padding: 6px 10px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
     user-select: none;
-    transition: all 0.2s;
-}
-
-.mode-switcher-trigger:hover,
-.mode-switcher[open] .mode-switcher-trigger {
-    color: var(--text);
-    border-color: var(--accent);
-    background: var(--accent-glow);
-}
-
-.mode-switcher-trigger .chevron {
-    font-size: 0.7rem;
-    transition: transform 0.2s;
-}
-
-.mode-switcher[open] .mode-switcher-trigger .chevron {
-    transform: rotate(180deg);
-}
-
-.mode-switcher-menu {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: var(--panel);
-    border: var(--border-w) solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: inline-flex;
     flex-direction: column;
-    min-width: 140px;
-    z-index: 100;
+    align-items: flex-start;
+    gap: 1px;
+    padding: 0;
+    border: 0;
+    background: transparent;
 }
 
-.mode-switcher[open] .mode-switcher-menu {
-    display: flex;
+.mode-switcher-trigger::-webkit-details-marker {
+    display: none;
 }
-    margin-left: 6px;
-.mode-switcher-caret {
+
+.mode-switcher-current {
     display: inline-block;
-    font-size: 0.72rem;
+    font-weight: 900;
+    font-size: 1.08rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    transition: color 0.2s ease;
+}
+
+.mode-switcher-underbar {
+    display: block;
+    width: 100%;
+    height: 0;
+    margin-top: 2px;
+    border-bottom: 1px solid var(--text-dim);
+    opacity: 0.95;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.mode-switcher-trigger:hover .mode-switcher-current,
+.mode-switcher[open] .mode-switcher-current {
+    color: var(--text);
+}
+
+.mode-switcher-trigger:hover .mode-switcher-underbar,
+.mode-switcher[open] .mode-switcher-underbar {
+    transform: translateY(1px);
+}
+
+.mode-switcher-trigger:hover .mode-switcher-underbar,
+.mode-switcher[open] .mode-switcher-underbar {
+    border-color: var(--accent);
 }
 
 .mode-switcher-menu {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
     left: 0;
-    min-width: 160px;
+    min-width: 180px;
     display: none;
     flex-direction: column;
     gap: 4px;
     background: var(--panel);
     border: var(--border-w) solid var(--border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     padding: 8px;
-    z-index: 50;
+    z-index: 70;
 }
 
 .mode-switcher[open] .mode-switcher-menu {
@@ -127,9 +106,12 @@
     display: block;
     text-decoration: none;
     color: var(--text-dim);
-    border-radius: var(--radius);
-    padding: 7px 10px;
+    border-radius: calc(var(--radius) - 2px);
+    padding: 8px 10px;
     font-size: 0.86rem;
+    font-weight: 650;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 .mode-switcher-link:hover {
@@ -139,7 +121,7 @@
 
 .mode-switcher-link.active {
     color: var(--accent);
-    font-weight: 700;
+    font-weight: 800;
     background: var(--accent-glow);
 }
 
@@ -159,14 +141,16 @@
 
 .nav-list a, .toc-item span {
     text-decoration: none; color: var(--text-dim); font-size: 0.9rem; display: block;
-    padding: 6px 10px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
+    padding: 7px 12px; border-radius: var(--radius); transition: 0.2s; cursor: pointer;
     white-space: normal; overflow: visible; text-overflow: clip;
-    padding-left: 12px;
-    text-indent: -12px;
+    text-indent: 0;
     line-height: 1.25;
 }
 
 .sidebar-wrap-indent { display:block; padding-left: 16px; }
-
+ /* Dynamic width based on character count (0.55em ≈ one character width in current font) */
+.mode-switcher-underbar::before {
+     width: calc(var(--mode-char-count, 5) * 0.55em);
+}
 .nav-list a:hover, .toc-item span:hover { background: rgba(255,255,255,0.05); color: var(--text); }
 .nav-list .active > a, .nav-list li.active > span { color: var(--accent); font-weight: bold; background: var(--accent-glow); }

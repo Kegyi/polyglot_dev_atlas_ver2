@@ -1,6 +1,6 @@
 {
     "title": "Pairs With Sum",
-    "description": "Pairs With Sum",
+    "description": "Given an array and a target, return all disjoint pairs of values whose sum equals the target.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Pairs With Sum"
+            "text": "Given an array and a target, return all disjoint pairs of values whose sum equals the target."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/16/24_pairs_with_sum/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "Given an array and a target, return all disjoint pairs of values whose sum equals the target."
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_16_24_pairs_with_sum"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "[[5, 6]]"
                         }
                     ]
                 }

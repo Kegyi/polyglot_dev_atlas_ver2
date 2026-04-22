@@ -1,6 +1,6 @@
 {
     "title": "Circus Tower",
-    "description": "Circus Tower",
+    "description": "A circus is designing a tower routine consisting of people standing atop one another's shoulders.",
     "style": "text_style",
     "content": [
         {
@@ -9,7 +9,7 @@
         },
         {
             "type": "text",
-            "text": "Circus Tower"
+            "text": "A circus is designing a tower routine consisting of people standing atop one another's shoulders."
         },
         {
             "type": "blocks",
@@ -20,17 +20,7 @@
                     "content": [
                         {
                             "type": "text",
-                            "text": "See legacy docs: /legacy_content/docs/lcci/17/08_circus_tower/README.md"
-                        }
-                    ]
-                },
-                {
-                    "id": "example_cases",
-                    "title": "Example Cases",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": "See example cases in the docs."
+                            "text": "A circus is designing a tower routine consisting of people standing atop one another's shoulders. For practical and aesthetic reasons, each person must be both shorter and lighter than the person below. Given two arrays, `height` and `weight`, return the maximum number of people in such a tower. **Example 1:** ``` Input: height = [65,70,56,75,60,68], weight = [100,150,90,190,95,110] Output: 6 ``` **Example 2:** ``` Input: height = [65,70,56,75], weight = [100,150,90,190] Output: 4 ```"
                         }
                     ]
                 },
@@ -41,6 +31,16 @@
                         {
                             "type": "code",
                             "name": "interview_lcci_17_08_circus_tower"
+                        }
+                    ]
+                },
+                {
+                    "id": "example_output",
+                    "title": "Example Output",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "See problem output in legacy docs."
                         }
                     ]
                 }
