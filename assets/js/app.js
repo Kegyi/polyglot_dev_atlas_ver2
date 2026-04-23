@@ -108,6 +108,9 @@ const app = {
         const isCollapsed = el.classList.toggle('collapsed');
         const handle = el.querySelector('.sidebar-handle');
         localStorage.setItem(`atlas-sidebar-${side}-collapsed`, isCollapsed ? '1' : '0');
+        if (side === 'left') {
+            document.documentElement.setAttribute('data-sidebar-left-collapsed', isCollapsed ? 'true' : 'false');
+        }
         if (side === 'right') {
             document.documentElement.setAttribute('data-sidebar-right-collapsed', isCollapsed ? 'true' : 'false');
         }
@@ -759,6 +762,7 @@ const app = {
         const leftSidebar = document.getElementById('sidebar-left');
         if (leftSidebar) {
             leftSidebar.classList.toggle('collapsed', leftCollapsed);
+            document.documentElement.setAttribute('data-sidebar-left-collapsed', leftCollapsed ? 'true' : 'false');
             const leftHandle = leftSidebar.querySelector('.sidebar-handle');
             if (leftHandle) {
                 const arrow = leftHandle.querySelector('.sidebar-handle-arrow');
@@ -856,9 +860,19 @@ const app = {
             } catch (e) {}
         } catch (e) {}
 
-        if (window.location.hash) {
-            const hashId = window.location.hash.substring(1);
-            setTimeout(() => this.focusTopic(hashId), 500);
+        const initialHash = window.__atlasInitialHash || window.location.hash;
+        if (initialHash) {
+            const hashId = initialHash.substring(1);
+            setTimeout(() => {
+                this.focusTopic(hashId);
+                try {
+                    if (window.history && typeof window.history.replaceState === 'function') {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search + initialHash);
+                    }
+                    // Guard for browsers that still attempt viewport-level jumps.
+                    window.scrollTo(0, 0);
+                } catch (e) {}
+            }, 220);
         }
     }
 };

@@ -8,6 +8,13 @@ aside {
 #sidebar-right { width: var(--sidebar-w); border-left: var(--border-w) solid var(--border); }
 aside.collapsed { width: 40px !important; }
 
+/* First-paint state: keep navigation sidebar collapsed before app.js initializes. */
+html[data-sidebar-left-collapsed="true"] #sidebar-left { width: 40px !important; }
+html[data-sidebar-left-collapsed="true"] #sidebar-left .sidebar-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* First-paint state: keep topics sidebar collapsed before app.js initializes. */
 html[data-sidebar-right-collapsed="true"] #sidebar-right { width: 40px !important; }
 html[data-sidebar-right-collapsed="true"] #sidebar-right .sidebar-content {

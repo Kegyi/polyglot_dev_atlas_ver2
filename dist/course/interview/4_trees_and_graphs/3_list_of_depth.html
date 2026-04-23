@@ -36,10 +36,27 @@
             doc.setAttribute('data-primary', savedPrimary);
             doc.setAttribute('data-secondary', savedSecondary);
 
+            // Navigation sidebar: keep user-collapsed state before first paint.
+            const savedLeftSidebar = localStorage.getItem('atlas-sidebar-left-collapsed');
+            const leftCollapsed = savedLeftSidebar === '1';
+            doc.setAttribute('data-sidebar-left-collapsed', leftCollapsed ? 'true' : 'false');
+
             // Topic sidebar: collapse by default unless user explicitly opened it.
             const savedRightSidebar = localStorage.getItem('atlas-sidebar-right-collapsed');
             const rightCollapsed = savedRightSidebar === null ? true : savedRightSidebar === '1';
             doc.setAttribute('data-sidebar-right-collapsed', rightCollapsed ? 'true' : 'false');
+
+            // Firefox/tablet can apply native hash scrolling before app init.
+            // Cache hash and clear it for first paint; app.js restores + navigates
+            // inside the content pane to keep the top header visible.
+            try {
+                if (window.location.hash) {
+                    window.__atlasInitialHash = window.location.hash;
+                    if (window.history && typeof window.history.replaceState === 'function') {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                }
+            } catch (e) {}
             
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
