@@ -107,12 +107,23 @@ const app = {
         
         const isCollapsed = el.classList.toggle('collapsed');
         const handle = el.querySelector('.sidebar-handle');
+        localStorage.setItem(`atlas-sidebar-${side}-collapsed`, isCollapsed ? '1' : '0');
+        if (side === 'right') {
+            document.documentElement.setAttribute('data-sidebar-right-collapsed', isCollapsed ? 'true' : 'false');
+        }
         
         if (handle) {
+            const arrow = handle.querySelector('.sidebar-handle-arrow');
             if (side === 'left') {
-                handle.innerText = isCollapsed ? '▶' : '◀';
+                if (arrow) {
+                    arrow.innerText = isCollapsed ? '▶' : '◀';
+                }
+                handle.setAttribute('aria-label', isCollapsed ? 'Show navigation sidebar' : 'Hide navigation sidebar');
             } else {
-                handle.innerText = isCollapsed ? '◀' : '▶';
+                if (arrow) {
+                    arrow.innerText = isCollapsed ? '◀' : '▶';
+                }
+                handle.setAttribute('aria-label', isCollapsed ? 'Show topics sidebar' : 'Hide topics sidebar');
             }
         }
     },
@@ -591,7 +602,16 @@ const app = {
         const targetBody = el.querySelector(':scope > .topic-body');
         if (targetBody) targetBody.classList.remove('collapsed');
 
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const contentArea = document.getElementById('content');
+        if (contentArea) {
+            // Scroll only the content panel to avoid viewport jumps that can hide the header on tablets.
+            const contentRect = contentArea.getBoundingClientRect();
+            const targetRect = el.getBoundingClientRect();
+            const targetTop = contentArea.scrollTop + (targetRect.top - contentRect.top) - 8;
+            contentArea.scrollTo({ behavior: 'smooth', top: Math.max(0, targetTop) });
+        } else {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
         el.classList.add('highlight-flash');
         setTimeout(() => el.classList.remove('highlight-flash'), 2000);
         
@@ -728,10 +748,36 @@ const app = {
         const theme = document.documentElement.getAttribute('data-theme') || 'dark';
         const view = document.documentElement.getAttribute('data-view-mode') || 'all';
         const density = localStorage.getItem('atlas-sidebar-density') || 'high';
+        const leftCollapsed = localStorage.getItem('atlas-sidebar-left-collapsed') === '1';
+        const rightPref = localStorage.getItem('atlas-sidebar-right-collapsed');
+        const rightCollapsed = rightPref === null ? true : rightPref === '1';
 
         this.updateIcons(theme);
         this.updateViewModeUI(view);
         this.updateDensityUI(density);
+
+        const leftSidebar = document.getElementById('sidebar-left');
+        if (leftSidebar) {
+            leftSidebar.classList.toggle('collapsed', leftCollapsed);
+            const leftHandle = leftSidebar.querySelector('.sidebar-handle');
+            if (leftHandle) {
+                const arrow = leftHandle.querySelector('.sidebar-handle-arrow');
+                if (arrow) arrow.innerText = leftCollapsed ? '▶' : '◀';
+                leftHandle.setAttribute('aria-label', leftCollapsed ? 'Show navigation sidebar' : 'Hide navigation sidebar');
+            }
+        }
+
+        const rightSidebar = document.getElementById('sidebar-right');
+        if (rightSidebar) {
+            rightSidebar.classList.toggle('collapsed', rightCollapsed);
+            document.documentElement.setAttribute('data-sidebar-right-collapsed', rightCollapsed ? 'true' : 'false');
+            const rightHandle = rightSidebar.querySelector('.sidebar-handle');
+            if (rightHandle) {
+                const arrow = rightHandle.querySelector('.sidebar-handle-arrow');
+                if (arrow) arrow.innerText = rightCollapsed ? '◀' : '▶';
+                rightHandle.setAttribute('aria-label', rightCollapsed ? 'Show topics sidebar' : 'Hide topics sidebar');
+            }
+        }
 
         // Render style-picker icons
         document.querySelectorAll('.style-dot').forEach(btn => {

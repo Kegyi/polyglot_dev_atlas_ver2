@@ -109,9 +109,6 @@
     border-left: 1px solid rgba(128, 128, 128, 0.35);
 }
 
-.nav-item.nav-showcases .collection-marker { color: var(--text-dim); font-size: 0.72rem; margin-left: 6px; font-weight: 600; }
-.nav-item.nav-showcases .collection-marker::before { content: '›'; margin-right: 6px; color: var(--text-dim); }
-
 html.showcases-open #toc-main { display: none !important; }
 html.showcases-open #toc-showcases { display: block !important; }
 
@@ -120,4 +117,3 @@ html.collection-open #toc-main { display: none !important; }
 .nav-item.nav-back a:focus { outline: none; box-shadow: none; }
 .nav-list a:focus { outline: none; box-shadow: none; }
 .nav-list a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.nav-list.nav-showcase-list a:focus-visible { outline: none; box-shadow: none; }

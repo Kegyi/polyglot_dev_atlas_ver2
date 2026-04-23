@@ -298,7 +298,7 @@ p { line-height: 1.6; color: var(--text-dim); margin-bottom: 1.2rem; }
 .note-warning { background: rgba(245,158,11,0.06); color: var(--text); }
 .note-warning::before { content: '!'; background: #f59e0b; color: #1a1a1a; }
 .note-error { background: rgba(239,68,68,0.06); color: var(--text); }
-.note-error::before { content: 'âœ•'; background: #ef4444; color: white; }
+.note-error::before { content: '\00D7'; background: #ef4444; color: white; }
 .note table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; }
 .note table th, .note table td { padding: 6px 8px; border: 1px solid rgba(0,0,0,0.06); }
 .note pre { background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; overflow: auto; margin: 8px 0; }

@@ -35,6 +35,11 @@
             doc.setAttribute('data-selection-mode', savedSelectionMode);
             doc.setAttribute('data-primary', savedPrimary);
             doc.setAttribute('data-secondary', savedSecondary);
+
+            // Topic sidebar: collapse by default unless user explicitly opened it.
+            const savedRightSidebar = localStorage.getItem('atlas-sidebar-right-collapsed');
+            const rightCollapsed = savedRightSidebar === null ? true : savedRightSidebar === '1';
+            doc.setAttribute('data-sidebar-right-collapsed', rightCollapsed ? 'true' : 'false');
             
             // Phase 3 Attribute
             doc.setAttribute('data-global-style', savedGlobalStyle);
@@ -162,7 +167,10 @@
 
     <div id="container">
         <aside id="sidebar-left">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('left')" aria-label="Toggle left sidebar">&#9664;</div>
+            <div class="sidebar-handle sidebar-handle-left" onclick="app.toggleSidebar('left')" aria-label="Hide navigation sidebar">
+                <span class="sidebar-handle-label">Navigation</span>
+                <span class="sidebar-handle-arrow" aria-hidden="true">&#9664;</span>
+            </div>
             <div class="sidebar-content">
                 <div class="sidebar-label">Navigation</div>
                 <ul class="nav-list" id="toc-main"><li class="nav-item nav-mode-link nav-atlas"><a href="./atlas/index.html" onclick="app.prepareModeSwitch()">Atlas</a></li><li class="nav-item nav-mode-link nav-course"><a href="./course/index.html" onclick="app.prepareModeSwitch()">Course</a></li><li class="nav-item nav-mode-link nav-meta"><a href="./meta/index.html" onclick="app.prepareModeSwitch()">Meta</a></li></ul>
@@ -208,7 +216,10 @@
         </main>
 
         <aside id="sidebar-right">
-            <div class="sidebar-handle" onclick="app.toggleSidebar('right')" aria-label="Toggle right sidebar">&#9654;</div>
+            <div class="sidebar-handle sidebar-handle-right" onclick="app.toggleSidebar('right')" aria-label="Show topics sidebar">
+                <span class="sidebar-handle-label">Topics</span>
+                <span class="sidebar-handle-arrow" aria-hidden="true">&#9664;</span>
+            </div>
             <div class="sidebar-content">
                 <div class="sidebar-header-row">
                     <div class="sidebar-label">Topics</div>
