@@ -221,6 +221,38 @@
         panel.hidden = true;
     }
 
+    function handleResultNavigation(linkEl) {
+        const href = linkEl.getAttribute('href') || '';
+        if (!href) return false;
+
+        try {
+            const target = new URL(href, window.location.href);
+            const samePage =
+                target.pathname === window.location.pathname &&
+                target.search === window.location.search;
+
+            if (!samePage) return false;
+
+            const hash = target.hash || '';
+            if (!hash) return false;
+
+            const topicId = decodeURIComponent(hash.slice(1));
+            if (!topicId) return false;
+
+            if (window.app && typeof window.app.focusTopic === 'function') {
+                window.app.focusTopic(topicId);
+                if (window.history && typeof window.history.replaceState === 'function') {
+                    window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+                }
+                return true;
+            }
+        } catch (e) {
+            return false;
+        }
+
+        return false;
+    }
+
     function focusSearch() {
         const input = document.getElementById('atlas-search-input');
         if (!input) return;
@@ -245,6 +277,15 @@
             const link = e.target.closest('a.search-result');
             if (!link) return;
             seedCollectionStateForSearchTarget(link.getAttribute('href') || '');
+
+            const handledInPage = handleResultNavigation(link);
+            closeResults();
+            input.blur();
+
+            if (handledInPage) {
+                e.preventDefault();
+                return;
+            }
         });
 
         document.addEventListener('click', (e) => {
