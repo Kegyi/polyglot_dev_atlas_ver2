@@ -16,10 +16,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v6
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: '3.11'
     
@@ -33,9 +33,14 @@ jobs:
     
     - name: Create issue if links are broken
       if: failure() && github.event_name == 'schedule'
-      uses: actions/create-issue@v2
+      uses: actions/github-script@v6
       with:
-        title: '🔗 Dead links detected in content'
-        body: 'The dead link checker found broken external URLs. Please review and update the content.'
-        labels: 'documentation,bug'
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🔗 Dead links detected in content',
+            body: 'The dead link checker found broken external URLs. Please review and update the content.',
+            labels: ['documentation', 'bug']
+          });
       continue-on-error: true
